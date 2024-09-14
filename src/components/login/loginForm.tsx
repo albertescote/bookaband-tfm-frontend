@@ -26,10 +26,10 @@ export default function LoginForm({
       }
       if (authenticationResult.valid) {
         setCookie(
-          'access_token_learning_platform',
+          'access_token_music_manager',
           authenticationResult.accessToken,
         );
-        window.location.href = redirectTo ?? '/';
+        window.location.href = redirectTo ?? '/home';
       }
     });
   };

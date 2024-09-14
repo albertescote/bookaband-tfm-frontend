@@ -42,21 +42,22 @@ export async function middleware(req: NextRequest) {
   );
   const isProtectedRoute = !!protectedRouteFound;
 
-  let authorized = false;
-  let role: string | undefined = '';
-  const accessTokenPayload = await validateAccessToken();
-  if (accessTokenPayload) {
-    role = accessTokenPayload.role;
-    authorized = true;
-  }
-
-  if (isProtectedRoute && !authorized) {
-    return NextResponse.redirect(
-      new URL(
-        `/${lng}/login?redirect_to=${protectedRouteFound?.split('/')[1]}`,
-        req.nextUrl,
-      ),
-    );
+  if (isProtectedRoute) {
+    let authorized = false;
+    let role: string | undefined = '';
+    const accessTokenPayload = await validateAccessToken();
+    if (accessTokenPayload) {
+      role = accessTokenPayload.role;
+      authorized = true;
+    }
+    if (!authorized) {
+      return NextResponse.redirect(
+        new URL(
+          `/${lng}/login?redirect_to=${protectedRouteFound?.split('/')[1]}`,
+          req.nextUrl,
+        ),
+      );
+    }
   }
 
   if (req.headers.has('referer')) {

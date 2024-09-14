@@ -1,8 +1,9 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { deleteCookie, getCookie } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
+import { validateAccessToken } from '@/service/auth';
 
 const LoginButton = ({ language }: { language: string }) => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -10,15 +11,16 @@ const LoginButton = ({ language }: { language: string }) => {
   const { t } = useTranslation(language, 'home');
 
   useEffect(() => {
-    const accessTokenCookie = getCookie('access_token_learning_platform');
-    setAuthenticated(!!accessTokenCookie);
+    validateAccessToken().then((result) => {
+      setAuthenticated(!!result);
+    });
   }, []);
   const navigate = () => {
     if (!authenticated) {
       router.push('/login');
       return;
     }
-    deleteCookie('access_token_learning_platform');
+    deleteCookie('access_token_music_manager');
     setAuthenticated(false);
     router.push('/');
   };
