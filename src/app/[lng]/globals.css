@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #23395b;
+  background: linear-gradient(to right, #b4c6ff, #b4e6ff);
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(45deg, #3b82f6, #06b6d4, #9333ea);
+}
+
+.title-text {
+  font-size: x-large;
+  color: #23395b;
+  font-weight: bold;
+  transition:
+    text-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.title-text:hover {
+  transform: scale(1.2);
+}
+
+.mt-54 {
+  margin-top: 13.5rem;
+}

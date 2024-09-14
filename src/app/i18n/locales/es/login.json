@@ -1,0 +1,9 @@
+{
+  "form-title": "Iniciar sesión",
+  "form-description": "Por favor, inicie sesión para continuar",
+  "email": "Email",
+  "email-placeholder": "Introduzca su email",
+  "password": "Contraseña",
+  "password-placeholder": "Introduzca su contraseña",
+  "sign-in-button": "Iniciar sesión"
+}

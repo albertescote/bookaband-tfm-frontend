@@ -1,0 +1,14 @@
+{
+  "form-title": "Pre Registre",
+  "form-description": "Inscrigui's ara per a reservar la seva plaça i ésser el primer a accedir a la nostra nova plataforma.",
+  "name": "Nom",
+  "name-placeholder": "Introdueixi el seu nom",
+  "email": "Email",
+  "email-placeholder": "Introdueixi el seu email",
+  "comments-questions-suggestions": "Comentaris, preguntes o suggeriments",
+  "comments-placeholder": "Introdueixi qualsevol comentari, pregunta o suggeriment que pugui tenir",
+  "sign-up-button": "Registrar-se",
+  "pop-up-title": "Gràcies!",
+  "pop-up-description": "Li agraïm el seu enviament. Aviat ens posarem en contacte amb vostè.",
+  "close": "Tancar"
+}

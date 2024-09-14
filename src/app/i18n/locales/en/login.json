@@ -1,0 +1,9 @@
+{
+  "form-title": "Sign In",
+  "form-description": "Please log in to continue",
+  "email": "Email",
+  "email-placeholder": "Enter your email",
+  "password": "Password",
+  "password-placeholder": "Enter your password",
+  "sign-in-button": "Sign in"
+}

@@ -1,0 +1,14 @@
+{
+  "form-title": "Pre Registro",
+  "form-description": "Inscríbase ahora para reservar su plaza y ser el primero en acceder a nuestra nueva plataforma.",
+  "name": "Nombre",
+  "name-placeholder": "Introduzca su nombre",
+  "email": "Email",
+  "email-placeholder": "Introduzca su email",
+  "comments-questions-suggestions": "Comentarios, preguntas, suggerencias",
+  "comments-placeholder": "Introduzca cualquier comentario, pregunta o sugerencia que pueda tener",
+  "sign-up-button": "Registrarse",
+  "pop-up-title": "Gracias!",
+  "pop-up-description": "Le agradecemos su envío. Pronto nos pondremos en contacto con usted.",
+  "close": "Cerrar"
+}
