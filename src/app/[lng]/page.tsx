@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import OffersList from '@/components/offersList';
+import { getAllOffers } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
 
 interface PageParams {
@@ -8,34 +9,18 @@ interface PageParams {
 }
 
 export default async function Home({ params: { lng } }: PageParams) {
+  const offers = await getAllOffers();
   const { t } = await useTranslation(lng, 'home');
+
   return (
     <main>
-      <section className="h-[75vh] bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] py-12 md:py-20">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <div>
-              <h1 className="text-3xl font-bold md:text-4xl">
-                {t('main-title')}
-              </h1>
-              <p className="mt-4">{t('main-description')}</p>
-            </div>
-            <div>
-              <Image
-                alt="Barter Concept"
-                className="w-full rounded-lg object-cover"
-                height="400"
-                src="/assets/main-barter.jpg"
-                style={{
-                  aspectRatio: '600/400',
-                  objectFit: 'cover',
-                }}
-                width="600"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="flex h-[75vh] flex-col items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
+        {offers.length > 0 ? (
+          <OffersList lng={lng} offers={offers} />
+        ) : (
+          <div className="text-center text-gray-600">{t('no-offers')}</div>
+        )}
+      </div>
     </main>
   );
 }
