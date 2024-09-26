@@ -29,7 +29,9 @@ export default function LoginForm({
           'access_token_music_manager',
           authenticationResult.accessToken,
         );
-        window.location.href = redirectTo ?? '/home';
+        window.location.href = redirectTo
+          ? decodeURIComponent(redirectTo)
+          : `${language}/home`;
       }
     });
   };

@@ -12,7 +12,7 @@ export const config = {
   ],
 };
 
-const protectedRoutes = ['/pre-registration', '/home'];
+const protectedRoutes = ['/offer', '/home'];
 
 export async function middleware(req: NextRequest) {
   let lng;
@@ -25,15 +25,13 @@ export async function middleware(req: NextRequest) {
   if (
     !languages.some((loc) => {
       const langPrefix = `/${loc}`;
-      return (
-        req.nextUrl.pathname === langPrefix ||
-        req.nextUrl.pathname.startsWith(`${langPrefix}/`)
-      );
+      const { pathname } = req.nextUrl;
+      return pathname === langPrefix || pathname.startsWith(`${langPrefix}/`);
     }) &&
     !req.nextUrl.pathname.startsWith('/_next')
   ) {
     return NextResponse.redirect(
-      new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
+      new URL(`/${lng}${req.nextUrl.pathname + req.nextUrl.search}`, req.url),
     );
   }
 
@@ -51,11 +49,11 @@ export async function middleware(req: NextRequest) {
       authorized = true;
     }
     if (!authorized) {
+      const redirectUrl = encodeURIComponent(
+        protectedRouteFound?.split('/')[1] + req.nextUrl.search,
+      );
       return NextResponse.redirect(
-        new URL(
-          `/${lng}/login?redirect_to=${protectedRouteFound?.split('/')[1]}`,
-          req.nextUrl,
-        ),
+        new URL(`/${lng}/login?redirect_to=${redirectUrl}`, req.nextUrl),
       );
     }
   }
