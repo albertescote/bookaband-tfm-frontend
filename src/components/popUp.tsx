@@ -22,7 +22,7 @@ const PopUp: React.FC<PopupProps> = ({
   language,
   onClose,
 }) => {
-  const { t } = useTranslation(language, 'pre-registration');
+  const { t } = useTranslation(language, '');
   return (
     <Dialog defaultOpen>
       <DialogContent className="w-full max-w-md rounded-lg bg-[#f0f9ff] p-6 text-center">
