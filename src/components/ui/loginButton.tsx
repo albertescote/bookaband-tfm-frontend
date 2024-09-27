@@ -1,9 +1,9 @@
 'use client';
-import { useTranslation } from '@/app/i18n/client';
-import { useRouter } from 'next/navigation';
-import { deleteCookie } from 'cookies-next';
-import { useEffect, useState } from 'react';
-import { validateAccessToken } from '@/service/auth';
+import {useTranslation} from '@/app/i18n/client';
+import {useRouter} from 'next/navigation';
+import {deleteCookie} from 'cookies-next';
+import {useEffect, useState} from 'react';
+import {validateAccessToken} from '@/service/auth';
 
 const LoginButton = ({ language }: { language: string }) => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -22,7 +22,7 @@ const LoginButton = ({ language }: { language: string }) => {
     }
     deleteCookie('access_token_music_manager');
     setAuthenticated(false);
-    router.push('/');
+    window.location.href = '/';
   };
   return (
     <button onClick={navigate}>

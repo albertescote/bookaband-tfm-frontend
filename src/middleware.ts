@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import acceptLanguage from 'accept-language';
-import { cookieName, fallbackLng, languages } from './app/i18n/settings';
-import { validateAccessToken } from '@/service/auth';
+import {cookieName, fallbackLng, languages} from './app/i18n/settings';
+import {validateAccessToken} from '@/service/auth';
 
 acceptLanguage.languages(languages);
 
@@ -12,7 +12,7 @@ export const config = {
   ],
 };
 
-const protectedRoutes = ['/offer', '/home'];
+const protectedRoutes = ['/offer', '/profile'];
 
 export async function middleware(req: NextRequest) {
   let lng;

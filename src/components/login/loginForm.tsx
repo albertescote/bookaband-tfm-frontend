@@ -1,10 +1,10 @@
 'use client';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { FormEvent, useState } from 'react';
-import { useTranslation } from '@/app/i18n/client';
-import { authenticate } from '@/service/auth';
-import { setCookie } from 'cookies-next';
+import {Label} from '@/components/ui/label';
+import {Input} from '@/components/ui/input';
+import {FormEvent, useState} from 'react';
+import {useTranslation} from '@/app/i18n/client';
+import {authenticate} from '@/service/auth';
+import {setCookie} from 'cookies-next';
 
 export default function LoginForm({
   language,
@@ -31,7 +31,7 @@ export default function LoginForm({
         );
         window.location.href = redirectTo
           ? decodeURIComponent(redirectTo)
-          : `${language}/home`;
+          : '/';
       }
     });
   };
