@@ -26,7 +26,7 @@ export async function getUserInfo(): Promise<User | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
-      console.log('Get user id failed: access token cookie not found');
+      console.log('Get user info failed: access token cookie not found');
       return undefined;
     }
     const decodedJwt = decodeJwt(accessToken);
@@ -36,6 +36,32 @@ export async function getUserInfo(): Promise<User | undefined> {
       return undefined;
     }
     const response = await axios.get(BACKEND_URL + `/user/${userId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function getOfferInfo(
+  offerId: string,
+): Promise<Offer | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get offer info failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {
