@@ -1,0 +1,16 @@
+{
+  "form-title": "Registrarse",
+  "form-description": "Por favor, rellene el formulario para crear un usuario",
+  "email": "Email",
+  "email-placeholder": "Introduzca su email",
+  "password": "Contraseña",
+  "password-placeholder": "Introduzca su Contraseña",
+  "first-name": "Nom",
+  "first-name-placeholder": "Introduzca su nombre",
+  "family-name": "Apellidos",
+  "family-name-placeholder": "Introduzca sus apellidos",
+  "select-role": "Rol",
+  "musician": "Músico",
+  "client": "Cliente",
+  "sign-up-button": "Crear cuenta"
+}

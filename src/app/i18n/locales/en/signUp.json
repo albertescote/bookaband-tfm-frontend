@@ -1,0 +1,16 @@
+{
+  "form-title": "Sign Up",
+  "form-description": "Please fill the form to create a user",
+  "email": "Email",
+  "email-placeholder": "Enter your email",
+  "password": "Password",
+  "password-placeholder": "Enter your password",
+  "first-name": "First name",
+  "first-name-placeholder": "Enter your first name",
+  "family-name": "Family name",
+  "family-name-placeholder": "Enter your family name",
+  "select-role": "Role",
+  "musician": "Musician",
+  "client": "Client",
+  "sign-up-button": "Create account"
+}

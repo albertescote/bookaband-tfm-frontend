@@ -1,5 +1,5 @@
 import OffersList from '@/components/offersList';
-import { getAllOffers } from '@/service/backend/api';
+import { getAllOffersView } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
 
 interface PageParams {
@@ -9,7 +9,7 @@ interface PageParams {
 }
 
 export default async function Home({ params: { lng } }: PageParams) {
-  const offers = await getAllOffers();
+  const offers = await getAllOffersView();
   const { t } = await useTranslation(lng, 'home');
 
   return (

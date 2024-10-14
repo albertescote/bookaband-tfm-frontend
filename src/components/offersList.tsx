@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { Offer } from '@/service/backend/domain/offer';
+import { OfferView } from '@/service/backend/domain/offerView';
 import { useTranslation } from '@/app/i18n';
 
 interface OffersListParams {
   lng: string;
-  offers: Offer[];
+  offers: OfferView[];
 }
 
 function getRandomColor(bandName: string) {

@@ -1,13 +1,14 @@
+'use server';
 import axios, { AxiosError } from 'axios';
 import { BACKEND_URL } from '@/config';
-import { Offer } from '@/service/backend/domain/offer';
+import { OfferView } from '@/service/backend/domain/offerView';
 import { User } from '@/service/backend/domain/user';
 import { getAccessTokenCookie } from '@/service/utils';
 import { decodeJwt } from 'jose';
 
-export async function getAllOffers(): Promise<Offer[]> {
+export async function getAllOffersView(): Promise<OfferView[]> {
   try {
-    const response = await axios.get(BACKEND_URL + '/offers');
+    const response = await axios.get(BACKEND_URL + '/offers-view');
     if (!response.data) {
       return [];
     }
@@ -19,6 +20,25 @@ export async function getAllOffers(): Promise<Offer[]> {
       }`,
     );
     return [];
+  }
+}
+
+export async function createUser(request: {
+  firstName?: string;
+  familyName?: string;
+  email?: string;
+  password?: string;
+  role?: string;
+}): Promise<void> {
+  try {
+    await axios.post(BACKEND_URL + '/user', request);
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
   }
 }
 
@@ -52,16 +72,16 @@ export async function getUserInfo(): Promise<User | undefined> {
   }
 }
 
-export async function getOfferInfo(
+export async function getOffersViewById(
   offerId: string,
-): Promise<Offer | undefined> {
+): Promise<OfferView | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
       console.log('Get offer info failed: access token cookie not found');
       return undefined;
     }
-    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
+    const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {

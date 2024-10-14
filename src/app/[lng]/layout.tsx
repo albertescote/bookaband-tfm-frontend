@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/footer';
-import Header from '@/components/header';
+import Header from '@/components/header/header';
 import { languages } from '@/app/i18n/settings';
 import { dir } from 'i18next';
 
@@ -26,10 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={lng} dir={dir(lng)}>
-      <body className={inter.className}>
-        <Header language={lng}></Header>
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
+        <Header language={lng} />
         {children}
-        <Footer language={lng}></Footer>
+        <Footer language={lng} />
       </body>
     </html>
   );

@@ -1,0 +1,16 @@
+{
+  "form-title": "Registrar-se",
+  "form-description": "Si us plau, ompli el formulari per a crear un usuari",
+  "email": "Email",
+  "email-placeholder": "Introdueixi el seu email",
+  "password": "Contrasenya",
+  "password-placeholder": "Introdueixi la seva contrasenya",
+  "first-name": "Nom",
+  "first-name-placeholder": "Introdueixi el seu nom",
+  "family-name": "Cognoms",
+  "family-name-placeholder": "Introdueixi els seus cognoms",
+  "select-role": "Rol",
+  "musician": "Músic",
+  "client": "Client",
+  "sign-up-button": "Crear compte"
+}

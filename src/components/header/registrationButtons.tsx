@@ -1,0 +1,23 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { validateAccessToken } from '@/service/auth';
+import LoginButton from '@/components/header/loginButton';
+import SignUpButton from '@/components/header/signUpButton';
+
+const RegistrationButtons = ({ language }: { language: string }) => {
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    validateAccessToken().then((result) => {
+      setAuthenticated(!!result);
+    });
+  }, []);
+  return (
+    <div className="flex items-center space-x-4">
+      <LoginButton language={language}></LoginButton>
+      {!authenticated && <SignUpButton language={language}></SignUpButton>}
+    </div>
+  );
+};
+
+export default RegistrationButtons;

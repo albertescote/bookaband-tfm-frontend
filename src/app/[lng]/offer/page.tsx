@@ -1,6 +1,6 @@
 import { useTranslation } from '@/app/i18n';
-import { getOfferInfo } from '@/service/backend/api'; // Assuming this function fetches the offer
-import { Offer } from '@/service/backend/domain/offer'; // Assuming the Offer type is defined here
+import { getOffersViewById } from '@/service/backend/api'; // Assuming this function fetches the offer
+import { OfferView } from '@/service/backend/domain/offerView'; // Assuming the Offer type is defined here
 
 interface PageParams {
   params: {
@@ -22,9 +22,9 @@ export default async function Page({
   searchParams,
 }: PageParams) {
   const { t } = await useTranslation(lng, 'offer');
-  const offer: Offer | undefined =
+  const offer: OfferView | undefined =
     searchParams?.id && typeof searchParams.id === 'string'
-      ? await getOfferInfo(searchParams.id)
+      ? await getOffersViewById(searchParams.id)
       : undefined;
 
   return (

@@ -1,4 +1,4 @@
-export interface Offer {
+export interface OfferView {
   id: string;
   price: number;
   bandName: string;
