@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { validateAccessToken } from '@/service/auth';
-import LoginButton from '@/components/header/loginButton';
-import SignUpButton from '@/components/header/signUpButton';
+import LoginButton from '@/components/layout/header/loginButton';
+import SignUpButton from '@/components/layout/header/signUpButton';
 
 const RegistrationButtons = ({ language }: { language: string }) => {
   const [authenticated, setAuthenticated] = useState(false);

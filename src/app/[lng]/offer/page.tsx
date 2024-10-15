@@ -1,6 +1,6 @@
 import { useTranslation } from '@/app/i18n';
-import { getOffersViewById } from '@/service/backend/api'; // Assuming this function fetches the offer
-import { OfferView } from '@/service/backend/domain/offerView'; // Assuming the Offer type is defined here
+import { getOffersViewById } from '@/service/backend/api';
+import { OfferView } from '@/service/backend/domain/offerView';
 
 interface PageParams {
   params: {

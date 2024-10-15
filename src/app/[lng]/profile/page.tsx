@@ -1,6 +1,10 @@
-import { useTranslation } from '@/app/i18n';
-import { getUserInfo } from '@/service/backend/api';
+'use client';
+import { useTranslation } from '@/app/i18n/client';
+import { getUserBands, getUserInfo } from '@/service/backend/api';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { User } from '@/service/backend/domain/user';
+import { UserBand } from '@/service/backend/domain/userBand';
 
 interface PageParams {
   params: {
@@ -16,12 +20,26 @@ function getRandomColor(name: string) {
   return `hsl(${hash % 360}, 70%, 60%)`;
 }
 
-export default async function Page({ params: { lng } }: PageParams) {
-  const { t } = await useTranslation(lng, 'profile');
-  const user: User | undefined = await getUserInfo();
+export default function Page({ params: { lng } }: PageParams) {
+  const { t } = useTranslation(lng, 'profile');
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [userBands, setUserBands] = useState<UserBand[] | undefined>(undefined);
+
+  useEffect(() => {
+    getUserInfo().then((user) => {
+      setUser(user);
+    });
+    getUserBands().then((userBands) => {
+      setUserBands(userBands);
+    });
+  }, []);
+
+  const navigateToCreateBand = () => {
+    window.location.href = `/band`;
+  };
 
   return (
-    <div className="flex h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
+    <div className="flex min-h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4 py-12">
       <div className="w-full max-w-md transform rounded-2xl bg-white p-8 shadow-lg">
         <div className="flex flex-col items-center">
           <div
@@ -39,6 +57,42 @@ export default async function Page({ params: { lng } }: PageParams) {
           <p className="mt-4 text-sm text-gray-600">
             {t('role')}: <span className="text-gray-800">{user?.role}</span>
           </p>
+          <div className="mt-8 w-full">
+            <h3 className="text-lg font-semibold text-gray-800">
+              {t('your-bands')}
+            </h3>
+            {userBands && userBands.length > 0 ? (
+              <ul className="mb-2 mt-4 space-y-2">
+                {userBands.map((band) => (
+                  <li
+                    key={band.id}
+                    className="rounded-lg border border-gray-300 p-4 shadow-sm"
+                  >
+                    <Link href={`/band?id=${band.id}`}>
+                      <span className="font-medium text-blue-600 hover:underline">
+                        {band.name}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mb-2 mt-4 text-center text-sm text-gray-500">
+                {t('no-bands')}
+              </p>
+            )}
+          </div>
+          <div className="mt-4 flex flex-row justify-between space-x-2">
+            <button className="mr-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]">
+              {t('join-band-button')}
+            </button>
+            <button
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+              onClick={navigateToCreateBand}
+            >
+              {t('create-band-button')}
+            </button>
+          </div>
         </div>
       </div>
     </div>

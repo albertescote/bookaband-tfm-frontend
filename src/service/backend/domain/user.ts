@@ -4,4 +4,5 @@ export interface User {
   familyName: string;
   email: string;
   role: string;
+  bands?: string[];
 }

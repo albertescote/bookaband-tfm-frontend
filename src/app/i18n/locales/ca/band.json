@@ -1,0 +1,9 @@
+{
+  "genre": "Gènere",
+  "form-title": "Crear grup",
+  "form-description": "Si us plau, ompli el formulari per a crear un grup de música",
+  "name": "Nom",
+  "name-placeholder": "Introdueixi el nom del grup",
+  "genre-placeholder": "Introdueixi el gènere de música",
+  "create-button": "Crear grup"
+}

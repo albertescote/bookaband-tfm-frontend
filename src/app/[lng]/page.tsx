@@ -1,4 +1,4 @@
-import OffersList from '@/components/offersList';
+import OffersList from '@/components/offers/offersList';
 import { getAllOffersView } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
 

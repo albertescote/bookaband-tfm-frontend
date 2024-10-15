@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Navbar from '@/components/ui/navBar';
-import RegistrationButtons from '@/components/header/registrationButtons';
+import Navbar from '@/components/layout/header/navBar';
+import RegistrationButtons from '@/components/layout/header/registrationButtons';
 
 export default async function Header({ language }: { language: string }) {
   return (

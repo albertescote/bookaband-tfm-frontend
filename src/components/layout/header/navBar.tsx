@@ -2,7 +2,7 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useEffect, useState } from 'react';
 import { validateAccessToken } from '@/service/auth';
-import NavLink from '@/components/ui/navLink';
+import NavLink from '@/components/layout/header/navLink';
 import { Role } from '@/service/backend/domain/role';
 
 export default function Navbar({ language }: { language: string }) {

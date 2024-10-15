@@ -1,6 +1,6 @@
 'use client';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Label } from '@/components/shared/label';
+import { Input } from '@/components/shared/input';
 import { FormEvent, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { setCookie } from 'cookies-next';

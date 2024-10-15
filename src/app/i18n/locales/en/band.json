@@ -1,0 +1,9 @@
+{
+  "genre": "Genre",
+  "form-title": "Crate band",
+  "form-description": "Please fill the form to create a band",
+  "name": "Name",
+  "name-placeholder": "Enter the name of the band",
+  "genre-placeholder": "Enter the music genre",
+  "create-button": "Create band"
+}

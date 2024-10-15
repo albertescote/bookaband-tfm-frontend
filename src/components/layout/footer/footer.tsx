@@ -1,4 +1,4 @@
-import LanguageSwitcher from '@/components/languageSwitcher';
+import LanguageSwitcher from '@/components/layout/footer/languageSwitcher';
 import { useTranslation } from '@/app/i18n';
 
 export default async function Footer({ language }: { language: string }) {
