@@ -14,7 +14,7 @@ export default async function Home({ params: { lng } }: PageParams) {
 
   return (
     <main>
-      <div className="flex h-[75vh] flex-col items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
+      <div className="flex min-h-[75vh] flex-col items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
         {offers.length > 0 ? (
           <OffersList lng={lng} offers={offers} />
         ) : (

@@ -18,9 +18,11 @@ export default async function Header({ language }: { language: string }) {
             <span className="title-text">Trisbar</span>
           </div>
         </Link>
-        <Navbar language={language} />
       </div>
-      <RegistrationButtons language={language}></RegistrationButtons>
+      <div className="relative flex items-center space-x-4 text-[#220c10]">
+        <Navbar language={language} />
+        <RegistrationButtons language={language}></RegistrationButtons>
+      </div>
     </header>
   );
 }

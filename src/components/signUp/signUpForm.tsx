@@ -6,6 +6,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { setCookie } from 'cookies-next';
 import { createUser } from '@/service/backend/api';
 import { authenticate } from '@/service/auth';
+import { Role } from '@/service/backend/domain/role';
 
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');
@@ -96,8 +97,8 @@ export default function SignUpForm({ language }: { language: string }) {
             className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm"
             required
           >
-            <option value="Musician">{t('musician')}</option>
-            <option value="Client">{t('client')}</option>
+            <option value={Role.Musician}>{t('musician')}</option>
+            <option value={Role.Client}>{t('client')}</option>
           </select>
         </div>
         <div className="flex justify-center pt-4">

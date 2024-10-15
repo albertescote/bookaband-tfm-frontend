@@ -1,7 +1,8 @@
-import {NextRequest, NextResponse} from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import acceptLanguage from 'accept-language';
-import {cookieName, fallbackLng, languages} from './app/i18n/settings';
-import {validateAccessToken} from '@/service/auth';
+import { cookieName, fallbackLng, languages } from './app/i18n/settings';
+import { validateAccessToken } from '@/service/auth';
+import { Role } from '@/service/backend/domain/role';
 
 acceptLanguage.languages(languages);
 
@@ -12,7 +13,9 @@ export const config = {
   ],
 };
 
-const protectedRoutes = ['/offer', '/profile'];
+const protectedRoutes: string[] = ['/offer', '/profile'];
+const clientProtectedRoutes: string[] = [];
+const musicianProtectedRoutes: string[] = ['/manage-offers'];
 
 export async function middleware(req: NextRequest) {
   let lng;
@@ -35,7 +38,13 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  const protectedRouteFound = protectedRoutes.find((route) =>
+  const allProtectedRoutes = protectedRoutes.concat(
+    protectedRoutes,
+    clientProtectedRoutes,
+    musicianProtectedRoutes,
+  );
+
+  const protectedRouteFound = allProtectedRoutes.find((route) =>
     req.nextUrl.pathname.endsWith(route),
   );
   const isProtectedRoute = !!protectedRouteFound;
@@ -46,7 +55,19 @@ export async function middleware(req: NextRequest) {
     const accessTokenPayload = await validateAccessToken();
     if (accessTokenPayload) {
       role = accessTokenPayload.role;
-      authorized = true;
+      if (
+        role === Role.Musician &&
+        clientProtectedRoutes.includes(protectedRouteFound)
+      ) {
+        return NextResponse.redirect(new URL(`/${lng}/forbidden`, req.nextUrl));
+      } else if (
+        role === Role.Client &&
+        musicianProtectedRoutes.includes(protectedRouteFound)
+      ) {
+        return NextResponse.redirect(new URL(`/${lng}/forbidden`, req.nextUrl));
+      } else {
+        authorized = true;
+      }
     }
     if (!authorized) {
       const redirectUrl = encodeURIComponent(
