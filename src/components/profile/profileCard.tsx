@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User } from '@/service/backend/domain/user';
 import { UserBand } from '@/service/backend/domain/userBand';
+import { TrashIcon } from '@heroicons/react/solid';
+import { deleteBand } from '@/service/backend/api';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -27,6 +29,12 @@ export default function ProfileCard({
 
   const navigateToCreateBand = () => {
     router.push('/band');
+  };
+
+  const handleDeleteBand = (id: string) => {
+    deleteBand(id).then(() => {
+      router.refresh();
+    });
   };
 
   return (
@@ -55,13 +63,19 @@ export default function ProfileCard({
             {userBands.map((band) => (
               <li
                 key={band.id}
-                className="rounded-lg border border-gray-300 p-4 shadow-sm"
+                className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"
               >
                 <Link href={`/band?id=${band.id}`}>
                   <span className="font-medium text-blue-600 hover:underline">
                     {band.name}
                   </span>
                 </Link>
+                <button
+                  onClick={() => handleDeleteBand(band.id)}
+                  className="ml-4 text-red-500 hover:text-red-600"
+                >
+                  <TrashIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>
@@ -71,6 +85,7 @@ export default function ProfileCard({
           </p>
         )}
       </div>
+
       <div className="mt-4 flex flex-row justify-between space-x-2">
         <button className="mr-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]">
           {t('join-band-button')}

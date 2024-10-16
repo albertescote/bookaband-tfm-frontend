@@ -7,6 +7,7 @@ import { getAccessTokenCookie } from '@/service/utils';
 import { decodeJwt } from 'jose';
 import { UserBand } from '@/service/backend/domain/userBand';
 import { Band } from '@/service/backend/domain/band';
+import { Offer } from '@/service/backend/domain/offer';
 
 export async function getAllOffersView(): Promise<OfferView[]> {
   try {
@@ -58,6 +59,26 @@ export async function createBand(request: {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function deleteBand(id: string): Promise<void> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create band failed: access token cookie not found');
+      return undefined;
+    }
+    await axios.delete(BACKEND_URL + `/bands/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
   } catch (error) {
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${
@@ -156,6 +177,32 @@ export async function getOffersViewById(
       return undefined;
     }
     const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function getBandOffer(
+  offerId: string,
+): Promise<Offer | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get offer info failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {

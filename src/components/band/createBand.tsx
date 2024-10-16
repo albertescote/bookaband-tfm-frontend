@@ -20,6 +20,7 @@ export default function CreateBand({ language }: { language: string }) {
 
     createBand({ name, genre }).then((band: Band | undefined) => {
       router.push(`/band?id=${band?.id}`);
+      router.refresh();
     });
   };
 
