@@ -1,13 +1,17 @@
 'use client';
-import { useTranslation } from '@/app/i18n';
+import { useTranslation } from '@/app/i18n/client';
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
 import { FormEvent } from 'react';
 import { Band } from '@/service/backend/domain/band';
 import { createBand } from '@/service/backend/api';
+import { useRouter } from 'next/navigation';
+import { MusicGenre } from '@/service/backend/domain/musicGenre';
 
-export default async function CreateBand({ language }: { language: string }) {
-  const { t } = await useTranslation(language, 'band');
+export default function CreateBand({ language }: { language: string }) {
+  const { t } = useTranslation(language, 'band');
+  const router = useRouter();
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -15,7 +19,7 @@ export default async function CreateBand({ language }: { language: string }) {
     const genre = formData.get('genre')?.toString();
 
     createBand({ name, genre }).then((band: Band | undefined) => {
-      window.location.href = `/band?id=${band?.id}`;
+      router.push(`/band?id=${band?.id}`);
     });
   };
 
@@ -38,14 +42,15 @@ export default async function CreateBand({ language }: { language: string }) {
         </div>
         <div className="space-y-2">
           <Label htmlFor="genre">{t('genre')}</Label>
-          <Input
-            className="w-full rounded-md border-gray-300 shadow-sm transition focus:border-[#0077b6] focus:ring focus:ring-[#0077b6] focus:ring-opacity-50"
+          <select
             id="genre"
             name="genre"
-            placeholder={t('genre-placeholder')}
+            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm"
             required
-            minLength={8}
-          />
+          >
+            <option value={MusicGenre.ROCK}>{t('rock')}</option>
+            <option value={MusicGenre.POP}>{t('pop')}</option>
+          </select>
         </div>
         <div className="flex justify-center pt-4">
           <button

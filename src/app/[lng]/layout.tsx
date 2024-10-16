@@ -5,6 +5,7 @@ import Footer from '@/components/layout/footer/footer';
 import Header from '@/components/layout/header/header';
 import { languages } from '@/app/i18n/settings';
 import { dir } from 'i18next';
+import { Providers } from '@/components/providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={`${inter.className} flex min-h-screen flex-col`}>
-        <Header language={lng} />
-        {children}
-        <Footer language={lng} />
+        <Providers>
+          <Header language={lng} />
+          {children}
+          <Footer language={lng} />
+        </Providers>
       </body>
     </html>
   );

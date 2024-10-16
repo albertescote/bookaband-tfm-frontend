@@ -5,5 +5,7 @@
   "name": "Name",
   "name-placeholder": "Enter the name of the band",
   "genre-placeholder": "Enter the music genre",
-  "create-button": "Create band"
+  "create-button": "Create band",
+  "rock": "Rock",
+  "pop": "Pop"
 }

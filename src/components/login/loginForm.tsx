@@ -15,11 +15,13 @@ export default function LoginForm({
 }) {
   const { t } = useTranslation(language, 'login');
   const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
+
     authenticate(email, password).then((authenticationResult) => {
       if (!authenticationResult.valid && authenticationResult.errorMessage) {
         setErrorMessage(authenticationResult.errorMessage);

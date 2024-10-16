@@ -11,6 +11,7 @@ import { Role } from '@/service/backend/domain/role';
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');
   const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

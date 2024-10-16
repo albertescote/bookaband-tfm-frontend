@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface NavButtonProps {
   href: string;
@@ -10,17 +9,22 @@ interface NavButtonProps {
 
 const NavButton = ({ href, label }: NavButtonProps) => {
   const pathname = usePathname();
+  const router = useRouter();
   const isActive = pathname.endsWith(href);
 
+  const navigateTo = () => {
+    router.push(href);
+  };
+
   return (
-    <Link href={href} passHref>
+    <button onClick={navigateTo}>
       <p
         className={`rounded-lg px-4 text-lg text-[#23395b] transition-colors duration-300 
         ${isActive ? 'font-bold text-white' : 'font-semibold hover:font-bold hover:text-white'}`}
       >
         {label}
       </p>
-    </Link>
+    </button>
   );
 };
 

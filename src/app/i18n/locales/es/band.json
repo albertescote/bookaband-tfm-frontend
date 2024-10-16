@@ -5,5 +5,7 @@
   "name": "Nombre",
   "name-placeholder": "Introduzca el nombre del grupo",
   "genre-placeholder": "Introduzca el género de música",
-  "create-button": "Crear grupo"
+  "create-button": "Crear grupo",
+  "rock": "Rock",
+  "pop": "Pop"
 }
