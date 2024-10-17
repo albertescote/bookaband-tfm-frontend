@@ -1,4 +1,4 @@
-import OffersList from '@/components/offer/offersList';
+import OffersList from '@/components/home/offersList';
 import { getAllOffersView } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
 
@@ -9,14 +9,14 @@ interface PageParams {
 }
 
 export default async function Home({ params: { lng } }: PageParams) {
-  const offers = await getAllOffersView();
+  const offersView = await getAllOffersView();
   const { t } = await useTranslation(lng, 'home');
 
   return (
     <main>
       <div className="flex min-h-[75vh] flex-col items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
-        {offers.length > 0 ? (
-          <OffersList lng={lng} offers={offers} />
+        {offersView.length > 0 ? (
+          <OffersList lng={lng} offers={offersView} />
         ) : (
           <div className="text-center text-gray-600">{t('no-offers')}</div>
         )}

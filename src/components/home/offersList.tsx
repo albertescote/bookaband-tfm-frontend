@@ -20,7 +20,7 @@ export default async function OffersList({ lng, offers }: OffersListParams) {
   return (
     <div className="flex h-full w-full max-w-4xl flex-col gap-6 overflow-y-auto p-6">
       {offers.map((offer) => (
-        <Link key={offer.id} href={`${lng}/offer?id=${offer.id}`}>
+        <Link key={offer.id} href={`${lng}/offer-view?id=${offer.id}`}>
           <span>
             <div className="flex items-center rounded-lg border border-gray-200 bg-white p-6 shadow-lg transition-transform hover:scale-105">
               {offer.imageUrl ? (

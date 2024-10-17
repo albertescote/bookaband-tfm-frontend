@@ -13,9 +13,9 @@ export const config = {
   ],
 };
 
-const protectedRoutes: string[] = ['/offer', '/profile'];
+const protectedRoutes: string[] = ['/offer-view', '/profile'];
 const clientProtectedRoutes: string[] = [];
-const musicianProtectedRoutes: string[] = ['/manage-offers', '/band'];
+const musicianProtectedRoutes: string[] = ['/manage-offers', '/band', '/offer'];
 
 export async function middleware(req: NextRequest) {
   let lng;
