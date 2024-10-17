@@ -1,0 +1,13 @@
+{
+  "update-offer-title": "Editar oferta",
+  "create-offer-title": "Crear oferta",
+  "form-description": "ID: ",
+  "price": "Precio",
+  "price-placeholder": "Introduzca el precio",
+  "band-name": "Grupo",
+  "description": "Descripción",
+  "description-placeholder": "Introduzca una descripción",
+  "update-button": "Actualitzar",
+  "create-button": "Crear",
+  "delete-button": "Eliminar"
+}

@@ -7,10 +7,14 @@ import { setCookie } from 'cookies-next';
 import { createUser } from '@/service/backend/api';
 import { authenticate } from '@/service/auth';
 import { Role } from '@/service/backend/domain/role';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+  const { changeMe } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +36,8 @@ export default function SignUpForm({ language }: { language: string }) {
             'access_token_music_manager',
             authenticationResult.accessToken,
           );
-          window.location.href = '/';
+          router.push('/');
+          changeMe.setChangeMe(!changeMe.changeMe);
         }
       },
     );

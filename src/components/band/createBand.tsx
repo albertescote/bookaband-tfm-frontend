@@ -7,10 +7,12 @@ import { Band } from '@/service/backend/domain/band';
 import { createBand } from '@/service/backend/api';
 import { useRouter } from 'next/navigation';
 import { MusicGenre } from '@/service/backend/domain/musicGenre';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function CreateBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'band');
   const router = useRouter();
+  const { changeMe } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,6 +22,7 @@ export default function CreateBand({ language }: { language: string }) {
 
     createBand({ name, genre }).then((band: Band | undefined) => {
       router.push(`/band?id=${band?.id}`);
+      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };

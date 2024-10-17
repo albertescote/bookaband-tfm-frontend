@@ -3,9 +3,9 @@ import { useTranslation } from '@/app/i18n/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User } from '@/service/backend/domain/user';
-import { UserBand } from '@/service/backend/domain/userBand';
 import { TrashIcon } from '@heroicons/react/solid';
 import { deleteBand } from '@/service/backend/api';
+import { useAuth } from '@/providers/AuthProvider';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -18,14 +18,13 @@ function getRandomColor(name: string) {
 export default function ProfileCard({
   language,
   user,
-  userBands,
 }: {
   language: string;
   user: User | undefined;
-  userBands: UserBand[] | undefined;
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();
+  const { changeMe, userBands } = useAuth();
 
   const navigateToCreateBand = () => {
     router.push('/band');
@@ -33,6 +32,7 @@ export default function ProfileCard({
 
   const handleDeleteBand = (id: string) => {
     deleteBand(id).then(() => {
+      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };
@@ -58,9 +58,9 @@ export default function ProfileCard({
         <h3 className="text-lg font-semibold text-gray-800">
           {t('your-bands')}
         </h3>
-        {userBands && userBands.length > 0 ? (
+        {userBands.userBands && userBands.userBands.length > 0 ? (
           <ul className="mb-2 mt-4 space-y-2">
-            {userBands.map((band) => (
+            {userBands.userBands.map((band) => (
               <li
                 key={band.id}
                 className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"

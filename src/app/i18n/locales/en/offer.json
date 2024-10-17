@@ -1,0 +1,13 @@
+{
+  "update-offer-title": "Edit offer",
+  "create-offer-title": "Create offer",
+  "form-description": "ID: ",
+  "price": "Price",
+  "price-placeholder": "Enter the price",
+  "band-name": "Band",
+  "description": "Description",
+  "description-placeholder": "Enter a description",
+  "update-button": "Update",
+  "create-button": "Create",
+  "delete-button": "Delete"
+}

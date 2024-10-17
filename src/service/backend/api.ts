@@ -119,6 +119,79 @@ export async function getUserInfo(): Promise<User | undefined> {
   }
 }
 
+export async function createOffer(request: {
+  bandId?: string;
+  price?: number;
+  description?: string;
+}): Promise<Band | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create offer failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.post(BACKEND_URL + '/offers', request, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function updateOffer(
+  id: string,
+  request: {
+    bandId?: string;
+    price?: number;
+    description?: string;
+  },
+): Promise<Band | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create offer failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.put(BACKEND_URL + `/offers/${id}`, request, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function deleteOffer(id: string): Promise<void> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create band failed: access token cookie not found');
+      return undefined;
+    }
+    await axios.delete(BACKEND_URL + `/offers/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
 export async function getUserBands(): Promise<UserBand[] | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
@@ -167,16 +240,16 @@ export async function getBandById(id: string): Promise<Band | undefined> {
   }
 }
 
-export async function getOffersViewById(
+export async function getOfferById(
   offerId: string,
-): Promise<OfferView | undefined> {
+): Promise<Offer | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
-      console.log('Get offer info failed: access token cookie not found');
+      console.log('Get offer by id failed: access token cookie not found');
       return undefined;
     }
-    const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
+    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {
@@ -193,16 +266,18 @@ export async function getOffersViewById(
   }
 }
 
-export async function getBandOffer(
+export async function getOffersViewById(
   offerId: string,
-): Promise<Offer | undefined> {
+): Promise<OfferView | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
-      console.log('Get offer info failed: access token cookie not found');
+      console.log(
+        'Get offers view by id failed: access token cookie not found',
+      );
       return undefined;
     }
-    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
+    const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {

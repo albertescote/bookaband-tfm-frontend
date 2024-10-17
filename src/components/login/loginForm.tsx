@@ -5,6 +5,8 @@ import { FormEvent, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { authenticate } from '@/service/auth';
 import { setCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function LoginForm({
   language,
@@ -15,6 +17,8 @@ export default function LoginForm({
 }) {
   const { t } = useTranslation(language, 'login');
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+  const { changeMe } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,9 +35,9 @@ export default function LoginForm({
           'access_token_music_manager',
           authenticationResult.accessToken,
         );
-        window.location.href = redirectTo
-          ? decodeURIComponent(redirectTo)
-          : '/';
+        const redirectUrl = redirectTo ? decodeURIComponent(redirectTo) : '/';
+        router.push(redirectUrl);
+        changeMe.setChangeMe(!changeMe.changeMe);
       }
     });
   };
