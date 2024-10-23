@@ -1,4 +1,7 @@
 {
   "genre": "Género",
-  "price": "Precio"
+  "price": "Precio",
+  "availability": "Disponibilidad",
+  "book-now": "Reserva ahora",
+  "send-message": "Envía un mensaje"
 }

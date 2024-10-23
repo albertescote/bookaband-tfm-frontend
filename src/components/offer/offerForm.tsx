@@ -23,15 +23,18 @@ export default function OfferForm({
   const [defaultBandValue, setDefaultBandValue] = useState<string | undefined>(
     undefined,
   );
+  const validUserBands = userBands.userBands.filter((userBand) => {
+    return !userBand.offer;
+  });
 
   useEffect(() => {
     if (bandId) {
-      const defaultBandId = userBands.userBands.find((band) => {
+      const defaultBandId = validUserBands.find((band) => {
         return band.id === bandId;
       })?.id;
       setDefaultBandValue(defaultBandId);
     } else if (offer) {
-      const defaultBandId = userBands.userBands.find((band) => {
+      const defaultBandId = validUserBands.find((band) => {
         return band.id === offer.bandId;
       })?.id;
       setDefaultBandValue(defaultBandId);
@@ -106,7 +109,7 @@ export default function OfferForm({
             value={defaultBandValue || ''}
             onChange={(e) => setDefaultBandValue(e.target.value)}
           >
-            {userBands?.userBands.map((band) => (
+            {validUserBands.map((band) => (
               <option key={band.id} value={band.id}>
                 {band.name}
               </option>

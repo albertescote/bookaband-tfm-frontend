@@ -1,4 +1,7 @@
 {
   "genre": "Genre",
-  "price": "Price"
+  "price": "Price",
+  "availability": "Availability",
+  "book-now": "Book now",
+  "send-message": "Send un message"
 }

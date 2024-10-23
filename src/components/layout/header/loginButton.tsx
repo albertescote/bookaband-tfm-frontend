@@ -5,7 +5,7 @@ import { deleteCookie } from 'cookies-next';
 import { useAuth } from '@/providers/AuthProvider';
 
 const LoginButton = ({ language }: { language: string }) => {
-  const { authentication } = useAuth();
+  const { authentication, role, userBands } = useAuth();
   const router = useRouter();
   const { t } = useTranslation(language, 'home');
 
@@ -16,6 +16,8 @@ const LoginButton = ({ language }: { language: string }) => {
     }
     deleteCookie('access_token_music_manager');
     authentication.setAuthenticated(false);
+    role.setRole('none');
+    userBands.setUserBands([]);
     router.push('/');
   };
   return (
