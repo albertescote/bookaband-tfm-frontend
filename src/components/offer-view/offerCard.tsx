@@ -109,6 +109,7 @@ export default function OfferCard({
               minDate={today}
               minDetail="decade"
               tileDisabled={({ date }) => isDateBooked(date)}
+              locale={language}
             />
             <button
               onClick={handleBooking}

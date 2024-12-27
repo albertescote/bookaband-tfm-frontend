@@ -23,9 +23,11 @@ export default function OfferForm({
   const [defaultBandValue, setDefaultBandValue] = useState<string | undefined>(
     undefined,
   );
-  const validUserBands = userBands.userBands.filter((userBand) => {
-    return !userBand.offer;
-  });
+  const validUserBands = bandId
+    ? userBands.userBands.filter((userBand) => {
+        return !userBand.offer;
+      })
+    : userBands.userBands;
 
   useEffect(() => {
     if (bandId) {
@@ -108,6 +110,7 @@ export default function OfferForm({
             required
             value={defaultBandValue || ''}
             onChange={(e) => setDefaultBandValue(e.target.value)}
+            disabled={!bandId}
           >
             {validUserBands.map((band) => (
               <option key={band.id} value={band.id}>
@@ -115,6 +118,9 @@ export default function OfferForm({
               </option>
             ))}
           </select>
+          {!bandId && (
+            <input type="hidden" name="band" value={defaultBandValue || ''} />
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">{t('description')}</Label>
