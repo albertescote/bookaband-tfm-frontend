@@ -9,5 +9,6 @@
   "description-placeholder": "Enter a description",
   "update-button": "Update",
   "create-button": "Create",
-  "delete-button": "Delete"
+  "delete-button": "Delete",
+  "copied": "Copied!"
 }

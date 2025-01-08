@@ -3,5 +3,8 @@
   "create-band-button": "Crear grupo",
   "join-band-button": "Unirme a un grupo",
   "your-bands": "Tus grupos",
-  "no-bands": "Aún no perteneces a ningún grupo!"
+  "no-bands": "Aún no perteneces a ningún grupo!",
+  "band-id": "Identificador de grupo",
+  "submit": "Enviar",
+  "cancel": "Cerrar"
 }

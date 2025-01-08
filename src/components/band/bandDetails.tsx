@@ -35,6 +35,7 @@ export default async function BandDetails({
           {band?.name ? band.name.charAt(0) : '?'}
         </div>
       )}
+      <span className="mt-4 text-gray-400">{band?.id}</span>
       <h2 className="mt-4 text-2xl font-semibold text-gray-800">
         {band?.name}
       </h2>

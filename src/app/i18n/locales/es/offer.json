@@ -9,5 +9,6 @@
   "description-placeholder": "Introduzca una descripción",
   "update-button": "Actualitzar",
   "create-button": "Crear",
-  "delete-button": "Eliminar"
+  "delete-button": "Eliminar",
+  "copied": "Copiado!"
 }
