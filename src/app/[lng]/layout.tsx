@@ -10,8 +10,8 @@ import { Providers } from '@/components/providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Trisbar',
-  description: 'Trisbar coming soon',
+  title: 'BookaBand',
+  description: 'BookaBand coming soon',
 };
 
 export async function generateStaticParams() {

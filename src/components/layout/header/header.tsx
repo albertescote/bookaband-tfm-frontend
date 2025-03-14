@@ -15,7 +15,7 @@ export default async function Header({ language }: { language: string }) {
               height="60"
               width="60"
             ></Image>
-            <span className="title-text">Trisbar</span>
+            <span className="title-text">BookaBand</span>
           </div>
         </Link>
       </div>
