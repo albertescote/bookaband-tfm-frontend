@@ -1,9 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/domain/role';
 import { ChatView } from '@/service/backend/domain/chatView';
+import { ArrowRight } from 'lucide-react';
 
 interface ChatProps {
   language: string;
@@ -27,9 +28,17 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
     })),
   );
 
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     setAllMessages((prevMessages) => [...prevMessages, ...messages]);
   }, [messages]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [allMessages]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -53,7 +62,7 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
   };
 
   return (
-    <div className="mx-auto flex h-screen min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
+    <div className="mx-auto flex h-[75vh] min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
       <div className="rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-lg font-semibold text-white">
         <div className="flex items-center">
           <div className="mr-4 h-10 w-10 rounded-full bg-gray-300" />{' '}
@@ -82,9 +91,10 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
             </div>
           ))
         )}
+        <div ref={messagesEndRef} />
       </div>
 
-      <div className="flex items-center border-t bg-gray-50 p-4">
+      <div className="flex items-center rounded-b-xl border-t bg-gray-50 p-4">
         <input
           type="text"
           value={message}
@@ -97,20 +107,7 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
           onClick={handleSendMessage}
           className="ml-3 rounded-full bg-indigo-500 p-3 text-white transition-all duration-200 hover:bg-indigo-600"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-5 w-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
+          <ArrowRight className="h-5 w-5" />
         </button>
       </div>
     </div>

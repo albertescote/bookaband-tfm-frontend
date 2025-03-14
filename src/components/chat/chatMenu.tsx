@@ -2,8 +2,15 @@
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/domain/role';
 import { SelectBand } from '@/components/chat/selectBand';
+import { ChatsList } from '@/components/chat/chatsList';
 
-export function ChatMenu({ language }: { language: string }) {
+export function ChatMenu({
+  language,
+  userId,
+}: {
+  language: string;
+  userId?: string;
+}) {
   const { role } = useAuth();
 
   return (
@@ -11,7 +18,7 @@ export function ChatMenu({ language }: { language: string }) {
       {role.role === Role.Musician ? (
         <SelectBand language={language}></SelectBand>
       ) : (
-        <div></div>
+        <ChatsList language={language} userId={userId}></ChatsList>
       )}
     </div>
   );
