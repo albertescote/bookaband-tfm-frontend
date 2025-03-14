@@ -5,13 +5,15 @@ import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/domain/role';
 import { ChatView } from '@/service/backend/domain/chatView';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/app/i18n/client';
 
 interface ChatProps {
   language: string;
   chat: ChatView;
 }
 
-const Chat: React.FC<ChatProps> = ({ chat }) => {
+const Chat: React.FC<ChatProps> = ({ language, chat }) => {
+  const { t } = useTranslation(language, 'chat');
   const { role } = useAuth();
   const senderId = role.role === Role.Client ? chat.user.id : chat.band.id;
   const recipientId = role.role === Role.Client ? chat.band.id : chat.user.id;
@@ -76,7 +78,9 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
 
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
         {allMessages.length === 0 ? (
-          <p className="text-center text-gray-500">No messages yet.</p>
+          <div className="flex h-full items-center justify-center">
+            <p className="text-center text-gray-500">{t('no-messages-yet')}</p>
+          </div>
         ) : (
           allMessages.map((chatMessage, index) => (
             <div
@@ -100,7 +104,7 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
+          placeholder={t('type-a-message')}
           className="flex-1 rounded-full border border-gray-300 p-3 transition-all duration-200 focus:ring-2 focus:ring-indigo-500"
         />
         <button

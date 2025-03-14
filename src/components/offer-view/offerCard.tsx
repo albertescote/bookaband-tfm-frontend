@@ -6,6 +6,8 @@ import { Role } from '@/service/backend/domain/role';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useRouter } from 'next/navigation';
+import { createNewChat } from '@/service/backend/api';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -27,6 +29,7 @@ export default function OfferCard({
   const today = new Date();
   const [date, setDate] = useState<Date | null>(today);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBookedDates = async () => {
@@ -54,6 +57,13 @@ export default function OfferCard({
     }
   };
 
+  const handleSendMessage = () => {
+    if (offerView?.bandId) {
+      createNewChat(offerView.bandId).then((chatId) => {
+        router.push(`/chat/${chatId}`);
+      });
+    }
+  };
   const isDateBooked = (date: Date) => {
     return bookedDates.some(
       (bookedDate) =>
@@ -117,7 +127,10 @@ export default function OfferCard({
             >
               {t('book-now')}
             </button>
-            <button className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]">
+            <button
+              onClick={handleSendMessage}
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+            >
               {t('send-message')}
             </button>
           </div>

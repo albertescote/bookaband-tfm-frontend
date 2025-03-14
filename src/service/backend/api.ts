@@ -9,6 +9,7 @@ import { UserBand } from '@/service/backend/domain/userBand';
 import { Band } from '@/service/backend/domain/band';
 import { Offer } from '@/service/backend/domain/offer';
 import { ChatView } from '@/service/backend/domain/chatView';
+import { ChatPrimitives } from '@/service/backend/domain/chat';
 
 export async function getAllOffersView(): Promise<OfferView[]> {
   try {
@@ -391,6 +392,44 @@ export async function getChatById(
       return undefined;
     }
     return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function createNewChat(
+  bandId: string,
+): Promise<string | undefined> {
+  try {
+    const userInfo = await getUserInfo();
+    if (userInfo) {
+      const chats = await getUserChats(userInfo.id);
+      const existingChat = chats?.find((chat) => chat.band.id == bandId);
+      if (existingChat) {
+        return existingChat.id;
+      }
+    }
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create chat failed: access token cookie not found');
+      return undefined;
+    }
+    const response = (await axios.post(
+      BACKEND_URL + `/chat`,
+      { bandId },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    )) as { data: ChatPrimitives };
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data.id;
   } catch (error) {
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${

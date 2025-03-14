@@ -1,3 +1,8 @@
 {
-  "not-in-a-band-yet": "Has de ser miembre d'algun grup per a poder veure xats"
+  "not-in-a-band-yet": "Has de ser miembre d'algun grup per a poder veure xats",
+  "chat-not-found": "Xat no trobat",
+  "no-messages-yet": "Encara no tens cap missatge",
+  "no-chats-available": "Encara no tens cap xat",
+  "your-chats": "Els teus xats",
+  "type-a-message": "Escriu un missatge..."
 }

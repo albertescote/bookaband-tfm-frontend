@@ -1,5 +1,6 @@
 import { getChatById } from '@/service/backend/api';
 import Chat from '@/components/chat/chat';
+import { useTranslation } from '@/app/i18n';
 
 interface PageParams {
   params: {
@@ -11,6 +12,7 @@ interface PageParams {
 export default async function ChatPage({
   params: { lng, chatId },
 }: PageParams) {
+  const { t } = await useTranslation(lng, 'chat');
   const chat = await getChatById(chatId);
 
   return (
@@ -19,7 +21,7 @@ export default async function ChatPage({
         {chat ? (
           <Chat language={lng} chat={chat}></Chat>
         ) : (
-          <h1 className="text-center">Chat not found.</h1>
+          <h1 className="text-center">{t('chat-not-found')}</h1>
         )}
       </div>
     </div>

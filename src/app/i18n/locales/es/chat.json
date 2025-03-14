@@ -1,3 +1,8 @@
 {
-  "not-in-a-band-yet": "Debes ser miembro de algun grupo para poder ver chats"
+  "not-in-a-band-yet": "Debes ser miembro de algun grupo para poder ver chats",
+  "chat-not-found": "Chat no encontrado",
+  "no-messages-yet": "Aún no tienes ningún mensaje",
+  "no-chats-available": "Aún no tienes ningún chat",
+  "your-chats": "Tus chats",
+  "type-a-message": "Escribe un mensaje..."
 }

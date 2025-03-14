@@ -3,6 +3,7 @@ import { getBandChats, getUserChats } from '@/service/backend/api';
 import { ChatView } from '@/service/backend/domain/chatView';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/app/i18n/client';
 
 export function ChatsList({
   language,
@@ -13,6 +14,7 @@ export function ChatsList({
   bandId?: string;
   userId?: string;
 }) {
+  const { t } = useTranslation(language, 'chat');
   const [chats, setChats] = useState<ChatView[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,9 +51,9 @@ export function ChatsList({
 
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold">Chats List</h2>
+      <h2 className="mb-4 text-lg font-semibold">{t('your-chats')}</h2>
       {chats.length === 0 ? (
-        <p className="text-center text-gray-500">No chats available</p>
+        <p className="text-center text-gray-500">{t('no-chats-available')}</p>
       ) : (
         <ul className="divide-y divide-gray-200">
           {chats.map((chat, index) => (
@@ -68,7 +70,7 @@ export function ChatsList({
               <p className="text-sm text-gray-600">
                 {chat.messages.length > 0
                   ? chat.messages[chat.messages.length - 1].content
-                  : 'No messages'}
+                  : '...'}
               </p>
             </li>
           ))}
