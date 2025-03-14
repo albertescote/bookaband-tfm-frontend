@@ -8,6 +8,7 @@ import { decodeJwt } from 'jose';
 import { UserBand } from '@/service/backend/domain/userBand';
 import { Band } from '@/service/backend/domain/band';
 import { Offer } from '@/service/backend/domain/offer';
+import { ChatView } from '@/service/backend/domain/chatView';
 
 export async function getAllOffersView(): Promise<OfferView[]> {
   try {
@@ -306,6 +307,84 @@ export async function getOffersViewById(
       return undefined;
     }
     const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function getUserChats(
+  userId: string,
+): Promise<ChatView[] | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get user chats failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/chat/user/${userId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function getBandChats(
+  bandId: string,
+): Promise<ChatView[] | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get band chats failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/chat/band/${bandId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function getChatById(
+  chatId: string,
+): Promise<ChatView | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get chat failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/chat/${chatId}/history`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {

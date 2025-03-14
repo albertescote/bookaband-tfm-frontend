@@ -16,6 +16,7 @@ export default function Navbar({ language }: { language: string }) {
           {role.role === Role.Musician && (
             <NavLink href={`/manage-offers`} label={t('manage-offers-tab')} />
           )}
+          <NavLink href={`/chat`} label={t('chat-tab')} />
           <NavLink href={`/profile`} label={t('profile-tab')} />
         </div>
       )}
