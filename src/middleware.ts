@@ -56,7 +56,6 @@ export async function middleware(req: NextRequest) {
       `^${langPrefix}${route.replace(/\[.*\]/, '[^/]+')}$`,
     ).test(req.nextUrl.pathname);
   });
-  console.log(protectedRouteFound);
   const isProtectedRoute = !!protectedRouteFound;
 
   if (isProtectedRoute) {
