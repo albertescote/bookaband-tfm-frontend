@@ -40,6 +40,40 @@ export function ChatsList({
     fetchChats().then();
   }, [bandId, userId]);
 
+  const getInitial = (name: string) =>
+    name ? name.charAt(0).toUpperCase() : '?';
+
+  const getRandomColor = (name: string) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return `hsl(${hash % 360}, 70%, 60%)`;
+  };
+
+  const getAvatar = (chat: ChatView) => {
+    const imageUrl = userId ? chat.band?.imageUrl : chat.user?.imageUrl;
+    const displayName = userId
+      ? chat.band?.name || 'Unknown'
+      : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
+    console.log(displayName);
+
+    return imageUrl ? (
+      <img
+        src={imageUrl}
+        alt={displayName}
+        className="mr-4 h-16 w-16 rounded-full object-cover"
+      />
+    ) : (
+      <div
+        className="mr-4 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white"
+        style={{ backgroundColor: getRandomColor(displayName) }}
+      >
+        {getInitial(displayName)}
+      </div>
+    );
+  };
+
   if (loading)
     return (
       <div className="flex h-20 items-center justify-center">
@@ -62,16 +96,21 @@ export function ChatsList({
               className="rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
               onClick={() => router.push(`/chat/${chat.id}`)}
             >
-              <strong className="block text-gray-800">
-                {userId
-                  ? chat.band.name
-                  : chat.user.firstName + ' ' + chat.user.familyName}
-              </strong>
-              <p className="text-sm text-gray-600">
-                {chat.messages.length > 0
-                  ? chat.messages[chat.messages.length - 1].content
-                  : '...'}
-              </p>
+              <div className="flex">
+                {getAvatar(chat)}
+                <div>
+                  <strong className="block text-gray-800">
+                    {userId
+                      ? chat.band.name
+                      : chat.user.firstName + ' ' + chat.user.familyName}
+                  </strong>
+                  <p className="mt-2 text-sm text-gray-600">
+                    {chat.messages.length > 0
+                      ? chat.messages[chat.messages.length - 1].content
+                      : '...'}
+                  </p>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

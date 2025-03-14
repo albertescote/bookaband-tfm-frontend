@@ -63,11 +63,47 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
     }
   };
 
+  const getInitial = (name: string) =>
+    name ? name.charAt(0).toUpperCase() : '?';
+
+  const getRandomColor = (name: string) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return `hsl(${hash % 360}, 70%, 60%)`;
+  };
+
+  const getAvatar = (chat: ChatView) => {
+    const imageUrl =
+      role.role === Role.Client ? chat.band?.imageUrl : chat.user?.imageUrl;
+    const displayName =
+      role.role === Role.Client
+        ? chat.band?.name || 'Unknown'
+        : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
+    console.log(displayName);
+
+    return imageUrl ? (
+      <img
+        src={imageUrl}
+        alt={displayName}
+        className="mr-4 h-16 w-16 rounded-full object-cover"
+      />
+    ) : (
+      <div
+        className="mr-4 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white"
+        style={{ backgroundColor: getRandomColor(displayName) }}
+      >
+        {getInitial(displayName)}
+      </div>
+    );
+  };
+
   return (
     <div className="mx-auto flex h-[75vh] min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
       <div className="rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-lg font-semibold text-white">
         <div className="flex items-center">
-          <div className="mr-4 h-10 w-10 rounded-full bg-gray-300" />{' '}
+          {getAvatar(chat)}
           <span className="text-xl">
             {role.role === Role.Client
               ? chat.band.name

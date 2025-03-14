@@ -5,4 +5,5 @@ export interface User {
   email: string;
   role: string;
   bands?: string[];
+  imageUrl?: string;
 }

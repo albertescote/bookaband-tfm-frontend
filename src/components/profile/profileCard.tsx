@@ -7,7 +7,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import { TrashIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/domain/role';
-import { FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
 
@@ -54,14 +54,22 @@ export default function ProfileCard({
 
   return !joinBandModal ? (
     <div className="flex flex-col items-center">
-      <div
-        className="flex h-28 w-28 items-center justify-center rounded-full text-4xl font-bold text-white shadow-md transition-all"
-        style={{
-          backgroundColor: getRandomColor(user?.firstName ?? 'dummy'),
-        }}
-      >
-        {user?.firstName ? user.firstName.charAt(0) : '?'}
-      </div>
+      {user?.imageUrl ? (
+        <img
+          src={user.imageUrl}
+          alt={user.firstName}
+          className="h-28 w-28 rounded-full object-cover"
+        />
+      ) : (
+        <div
+          className="flex h-28 w-28 items-center justify-center rounded-full text-4xl font-bold text-white shadow-md transition-all"
+          style={{
+            backgroundColor: getRandomColor(user?.firstName ?? 'dummy'),
+          }}
+        >
+          {user?.firstName ? user.firstName.charAt(0) : '?'}
+        </div>
+      )}
       <h2 className="mt-4 text-2xl font-semibold text-gray-800">
         {user?.firstName} {user?.familyName}
       </h2>
