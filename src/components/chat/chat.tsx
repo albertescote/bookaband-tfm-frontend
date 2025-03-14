@@ -53,23 +53,28 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
   };
 
   return (
-    <div className="mx-auto flex h-screen max-w-2xl flex-col rounded-lg border bg-white shadow-md">
-      <div className="bg-gray-800 p-4 text-lg font-semibold text-white">
-        Chat with{' '}
-        {role.role === Role.Client
-          ? chat.band.name
-          : chat.user.firstName + ' ' + chat.user.familyName}
+    <div className="mx-auto flex h-screen min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
+      <div className="rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-lg font-semibold text-white">
+        <div className="flex items-center">
+          <div className="mr-4 h-10 w-10 rounded-full bg-gray-300" />{' '}
+          <span className="text-xl">
+            {role.role === Role.Client
+              ? chat.band.name
+              : `${chat.user.firstName} ${chat.user.familyName}`}
+          </span>
+        </div>
       </div>
-      <div className="flex-1 space-y-2 overflow-y-auto p-4">
+
+      <div className="flex-1 space-y-3 overflow-y-auto p-4">
         {allMessages.length === 0 ? (
           <p className="text-center text-gray-500">No messages yet.</p>
         ) : (
           allMessages.map((chatMessage, index) => (
             <div
               key={index}
-              className={`max-w-xs rounded-lg p-2 ${
+              className={`max-w-xs rounded-lg p-3 ${
                 chatMessage.senderId === senderId
-                  ? 'ml-auto self-end bg-blue-500 text-white'
+                  ? 'ml-auto self-end bg-indigo-500 text-white'
                   : 'self-start bg-gray-200 text-gray-800'
               }`}
             >
@@ -78,20 +83,34 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
           ))
         )}
       </div>
-      <div className="flex items-center border-t p-4">
+
+      <div className="flex items-center border-t bg-gray-50 p-4">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="Type a message..."
-          className="flex-1 rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-full border border-gray-300 p-3 transition-all duration-200 focus:ring-2 focus:ring-indigo-500"
         />
         <button
           onClick={handleSendMessage}
-          className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+          className="ml-3 rounded-full bg-indigo-500 p-3 text-white transition-all duration-200 hover:bg-indigo-600"
         >
-          Send
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="h-5 w-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
         </button>
       </div>
     </div>

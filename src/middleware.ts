@@ -13,7 +13,12 @@ export const config = {
   ],
 };
 
-const protectedRoutes: string[] = ['/offer-view', '/profile'];
+const protectedRoutes: string[] = [
+  '/offer-view',
+  '/profile',
+  '/chat',
+  '/chat/[id]',
+];
 const clientProtectedRoutes: string[] = [];
 const musicianProtectedRoutes: string[] = ['/manage-offers', '/band', '/offer'];
 
@@ -44,9 +49,14 @@ export async function middleware(req: NextRequest) {
     musicianProtectedRoutes,
   );
 
-  const protectedRouteFound = allProtectedRoutes.find((route) =>
-    req.nextUrl.pathname.endsWith(route),
-  );
+  const langPrefix = `/${lng}`;
+
+  const protectedRouteFound = allProtectedRoutes.find((route) => {
+    return new RegExp(
+      `^${langPrefix}${route.replace(/\[.*\]/, '[^/]+')}$`,
+    ).test(req.nextUrl.pathname);
+  });
+  console.log(protectedRouteFound);
   const isProtectedRoute = !!protectedRouteFound;
 
   if (isProtectedRoute) {
