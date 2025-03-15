@@ -7,6 +7,7 @@ import { ChatView } from '@/service/backend/domain/chatView';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
+import { createNewChat } from '@/service/backend/api';
 
 interface ChatProps {
   language: string;
@@ -25,7 +26,7 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
 
   const [allMessages, setAllMessages] = useState<ChatMessage[]>(
     chat.messages.map((msg) => ({
-      chatId: msg.id,
+      chatId: chat.id,
       senderId: msg.senderId,
       recipientId: msg.recipientId,
       message: msg.content,
@@ -46,16 +47,34 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      const newMessage: ChatMessage = {
-        chatId: chat.id,
-        senderId,
-        recipientId,
-        message,
-      };
-      setAllMessages((prev) => [...prev, newMessage]);
+      if (allMessages.length === 0) {
+        createNewChat(chat.band.id).then((chatId) => {
+          if (chatId) {
+            chat.id = chatId;
+          }
+          const newMessage: ChatMessage = {
+            chatId: chat.id,
+            senderId,
+            recipientId,
+            message,
+          };
+          setAllMessages((prev) => [...prev, newMessage]);
 
-      sendMessage(chat.id, recipientId, message);
-      setMessage('');
+          sendMessage(chat.id, recipientId, message);
+          setMessage('');
+        });
+      } else {
+        const newMessage: ChatMessage = {
+          chatId: chat.id,
+          senderId,
+          recipientId,
+          message,
+        };
+        setAllMessages((prev) => [...prev, newMessage]);
+
+        sendMessage(chat.id, recipientId, message);
+        setMessage('');
+      }
     }
   };
 

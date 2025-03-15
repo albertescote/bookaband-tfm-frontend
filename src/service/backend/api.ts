@@ -270,6 +270,30 @@ export async function getBandById(id: string): Promise<Band | undefined> {
   }
 }
 
+export async function getBandViewById(id: string): Promise<Band | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get band by id failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/bands/${id}/view`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
 export async function getOfferById(
   offerId: string,
 ): Promise<Offer | undefined> {
@@ -406,13 +430,9 @@ export async function createNewChat(
   bandId: string,
 ): Promise<string | undefined> {
   try {
-    const userInfo = await getUserInfo();
-    if (userInfo) {
-      const chats = await getUserChats(userInfo.id);
-      const existingChat = chats?.find((chat) => chat.band.id == bandId);
-      if (existingChat) {
-        return existingChat.id;
-      }
+    const existingChatId = await checkExistingChat(bandId);
+    if (existingChatId) {
+      return existingChatId;
     }
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
@@ -438,4 +458,16 @@ export async function createNewChat(
     );
     return undefined;
   }
+}
+
+export async function checkExistingChat(bandId: string) {
+  const userInfo = await getUserInfo();
+  if (userInfo) {
+    const chats = await getUserChats(userInfo.id);
+    const existingChat = chats?.find((chat) => chat.band.id == bandId);
+    if (existingChat) {
+      return existingChat.id;
+    }
+  }
+  return undefined;
 }

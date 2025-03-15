@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
-import { createNewChat } from '@/service/backend/api';
+import { checkExistingChat } from '@/service/backend/api';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -59,8 +59,12 @@ export default function OfferCard({
 
   const handleSendMessage = () => {
     if (offerView?.bandId) {
-      createNewChat(offerView.bandId).then((chatId) => {
-        router.push(`/chat/${chatId}`);
+      checkExistingChat(offerView.bandId).then((existingChatId) => {
+        if (existingChatId) {
+          router.push(`/chat/${existingChatId}`);
+        } else {
+          router.push(`/chat/new?band_id=${offerView.bandId}`);
+        }
       });
     }
   };
