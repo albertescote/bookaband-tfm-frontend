@@ -35,7 +35,10 @@ export function SelectBand({ language }: { language: string }) {
           )}
         </div>
       ) : (
-        <ChatsList language={language} bandId={bandId}></ChatsList>
+        <ChatsList
+          language={language}
+          bandOptions={{ id: bandId, setBandId: setBandId }}
+        ></ChatsList>
       )}
     </div>
   );

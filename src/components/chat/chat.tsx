@@ -4,8 +4,9 @@ import { ChatMessage, useChat } from '@/hooks/useSocket';
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/domain/role';
 import { ChatView } from '@/service/backend/domain/chatView';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
+import { useRouter } from 'next/navigation';
 
 interface ChatProps {
   language: string;
@@ -15,6 +16,7 @@ interface ChatProps {
 const Chat: React.FC<ChatProps> = ({ language, chat }) => {
   const { t } = useTranslation(language, 'chat');
   const { role } = useAuth();
+  const router = useRouter();
   const senderId = role.role === Role.Client ? chat.user.id : chat.band.id;
   const recipientId = role.role === Role.Client ? chat.band.id : chat.user.id;
 
@@ -81,7 +83,6 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
       role.role === Role.Client
         ? chat.band?.name || 'Unknown'
         : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
-    console.log(displayName);
 
     return imageUrl ? (
       <img
@@ -103,6 +104,9 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
     <div className="mx-auto flex h-[75vh] min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
       <div className="rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-lg font-semibold text-white">
         <div className="flex items-center">
+          <button onClick={() => router.back()} className="mr-4 text-white">
+            <ArrowLeft className="h-6 w-6" />
+          </button>
           {getAvatar(chat)}
           <span className="text-xl">
             {role.role === Role.Client

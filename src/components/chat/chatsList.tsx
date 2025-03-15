@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getBandChats, getUserChats } from '@/service/backend/api';
 import { ChatView } from '@/service/backend/domain/chatView';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 
 export function ChatsList({
   language,
-  bandId,
+  bandOptions,
   userId,
 }: {
   language: string;
-  bandId?: string;
   userId?: string;
+  bandOptions?: {
+    id: string;
+    setBandId: Dispatch<SetStateAction<string | undefined>>;
+  };
 }) {
   const { t } = useTranslation(language, 'chat');
   const [chats, setChats] = useState<ChatView[]>([]);
@@ -25,8 +28,8 @@ export function ChatsList({
       try {
         setLoading(true);
         let chatsView: ChatView[] | undefined = [];
-        if (bandId) {
-          chatsView = await getBandChats(bandId);
+        if (bandOptions?.id) {
+          chatsView = await getBandChats(bandOptions.id);
         } else if (userId) {
           chatsView = await getUserChats(userId);
         }
@@ -38,7 +41,7 @@ export function ChatsList({
       }
     }
     fetchChats().then();
-  }, [bandId, userId]);
+  }, [bandOptions?.id, userId]);
 
   const getInitial = (name: string) =>
     name ? name.charAt(0).toUpperCase() : '?';
@@ -56,7 +59,6 @@ export function ChatsList({
     const displayName = userId
       ? chat.band?.name || 'Unknown'
       : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
-    console.log(displayName);
 
     return imageUrl ? (
       <img
@@ -85,7 +87,17 @@ export function ChatsList({
 
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold">{t('your-chats')}</h2>
+      <div className="mb-4 flex ">
+        {!!bandOptions?.id && (
+          <ArrowLeft
+            className="cursor-pointer"
+            onClick={() => {
+              bandOptions.setBandId(undefined);
+            }}
+          ></ArrowLeft>
+        )}
+        <h2 className="ml-4 text-lg font-semibold">{t('your-chats')}</h2>
+      </div>
       {chats.length === 0 ? (
         <p className="text-center text-gray-500">{t('no-chats-available')}</p>
       ) : (
