@@ -10,6 +10,7 @@ import { Band } from '@/service/backend/domain/band';
 import { Offer } from '@/service/backend/domain/offer';
 import { ChatView } from '@/service/backend/domain/chatView';
 import { ChatPrimitives } from '@/service/backend/domain/chat';
+import { ChatHistory } from '@/service/backend/domain/chatHistory';
 
 export async function getAllOffersView(): Promise<OfferView[]> {
   try {
@@ -402,7 +403,7 @@ export async function getBandChats(
 
 export async function getChatById(
   chatId: string,
-): Promise<ChatView | undefined> {
+): Promise<ChatHistory | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {

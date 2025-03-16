@@ -87,14 +87,14 @@ export function ChatsList({
 
   return (
     <div>
-      <div className="mb-4 flex ">
+      <div className="mb-4 flex">
         {!!bandOptions?.id && (
           <ArrowLeft
             className="cursor-pointer"
             onClick={() => {
               bandOptions.setBandId(undefined);
             }}
-          ></ArrowLeft>
+          />
         )}
         <h2 className="ml-4 text-lg font-semibold">{t('your-chats')}</h2>
       </div>
@@ -105,24 +105,27 @@ export function ChatsList({
           {chats.map((chat, index) => (
             <li
               key={index}
-              className="rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
+              className="relative flex items-center rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
               onClick={() => router.push(`/chat/${chat.id}`)}
             >
-              <div className="flex">
-                {getAvatar(chat)}
-                <div>
-                  <strong className="block text-gray-800">
-                    {userId
-                      ? chat.band.name
-                      : chat.user.firstName + ' ' + chat.user.familyName}
-                  </strong>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {chat.messages.length > 0
-                      ? chat.messages[chat.messages.length - 1].content
-                      : '...'}
-                  </p>
-                </div>
+              {getAvatar(chat)}
+              <div className="flex-1">
+                <strong className="block text-gray-800">
+                  {userId
+                    ? chat.band?.name
+                    : `${chat.user?.firstName} ${chat.user?.familyName}`}
+                </strong>
+                <p className="mt-2 text-sm text-gray-600">
+                  {chat.messages?.length > 0
+                    ? chat.messages[chat.messages.length - 1].content
+                    : '...'}
+                </p>
               </div>
+              {chat.unreadMessagesCount > 0 && (
+                <span className="absolute right-4 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                  {chat.unreadMessagesCount}
+                </span>
+              )}
             </li>
           ))}
         </ul>

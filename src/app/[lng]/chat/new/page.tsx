@@ -21,7 +21,6 @@ export default async function ChatPage({
     band = await getBandViewById(bandId);
   }
   if (userInfo && band) {
-    console.log('hola');
     const newChat: ChatView = {
       id: randomUUID(),
       createdAt: new Date(),
