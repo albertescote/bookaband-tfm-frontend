@@ -11,6 +11,7 @@ import { Offer } from '@/service/backend/domain/offer';
 import { ChatView } from '@/service/backend/domain/chatView';
 import { ChatPrimitives } from '@/service/backend/domain/chat';
 import { ChatHistory } from '@/service/backend/domain/chatHistory';
+import { InvitationPrimitives } from '@/service/backend/domain/invitation';
 
 export async function getAllOffersView(): Promise<OfferView[]> {
   try {
@@ -470,4 +471,30 @@ export async function checkExistingChat(bandId: string) {
     }
   }
   return undefined;
+}
+
+export async function getUserInvitations(): Promise<
+  InvitationPrimitives[] | undefined
+> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Get chat failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.get(BACKEND_URL + `/invitations`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
 }

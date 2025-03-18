@@ -2,5 +2,7 @@
   "role": "Role",
   "create-band-button": "Create a band",
   "your-bands": "Your bands",
-  "no-bands": "You do not belong to any band yet!"
+  "no-bands": "You do not belong to any band yet!",
+  "your-invitations": "Your invitations",
+  "no-invitations": "You do not have any invitation!"
 }

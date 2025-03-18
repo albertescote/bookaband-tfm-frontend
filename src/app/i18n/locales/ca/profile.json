@@ -2,5 +2,7 @@
   "role": "Rol",
   "create-band-button": "Crear grup",
   "your-bands": "Els teus grups",
-  "no-bands": "Encara no pertanys a cap grup!"
+  "no-bands": "Encara no pertanys a cap grup!",
+  "your-invitations": "Les teves invitacions",
+  "no-invitations": "No tens cap invitació!"
 }
