@@ -2,14 +2,12 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { User } from '@/service/backend/domain/user';
-import { deleteBand, joinBand } from '@/service/backend/api';
+import { deleteBand } from '@/service/backend/api';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import { TrashIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/domain/role';
-import React, { FormEvent, useState } from 'react';
-import { Label } from '@/components/shared/label';
-import { Input } from '@/components/shared/input';
+import React from 'react';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -29,7 +27,6 @@ export default function ProfileCard({
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();
   const { changeMe, userBands } = useAuth();
-  const [joinBandModal, setJoinBandModal] = useState(false);
 
   const navigateToCreateBand = () => {
     router.push('/band');
@@ -42,17 +39,7 @@ export default function ProfileCard({
     });
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const bandId = formData.get('band-id')?.toString();
-    joinBand(bandId, user?.id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
-      router.refresh();
-    });
-  };
-
-  return !joinBandModal ? (
+  return (
     <div className="flex flex-col items-center">
       {user?.imageUrl ? (
         <img
@@ -110,12 +97,6 @@ export default function ProfileCard({
           )}
           <div className="mt-4 flex flex-row justify-center space-x-2">
             <button
-              onClick={() => setJoinBandModal(true)}
-              className="mr-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
-            >
-              {t('join-band-button')}
-            </button>
-            <button
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
               onClick={navigateToCreateBand}
             >
@@ -124,37 +105,6 @@ export default function ProfileCard({
           </div>
         </div>
       )}
-    </div>
-  ) : (
-    <div className="flex flex-col items-center">
-      <form className="w-full max-w-sm space-y-8" onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <Label htmlFor="band-id">{t('band-id')}</Label>
-          <Input
-            type="text"
-            id="band-id"
-            name="band-id"
-            placeholder={t('band-id')}
-            className="w-full rounded-md border-gray-300 shadow-sm transition focus:border-[#0077b6] focus:ring focus:ring-[#0077b6] focus:ring-opacity-50"
-            required
-          />
-        </div>
-        <div className="flex justify-between">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-full bg-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-400"
-            onClick={() => setJoinBandModal(false)}
-          >
-            {t('cancel')}
-          </button>
-          <button
-            type="submit"
-            className="mr-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
-          >
-            {t('submit')}
-          </button>
-        </div>
-      </form>
     </div>
   );
 }

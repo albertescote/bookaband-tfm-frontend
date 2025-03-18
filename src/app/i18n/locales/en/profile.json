@@ -1,10 +1,6 @@
 {
   "role": "Role",
   "create-band-button": "Create a band",
-  "join-band-button": "Join a band",
   "your-bands": "Your bands",
-  "no-bands": "You do not belong to any band yet!",
-  "band-id": "Band Identifier",
-  "submit": "Submit",
-  "cancel": "Cancel"
+  "no-bands": "You do not belong to any band yet!"
 }

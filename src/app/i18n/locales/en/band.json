@@ -7,5 +7,9 @@
   "genre-placeholder": "Enter the music genre",
   "create-button": "Create band",
   "rock": "Rock",
-  "pop": "Pop"
+  "pop": "Pop",
+  "send-invitation": "Send invitation",
+  "user-email": "User email",
+  "submit": "Submit",
+  "cancel": "Cancel"
 }

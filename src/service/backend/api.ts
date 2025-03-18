@@ -72,24 +72,23 @@ export async function createBand(request: {
   }
 }
 
-export async function joinBand(id?: string, userId?: string): Promise<void> {
-  if (!id || !userId) {
-    return undefined;
-  }
+export async function joinBand(
+  bandId: string,
+  userEmail: string,
+): Promise<void> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
       console.log('Join band failed: access token cookie not found');
       return undefined;
     }
-    const band = await getBandById(id);
-    if (!band) {
-      return undefined;
-    }
-    band.membersId.push(userId);
-    await axios.put(BACKEND_URL + `/bands/${id}`, band, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    await axios.post(
+      BACKEND_URL + `/invitations/send`,
+      { bandId, userEmail },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
   } catch (error) {
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${

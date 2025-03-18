@@ -1,10 +1,6 @@
 {
   "role": "Rol",
   "create-band-button": "Crear grup",
-  "join-band-button": "Unir-me a un grup",
   "your-bands": "Els teus grups",
-  "no-bands": "Encara no pertanys a cap grup!",
-  "band-id": "Identificador de grup",
-  "submit": "Enviar",
-  "cancel": "Tancar"
+  "no-bands": "Encara no pertanys a cap grup!"
 }
