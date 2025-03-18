@@ -498,3 +498,59 @@ export async function getUserInvitations(): Promise<
     return undefined;
   }
 }
+
+export async function acceptInvitation(id: string): Promise<void> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Accept invitation failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.put(
+      BACKEND_URL + `/invitations/${id}/accept`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function declineInvitation(id: string): Promise<void> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Decline invitation failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.put(
+      BACKEND_URL + `/invitations/${id}/decline`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+    if (!response.data) {
+      return undefined;
+    }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}

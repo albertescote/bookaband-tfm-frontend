@@ -2,10 +2,14 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { User } from '@/service/backend/domain/user';
-import { deleteBand } from '@/service/backend/api';
+import {
+  acceptInvitation,
+  declineInvitation,
+  deleteBand,
+} from '@/service/backend/api';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
-import { TrashIcon } from '@heroicons/react/solid';
+import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/domain/role';
 import React from 'react';
 import { InvitationPrimitives } from '@/service/backend/domain/invitation';
@@ -37,6 +41,20 @@ export default function ProfileCard({
 
   const handleDeleteBand = (id: string) => {
     deleteBand(id).then(() => {
+      changeMe.setChangeMe(!changeMe.changeMe);
+      router.refresh();
+    });
+  };
+
+  const handleAcceptInvitation = (id: string) => {
+    acceptInvitation(id).then(() => {
+      changeMe.setChangeMe(!changeMe.changeMe);
+      router.refresh();
+    });
+  };
+
+  const handleDeclineInvitation = (id: string) => {
+    declineInvitation(id).then(() => {
       changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
@@ -117,6 +135,20 @@ export default function ProfileCard({
                   className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"
                 >
                   <span>{invitation.bandName}</span>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleAcceptInvitation(invitation.id)}
+                      className="text-green-500 hover:text-green-600"
+                    >
+                      <CheckIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                    <button
+                      onClick={() => handleDeclineInvitation(invitation.id)}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <XIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
