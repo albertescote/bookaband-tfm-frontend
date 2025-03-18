@@ -11,5 +11,6 @@
   "send-invitation": "Enviar invitación",
   "user-email": "Email del usuario",
   "submit": "Enviar",
-  "cancel": "Cerrar"
+  "cancel": "Cerrar",
+  "invitation-sent": "Invitación enviada!"
 }
