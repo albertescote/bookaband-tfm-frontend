@@ -1,13 +1,13 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/AuthProvider';
-import { OfferView } from '@/service/backend/domain/offerView';
 import { Role } from '@/service/backend/domain/role';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 import { checkExistingChat } from '@/service/backend/api';
+import { OfferDetails } from '@/service/backend/domain/offerDetails';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -19,12 +19,12 @@ function getRandomColor(name: string) {
 
 export default function OfferCard({
   language,
-  offerView,
+  offerDetails,
 }: {
   language: string;
-  offerView?: OfferView;
+  offerDetails?: OfferDetails;
 }) {
-  const { t } = useTranslation(language, 'offer-view');
+  const { t } = useTranslation(language, 'offer-details');
   const { role } = useAuth();
   const today = new Date();
   const [date, setDate] = useState<Date | null>(today);
@@ -32,20 +32,10 @@ export default function OfferCard({
   const router = useRouter();
 
   useEffect(() => {
-    const fetchBookedDates = async () => {
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([
-            new Date(2024, 9, 25),
-            new Date(2024, 9, 26),
-            new Date(2024, 10, 2),
-          ]);
-        }, 1000);
-      });
-      setBookedDates(response as Date[]);
-    };
-
-    fetchBookedDates();
+    const dates = offerDetails?.bookingDates.map((date) => new Date(date));
+    if (dates) {
+      setBookedDates(dates);
+    }
   }, []);
 
   const handleBooking = () => {
@@ -58,12 +48,12 @@ export default function OfferCard({
   };
 
   const handleSendMessage = () => {
-    if (offerView?.bandId) {
-      checkExistingChat(offerView.bandId).then((existingChatId) => {
+    if (offerDetails?.bandId) {
+      checkExistingChat(offerDetails.bandId).then((existingChatId) => {
         if (existingChatId) {
           router.push(`/chat/${existingChatId}`);
         } else {
-          router.push(`/chat/new?band_id=${offerView.bandId}`);
+          router.push(`/chat/new?band_id=${offerDetails.bandId}`);
         }
       });
     }
@@ -80,35 +70,37 @@ export default function OfferCard({
   return (
     <div className="mx-auto min-w-[500px] max-w-md space-y-6 overflow-hidden rounded-xl bg-white p-8 shadow-md md:max-w-2xl">
       <div className="flex flex-col items-center">
-        {offerView?.imageUrl ? (
+        {offerDetails?.imageUrl ? (
           <img
-            src={offerView.imageUrl}
-            alt={offerView.bandName}
+            src={offerDetails.imageUrl}
+            alt={offerDetails.bandName}
             className="h-28 w-28 rounded-full object-cover shadow-md"
           />
         ) : (
           <div
             className="flex h-28 w-28 items-center justify-center rounded-full text-4xl font-bold text-white shadow-md transition-all"
             style={{
-              backgroundColor: getRandomColor(offerView?.bandName ?? 'dummy'),
+              backgroundColor: getRandomColor(
+                offerDetails?.bandName ?? 'dummy',
+              ),
             }}
           >
-            {offerView?.bandName ? offerView.bandName.charAt(0) : '?'}
+            {offerDetails?.bandName ? offerDetails.bandName.charAt(0) : '?'}
           </div>
         )}
         <h2 className="mt-4 text-2xl font-semibold text-gray-800">
-          {offerView?.bandName}
+          {offerDetails?.bandName}
         </h2>
         <p className="mt-2 text-lg text-gray-500">
-          {t('price')}: {offerView?.price} €
+          {t('price')}: {offerDetails?.price} €
         </p>
         <p className="mt-2 text-sm text-gray-600">
           {t('genre')}:{' '}
-          <span className="text-gray-800">{offerView?.genre}</span>
+          <span className="text-gray-800">{offerDetails?.genre}</span>
         </p>
-        {offerView?.description && (
+        {offerDetails?.description && (
           <p className="mt-4 text-center text-sm text-gray-600">
-            {offerView.description}
+            {offerDetails.description}
           </p>
         )}
         {role.role === Role.Client && (

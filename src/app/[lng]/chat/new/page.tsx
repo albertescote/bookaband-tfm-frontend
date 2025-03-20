@@ -21,12 +21,15 @@ export default async function ChatPage({
     band = await getBandViewById(bandId);
   }
   if (userInfo && band) {
+    const now = new Date();
     const newChat: ChatView = {
       id: randomUUID(),
-      createdAt: new Date(),
+      createdAt: now,
       messages: [],
       user: userInfo,
       band: band,
+      unreadMessagesCount: 0,
+      updatedAt: now,
     };
     return (
       <div className="flex min-h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4 py-12">

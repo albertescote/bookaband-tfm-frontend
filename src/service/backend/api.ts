@@ -1,7 +1,6 @@
 'use server';
 import axios, { AxiosError } from 'axios';
 import { BACKEND_URL } from '@/config';
-import { OfferView } from '@/service/backend/domain/offerView';
 import { User } from '@/service/backend/domain/user';
 import { getAccessTokenCookie } from '@/service/utils';
 import { decodeJwt } from 'jose';
@@ -12,10 +11,11 @@ import { ChatView } from '@/service/backend/domain/chatView';
 import { ChatPrimitives } from '@/service/backend/domain/chat';
 import { ChatHistory } from '@/service/backend/domain/chatHistory';
 import { InvitationPrimitives } from '@/service/backend/domain/invitation';
+import { OfferDetails } from '@/service/backend/domain/offerDetails';
 
-export async function getAllOffersView(): Promise<OfferView[]> {
+export async function getAllOffersDetails(): Promise<OfferDetails[]> {
   try {
-    const response = await axios.get(BACKEND_URL + '/offers-view');
+    const response = await axios.get(BACKEND_URL + '/offers');
     if (!response.data) {
       return [];
     }
@@ -321,20 +321,23 @@ export async function getOfferById(
   }
 }
 
-export async function getOffersViewById(
+export async function getOfferDetailsById(
   offerId: string,
-): Promise<OfferView | undefined> {
+): Promise<OfferDetails | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
       console.log(
-        'Get offers view by id failed: access token cookie not found',
+        'Get offers details by id failed: access token cookie not found',
       );
       return undefined;
     }
-    const response = await axios.get(BACKEND_URL + `/offers-view/${offerId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const response = await axios.get(
+      BACKEND_URL + `/offers/${offerId}/details`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
     if (!response.data) {
       return undefined;
     }

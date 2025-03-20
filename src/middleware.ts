@@ -14,12 +14,12 @@ export const config = {
 };
 
 const protectedRoutes: string[] = [
-  '/offer-view',
+  '/offer-details',
   '/profile',
   '/chat',
   '/chat/[id]',
 ];
-const clientProtectedRoutes: string[] = [];
+const clientProtectedRoutes: string[] = ['/chat/new'];
 const musicianProtectedRoutes: string[] = ['/manage-offers', '/band', '/offer'];
 
 export async function middleware(req: NextRequest) {
