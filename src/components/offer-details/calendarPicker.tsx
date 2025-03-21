@@ -54,7 +54,10 @@ export default function CalendarPicker({
               &larr;
             </button>
             <span className="text-lg font-semibold">
-              {date.toLocaleDateString(language)}
+              {new Date(date).toLocaleDateString(language, {
+                year: 'numeric',
+                month: 'long',
+              })}
             </span>
             <button
               onClick={increaseMonth}

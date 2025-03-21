@@ -1,7 +1,7 @@
 import { getUserInfo } from '@/service/backend/api';
 import { Role } from '@/service/backend/domain/role';
-import { SelectBand } from '@/components/chat/selectBand';
-import { ChatsList } from '@/components/chat/chatsList';
+import { SelectBand } from '@/components/booking/selectBand';
+import { BookingsList } from '@/components/booking/bookingsList';
 
 interface PageParams {
   params: {
@@ -18,7 +18,7 @@ export default async function Page({ params: { lng } }: PageParams) {
         {user?.role === Role.Musician ? (
           <SelectBand language={lng}></SelectBand>
         ) : (
-          <ChatsList language={lng} userId={user?.id}></ChatsList>
+          <BookingsList language={lng} userId={user?.id}></BookingsList>
         )}
       </div>
     </div>

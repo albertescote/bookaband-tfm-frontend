@@ -20,7 +20,7 @@ export default function BandAvatar({
         backgroundColor: getRandomColor(bandName ?? 'dummy'),
       }}
     >
-      {bandName ? bandName.charAt(0) : '?'}
+      {bandName ? bandName.charAt(0).toUpperCase() : '?'}
     </div>
   );
 }

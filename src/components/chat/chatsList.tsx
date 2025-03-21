@@ -1,3 +1,4 @@
+'use client';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getBandChats, getUserChats } from '@/service/backend/api';
 import { ChatView } from '@/service/backend/domain/chatView';

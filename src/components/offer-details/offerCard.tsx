@@ -44,7 +44,7 @@ export default function OfferCard({
       bookingDate.setMinutes(parseInt(minutes, 10));
       createBooking({ offerId: offerDetails?.id, date: bookingDate }).then(
         (booking) => {
-          router.push(`/bookings/${booking?.id}`);
+          router.push(`/booking/${booking?.id}`);
         },
       );
     } else {

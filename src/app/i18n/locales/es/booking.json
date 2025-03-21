@@ -1,0 +1,11 @@
+{
+  "booking-not-found": "Reserva no encontrada",
+  "status.pending": "Pendiente",
+  "status.accepted": "Aceptada",
+  "status.declined": "Rechazada",
+  "date": "Fecha",
+  "created-at": "Creado el",
+  "your-bookings": "Tus reservas",
+  "no-bookings": "No tienes ninguna reserva",
+  "not-in-a-band-yet": "Debes ser miembro de algun grupo para poder ver reservas"
+}

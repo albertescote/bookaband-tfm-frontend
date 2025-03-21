@@ -17,6 +17,7 @@ export default function Navbar({ language }: { language: string }) {
             <NavLink href={`/manage-offers`} label={t('manage-offers-tab')} />
           )}
           <NavLink href={`/chat`} label={t('chat-tab')} />
+          <NavLink href={`/booking`} label={t('bookings-tab')} />
           <NavLink href={`/profile`} label={t('profile-tab')} />
         </div>
       )}
