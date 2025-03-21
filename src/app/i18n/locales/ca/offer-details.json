@@ -3,5 +3,8 @@
   "price": "Preu",
   "availability": "Disponibilitat",
   "book-now": "Reserva ara",
-  "send-message": "Envia un missatge"
+  "send-message": "Envia un missatge",
+  "select-time": "Selecciona l'hora",
+  "change-date": "Canviar data",
+  "selected-date": "Data seleccionada"
 }

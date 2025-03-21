@@ -54,6 +54,7 @@ export default function CreateBand({ language }: { language: string }) {
           >
             <option value={MusicGenre.ROCK}>{t('rock')}</option>
             <option value={MusicGenre.POP}>{t('pop')}</option>
+            <option value={MusicGenre.JAZZ}>{t('jazz')}</option>
           </select>
         </div>
         <div className="flex justify-center pt-4">

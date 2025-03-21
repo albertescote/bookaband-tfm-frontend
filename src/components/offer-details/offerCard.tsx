@@ -3,11 +3,13 @@ import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/domain/role';
 import { useEffect, useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 import { checkExistingChat } from '@/service/backend/api';
 import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FiCalendar, FiClock } from 'react-icons/fi';
+import { AnimatePresence, motion } from 'framer-motion';
 
 function getRandomColor(name: string) {
   let hash = 0;
@@ -27,23 +29,29 @@ export default function OfferCard({
   const { t } = useTranslation(language, 'offer-details');
   const { role } = useAuth();
   const today = new Date();
-  const [date, setDate] = useState<Date | null>(today);
+  const [date, setDate] = useState<Date | null>(null);
+  const [time, setTime] = useState<string>('12:00');
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [showCalendar, setShowCalendar] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const dates = offerDetails?.bookingDates.map((date) => new Date(date));
-    if (dates) {
+    if (offerDetails?.bookingDates && offerDetails.bookingDates.length > 0) {
+      const dates = offerDetails?.bookingDates.map((date) => new Date(date));
       setBookedDates(dates);
     }
   }, []);
 
   const handleBooking = () => {
     if (date) {
-      console.log(`Booking the band for ${date}`);
-      alert(`Band booked for ${date.toDateString()}`);
+      const [hours, minutes] = time.split(':');
+      const bookingDate = new Date(date);
+      bookingDate.setHours(parseInt(hours, 10));
+      bookingDate.setMinutes(parseInt(minutes, 10));
+      console.log(`Booking the band for ${bookingDate}`);
+      alert(`Band booked for ${bookingDate.toLocaleString()}`);
     } else {
-      alert('Please select a date before booking.');
+      alert('Please select a date and time before booking.');
     }
   };
 
@@ -58,6 +66,7 @@ export default function OfferCard({
       });
     }
   };
+
   const isDateBooked = (date: Date) => {
     return bookedDates.some(
       (bookedDate) =>
@@ -65,6 +74,25 @@ export default function OfferCard({
         bookedDate.getMonth() === date.getMonth() &&
         bookedDate.getDate() === date.getDate(),
     );
+  };
+
+  const generateTimeOptions = () => {
+    const times = [];
+    for (let hour = 0; hour < 24; hour++) {
+      const timeString = `${String(hour).padStart(2, '0')}:00`;
+      times.push(timeString);
+    }
+    return times;
+  };
+
+  const handleDateSelection = (selectedDate: Date | null) => {
+    setDate(selectedDate);
+    setShowCalendar(false);
+  };
+
+  const handleBackToCalendar = () => {
+    setShowCalendar(true);
+    setDate(null);
   };
 
   return (
@@ -104,28 +132,88 @@ export default function OfferCard({
           </p>
         )}
         {role.role === Role.Client && (
-          <div className="mt-6">
-            <h3 className="text-lg font-medium text-gray-700">
+          <div className="mt-6 w-full">
+            <h3 className="mb-4 text-lg font-medium text-gray-700">
               {t('availability')}
             </h3>
-            <Calendar
-              onChange={(value) => setDate(value as Date)}
-              value={date}
-              className="my-4"
-              minDate={today}
-              minDetail="decade"
-              tileDisabled={({ date }) => isDateBooked(date)}
-              locale={language}
-            />
+            <AnimatePresence mode="wait">
+              {showCalendar ? (
+                <motion.div
+                  key="calendar"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex justify-center"
+                >
+                  <DatePicker
+                    selected={date}
+                    onChange={(date) => handleDateSelection(date)}
+                    minDate={today}
+                    inline
+                    excludeDates={bookedDates}
+                    className="rounded-lg border border-gray-200 p-2 shadow-sm"
+                    dayClassName={(date) =>
+                      isDateBooked(date) ? 'text-gray-400 line-through' : ''
+                    }
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="time-selector"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="mt-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h4 className="flex items-center text-sm font-medium text-gray-700">
+                        <FiCalendar className="mr-2" /> {t('selected-date')}:{' '}
+                        {date?.toLocaleDateString(language)}
+                      </h4>
+                      <button
+                        onClick={handleBackToCalendar}
+                        className="text-sm text-[#3b82f6] hover:underline"
+                      >
+                        {t('change-date')}
+                      </button>
+                    </div>
+                    <label
+                      htmlFor="time"
+                      className="mb-2 flex items-center text-sm font-medium text-gray-700"
+                    >
+                      <FiClock className="mr-2" /> {t('select-time')}
+                    </label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {generateTimeOptions().map((timeOption) => (
+                        <button
+                          key={timeOption}
+                          onClick={() => setTime(timeOption)}
+                          className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                            time === timeOption
+                              ? 'bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] text-white'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {timeOption}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <button
               onClick={handleBooking}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+              disabled={!date}
+              className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#1d4ed8] hover:to-[#0e7490] disabled:opacity-50"
             >
               {t('book-now')}
             </button>
             <button
               onClick={handleSendMessage}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#1d4ed8] hover:to-[#0e7490]"
             >
               {t('send-message')}
             </button>

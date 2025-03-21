@@ -3,5 +3,8 @@
   "price": "Price",
   "availability": "Availability",
   "book-now": "Book now",
-  "send-message": "Send a message"
+  "send-message": "Send a message",
+  "select-time": "Select the time",
+  "change-date": "Change date",
+  "selected-date": "Selected date"
 }
