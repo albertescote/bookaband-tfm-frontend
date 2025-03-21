@@ -5,14 +5,7 @@ import React, { FormEvent, useState } from 'react';
 import { joinBand } from '@/service/backend/api';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
-
-function getRandomColor(name: string) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return `hsl(${hash % 360}, 70%, 60%)`;
-}
+import { getRandomColor } from '@/lib/utils';
 
 export default function BandDetails({
   language,

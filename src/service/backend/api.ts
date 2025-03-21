@@ -12,6 +12,7 @@ import { ChatPrimitives } from '@/service/backend/domain/chat';
 import { ChatHistory } from '@/service/backend/domain/chatHistory';
 import { InvitationPrimitives } from '@/service/backend/domain/invitation';
 import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import { Booking } from '@/service/backend/domain/booking';
 
 export async function getAllOffersDetails(): Promise<OfferDetails[]> {
   try {
@@ -547,6 +548,34 @@ export async function declineInvitation(id: string): Promise<void> {
     if (!response.data) {
       return undefined;
     }
+    return response.data;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function createBooking(request: {
+  offerId?: string;
+  date: Date;
+}): Promise<Booking | undefined> {
+  try {
+    const accessToken = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log('Create booking failed: access token cookie not found');
+      return undefined;
+    }
+    const response = await axios.post(
+      BACKEND_URL + '/bookings',
+      { offerId: request.offerId, date: request.date.toISOString() },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
     return response.data;
   } catch (error) {
     console.log(

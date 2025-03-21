@@ -1,18 +1,11 @@
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n';
 import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import { getRandomColor } from '@/lib/utils';
 
 interface OffersListParams {
   lng: string;
   offers: OfferDetails[];
-}
-
-function getRandomColor(bandName: string) {
-  let hash = 0;
-  for (let i = 0; i < bandName.length; i++) {
-    hash = bandName.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return `hsl(${hash % 360}, 70%, 60%)`;
 }
 
 export default async function OffersList({ lng, offers }: OffersListParams) {

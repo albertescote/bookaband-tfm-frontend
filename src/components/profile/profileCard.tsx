@@ -13,14 +13,7 @@ import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/domain/role';
 import React from 'react';
 import { InvitationPrimitives } from '@/service/backend/domain/invitation';
-
-function getRandomColor(name: string) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return `hsl(${hash % 360}, 70%, 60%)`;
-}
+import { getRandomColor } from '@/lib/utils';
 
 export default function ProfileCard({
   language,
