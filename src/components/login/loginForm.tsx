@@ -3,7 +3,7 @@ import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
 import { FormEvent, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
-import { authenticate } from '@/service/auth';
+import { authenticate } from '@/service/backend/auth/service/auth.service';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';

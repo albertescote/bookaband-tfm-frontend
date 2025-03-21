@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n';
-import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { getRandomColor } from '@/lib/utils';
 
 interface OffersListParams {

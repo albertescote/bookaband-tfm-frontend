@@ -2,12 +2,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
 import { useAuth } from '@/providers/AuthProvider';
-import { Role } from '@/service/backend/domain/role';
+import { Role } from '@/service/backend/user/domain/role';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { createNewChat } from '@/service/backend/api';
-import { ChatHistory } from '@/service/backend/domain/chatHistory';
+import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
+import { createNewChat } from '@/service/backend/chat/service/chat.service';
 
 interface ChatProps {
   language: string;

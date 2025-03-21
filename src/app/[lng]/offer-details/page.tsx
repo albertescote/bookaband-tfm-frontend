@@ -1,6 +1,6 @@
-import { getOfferDetailsById } from '@/service/backend/api';
 import OfferCard from '@/components/offer-details/offerCard';
-import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
+import { getOfferDetailsById } from '@/service/backend/offer/service/offer.service';
 
 interface PageParams {
   params: {

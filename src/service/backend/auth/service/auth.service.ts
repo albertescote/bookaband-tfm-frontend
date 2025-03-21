@@ -2,20 +2,9 @@
 import { BACKEND_PUBLIC_KEY, BACKEND_URL } from '@/config';
 import axios, { AxiosError } from 'axios';
 import { importJWK, JWK, jwtVerify } from 'jose';
-
 import { getAccessTokenCookie } from '@/service/utils';
-
-export interface AuthenticationResult {
-  valid: boolean;
-  accessToken?: string;
-  errorMessage?: string;
-}
-
-export interface AccessTokenPayload {
-  email: string;
-  sub: string;
-  role: string;
-}
+import { AuthenticationResult } from '@/service/backend/auth/domain/authenticationResult';
+import { AccessTokenPayload } from '@/service/backend/auth/domain/accessTokenPayload';
 
 export async function authenticate(
   email: string | undefined,

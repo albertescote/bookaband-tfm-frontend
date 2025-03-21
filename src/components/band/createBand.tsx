@@ -3,11 +3,11 @@ import { useTranslation } from '@/app/i18n/client';
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
 import { FormEvent } from 'react';
-import { Band } from '@/service/backend/domain/band';
-import { createBand } from '@/service/backend/api';
+import { Band } from '@/service/backend/band/domain/band';
 import { useRouter } from 'next/navigation';
-import { MusicGenre } from '@/service/backend/domain/musicGenre';
+import { MusicGenre } from '@/service/backend/band/domain/musicGenre';
 import { useAuth } from '@/providers/AuthProvider';
+import { createBand } from '@/service/backend/band/service/band.service';
 
 export default function CreateBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'band');

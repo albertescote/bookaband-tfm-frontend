@@ -1,10 +1,13 @@
 'use client';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { getBandChats, getUserChats } from '@/service/backend/api';
-import { ChatView } from '@/service/backend/domain/chatView';
+import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
+import {
+  getBandChats,
+  getUserChats,
+} from '@/service/backend/chat/service/chat.service';
 
 export function ChatsList({
   language,

@@ -1,6 +1,6 @@
 import OffersList from '@/components/home/offersList';
-import { getAllOffersDetails } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
+import { getAllOffersDetails } from '@/service/backend/offer/service/offer.service';
 
 interface PageParams {
   params: {

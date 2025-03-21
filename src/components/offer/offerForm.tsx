@@ -4,9 +4,14 @@ import { Input } from '@/components/shared/input';
 import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { Offer } from '@/service/backend/domain/offer';
+import { Offer } from '@/service/backend/offer/domain/offer';
 import { useAuth } from '@/providers/AuthProvider';
-import { createOffer, deleteOffer, updateOffer } from '@/service/backend/api';
+
+import {
+  createOffer,
+  deleteOffer,
+  updateOffer,
+} from '@/service/backend/offer/service/offer.service';
 
 export default function OfferForm({
   language,

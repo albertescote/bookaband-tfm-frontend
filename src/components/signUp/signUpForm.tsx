@@ -4,11 +4,12 @@ import { Input } from '@/components/shared/input';
 import { FormEvent, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { setCookie } from 'cookies-next';
-import { createUser } from '@/service/backend/api';
-import { authenticate } from '@/service/auth';
-import { Role } from '@/service/backend/domain/role';
+import { authenticate } from '@/service/backend/auth/service/auth.service';
+import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
+
+import { createUser } from '@/service/backend/user/service/user.service';
 
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');

@@ -5,10 +5,11 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { validateAccessToken } from '@/service/auth';
-import { getUserBands } from '@/service/backend/api';
-import { UserBand } from '@/service/backend/domain/userBand';
-import { Role } from '@/service/backend/domain/role';
+import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
+import { UserBand } from '@/service/backend/band/domain/userBand';
+import { Role } from '@/service/backend/user/domain/role';
+
+import { getUserBands } from '@/service/backend/band/service/band.service';
 
 interface AuthContextType {
   changeMe: { changeMe: boolean; setChangeMe: (changeMe: boolean) => void };

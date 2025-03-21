@@ -1,6 +1,6 @@
-import { getChatById } from '@/service/backend/api';
 import Chat from '@/components/chat/chat';
 import { useTranslation } from '@/app/i18n';
+import { getChatById } from '@/service/backend/chat/service/chat.service';
 
 interface PageParams {
   params: {

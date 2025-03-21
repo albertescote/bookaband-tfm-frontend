@@ -1,5 +1,6 @@
 import OfferForm from '@/components/offer/offerForm';
-import { getOfferById } from '@/service/backend/api';
+
+import { getOfferById } from '@/service/backend/offer/service/offer.service';
 
 interface PageParams {
   params: {

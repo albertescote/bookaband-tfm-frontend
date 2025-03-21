@@ -1,14 +1,14 @@
-export enum BookingStatus {
+export enum InvitationStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
   DECLINED = 'DECLINED',
 }
 
-export interface Booking {
+export interface Invitation {
   id: string;
-  offerId: string;
+  bandId: string;
+  bandName: string;
   userId: string;
-  status: BookingStatus;
-  date: Date;
+  status: InvitationStatus;
   createdAt: Date;
 }

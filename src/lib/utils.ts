@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { BookingStatus } from '@/service/backend/domain/booking';
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

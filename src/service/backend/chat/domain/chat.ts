@@ -1,4 +1,4 @@
-import { MessagePrimitives } from '@/service/backend/domain/message';
+import { MessagePrimitives } from '@/service/backend/chat/domain/message';
 
 export interface ChatPrimitives {
   id: string;

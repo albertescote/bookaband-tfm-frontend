@@ -1,11 +1,14 @@
 'use client';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { getAllBandBookings, getAllUserBookings } from '@/service/backend/api';
-import { Booking } from '@/service/backend/domain/booking';
+import { Booking } from '@/service/backend/booking/domain/booking';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { getStatusColor } from '@/lib/utils';
+import {
+  getAllBandBookings,
+  getAllUserBookings,
+} from '@/service/backend/booking/service/booking.service';
 
 export function BookingsList({
   language,

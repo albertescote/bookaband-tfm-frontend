@@ -1,11 +1,11 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { Band } from '@/service/backend/domain/band';
+import { Band } from '@/service/backend/band/domain/band';
 import React, { FormEvent, useState } from 'react';
-import { joinBand } from '@/service/backend/api';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
 import { getRandomColor } from '@/lib/utils';
+import { joinBand } from '@/service/backend/band/service/band.service';
 
 export default function BandDetails({
   language,

@@ -1,7 +1,7 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import NavLink from '@/components/layout/header/navLink';
-import { Role } from '@/service/backend/domain/role';
+import { Role } from '@/service/backend/user/domain/role';
 import { useAuth } from '@/providers/AuthProvider';
 
 export default function Navbar({ language }: { language: string }) {

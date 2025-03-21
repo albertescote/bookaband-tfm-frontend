@@ -1,7 +1,9 @@
 import Chat from '@/components/chat/chat';
-import { ChatView } from '@/service/backend/domain/chatView';
-import { getBandViewById, getUserInfo } from '@/service/backend/api';
+import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { randomUUID } from 'node:crypto';
+
+import { getUserInfo } from '@/service/backend/user/service/user.service';
+import { getBandViewById } from '@/service/backend/band/service/band.service';
 
 interface PageParams {
   params: {

@@ -1,19 +1,19 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { User } from '@/service/backend/domain/user';
-import {
-  acceptInvitation,
-  declineInvitation,
-  deleteBand,
-} from '@/service/backend/api';
+import { User } from '@/service/backend/user/domain/user';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
-import { Role } from '@/service/backend/domain/role';
+import { Role } from '@/service/backend/user/domain/role';
 import React from 'react';
-import { InvitationPrimitives } from '@/service/backend/domain/invitation';
+import { Invitation } from '@/service/backend/invitation/domain/invitation';
 import { getRandomColor } from '@/lib/utils';
+import { deleteBand } from '@/service/backend/band/service/band.service';
+import {
+  acceptInvitation,
+  declineInvitation,
+} from '@/service/backend/invitation/service/invitation.service';
 
 export default function ProfileCard({
   language,
@@ -22,7 +22,7 @@ export default function ProfileCard({
 }: {
   language: string;
   user: User | undefined;
-  invitations: InvitationPrimitives[] | undefined;
+  invitations: Invitation[] | undefined;
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();

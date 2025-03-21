@@ -1,6 +1,8 @@
 import ProfileCard from '@/components/profile/profileCard';
-import { getUserInfo, getUserInvitations } from '@/service/backend/api';
-import { InvitationStatus } from '@/service/backend/domain/invitation';
+import { InvitationStatus } from '@/service/backend/invitation/domain/invitation';
+
+import { getUserInfo } from '@/service/backend/user/service/user.service';
+import { getUserInvitations } from '@/service/backend/invitation/service/invitation.service';
 
 interface PageParams {
   params: {

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { cookieName, fallbackLng, languages } from './app/i18n/settings';
-import { validateAccessToken } from '@/service/auth';
-import { Role } from '@/service/backend/domain/role';
+import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
+import { Role } from '@/service/backend/user/domain/role';
 
 acceptLanguage.languages(languages);
 

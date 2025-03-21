@@ -1,6 +1,6 @@
-import { getBookingById } from '@/service/backend/api';
 import { useTranslation } from '@/app/i18n';
 import BookingDetails from '@/components/booking/bookingDetails';
+import { getBookingById } from '@/service/backend/booking/service/booking.service';
 
 interface PageParams {
   params: {

@@ -1,6 +1,6 @@
-import { MessagePrimitives } from '@/service/backend/domain/message';
+import { MessagePrimitives } from '@/service/backend/chat/domain/message';
 
-export interface ChatView {
+export interface ChatHistory {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -12,5 +12,4 @@ export interface ChatView {
     imageUrl?: string;
   };
   band: { id: string; name: string; imageUrl?: string };
-  unreadMessagesCount: number;
 }

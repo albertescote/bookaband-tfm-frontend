@@ -1,12 +1,18 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { Booking, BookingStatus } from '@/service/backend/domain/booking';
+import {
+  Booking,
+  BookingStatus,
+} from '@/service/backend/booking/domain/booking';
 import { getStatusColor } from '@/lib/utils';
 import { Check, X } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
-import { Role } from '@/service/backend/domain/role';
-import { acceptBooking, declineBooking } from '@/service/backend/api';
+import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
+import {
+  acceptBooking,
+  declineBooking,
+} from '@/service/backend/booking/service/booking.service';
 
 export default function BookingDetails({
   language,
@@ -48,19 +54,6 @@ export default function BookingDetails({
         <div className="mb-4 text-lg text-gray-700">
           <span className="font-semibold">{t('date')}:</span>{' '}
           {new Date(booking.date).toLocaleDateString(language, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </div>
-      )}
-
-      {booking?.createdAt && (
-        <div className="mb-4 text-sm text-gray-500">
-          <span className="font-semibold">{t('created-at')}:</span>{' '}
-          {new Date(booking.createdAt).toLocaleDateString(language, {
             year: 'numeric',
             month: 'long',
             day: 'numeric',

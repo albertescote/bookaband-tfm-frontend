@@ -1,17 +1,18 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/AuthProvider';
-import { Role } from '@/service/backend/domain/role';
+import { Role } from '@/service/backend/user/domain/role';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { checkExistingChat, createBooking } from '@/service/backend/api';
-import { OfferDetails } from '@/service/backend/domain/offerDetails';
+import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { AnimatePresence } from 'framer-motion';
 import BandAvatar from '@/components/offer-details/bandAvatar';
 import BandInfo from '@/components/offer-details/bandInfo';
 import CalendarPicker from '@/components/offer-details/calendarPicker';
 import TimePicker from '@/components/offer-details/timePicker';
 import BookingActions from '@/components/offer-details/bookingActions';
+import { checkExistingChat } from '@/service/backend/chat/service/chat.service';
+import { createBooking } from '@/service/backend/booking/service/booking.service';
 
 export default function OfferCard({
   language,

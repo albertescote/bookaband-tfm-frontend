@@ -1,7 +1,7 @@
-import { getBandById } from '@/service/backend/api';
-import { Band } from '@/service/backend/domain/band';
+import { Band } from '@/service/backend/band/domain/band';
 import BandDetails from '@/components/band/bandDetails';
 import CreateBand from '@/components/band/createBand';
+import { getBandById } from '@/service/backend/band/service/band.service';
 
 interface PageParams {
   params: {
