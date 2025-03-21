@@ -7,5 +7,7 @@
   "created-at": "Created at",
   "your-bookings": "Your bookings",
   "no-bookings": "You don't have any booking yet",
-  "not-in-a-band-yet": "You must be member of a band to be able to view bookings"
+  "not-in-a-band-yet": "You must be member of a band to be able to view bookings",
+  "accept": "Accept",
+  "decline": "Decline"
 }

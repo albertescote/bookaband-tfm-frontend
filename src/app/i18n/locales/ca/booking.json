@@ -7,5 +7,7 @@
   "created-at": "Creat el",
   "your-bookings": "Les teves reserves",
   "no-bookings": "No tens cap reserva",
-  "not-in-a-band-yet": "Has de ser miembre d'algun grup per a poder veure reserves"
+  "not-in-a-band-yet": "Has de ser miembre d'algun grup per a poder veure reserves",
+  "accept": "Acceptar",
+  "decline": "Rebutjar"
 }

@@ -40,7 +40,7 @@ export default async function OffersList({ lng, offers }: OffersListParams) {
                   {t('genre') + ': ' + offer.genre}
                 </p>
               </div>
-              <div>
+              <div className="text-right">
                 <h2>{t('price') + ': ' + offer.price + ' €'}</h2>
                 <h2>{offer.description}</h2>
               </div>

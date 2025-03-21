@@ -1,14 +1,16 @@
 'use client';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Booking } from '@/service/backend/booking/domain/booking';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
-import { getStatusColor } from '@/lib/utils';
+import { getRandomColor, getStatusColor } from '@/lib/utils';
 import {
   getAllBandBookings,
   getAllUserBookings,
 } from '@/service/backend/booking/service/booking.service';
+import { Role } from '@/service/backend/user/domain/role';
+import { useAuth } from '@/providers/AuthProvider';
+import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 
 export function BookingsList({
   language,
@@ -23,16 +25,17 @@ export function BookingsList({
   };
 }) {
   const { t } = useTranslation(language, 'booking');
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<BookingWithDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { role } = useAuth();
 
   useEffect(() => {
     async function fetchBookings() {
       try {
         setLoading(true);
-        let bookings: Booking[] | undefined = [];
+        let bookings: BookingWithDetails[] | undefined = [];
         if (bandOptions?.id) {
           bookings = await getAllBandBookings(bandOptions.id);
         } else if (userId) {
@@ -47,6 +50,23 @@ export function BookingsList({
     }
     fetchBookings().then();
   }, [bandOptions?.id, userId]);
+
+  const getAvatar = (imageUrl?: string, displayName?: string) => {
+    return imageUrl ? (
+      <img
+        src={imageUrl}
+        alt={displayName}
+        className="mr-4 h-16 w-16 rounded-full object-cover"
+      />
+    ) : (
+      <div
+        className="mr-4 flex h-24 w-24 items-center justify-center rounded-full text-xl font-bold text-white"
+        style={{ backgroundColor: getRandomColor(displayName ?? 'dummy') }}
+      >
+        {displayName ? displayName.charAt(0).toUpperCase() : '?'}
+      </div>
+    );
+  };
 
   if (loading)
     return (
@@ -80,9 +100,19 @@ export function BookingsList({
               className="relative flex items-center justify-between rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
               onClick={() => router.push(`/booking/${booking.id}`)}
             >
-              <span className="text-lg font-medium text-gray-900">
-                #{booking.id}
-              </span>
+              {role.role === Role.Musician && booking?.userName && (
+                <div className="flex items-center gap-4">
+                  {getAvatar(booking.userImageUrl, booking.userName)}
+                  <p className="text-lg font-semibold">{booking.userName}</p>
+                </div>
+              )}
+
+              {role.role === Role.Client && booking?.bandName && (
+                <div className="flex items-center gap-4">
+                  {getAvatar(booking.bandImageUrl, booking.bandName)}
+                  <p className="text-lg font-semibold">{booking.bandName}</p>
+                </div>
+              )}
               <div className="flex flex-col items-end">
                 <div className="flex items-center">
                   <span

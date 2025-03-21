@@ -3,6 +3,7 @@ import { Booking } from '@/service/backend/booking/domain/booking';
 import { getAccessTokenCookie } from '@/service/utils';
 import axios, { AxiosError } from 'axios';
 import { BACKEND_URL } from '@/config';
+import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 
 export async function createBooking(request: {
   offerId?: string;
@@ -34,7 +35,7 @@ export async function createBooking(request: {
 
 export async function getBookingById(
   bookingId: string,
-): Promise<Booking | undefined> {
+): Promise<BookingWithDetails | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
@@ -58,7 +59,9 @@ export async function getBookingById(
   }
 }
 
-export async function getAllUserBookings(): Promise<Booking[] | undefined> {
+export async function getAllUserBookings(): Promise<
+  BookingWithDetails[] | undefined
+> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
@@ -84,7 +87,7 @@ export async function getAllUserBookings(): Promise<Booking[] | undefined> {
 
 export async function getAllBandBookings(
   bandId: string,
-): Promise<Booking[] | undefined> {
+): Promise<BookingWithDetails[] | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
