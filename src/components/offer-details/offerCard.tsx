@@ -96,7 +96,7 @@ export default function OfferCard({
   return (
     <div className="mx-auto min-w-[500px] max-w-md space-y-6 overflow-hidden rounded-xl bg-white p-8 shadow-md md:max-w-2xl">
       <div className="flex flex-col items-center">
-        {getAvatar(28, 28, offerDetails?.imageUrl, offerDetails?.bandName)}
+        {getAvatar(112, 112, offerDetails?.imageUrl, offerDetails?.bandName)}
         <BandInfo
           bandName={offerDetails?.bandName}
           price={offerDetails?.price}

@@ -104,7 +104,7 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          {getAvatar(16, 16, imageUrl, displayName)}
+          {getAvatar(64, 64, imageUrl, displayName)}
           <span className="ml-4 text-xl">
             {role.role === Role.Client
               ? chat.band.name

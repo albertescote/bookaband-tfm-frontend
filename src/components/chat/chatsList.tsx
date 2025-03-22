@@ -81,8 +81,8 @@ export function ChatsList({
               onClick={() => router.push(`/chat/${chat.id}`)}
             >
               {getAvatar(
-                16,
-                16,
+                64,
+                64,
                 userId ? chat.band?.imageUrl : chat.user?.imageUrl,
                 userId
                   ? chat.band?.name || 'Unknown'

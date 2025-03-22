@@ -49,14 +49,14 @@ export default function BookingDetails({
         <ArrowLeft className="mr-4 cursor-pointer" onClick={handleGoBack} />
         {role.role === Role.Musician && booking?.userName && (
           <div className="flex items-center gap-4">
-            {getAvatar(24, 24, booking.userImageUrl, booking.userName)}
+            {getAvatar(96, 96, booking.userImageUrl, booking.userName)}
             <p className="text-lg font-semibold">{booking.userName}</p>
           </div>
         )}
 
         {role.role === Role.Client && booking?.bandName && (
           <div className="flex items-center gap-4">
-            {getAvatar(24, 24, booking.bandImageUrl, booking.bandName)}
+            {getAvatar(96, 96, booking.bandImageUrl, booking.bandName)}
             <p className="text-lg font-semibold">{booking.bandName}</p>
           </div>
         )}

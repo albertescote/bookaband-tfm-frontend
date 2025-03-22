@@ -1,5 +1,4 @@
 import { getRandomColor } from '@/lib/utils';
-import React from 'react';
 
 export const getAvatar = (
   height: number,
@@ -7,16 +6,22 @@ export const getAvatar = (
   imageUrl?: string,
   displayName?: string,
 ) => {
+  console.log(height, width);
   return imageUrl ? (
     <img
       src={imageUrl}
       alt={displayName}
-      className={`h-${height} w-${width} rounded-full object-cover`}
+      className="rounded-full object-cover"
+      style={{ height: `${height}px`, width: `${width}px` }}
     />
   ) : (
     <div
-      className={`flex h-${height} w-${width} items-center justify-center rounded-full text-lg font-bold text-white`}
-      style={{ backgroundColor: getRandomColor(displayName ?? 'dummy') }}
+      className="flex items-center justify-center rounded-full text-lg font-bold text-white"
+      style={{
+        backgroundColor: getRandomColor(displayName ?? 'dummy'),
+        height: `${height}px`,
+        width: `${width}px`,
+      }}
     >
       {displayName ? displayName.charAt(0).toUpperCase() : '?'}
     </div>

@@ -43,7 +43,7 @@ export default function BandDetails({
       )}
       {!joinBandModal ? (
         <div className="flex flex-col items-center">
-          {getAvatar(28, 28, band?.imageUrl, band?.name)}
+          {getAvatar(112, 112, band?.imageUrl, band?.name)}
           <h2 className="mt-4 text-2xl font-semibold text-gray-800">
             {band?.name}
           </h2>
@@ -68,7 +68,7 @@ export default function BandDetails({
                     key={member.id}
                     className="flex items-center gap-4 rounded-lg bg-gray-50 p-4 shadow-sm"
                   >
-                    {getAvatar(12, 12, member.imageUrl, member.userName)}
+                    {getAvatar(48, 48, member.imageUrl, member.userName)}
                     <p className="text-lg font-medium text-gray-700">
                       {member.userName}
                     </p>

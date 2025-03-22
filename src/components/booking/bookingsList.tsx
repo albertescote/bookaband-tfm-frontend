@@ -86,14 +86,14 @@ export function BookingsList({
             >
               {role.role === Role.Musician && booking?.userName && (
                 <div className="flex items-center gap-4">
-                  {getAvatar(16, 16, booking.userImageUrl, booking.userName)}
+                  {getAvatar(64, 64, booking.userImageUrl, booking.userName)}
                   <p className="text-lg font-semibold">{booking.userName}</p>
                 </div>
               )}
 
               {role.role === Role.Client && booking?.bandName && (
                 <div className="flex items-center gap-4">
-                  {getAvatar(16, 16, booking.bandImageUrl, booking.bandName)}
+                  {getAvatar(64, 64, booking.bandImageUrl, booking.bandName)}
                   <p className="text-lg font-semibold">{booking.bandName}</p>
                 </div>
               )}
