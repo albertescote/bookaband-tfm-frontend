@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
-import { getRandomColor, getStatusColor } from '@/lib/utils';
+import { getStatusColor } from '@/lib/utils';
 import {
   getAllBandBookings,
   getAllUserBookings,
@@ -11,6 +11,7 @@ import {
 import { Role } from '@/service/backend/user/domain/role';
 import { useAuth } from '@/providers/AuthProvider';
 import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
+import { getAvatar } from '@/components/shared/avatar';
 
 export function BookingsList({
   language,
@@ -51,23 +52,6 @@ export function BookingsList({
     fetchBookings().then();
   }, [bandOptions?.id, userId]);
 
-  const getAvatar = (imageUrl?: string, displayName?: string) => {
-    return imageUrl ? (
-      <img
-        src={imageUrl}
-        alt={displayName}
-        className="mr-4 h-16 w-16 rounded-full object-cover"
-      />
-    ) : (
-      <div
-        className="mr-4 flex h-24 w-24 items-center justify-center rounded-full text-xl font-bold text-white"
-        style={{ backgroundColor: getRandomColor(displayName ?? 'dummy') }}
-      >
-        {displayName ? displayName.charAt(0).toUpperCase() : '?'}
-      </div>
-    );
-  };
-
   if (loading)
     return (
       <div className="flex h-20 items-center justify-center">
@@ -102,14 +86,14 @@ export function BookingsList({
             >
               {role.role === Role.Musician && booking?.userName && (
                 <div className="flex items-center gap-4">
-                  {getAvatar(booking.userImageUrl, booking.userName)}
+                  {getAvatar(16, 16, booking.userImageUrl, booking.userName)}
                   <p className="text-lg font-semibold">{booking.userName}</p>
                 </div>
               )}
 
               {role.role === Role.Client && booking?.bandName && (
                 <div className="flex items-center gap-4">
-                  {getAvatar(booking.bandImageUrl, booking.bandName)}
+                  {getAvatar(16, 16, booking.bandImageUrl, booking.bandName)}
                   <p className="text-lg font-semibold">{booking.bandName}</p>
                 </div>
               )}

@@ -9,9 +9,10 @@
   "rock": "Rock",
   "pop": "Pop",
   "jazz": "Jazz",
-  "send-invitation": "Send invitation",
+  "invite-member": "Invite a member",
   "user-email": "User email",
   "submit": "Submit",
   "cancel": "Cancel",
-  "invitation-sent": "Invitation sent!"
+  "invitation-sent": "Invitation sent!",
+  "members": "Membres"
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
-import { getRandomColor, getStatusColor } from '@/lib/utils';
+import { getStatusColor } from '@/lib/utils';
 import { ArrowLeft, Check, X } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
@@ -12,6 +12,7 @@ import {
 } from '@/service/backend/booking/service/booking.service';
 import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 import React from 'react';
+import { getAvatar } from '@/components/shared/avatar';
 
 export default function BookingDetails({
   language,
@@ -42,37 +43,20 @@ export default function BookingDetails({
     router.back();
   };
 
-  const getAvatar = (imageUrl?: string, displayName?: string) => {
-    return imageUrl ? (
-      <img
-        src={imageUrl}
-        alt={displayName}
-        className="mr-4 h-24 w-24 rounded-full object-cover"
-      />
-    ) : (
-      <div
-        className="mr-4 flex h-24 w-24 items-center justify-center rounded-full text-xl font-bold text-white"
-        style={{ backgroundColor: getRandomColor(displayName ?? 'dummy') }}
-      >
-        {displayName ? displayName.charAt(0).toUpperCase() : '?'}
-      </div>
-    );
-  };
-
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center">
         <ArrowLeft className="mr-4 cursor-pointer" onClick={handleGoBack} />
         {role.role === Role.Musician && booking?.userName && (
           <div className="flex items-center gap-4">
-            {getAvatar(booking.userImageUrl, booking.userName)}
+            {getAvatar(24, 24, booking.userImageUrl, booking.userName)}
             <p className="text-lg font-semibold">{booking.userName}</p>
           </div>
         )}
 
         {role.role === Role.Client && booking?.bandName && (
           <div className="flex items-center gap-4">
-            {getAvatar(booking.bandImageUrl, booking.bandName)}
+            {getAvatar(24, 24, booking.bandImageUrl, booking.bandName)}
             <p className="text-lg font-semibold">{booking.bandName}</p>
           </div>
         )}

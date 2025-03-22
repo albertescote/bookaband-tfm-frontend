@@ -4,6 +4,7 @@ import { UserBand } from '@/service/backend/band/domain/userBand';
 import { getAccessTokenCookie } from '@/service/utils';
 import axios, { AxiosError } from 'axios';
 import { BACKEND_URL } from '@/config';
+import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
 
 export async function createBand(request: {
   name?: string;
@@ -76,14 +77,18 @@ export async function deleteBand(id: string): Promise<void> {
   }
 }
 
-export async function getBandById(id: string): Promise<Band | undefined> {
+export async function getBandDetailsById(
+  id: string,
+): Promise<BandWithDetails | undefined> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
-      console.log('Get band by id failed: access token cookie not found');
+      console.log(
+        'Get band details by id failed: access token cookie not found',
+      );
       return undefined;
     }
-    const response = await axios.get(BACKEND_URL + `/bands/${id}`, {
+    const response = await axios.get(BACKEND_URL + `/bands/${id}/details`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!response.data) {

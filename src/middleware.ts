@@ -7,7 +7,6 @@ import { Role } from '@/service/backend/user/domain/role';
 acceptLanguage.languages(languages);
 
 export const config = {
-  // matcher: '/:lng*'
   matcher: [
     '/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)',
   ],
@@ -18,6 +17,8 @@ const protectedRoutes: string[] = [
   '/profile',
   '/chat',
   '/chat/[id]',
+  '/booking',
+  '/booking/[id]',
 ];
 const clientProtectedRoutes: string[] = ['/chat/new'];
 const musicianProtectedRoutes: string[] = ['/manage-offers', '/band', '/offer'];

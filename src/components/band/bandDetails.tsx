@@ -1,18 +1,18 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { Band } from '@/service/backend/band/domain/band';
 import React, { FormEvent, useState } from 'react';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
-import { getRandomColor } from '@/lib/utils';
 import { joinBand } from '@/service/backend/band/service/band.service';
+import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
+import { getAvatar } from '@/components/shared/avatar';
 
 export default function BandDetails({
   language,
   band,
 }: {
   language: string;
-  band: Band | undefined;
+  band: BandWithDetails | undefined;
 }) {
   const { t } = useTranslation(language, 'band');
   const [joinBandModal, setJoinBandModal] = useState(false);
@@ -43,22 +43,7 @@ export default function BandDetails({
       )}
       {!joinBandModal ? (
         <div className="flex flex-col items-center">
-          {band?.imageUrl ? (
-            <img
-              src={band.imageUrl}
-              alt={band.name}
-              className="h-28 w-28 rounded-full object-cover shadow-md"
-            />
-          ) : (
-            <div
-              className="flex h-28 w-28 items-center justify-center rounded-full text-4xl font-bold text-white shadow-md transition-all"
-              style={{
-                backgroundColor: getRandomColor(band?.name ?? 'dummy'),
-              }}
-            >
-              {band?.name ? band.name.charAt(0) : '?'}
-            </div>
-          )}
+          {getAvatar(28, 28, band?.imageUrl, band?.name)}
           <h2 className="mt-4 text-2xl font-semibold text-gray-800">
             {band?.name}
           </h2>
@@ -67,10 +52,31 @@ export default function BandDetails({
           </p>
           <button
             onClick={() => setJoinBandModal(true)}
-            className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
           >
-            {t('send-invitation')}
+            {t('invite-member')}
           </button>
+
+          {band?.members && band.members.length > 0 && (
+            <div className="mt-6 w-full max-w-md">
+              <h3 className="mb-4 text-xl font-semibold text-gray-800">
+                {t('members')}
+              </h3>
+              <div className="space-y-4">
+                {band.members.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center gap-4 rounded-lg bg-gray-50 p-4 shadow-sm"
+                  >
+                    {getAvatar(12, 12, member.imageUrl, member.userName)}
+                    <p className="text-lg font-medium text-gray-700">
+                      {member.userName}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex flex-col items-center">

@@ -1,7 +1,7 @@
-import { Band } from '@/service/backend/band/domain/band';
 import BandDetails from '@/components/band/bandDetails';
 import CreateBand from '@/components/band/createBand';
-import { getBandById } from '@/service/backend/band/service/band.service';
+import { getBandDetailsById } from '@/service/backend/band/service/band.service';
+import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
 
 interface PageParams {
   params: {
@@ -14,9 +14,9 @@ export default async function Page({
   params: { lng },
   searchParams,
 }: PageParams) {
-  const band: Band | undefined =
+  const band: BandWithDetails | undefined =
     searchParams?.id && typeof searchParams.id === 'string'
-      ? await getBandById(searchParams.id)
+      ? await getBandDetailsById(searchParams.id)
       : undefined;
 
   return (

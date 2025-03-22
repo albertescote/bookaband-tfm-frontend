@@ -8,6 +8,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
 import { createNewChat } from '@/service/backend/chat/service/chat.service';
+import { getAvatar } from '@/components/shared/avatar';
 
 interface ChatProps {
   language: string;
@@ -20,6 +21,12 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
   const router = useRouter();
   const senderId = role.role === Role.Client ? chat.user.id : chat.band.id;
   const recipientId = role.role === Role.Client ? chat.band.id : chat.user.id;
+  const imageUrl =
+    role.role === Role.Client ? chat.band?.imageUrl : chat.user?.imageUrl;
+  const displayName =
+    role.role === Role.Client
+      ? chat.band?.name || 'Unknown'
+      : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
 
   const { messages, sendMessage } = useChat(senderId);
   const [message, setMessage] = useState<string>('');
@@ -84,41 +91,6 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
     }
   };
 
-  const getInitial = (name: string) =>
-    name ? name.charAt(0).toUpperCase() : '?';
-
-  const getRandomColor = (name: string) => {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return `hsl(${hash % 360}, 70%, 60%)`;
-  };
-
-  const getAvatar = (chat: ChatHistory) => {
-    const imageUrl =
-      role.role === Role.Client ? chat.band?.imageUrl : chat.user?.imageUrl;
-    const displayName =
-      role.role === Role.Client
-        ? chat.band?.name || 'Unknown'
-        : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
-
-    return imageUrl ? (
-      <img
-        src={imageUrl}
-        alt={displayName}
-        className="mr-4 h-16 w-16 rounded-full object-cover"
-      />
-    ) : (
-      <div
-        className="mr-4 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white"
-        style={{ backgroundColor: getRandomColor(displayName) }}
-      >
-        {getInitial(displayName)}
-      </div>
-    );
-  };
-
   return (
     <div className="mx-auto flex h-[75vh] min-w-[90vh] flex-col rounded-xl border bg-white shadow-lg">
       <div className="rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-lg font-semibold text-white">
@@ -132,8 +104,8 @@ const Chat: React.FC<ChatProps> = ({ language, chat }) => {
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          {getAvatar(chat)}
-          <span className="text-xl">
+          {getAvatar(16, 16, imageUrl, displayName)}
+          <span className="ml-4 text-xl">
             {role.role === Role.Client
               ? chat.band.name
               : `${chat.user.firstName} ${chat.user.familyName}`}

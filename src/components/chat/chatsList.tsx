@@ -8,6 +8,7 @@ import {
   getBandChats,
   getUserChats,
 } from '@/service/backend/chat/service/chat.service';
+import { getAvatar } from '@/components/shared/avatar';
 
 export function ChatsList({
   language,
@@ -47,39 +48,6 @@ export function ChatsList({
     fetchChats().then();
   }, [bandOptions?.id, userId]);
 
-  const getInitial = (name: string) =>
-    name ? name.charAt(0).toUpperCase() : '?';
-
-  const getRandomColor = (name: string) => {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return `hsl(${hash % 360}, 70%, 60%)`;
-  };
-
-  const getAvatar = (chat: ChatView) => {
-    const imageUrl = userId ? chat.band?.imageUrl : chat.user?.imageUrl;
-    const displayName = userId
-      ? chat.band?.name || 'Unknown'
-      : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
-
-    return imageUrl ? (
-      <img
-        src={imageUrl}
-        alt={displayName}
-        className="mr-4 h-16 w-16 rounded-full object-cover"
-      />
-    ) : (
-      <div
-        className="mr-4 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-white"
-        style={{ backgroundColor: getRandomColor(displayName) }}
-      >
-        {getInitial(displayName)}
-      </div>
-    );
-  };
-
   if (loading)
     return (
       <div className="flex h-20 items-center justify-center">
@@ -112,8 +80,15 @@ export function ChatsList({
               className="relative flex items-center rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
               onClick={() => router.push(`/chat/${chat.id}`)}
             >
-              {getAvatar(chat)}
-              <div className="flex-1">
+              {getAvatar(
+                16,
+                16,
+                userId ? chat.band?.imageUrl : chat.user?.imageUrl,
+                userId
+                  ? chat.band?.name || 'Unknown'
+                  : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim(),
+              )}
+              <div className="ml-6 flex-1">
                 <strong className="block text-gray-800">
                   {userId
                     ? chat.band?.name
