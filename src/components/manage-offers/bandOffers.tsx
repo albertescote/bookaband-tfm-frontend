@@ -1,6 +1,6 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { PencilIcon } from '@heroicons/react/solid';
+import { EyeIcon, EyeOffIcon, PencilIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
 
@@ -20,7 +20,9 @@ export function BandOffers({ language }: { language: string }) {
       {!!userBands && userBands.length > 0 ? (
         userBands.map((band) => (
           <div key={band.id} className="my-8 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-800">{band.name}</h3>
+            <h3 className="mr-4 text-lg font-semibold text-gray-800">
+              {band.name}
+            </h3>
             {band.offer ? (
               <div className="flex items-center justify-between rounded border border-gray-200 p-4 shadow-sm">
                 <div>
@@ -37,6 +39,8 @@ export function BandOffers({ language }: { language: string }) {
                     </p>
                   )}
                 </div>
+                {band.offer.visible && <EyeIcon className="h-4 w-4" />}
+                {!band.offer.visible && <EyeOffIcon className="h-4 w-4" />}
                 <PencilIcon
                   className="ml-8 h-5 w-5 cursor-pointer"
                   onClick={() => navigateToViewOfferDetails(band.offer!.id)}

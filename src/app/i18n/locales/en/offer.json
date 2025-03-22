@@ -1,7 +1,6 @@
 {
   "update-offer-title": "Edit offer",
   "create-offer-title": "Create offer",
-  "form-description": "ID: ",
   "price": "Price",
   "price-placeholder": "Enter the price",
   "band-name": "Band",
@@ -10,5 +9,6 @@
   "update-button": "Update",
   "create-button": "Create",
   "delete-button": "Delete",
-  "copied": "Copied!"
+  "copied": "Copied!",
+  "visibility": "Visibility"
 }

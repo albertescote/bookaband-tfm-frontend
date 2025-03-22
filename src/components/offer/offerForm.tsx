@@ -1,17 +1,17 @@
 'use client';
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
-import { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { Offer } from '@/service/backend/offer/domain/offer';
 import { useAuth } from '@/providers/AuthProvider';
-
 import {
   createOffer,
   deleteOffer,
   updateOffer,
 } from '@/service/backend/offer/service/offer.service';
+import { ArrowLeft } from 'lucide-react';
 
 export default function OfferForm({
   language,
@@ -25,9 +25,15 @@ export default function OfferForm({
   const { t } = useTranslation(language, 'offer');
   const router = useRouter();
   const { changeMe, userBands } = useAuth();
-  const [defaultBandValue, setDefaultBandValue] = useState<string | undefined>(
-    undefined,
-  );
+  const [isVisible, setIsVisible] = useState(offer?.visible || false);
+  const [formData, setFormData] = useState({
+    price: offer?.price || '',
+    description: offer?.description || '',
+    band: offer?.bandId || '',
+    visible: offer?.visible || false,
+  });
+  const [isFormModified, setIsFormModified] = useState(false);
+
   const validUserBands = bandId
     ? userBands.userBands.filter((userBand) => {
         return !userBand.offer;
@@ -35,18 +41,13 @@ export default function OfferForm({
     : userBands.userBands;
 
   useEffect(() => {
-    if (bandId) {
-      const defaultBandId = validUserBands.find((band) => {
-        return band.id === bandId;
-      })?.id;
-      setDefaultBandValue(defaultBandId);
-    } else if (offer) {
-      const defaultBandId = validUserBands.find((band) => {
-        return band.id === offer.bandId;
-      })?.id;
-      setDefaultBandValue(defaultBandId);
-    }
-  }, []);
+    const isModified =
+      formData.price !== (offer?.price || '') ||
+      formData.description !== (offer?.description || '') ||
+      formData.band !== (offer?.bandId || '') ||
+      formData.visible !== (offer?.visible || false);
+    setIsFormModified(isModified);
+  }, [formData, offer]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,15 +57,22 @@ export default function OfferForm({
     const bandId = formData.get('band')?.toString();
 
     if (offer) {
-      updateOffer(offer.id, { price: Number(price), description, bandId }).then(
-        () => {
-          router.push('/manage-offers');
-          changeMe.setChangeMe(!changeMe.changeMe);
-          router.refresh();
-        },
-      );
+      updateOffer(offer.id, {
+        price: Number(price),
+        description,
+        bandId,
+        visible: isVisible,
+      }).then(() => {
+        router.push('/manage-offers');
+        changeMe.setChangeMe(!changeMe.changeMe);
+        router.refresh();
+      });
     } else {
-      createOffer({ price: Number(price), description, bandId }).then(() => {
+      createOffer({
+        price: Number(price),
+        description,
+        bandId,
+      }).then(() => {
         router.push('/manage-offers');
         changeMe.setChangeMe(!changeMe.changeMe);
         router.refresh();
@@ -80,18 +88,32 @@ export default function OfferForm({
     });
   };
 
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+    setFormData((prev) => ({ ...prev, visible: !prev.visible }));
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className="mx-auto min-w-[500px] max-w-md space-y-6 overflow-hidden rounded-xl bg-white p-8 shadow-md md:max-w-2xl">
-      <div className="space-y-4 text-center">
+      <div className="relative items-center space-y-4 text-center">
+        <ArrowLeft
+          className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+          onClick={handleGoBack}
+        />
         <h1 className="mb-2 text-3xl font-bold">
           {offer ? t('update-offer-title') : t('create-offer-title')}
         </h1>
-        {offer && (
-          <span className="text-lg text-gray-500">
-            {t('form-description')}
-            {offer.id}
-          </span>
-        )}
       </div>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2">
@@ -103,7 +125,8 @@ export default function OfferForm({
             type="number"
             placeholder={t('price-placeholder')}
             required
-            defaultValue={offer?.price || ''}
+            value={formData.price}
+            onChange={handleInputChange}
           />
         </div>
         <div className="space-y-2">
@@ -113,8 +136,8 @@ export default function OfferForm({
             id="band"
             name="band"
             required
-            value={defaultBandValue || ''}
-            onChange={(e) => setDefaultBandValue(e.target.value)}
+            value={formData.band}
+            onChange={handleInputChange}
             disabled={!bandId}
           >
             {validUserBands.map((band) => (
@@ -123,9 +146,7 @@ export default function OfferForm({
               </option>
             ))}
           </select>
-          {!bandId && (
-            <input type="hidden" name="band" value={defaultBandValue || ''} />
-          )}
+          {!bandId && <input type="hidden" name="band" value={formData.band} />}
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">{t('description')}</Label>
@@ -134,13 +155,35 @@ export default function OfferForm({
             id="description"
             name="description"
             placeholder={t('description-placeholder')}
-            defaultValue={offer?.description || ''}
+            value={formData.description}
+            onChange={handleInputChange}
           />
+        </div>
+        <div className="flex items-center space-x-2">
+          <Label>{t('visibility')}</Label>
+          <button
+            type="button"
+            onClick={toggleVisibility}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              isVisible ? 'bg-green-500' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                isVisible ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
         </div>
         <div className="flex justify-center pt-4">
           <button
-            className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
+            className={`inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition ${
+              !isFormModified
+                ? 'opacity-50'
+                : 'hover:from-[#b4c6ff] hover:to-[#b4e6ff]'
+            }`}
             type="submit"
+            disabled={!isFormModified}
           >
             {offer ? t('update-button') : t('create-button')}
           </button>

@@ -52,6 +52,7 @@ export async function updateOffer(
   request: {
     bandId?: string;
     price?: number;
+    visible?: boolean;
     description?: string;
   },
 ): Promise<Offer | undefined> {
