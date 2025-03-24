@@ -1,10 +1,20 @@
 'use server';
-import { BACKEND_PUBLIC_KEY, BACKEND_URL } from '@/config';
-import axios, { AxiosError } from 'axios';
-import { importJWK, JWK, jwtVerify } from 'jose';
-import { getAccessTokenCookie } from '@/service/utils';
+import { BACKEND_PUBLIC_KEY } from '@/config';
+import { AxiosError } from 'axios';
+import { decodeJwt, importJWK, JWK, jwtVerify } from 'jose';
+import {
+  deleteAccessTokenCookie,
+  deleteRefreshTokenCookie,
+  getAccessTokenCookie,
+  getRefreshTokenCookie,
+  isTokenExpired,
+  parseCookie,
+  setTokenCookie,
+} from '@/service/utils';
 import { AuthenticationResult } from '@/service/backend/auth/domain/authenticationResult';
 import { AccessTokenPayload } from '@/service/backend/auth/domain/accessTokenPayload';
+import { ParsedCookie } from '@/service/backend/auth/domain/parsedCookie';
+import axiosInstance from '@/service/aixosInstance';
 
 export async function authenticate(
   email: string | undefined,
@@ -15,14 +25,28 @@ export async function authenticate(
       email,
       password,
     };
-    const response = await axios.post(BACKEND_URL + '/auth/login', loginBody);
-    if (!response.data.access_token) {
-      return {
-        valid: false,
-        errorMessage: 'An error occurred while being authenticated',
-      };
+    const response = await axiosInstance.post('/auth/login', loginBody);
+    const setCookieHeader = response.headers['set-cookie'];
+    const parsedCookies: ParsedCookie[] | undefined = setCookieHeader?.map(
+      (cookie) => {
+        return parseCookie(cookie);
+      },
+    );
+    const accessTokenCookie = parsedCookies?.find(
+      (parsedCookie: ParsedCookie) => parsedCookie.name === 'access_token',
+    );
+    const refreshTokenCookie = parsedCookies?.find(
+      (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
+    );
+    if (accessTokenCookie && refreshTokenCookie) {
+      setTokenCookie(accessTokenCookie);
+      setTokenCookie(refreshTokenCookie);
+      return { valid: true };
     }
-    return { valid: true, accessToken: response.data.access_token };
+    return {
+      valid: false,
+      errorMessage: 'An error occurred while being authenticated',
+    };
   } catch (error) {
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${
@@ -33,7 +57,7 @@ export async function authenticate(
   }
 }
 
-export async function validateAccessToken(): Promise<AccessTokenPayload | null> {
+export async function validateAccessTokenSignature(): Promise<AccessTokenPayload | null> {
   try {
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
@@ -41,6 +65,52 @@ export async function validateAccessToken(): Promise<AccessTokenPayload | null> 
         'Access token validation failed: access token cookie not found',
       );
       return null;
+    }
+
+    const parts = accessToken.split('.');
+    if (parts.length !== 3) {
+      console.log('Access token validation failed: invalid JWT structure');
+      return null;
+    }
+
+    const jsonString = Buffer.from(BACKEND_PUBLIC_KEY, 'base64').toString(
+      'utf-8',
+    );
+    const jwk: JWK = JSON.parse(jsonString);
+    const keyLike = await importJWK(jwk, jwk.alg ?? 'ES256');
+
+    await jwtVerify(accessToken, keyLike, {
+      algorithms: [jwk.alg ?? 'ES256'],
+    }).catch((e) => {
+      if (e.message !== '"exp" claim timestamp check failed') {
+        throw e;
+      }
+    });
+
+    const payload = decodeJwt(accessToken);
+
+    return payload as unknown as AccessTokenPayload;
+  } catch (error) {
+    console.log('Access token validation failed: ' + (error as Error).message);
+    return null;
+  }
+}
+
+export async function validateAccessToken(): Promise<AccessTokenPayload | null> {
+  try {
+    let accessToken: string | undefined = getAccessTokenCookie();
+    if (!accessToken) {
+      console.log(
+        'Access token validation failed: access token cookie not found',
+      );
+      return null;
+    }
+    if (isTokenExpired(accessToken)) {
+      const refreshedAccessToken = await refreshAccessToken();
+      if (!refreshedAccessToken) {
+        return null;
+      }
+      accessToken = refreshedAccessToken;
     }
     const jsonString = Buffer.from(BACKEND_PUBLIC_KEY, 'base64').toString(
       'utf-8',
@@ -54,5 +124,82 @@ export async function validateAccessToken(): Promise<AccessTokenPayload | null> 
   } catch (error) {
     console.log('Access token validation failed: ' + (error as Error).message);
     return null;
+  }
+}
+
+export async function withTokenRefreshRetry<T>(
+  apiCall: () => Promise<T>,
+  hasRefreshed = false,
+): Promise<T | undefined> {
+  try {
+    console.log('request');
+    return await apiCall();
+  } catch (error: any) {
+    if (error.response?.status === 401 && !hasRefreshed) {
+      try {
+        await refreshAccessToken();
+        return withTokenRefreshRetry(apiCall, true);
+      } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError);
+        return undefined;
+      }
+    }
+    return undefined;
+  }
+}
+
+export async function refreshAccessToken(): Promise<string | undefined> {
+  try {
+    const refreshToken = getRefreshTokenCookie();
+    if (!refreshToken) {
+      return undefined;
+    }
+    const response = await axiosInstance.post('/auth/refresh', {
+      refreshToken,
+    });
+    let setCookieHeader = response.headers['set-cookie'];
+    if (typeof setCookieHeader === 'string') {
+      setCookieHeader = [setCookieHeader];
+    }
+    const parsedCookies: ParsedCookie[] | undefined = setCookieHeader?.map(
+      (cookie) => {
+        return parseCookie(cookie);
+      },
+    );
+    const accessTokenCookie = parsedCookies?.find(
+      (parsedCookie: ParsedCookie) => parsedCookie.name === 'access_token',
+    );
+    if (accessTokenCookie) {
+      setTokenCookie(accessTokenCookie);
+    }
+    return accessTokenCookie?.value;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
+  }
+}
+
+export async function logout(): Promise<void> {
+  try {
+    const refreshToken = getRefreshTokenCookie();
+    if (!refreshToken) {
+      console.log('Logout failed: refresh token cookie not found');
+      return undefined;
+    }
+    await axiosInstance.post('/auth/logout', { refreshToken });
+    deleteAccessTokenCookie();
+    deleteRefreshTokenCookie();
+    return;
+  } catch (error) {
+    console.log(
+      `Error status: ${(error as AxiosError).code}. Error message: ${
+        (error as AxiosError).message
+      }`,
+    );
+    return undefined;
   }
 }

@@ -22,19 +22,17 @@ export default function BookingDetails({
   booking: BookingWithDetails;
 }) {
   const { t } = useTranslation(language, 'booking');
-  const { role, changeMe } = useAuth();
+  const { role } = useAuth();
   const router = useRouter();
 
   const handleAccept = () => {
     acceptBooking(booking?.id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };
 
   const handleDecline = () => {
     declineBooking(booking?.id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };

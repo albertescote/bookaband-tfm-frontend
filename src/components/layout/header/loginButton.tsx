@@ -1,8 +1,8 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { deleteCookie } from 'cookies-next';
 import { useAuth } from '@/providers/AuthProvider';
+import { logout } from '@/service/backend/auth/service/auth.service';
 
 const LoginButton = ({ language }: { language: string }) => {
   const { authentication, role, userBands } = useAuth();
@@ -14,11 +14,12 @@ const LoginButton = ({ language }: { language: string }) => {
       router.push('/login');
       return;
     }
-    deleteCookie('access_token_music_manager');
-    authentication.setAuthenticated(false);
-    role.setRole('none');
-    userBands.setUserBands([]);
-    router.push('/');
+    logout().then(() => {
+      authentication.setAuthenticated(false);
+      role.setRole('none');
+      userBands.setUserBands([]);
+      router.push('/');
+    });
   };
   return (
     <button onClick={navigate}>

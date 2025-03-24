@@ -3,11 +3,9 @@ import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
 import { FormEvent, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
-import { setCookie } from 'cookies-next';
 import { authenticate } from '@/service/backend/auth/service/auth.service';
 import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
 
 import { createUser } from '@/service/backend/user/service/user.service';
 
@@ -15,7 +13,6 @@ export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-  const { changeMe } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,12 +30,7 @@ export default function SignUpForm({ language }: { language: string }) {
           setErrorMessage(authenticationResult.errorMessage);
         }
         if (authenticationResult.valid) {
-          setCookie(
-            'access_token_music_manager',
-            authenticationResult.accessToken,
-          );
           router.push('/');
-          changeMe.setChangeMe(!changeMe.changeMe);
         }
       },
     );

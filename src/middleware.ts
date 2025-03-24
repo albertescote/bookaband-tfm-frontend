@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { cookieName, fallbackLng, languages } from './app/i18n/settings';
-import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
+import { validateAccessTokenSignature } from '@/service/backend/auth/service/auth.service';
 import { Role } from '@/service/backend/user/domain/role';
+import {
+  CLIENT_PROTECTED_ROUTES,
+  COMMON_PROTECTED_ROUTES,
+  MUSICIAN_PROTECTED_ROUTES,
+} from '@/config';
 
 acceptLanguage.languages(languages);
 
@@ -12,17 +17,6 @@ export const config = {
   ],
 };
 
-const protectedRoutes: string[] = [
-  '/offer-details',
-  '/profile',
-  '/chat',
-  '/chat/[id]',
-  '/booking',
-  '/booking/[id]',
-];
-const clientProtectedRoutes: string[] = ['/chat/new'];
-const musicianProtectedRoutes: string[] = ['/manage-offers', '/band', '/offer'];
-
 export async function middleware(req: NextRequest) {
   let lng;
   if (req.cookies.has(cookieName))
@@ -30,7 +24,6 @@ export async function middleware(req: NextRequest) {
   if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'));
   if (!lng) lng = fallbackLng;
 
-  // Redirect if lng in path is not supported
   if (
     !languages.some((loc) => {
       const langPrefix = `/${loc}`;
@@ -44,10 +37,11 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  const allProtectedRoutes = protectedRoutes.concat(
-    protectedRoutes,
-    clientProtectedRoutes,
-    musicianProtectedRoutes,
+  let allProtectedRoutes: string[] = [];
+  allProtectedRoutes = allProtectedRoutes.concat(
+    COMMON_PROTECTED_ROUTES,
+    CLIENT_PROTECTED_ROUTES,
+    MUSICIAN_PROTECTED_ROUTES,
   );
 
   const langPrefix = `/${lng}`;
@@ -62,17 +56,17 @@ export async function middleware(req: NextRequest) {
   if (isProtectedRoute) {
     let authorized = false;
     let role: string | undefined = '';
-    const accessTokenPayload = await validateAccessToken();
+    const accessTokenPayload = await validateAccessTokenSignature();
     if (accessTokenPayload) {
       role = accessTokenPayload.role;
       if (
         role === Role.Musician &&
-        clientProtectedRoutes.includes(protectedRouteFound)
+        CLIENT_PROTECTED_ROUTES.includes(protectedRouteFound)
       ) {
         return NextResponse.redirect(new URL(`/${lng}/forbidden`, req.nextUrl));
       } else if (
         role === Role.Client &&
-        musicianProtectedRoutes.includes(protectedRouteFound)
+        MUSICIAN_PROTECTED_ROUTES.includes(protectedRouteFound)
       ) {
         return NextResponse.redirect(new URL(`/${lng}/forbidden`, req.nextUrl));
       } else {

@@ -6,13 +6,11 @@ import { FormEvent } from 'react';
 import { Band } from '@/service/backend/band/domain/band';
 import { useRouter } from 'next/navigation';
 import { MusicGenre } from '@/service/backend/band/domain/musicGenre';
-import { useAuth } from '@/providers/AuthProvider';
 import { createBand } from '@/service/backend/band/service/band.service';
 
 export default function CreateBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'band');
   const router = useRouter();
-  const { changeMe } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,7 +20,6 @@ export default function CreateBand({ language }: { language: string }) {
 
     createBand({ name, genre }).then((band: Band | undefined) => {
       router.push(`/band?id=${band?.id}`);
-      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };

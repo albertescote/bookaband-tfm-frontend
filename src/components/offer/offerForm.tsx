@@ -24,7 +24,7 @@ export default function OfferForm({
 }) {
   const { t } = useTranslation(language, 'offer');
   const router = useRouter();
-  const { changeMe, userBands } = useAuth();
+  const { userBands } = useAuth();
   const [isVisible, setIsVisible] = useState(offer?.visible || false);
   const [formData, setFormData] = useState({
     price: offer?.price || '',
@@ -64,7 +64,6 @@ export default function OfferForm({
         visible: isVisible,
       }).then(() => {
         router.push('/manage-offers');
-        changeMe.setChangeMe(!changeMe.changeMe);
         router.refresh();
       });
     } else {
@@ -74,7 +73,6 @@ export default function OfferForm({
         bandId,
       }).then(() => {
         router.push('/manage-offers');
-        changeMe.setChangeMe(!changeMe.changeMe);
         router.refresh();
       });
     }
@@ -83,7 +81,6 @@ export default function OfferForm({
   const handleDelete = () => {
     deleteOffer(offer!.id).then(() => {
       router.push('/manage-offers');
-      changeMe.setChangeMe(!changeMe.changeMe);
       router.refresh();
     });
   };

@@ -1,23 +1,18 @@
 'use server';
 import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { Offer } from '@/service/backend/offer/domain/offer';
-import axios, { AxiosError } from 'axios';
-import { BACKEND_URL } from '@/config';
-import { getAccessTokenCookie } from '@/service/utils';
+import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
+import axiosInstance from '@/service/aixosInstance';
+import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 
 export async function getAllOffersDetails(): Promise<OfferDetails[]> {
   try {
-    const response = await axios.get(BACKEND_URL + '/offers');
+    const response = await axiosInstance.get('/offers');
     if (!response.data) {
       return [];
     }
     return response.data;
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
+  } catch (e) {
     return [];
   }
 }
@@ -27,24 +22,9 @@ export async function createOffer(request: {
   price?: number;
   description?: string;
 }): Promise<Offer | undefined> {
-  try {
-    const accessToken = getAccessTokenCookie();
-    if (!accessToken) {
-      console.log('Create offer failed: access token cookie not found');
-      return undefined;
-    }
-    const response = await axios.post(BACKEND_URL + '/offers', request, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return undefined;
-  }
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.post('/offers', request).then((res) => res.data),
+  );
 }
 
 export async function updateOffer(
@@ -56,99 +36,33 @@ export async function updateOffer(
     description?: string;
   },
 ): Promise<Offer | undefined> {
-  try {
-    const accessToken = getAccessTokenCookie();
-    if (!accessToken) {
-      console.log('Create offer failed: access token cookie not found');
-      return undefined;
-    }
-    const response = await axios.put(BACKEND_URL + `/offers/${id}`, request, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return undefined;
-  }
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .put(`/offers/${id}`, request)
+      .then((res) => res.data),
+  );
 }
 
 export async function deleteOffer(id: string): Promise<void> {
-  try {
-    const accessToken = getAccessTokenCookie();
-    if (!accessToken) {
-      console.log('Create band failed: access token cookie not found');
-      return undefined;
-    }
-    await axios.delete(BACKEND_URL + `/offers/${id}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return undefined;
-  }
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.delete(`/offers/${id}`),
+  );
 }
 
 export async function getOfferById(
   offerId: string,
 ): Promise<Offer | undefined> {
-  try {
-    const accessToken = getAccessTokenCookie();
-    if (!accessToken) {
-      console.log('Get offer by id failed: access token cookie not found');
-      return undefined;
-    }
-    const response = await axios.get(BACKEND_URL + `/offers/${offerId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.data) {
-      return undefined;
-    }
-    return response.data;
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return undefined;
-  }
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.get(`/offers/${offerId}`).then((res) => res.data),
+  );
 }
 
 export async function getOfferDetailsById(
   offerId: string,
 ): Promise<OfferDetails | undefined> {
-  try {
-    const accessToken = getAccessTokenCookie();
-    if (!accessToken) {
-      console.log(
-        'Get offers details by id failed: access token cookie not found',
-      );
-      return undefined;
-    }
-    const response = await axios.get(
-      BACKEND_URL + `/offers/${offerId}/details`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
-    if (!response.data) {
-      return undefined;
-    }
-    return response.data;
-  } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return undefined;
-  }
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .get(`/offers/${offerId}/details`)
+      .then((res) => res.data),
+  );
 }

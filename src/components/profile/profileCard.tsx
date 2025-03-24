@@ -26,7 +26,7 @@ export default function ProfileCard({
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();
-  const { changeMe, userBands } = useAuth();
+  const { userBands, forceRefresh } = useAuth();
 
   const navigateToCreateBand = () => {
     router.push('/band');
@@ -34,21 +34,21 @@ export default function ProfileCard({
 
   const handleDeleteBand = (id: string) => {
     deleteBand(id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
+      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
       router.refresh();
     });
   };
 
   const handleAcceptInvitation = (id: string) => {
     acceptInvitation(id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
+      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
       router.refresh();
     });
   };
 
   const handleDeclineInvitation = (id: string) => {
     declineInvitation(id).then(() => {
-      changeMe.setChangeMe(!changeMe.changeMe);
+      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
       router.refresh();
     });
   };

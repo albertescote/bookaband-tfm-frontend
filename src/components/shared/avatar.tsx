@@ -6,7 +6,6 @@ export const getAvatar = (
   imageUrl?: string,
   displayName?: string,
 ) => {
-  console.log(height, width);
   return imageUrl ? (
     <img
       src={imageUrl}

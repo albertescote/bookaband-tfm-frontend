@@ -10,9 +10,29 @@ import { UserBand } from '@/service/backend/band/domain/userBand';
 import { Role } from '@/service/backend/user/domain/role';
 
 import { getUserBands } from '@/service/backend/band/service/band.service';
+import { usePathname, useRouter } from 'next/navigation';
+
+const COMMON_PROTECTED_ROUTES: string[] = [
+  '/offer-details',
+  '/profile',
+  '/chat',
+  '/chat/[id]',
+  '/booking',
+  '/booking/[id]',
+];
+
+const CLIENT_PROTECTED_ROUTES: string[] = ['/chat/new'];
+const MUSICIAN_PROTECTED_ROUTES: string[] = [
+  '/manage-offers',
+  '/band',
+  '/offer',
+];
 
 interface AuthContextType {
-  changeMe: { changeMe: boolean; setChangeMe: (changeMe: boolean) => void };
+  forceRefresh: {
+    forceRefresh: boolean;
+    setForceRefresh: (forceRefresh: boolean) => void;
+  };
   authentication: {
     isAuthenticated: boolean;
     setAuthenticated: (auth: boolean) => void;
@@ -29,9 +49,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState('none');
   const [userBands, setUserBands] = useState<UserBand[]>([]);
-  const [changeMe, setChangeMe] = useState<boolean>(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const [forceRefresh, setForceRefresh] = useState<boolean>(false);
 
   useEffect(() => {
+    const isProtectedRoute = (path: string, lng: string): boolean => {
+      let allProtectedRoutes: string[] = [];
+      allProtectedRoutes = allProtectedRoutes.concat(
+        COMMON_PROTECTED_ROUTES,
+        CLIENT_PROTECTED_ROUTES,
+        MUSICIAN_PROTECTED_ROUTES,
+      );
+
+      const langPrefix = `/${lng}`;
+
+      const protectedRouteFound = allProtectedRoutes.find((route) => {
+        return new RegExp(
+          `^${langPrefix}${route.replace(/\[.*\]/, '[^/]+')}$`,
+        ).test(path);
+      });
+      return !!protectedRouteFound;
+    };
     validateAccessToken().then((accessTokenPayload) => {
       if (accessTokenPayload) {
         setAuthenticated(true);
@@ -43,14 +82,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
           });
         }
+      } else if (isProtectedRoute(pathname, pathname.split('/')[1])) {
+        setAuthenticated(false);
+        setRole('none');
+        setUserBands([]);
+        router.push('/login');
       }
     });
-  }, [changeMe]);
+  }, [pathname, forceRefresh]);
 
   return (
     <AuthContext.Provider
       value={{
-        changeMe: { changeMe, setChangeMe },
+        forceRefresh: { forceRefresh, setForceRefresh },
         authentication: {
           isAuthenticated,
           setAuthenticated,
