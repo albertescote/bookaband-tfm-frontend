@@ -45,7 +45,7 @@ export async function updateOffer(
 
 export async function deleteOffer(id: string): Promise<void> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.delete(`/offers/${id}`),
+    authorizedAxiosInstance.delete(`/offers/${id}`).then((res) => res.data),
   );
 }
 

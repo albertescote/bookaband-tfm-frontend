@@ -53,42 +53,57 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [forceRefresh, setForceRefresh] = useState<boolean>(false);
 
-  useEffect(() => {
-    const isProtectedRoute = (path: string, lng: string): boolean => {
-      let allProtectedRoutes: string[] = [];
-      allProtectedRoutes = allProtectedRoutes.concat(
-        COMMON_PROTECTED_ROUTES,
-        CLIENT_PROTECTED_ROUTES,
-        MUSICIAN_PROTECTED_ROUTES,
+  const isProtectedRoute = (
+    path: string | null,
+    lng: string | undefined,
+  ): boolean => {
+    if (!path || !lng) return false;
+
+    const allProtectedRoutes = [
+      ...COMMON_PROTECTED_ROUTES,
+      ...(role === Role.Client ? CLIENT_PROTECTED_ROUTES : []),
+      ...(role === Role.Musician ? MUSICIAN_PROTECTED_ROUTES : []),
+    ];
+
+    const langPrefix = `/${lng}`;
+    return allProtectedRoutes.some((route) => {
+      const routePattern = new RegExp(
+        `^${langPrefix}${route.replace(/\[.*?\]/, '[^/]+')}$`,
       );
-
-      const langPrefix = `/${lng}`;
-
-      const protectedRouteFound = allProtectedRoutes.find((route) => {
-        return new RegExp(
-          `^${langPrefix}${route.replace(/\[.*\]/, '[^/]+')}$`,
-        ).test(path);
-      });
-      return !!protectedRouteFound;
-    };
-    validateAccessToken().then((accessTokenPayload) => {
-      if (accessTokenPayload) {
-        setAuthenticated(true);
-        setRole(accessTokenPayload.role);
-        if (accessTokenPayload.role === Role.Musician) {
-          getUserBands().then((userBandsArray) => {
-            if (userBandsArray) {
-              setUserBands(userBandsArray);
-            }
-          });
-        }
-      } else if (isProtectedRoute(pathname, pathname.split('/')[1])) {
-        setAuthenticated(false);
-        setRole('none');
-        setUserBands([]);
-        router.push('/login');
-      }
+      return routePattern.test(path);
     });
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const validateAuth = async () => {
+      try {
+        const accessTokenPayload = await validateAccessToken();
+        if (!isMounted) return;
+
+        if (accessTokenPayload) {
+          setAuthenticated(true);
+          setRole(accessTokenPayload.role);
+          if (accessTokenPayload.role === Role.Musician) {
+            const userBandsArray = await getUserBands();
+            if (userBandsArray && isMounted) setUserBands(userBandsArray);
+          }
+        } else if (isProtectedRoute(pathname, pathname?.split('/')[1])) {
+          setAuthenticated(false);
+          setRole('none');
+          setUserBands([]);
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Auth validation failed:', error);
+      }
+    };
+
+    validateAuth().then();
+    return () => {
+      isMounted = false;
+    };
   }, [pathname, forceRefresh]);
 
   return (

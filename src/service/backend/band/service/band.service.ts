@@ -19,16 +19,18 @@ export async function joinBand(
   userEmail: string,
 ): Promise<void> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.post('/invitations/send', {
-      bandId,
-      userEmail,
-    }),
+    authorizedAxiosInstance
+      .post('/invitations/send', {
+        bandId,
+        userEmail,
+      })
+      .then((res) => res.data),
   );
 }
 
 export async function deleteBand(id: string): Promise<void> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.delete(`/bands/${id}`),
+    authorizedAxiosInstance.delete(`/bands/${id}`).then((res) => res.data),
   );
 }
 

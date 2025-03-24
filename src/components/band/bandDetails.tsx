@@ -25,13 +25,17 @@ export default function BandDetails({
     if (!band?.id || !userEmail) {
       return;
     }
-    joinBand(band?.id, userEmail).then(() => {
-      setShowPopup(true);
-      setTimeout(() => {
-        setJoinBandModal(false);
-        setShowPopup(false);
-      }, 3000);
-    });
+    try {
+      joinBand(band?.id, userEmail).then(() => {
+        setShowPopup(true);
+        setTimeout(() => {
+          setJoinBandModal(false);
+          setShowPopup(false);
+        }, 3000);
+      });
+    } catch (e) {
+      console.error('Invitation failed:', e);
+    }
   };
 
   return (

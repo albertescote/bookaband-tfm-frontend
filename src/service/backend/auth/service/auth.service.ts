@@ -132,7 +132,6 @@ export async function withTokenRefreshRetry<T>(
   hasRefreshed = false,
 ): Promise<T | undefined> {
   try {
-    console.log('request');
     return await apiCall();
   } catch (error: any) {
     if (error.response?.status === 401 && !hasRefreshed) {

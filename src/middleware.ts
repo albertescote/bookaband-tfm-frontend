@@ -46,10 +46,14 @@ export async function middleware(req: NextRequest) {
 
   const langPrefix = `/${lng}`;
 
+  const pathname = req.nextUrl.pathname.replace(/\/+/g, '/');
+  if (pathname !== req.nextUrl.pathname) {
+    return NextResponse.redirect(new URL(pathname, req.url));
+  }
+
   const protectedRouteFound = allProtectedRoutes.find((route) => {
-    return new RegExp(
-      `^${langPrefix}${route.replace(/\[.*\]/, '[^/]+')}$`,
-    ).test(req.nextUrl.pathname);
+    const normalizedRoute = route.replace(/\[.*?\]/, '[^/]+');
+    return new RegExp(`^${langPrefix}${normalizedRoute}$`).test(pathname);
   });
   const isProtectedRoute = !!protectedRouteFound;
 
@@ -74,11 +78,15 @@ export async function middleware(req: NextRequest) {
       }
     }
     if (!authorized) {
-      const redirectUrl = encodeURIComponent(
-        protectedRouteFound?.split('/')[1] + req.nextUrl.search,
-      );
+      const redirectPath = protectedRouteFound?.replace(langPrefix, '') || '';
+      if (redirectPath.startsWith('/login')) {
+        return NextResponse.next();
+      }
       return NextResponse.redirect(
-        new URL(`/${lng}/login?redirect_to=${redirectUrl}`, req.nextUrl),
+        new URL(
+          `/${lng}/login?redirect_to=${encodeURIComponent(redirectPath)}`,
+          req.url,
+        ),
       );
     }
   }
