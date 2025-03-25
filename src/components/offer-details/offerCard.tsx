@@ -2,7 +2,7 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { AnimatePresence } from 'framer-motion';
@@ -13,6 +13,7 @@ import BookingActions from '@/components/offer-details/bookingActions';
 import { checkExistingChat } from '@/service/backend/chat/service/chat.service';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
 import { getAvatar } from '@/components/shared/avatar';
+import { ArrowLeft } from 'lucide-react';
 
 export default function OfferCard({
   language,
@@ -93,9 +94,19 @@ export default function OfferCard({
     setDate(null);
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className="mx-auto min-w-[500px] max-w-md space-y-6 overflow-hidden rounded-xl bg-white p-8 shadow-md md:max-w-2xl">
       <div className="flex flex-col items-center">
+        <div className="relative w-full">
+          <ArrowLeft
+            className="absolute left-4 top-4 cursor-pointer"
+            onClick={handleGoBack}
+          />
+        </div>
         {getAvatar(112, 112, offerDetails?.imageUrl, offerDetails?.bandName)}
         <BandInfo
           bandName={offerDetails?.bandName}
