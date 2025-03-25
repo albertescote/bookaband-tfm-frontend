@@ -24,13 +24,12 @@ export default function LoginForm({
     const password = formData.get('password')?.toString();
 
     authenticate(email, password).then((authenticationResult) => {
-      if (!authenticationResult.valid && authenticationResult.errorMessage) {
-        setErrorMessage(authenticationResult.errorMessage);
+      if (!authenticationResult.valid) {
+        setErrorMessage(authenticationResult.errorMessage || '');
+        return;
       }
-      if (authenticationResult.valid) {
-        const redirectUrl = redirectTo ? decodeURIComponent(redirectTo) : '/';
-        router.push(redirectUrl);
-      }
+      const redirectUrl = redirectTo ? decodeURIComponent(redirectTo) : '/';
+      router.push(redirectUrl);
     });
   };
 
