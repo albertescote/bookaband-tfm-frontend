@@ -8,7 +8,9 @@ import { BookingsList } from '@/components/booking/bookingsList';
 export function SelectBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'booking');
   const { userBands } = useAuth().userBands;
-  const [bandId, setBandId] = useState<string | undefined>(undefined);
+  const [bandId, setBandId] = useState<string | undefined>(
+    userBands.length === 1 ? userBands[0].id : undefined,
+  );
 
   return (
     <div>
@@ -37,7 +39,11 @@ export function SelectBand({ language }: { language: string }) {
       ) : (
         <BookingsList
           language={language}
-          bandOptions={{ id: bandId, setBandId: setBandId }}
+          bandOptions={{
+            id: bandId,
+            setBandId: setBandId,
+            multiple: userBands.length > 1,
+          }}
         ></BookingsList>
       )}
     </div>

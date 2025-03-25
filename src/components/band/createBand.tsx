@@ -2,11 +2,12 @@
 import { useTranslation } from '@/app/i18n/client';
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
-import { FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { Band } from '@/service/backend/band/domain/band';
 import { useRouter } from 'next/navigation';
 import { MusicGenre } from '@/service/backend/band/domain/musicGenre';
 import { createBand } from '@/service/backend/band/service/band.service';
+import { ArrowLeft } from 'lucide-react';
 
 export default function CreateBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'band');
@@ -24,8 +25,13 @@ export default function CreateBand({ language }: { language: string }) {
     });
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div>
+      <ArrowLeft className="cursor-pointer" onClick={handleGoBack} />
       <div className="space-y-4 text-center">
         <h1 className="text-3xl font-bold">{t('form-title')}</h1>
         <p>{t('form-description')}</p>

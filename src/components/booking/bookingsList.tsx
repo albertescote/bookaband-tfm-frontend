@@ -23,6 +23,7 @@ export function BookingsList({
   bandOptions?: {
     id: string;
     setBandId: Dispatch<SetStateAction<string | undefined>>;
+    multiple: boolean;
   };
 }) {
   const { t } = useTranslation(language, 'booking');
@@ -64,7 +65,7 @@ export function BookingsList({
   return (
     <div>
       <div className="mb-4 flex">
-        {!!bandOptions?.id && (
+        {!!bandOptions?.id && bandOptions.multiple && (
           <ArrowLeft
             className="cursor-pointer"
             onClick={() => {

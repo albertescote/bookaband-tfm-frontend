@@ -6,6 +6,8 @@ import { Label } from '@/components/shared/label';
 import { joinBand } from '@/service/backend/band/service/band.service';
 import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
 import { getAvatar } from '@/components/shared/avatar';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function BandDetails({
   language,
@@ -17,6 +19,7 @@ export default function BandDetails({
   const { t } = useTranslation(language, 'band');
   const [joinBandModal, setJoinBandModal] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,6 +41,10 @@ export default function BandDetails({
     }
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div>
       {showPopup && (
@@ -47,6 +54,12 @@ export default function BandDetails({
       )}
       {!joinBandModal ? (
         <div className="flex flex-col items-center">
+          <div className="relative w-full">
+            <ArrowLeft
+              className="absolute left-4 top-4 cursor-pointer"
+              onClick={handleGoBack}
+            />
+          </div>
           {getAvatar(112, 112, band?.imageUrl, band?.name)}
           <h2 className="mt-4 text-2xl font-semibold text-gray-800">
             {band?.name}

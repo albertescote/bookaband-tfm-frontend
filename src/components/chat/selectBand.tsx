@@ -8,7 +8,9 @@ import { ChatsList } from '@/components/chat/chatsList';
 export function SelectBand({ language }: { language: string }) {
   const { t } = useTranslation(language, 'chat');
   const { userBands } = useAuth().userBands;
-  const [bandId, setBandId] = useState<string | undefined>(undefined);
+  const [bandId, setBandId] = useState<string | undefined>(
+    userBands.length === 1 ? userBands[0].id : undefined,
+  );
 
   return (
     <div>
@@ -37,7 +39,11 @@ export function SelectBand({ language }: { language: string }) {
       ) : (
         <ChatsList
           language={language}
-          bandOptions={{ id: bandId, setBandId: setBandId }}
+          bandOptions={{
+            id: bandId,
+            setBandId: setBandId,
+            multiple: userBands.length > 1,
+          }}
         ></ChatsList>
       )}
     </div>

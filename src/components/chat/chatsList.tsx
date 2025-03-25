@@ -20,6 +20,7 @@ export function ChatsList({
   bandOptions?: {
     id: string;
     setBandId: Dispatch<SetStateAction<string | undefined>>;
+    multiple: boolean;
   };
 }) {
   const { t } = useTranslation(language, 'chat');
@@ -60,7 +61,7 @@ export function ChatsList({
   return (
     <div>
       <div className="mb-4 flex">
-        {!!bandOptions?.id && (
+        {!!bandOptions?.id && bandOptions.multiple && (
           <ArrowLeft
             className="cursor-pointer"
             onClick={() => {
