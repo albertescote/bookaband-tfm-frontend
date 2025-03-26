@@ -6,27 +6,39 @@ import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/user/domain/role';
-import React from 'react';
-import { Invitation } from '@/service/backend/invitation/domain/invitation';
+import React, { useEffect, useState } from 'react';
+import {
+  Invitation,
+  InvitationStatus,
+} from '@/service/backend/invitation/domain/invitation';
 import { getRandomColor } from '@/lib/utils';
 import { deleteBand } from '@/service/backend/band/service/band.service';
 import {
   acceptInvitation,
   declineInvitation,
+  getUserInvitations,
 } from '@/service/backend/invitation/service/invitation.service';
 
 export default function ProfileCard({
   language,
   user,
-  invitations,
 }: {
   language: string;
   user: User | undefined;
-  invitations: Invitation[] | undefined;
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();
   const { userBands, forceRefresh } = useAuth();
+  const [invitations, setInvitations] = useState<Invitation[] | undefined>([]);
+
+  useEffect(() => {
+    getUserInvitations().then((invitations) => {
+      const pendingInvitations = invitations?.filter((invitation) => {
+        return invitation.status === InvitationStatus.PENDING;
+      });
+      setInvitations(pendingInvitations);
+    });
+  }, []);
 
   const navigateToCreateBand = () => {
     router.push('/band');

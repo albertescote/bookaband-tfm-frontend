@@ -1,25 +1,35 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
-import { joinBand } from '@/service/backend/band/service/band.service';
-import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
+import {
+  getBandDetailsById,
+  joinBand,
+} from '@/service/backend/band/service/band.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { BandWithDetails } from '@/service/backend/band/domain/bandWithDetails';
 
 export default function BandDetails({
   language,
-  band,
+  bandId,
 }: {
   language: string;
-  band: BandWithDetails | undefined;
+  bandId: string;
 }) {
   const { t } = useTranslation(language, 'band');
   const [joinBandModal, setJoinBandModal] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [band, setBand] = useState<BandWithDetails | undefined>();
   const router = useRouter();
+
+  useEffect(() => {
+    getBandDetailsById(bandId).then((band) => {
+      setBand(band);
+    });
+  }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +39,7 @@ export default function BandDetails({
       return;
     }
     try {
-      joinBand(band?.id, userEmail).then(() => {
+      joinBand(band.id, userEmail).then(() => {
         setShowPopup(true);
         setTimeout(() => {
           setJoinBandModal(false);

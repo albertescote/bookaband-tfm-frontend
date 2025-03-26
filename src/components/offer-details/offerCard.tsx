@@ -4,7 +4,6 @@ import { useAuth } from '@/providers/AuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { AnimatePresence } from 'framer-motion';
 import BandInfo from '@/components/offer-details/bandInfo';
 import CalendarPicker from '@/components/offer-details/calendarPicker';
@@ -14,13 +13,15 @@ import { checkExistingChat } from '@/service/backend/chat/service/chat.service';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { ArrowLeft } from 'lucide-react';
+import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
+import { getOfferDetailsById } from '@/service/backend/offer/service/offer.service';
 
 export default function OfferCard({
   language,
-  offerDetails,
+  offerId,
 }: {
   language: string;
-  offerDetails?: OfferDetails;
+  offerId?: string;
 }) {
   const { t } = useTranslation(language, 'offer-details');
   const { role } = useAuth();
@@ -29,7 +30,16 @@ export default function OfferCard({
   const [time, setTime] = useState<string>('12:00');
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [showCalendar, setShowCalendar] = useState(true);
+  const [offerDetails, setOfferDetails] = useState<OfferDetails | undefined>();
   const router = useRouter();
+
+  useEffect(() => {
+    if (offerId) {
+      getOfferDetailsById(offerId).then((offer) => {
+        setOfferDetails(offer);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (offerDetails?.bookingDates && offerDetails.bookingDates.length > 0) {

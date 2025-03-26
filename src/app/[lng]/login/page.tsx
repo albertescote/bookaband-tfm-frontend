@@ -4,7 +4,7 @@ interface PageParams {
   params: {
     lng: string;
   };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | undefined };
 }
 
 export default function Page({ params: { lng }, searchParams }: PageParams) {

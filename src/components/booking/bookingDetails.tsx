@@ -9,21 +9,29 @@ import { useRouter } from 'next/navigation';
 import {
   acceptBooking,
   declineBooking,
+  getBookingById,
 } from '@/service/backend/booking/service/booking.service';
-import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAvatar } from '@/components/shared/avatar';
+import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 
 export default function BookingDetails({
   language,
-  booking,
+  bookingId,
 }: {
   language: string;
-  booking: BookingWithDetails;
+  bookingId: string;
 }) {
   const { t } = useTranslation(language, 'booking');
   const { role } = useAuth();
   const router = useRouter();
+  const [booking, setBooking] = useState<BookingWithDetails | undefined>();
+
+  useEffect(() => {
+    getBookingById(bookingId).then((booking) => {
+      setBooking(booking);
+    });
+  }, []);
 
   const handleAccept = () => {
     acceptBooking(booking?.id).then(() => {
@@ -83,7 +91,7 @@ export default function BookingDetails({
           </div>
         )}
 
-        <span className="mt-2 text-sm text-gray-500">{booking.id}</span>
+        <span className="mt-2 text-sm text-gray-500">{booking?.id}</span>
 
         {booking?.status === BookingStatus.PENDING &&
           role.role === Role.Musician && (

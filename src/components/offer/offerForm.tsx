@@ -9,6 +9,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import {
   createOffer,
   deleteOffer,
+  getOfferById,
   updateOffer,
 } from '@/service/backend/offer/service/offer.service';
 import { ArrowLeft } from 'lucide-react';
@@ -16,23 +17,39 @@ import { ArrowLeft } from 'lucide-react';
 export default function OfferForm({
   language,
   bandId,
-  offer,
+  offerId,
 }: {
   language: string;
   bandId?: string;
-  offer?: Offer;
+  offerId?: string;
 }) {
   const { t } = useTranslation(language, 'offer');
   const router = useRouter();
   const { userBands } = useAuth();
-  const [isVisible, setIsVisible] = useState(offer?.visible || false);
+  const [offer, setOffer] = useState<Offer | undefined>();
   const [formData, setFormData] = useState({
-    price: offer?.price || '',
-    description: offer?.description || '',
-    band: offer?.bandId || '',
-    visible: offer?.visible || false,
+    price: 0,
+    description: '',
+    band: '',
+    visible: false,
   });
+  const [isVisible, setIsVisible] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
+
+  useEffect(() => {
+    if (offerId) {
+      getOfferById(offerId).then((offer) => {
+        setOffer(offer);
+        setFormData({
+          price: offer?.price || 0,
+          description: offer?.description || '',
+          band: offer?.bandId || '',
+          visible: offer?.visible || false,
+        });
+        setIsVisible(offer?.visible || false);
+      });
+    }
+  }, []);
 
   const validUserBands = bandId
     ? userBands.userBands.filter((userBand) => {

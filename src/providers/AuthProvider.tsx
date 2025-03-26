@@ -47,6 +47,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
+  console.log('setting role to none 1');
   const [role, setRole] = useState('none');
   const [userBands, setUserBands] = useState<UserBand[]>([]);
   const pathname = usePathname();
@@ -84,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (accessTokenPayload) {
           setAuthenticated(true);
+          console.log('setting role to:', accessTokenPayload.role);
           setRole(accessTokenPayload.role);
           if (accessTokenPayload.role === Role.Musician) {
             const userBandsArray = await getUserBands();
@@ -91,8 +93,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         } else if (isProtectedRoute(pathname, pathname?.split('/')[1])) {
           setAuthenticated(false);
+          console.log('setting role to none 2');
           setRole('none');
           setUserBands([]);
+          console.log(pathname);
           router.push('/login');
         }
       } catch (error) {
