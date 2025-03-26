@@ -20,6 +20,7 @@ export async function getAllOffersDetails(): Promise<OfferDetails[]> {
 export async function createOffer(request: {
   bandId?: string;
   price?: number;
+  visible?: boolean;
   description?: string;
 }): Promise<Offer | undefined> {
   return withTokenRefreshRetry(() =>

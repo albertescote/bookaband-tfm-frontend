@@ -31,9 +31,9 @@ export default function OfferForm({
     price: 0,
     description: '',
     band: '',
-    visible: false,
+    visible: true,
   });
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isFormModified, setIsFormModified] = useState(false);
   const [validUserBands, setValidUserBands] = useState<UserBand[] | undefined>(
     undefined,
@@ -56,9 +56,9 @@ export default function OfferForm({
           price: offer?.price || 0,
           description: offer?.description || '',
           band: offer?.bandId || '',
-          visible: offer?.visible || false,
+          visible: offer?.visible !== undefined ? offer.visible : true,
         });
-        setIsVisible(offer?.visible || false);
+        setIsVisible(offer?.visible !== undefined ? offer.visible : true);
       });
     }
   }, []);
@@ -91,9 +91,10 @@ export default function OfferForm({
       });
     } else {
       createOffer({
-        price: Number(price),
-        description,
         bandId,
+        price: Number(price),
+        visible: isVisible,
+        description,
       }).then(() => {
         router.push('/manage-offers');
         router.refresh();
