@@ -108,6 +108,7 @@ export async function validateAccessToken(): Promise<AccessTokenPayload | null> 
     if (isTokenExpired(accessToken)) {
       const refreshedAccessToken = await refreshAccessToken();
       if (!refreshedAccessToken) {
+        deleteAccessTokenCookie();
         return null;
       }
       accessToken = refreshedAccessToken;
@@ -136,7 +137,11 @@ export async function withTokenRefreshRetry<T>(
   } catch (error: any) {
     if (error.response?.status === 401 && !hasRefreshed) {
       try {
-        await refreshAccessToken();
+        const accessToken = await refreshAccessToken();
+        if (!accessToken) {
+          deleteAccessTokenCookie();
+          return undefined;
+        }
         return withTokenRefreshRetry(apiCall, true);
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
@@ -173,6 +178,7 @@ export async function refreshAccessToken(): Promise<string | undefined> {
     }
     return accessTokenCookie?.value;
   } catch (error) {
+    deleteRefreshTokenCookie();
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${
         (error as AxiosError).message
