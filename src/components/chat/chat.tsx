@@ -14,6 +14,7 @@ import {
 import { getAvatar } from '@/components/shared/avatar';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { getBandViewById } from '@/service/backend/band/service/band.service';
+import { Spinner } from '@/components/shared/spinner';
 
 interface ChatProps {
   language: string;
@@ -176,7 +177,12 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
   return (
     <div>
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="flex min-h-[25vh] flex-col items-center justify-center gap-4">
+          <Spinner className="h-12 w-12 text-blue-500" />
+          <p className="text-lg font-medium text-gray-600">
+            Loading your chat...
+          </p>
+        </div>
       ) : (
         <div>
           {!chat ? (

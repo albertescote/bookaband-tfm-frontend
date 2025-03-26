@@ -6,10 +6,7 @@ import {
   useState,
 } from 'react';
 import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
-import { UserBand } from '@/service/backend/band/domain/userBand';
 import { Role } from '@/service/backend/user/domain/role';
-
-import { getUserBands } from '@/service/backend/band/service/band.service';
 import { usePathname, useRouter } from 'next/navigation';
 
 const COMMON_PROTECTED_ROUTES: string[] = [
@@ -38,18 +35,12 @@ interface AuthContextType {
     setAuthenticated: (auth: boolean) => void;
   };
   role: { role: string; setRole: (role: string) => void };
-  userBands: {
-    userBands: UserBand[];
-    setUserBands: (userBands: UserBand[]) => void;
-  };
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
-  console.log('setting role to none 1');
   const [role, setRole] = useState('none');
-  const [userBands, setUserBands] = useState<UserBand[]>([]);
   const pathname = usePathname();
   const router = useRouter();
   const [forceRefresh, setForceRefresh] = useState<boolean>(false);
@@ -85,17 +76,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (accessTokenPayload) {
           setAuthenticated(true);
-          console.log('setting role to:', accessTokenPayload.role);
           setRole(accessTokenPayload.role);
-          if (accessTokenPayload.role === Role.Musician) {
-            const userBandsArray = await getUserBands();
-            if (userBandsArray && isMounted) setUserBands(userBandsArray);
-          }
         } else if (isProtectedRoute(pathname, pathname?.split('/')[1])) {
           setAuthenticated(false);
-          console.log('setting role to none 2');
           setRole('none');
-          setUserBands([]);
           console.log(pathname);
           router.push('/login');
         }
@@ -119,7 +103,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAuthenticated,
         },
         role: { role, setRole },
-        userBands: { userBands, setUserBands },
       }}
     >
       {children}

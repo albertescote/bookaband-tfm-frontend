@@ -46,7 +46,7 @@ export async function getAllBandBookings(
   );
 }
 
-export async function acceptBooking(id?: string): Promise<void> {
+export async function acceptBooking(id?: string): Promise<Booking> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .put(`/bookings/${id}/accept`)
@@ -54,7 +54,7 @@ export async function acceptBooking(id?: string): Promise<void> {
   );
 }
 
-export async function declineBooking(id?: string): Promise<void> {
+export async function declineBooking(id?: string): Promise<Booking> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .put(`/bookings/${id}/decline`)

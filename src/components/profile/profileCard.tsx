@@ -12,12 +12,16 @@ import {
   InvitationStatus,
 } from '@/service/backend/invitation/domain/invitation';
 import { getRandomColor } from '@/lib/utils';
-import { deleteBand } from '@/service/backend/band/service/band.service';
+import {
+  deleteBand,
+  getUserBands,
+} from '@/service/backend/band/service/band.service';
 import {
   acceptInvitation,
   declineInvitation,
   getUserInvitations,
 } from '@/service/backend/invitation/service/invitation.service';
+import { UserBand } from '@/service/backend/band/domain/userBand';
 
 export default function ProfileCard({
   language,
@@ -28,8 +32,9 @@ export default function ProfileCard({
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();
-  const { userBands, forceRefresh } = useAuth();
   const [invitations, setInvitations] = useState<Invitation[] | undefined>([]);
+  const [userBands, setUserBands] = useState<UserBand[] | undefined>(undefined);
+  const { forceRefresh } = useAuth();
 
   useEffect(() => {
     getUserInvitations().then((invitations) => {
@@ -37,6 +42,9 @@ export default function ProfileCard({
         return invitation.status === InvitationStatus.PENDING;
       });
       setInvitations(pendingInvitations);
+    });
+    getUserBands().then((userBandsArray) => {
+      setUserBands(userBandsArray);
     });
   }, []);
 
@@ -95,9 +103,9 @@ export default function ProfileCard({
           <h3 className="text-lg font-semibold text-gray-800">
             {t('your-bands')}
           </h3>
-          {userBands.userBands && userBands.userBands.length > 0 ? (
+          {userBands && userBands.length > 0 ? (
             <ul className="mb-2 mt-4 space-y-2">
-              {userBands.userBands.map((band) => (
+              {userBands.map((band) => (
                 <li
                   key={band.id}
                   className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"

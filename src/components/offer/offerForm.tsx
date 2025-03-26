@@ -5,7 +5,6 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { Offer } from '@/service/backend/offer/domain/offer';
-import { useAuth } from '@/providers/AuthProvider';
 import {
   createOffer,
   deleteOffer,
@@ -13,6 +12,8 @@ import {
   updateOffer,
 } from '@/service/backend/offer/service/offer.service';
 import { ArrowLeft } from 'lucide-react';
+import { UserBand } from '@/service/backend/band/domain/userBand';
+import { getUserBands } from '@/service/backend/band/service/band.service';
 
 export default function OfferForm({
   language,
@@ -25,7 +26,6 @@ export default function OfferForm({
 }) {
   const { t } = useTranslation(language, 'offer');
   const router = useRouter();
-  const { userBands } = useAuth();
   const [offer, setOffer] = useState<Offer | undefined>();
   const [formData, setFormData] = useState({
     price: 0,
@@ -35,8 +35,20 @@ export default function OfferForm({
   });
   const [isVisible, setIsVisible] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
+  const [validUserBands, setValidUserBands] = useState<UserBand[] | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
+    getUserBands().then((userBandsArray) => {
+      const validUserBands = bandId
+        ? userBandsArray?.filter((userBand) => {
+            return !userBand.offer;
+          })
+        : userBandsArray;
+      setValidUserBands(validUserBands);
+    });
+
     if (offerId) {
       getOfferById(offerId).then((offer) => {
         setOffer(offer);
@@ -50,12 +62,6 @@ export default function OfferForm({
       });
     }
   }, []);
-
-  const validUserBands = bandId
-    ? userBands.userBands.filter((userBand) => {
-        return !userBand.offer;
-      })
-    : userBands.userBands;
 
   useEffect(() => {
     const isModified =
@@ -154,7 +160,7 @@ export default function OfferForm({
             onChange={handleInputChange}
             disabled={!bandId}
           >
-            {validUserBands.map((band) => (
+            {validUserBands?.map((band) => (
               <option key={band.id} value={band.id}>
                 {band.name}
               </option>

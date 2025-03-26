@@ -2,12 +2,21 @@
 import { useTranslation } from '@/app/i18n/client';
 import { EyeIcon, EyeOffIcon, PencilIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
+import { UserBand } from '@/service/backend/band/domain/userBand';
+import { useEffect, useState } from 'react';
+import { getUserBands } from '@/service/backend/band/service/band.service';
 
 export function BandOffers({ language }: { language: string }) {
   const { t } = useTranslation(language, 'manage-offers');
-  const { userBands } = useAuth().userBands;
+  const [userBands, setUserBands] = useState<UserBand[] | undefined>(undefined);
   const router = useRouter();
+
+  useEffect(() => {
+    getUserBands().then((userBandsArray) => {
+      setUserBands(userBandsArray);
+    });
+  }, []);
+
   const navigateToViewOfferDetails = (offerId: string) => {
     router.push(`/offer?id=${offerId}`);
   };

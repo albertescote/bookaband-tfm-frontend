@@ -35,13 +35,15 @@ export default function BookingDetails({
 
   const handleAccept = () => {
     acceptBooking(booking?.id).then(() => {
-      router.refresh();
+      const newBooking = { ...booking!, status: BookingStatus.ACCEPTED };
+      setBooking(newBooking);
     });
   };
 
   const handleDecline = () => {
     declineBooking(booking?.id).then(() => {
-      router.refresh();
+      const newBooking = { ...booking!, status: BookingStatus.DECLINED };
+      setBooking(newBooking);
     });
   };
 

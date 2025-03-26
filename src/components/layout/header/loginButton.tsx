@@ -5,7 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { logout } from '@/service/backend/auth/service/auth.service';
 
 const LoginButton = ({ language }: { language: string }) => {
-  const { authentication, role, userBands } = useAuth();
+  const { authentication, role } = useAuth();
   const router = useRouter();
   const { t } = useTranslation(language, 'home');
 
@@ -17,7 +17,6 @@ const LoginButton = ({ language }: { language: string }) => {
     logout().then(() => {
       authentication.setAuthenticated(false);
       role.setRole('none');
-      userBands.setUserBands([]);
       router.push('/');
     });
   };
