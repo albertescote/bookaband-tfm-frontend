@@ -17,12 +17,10 @@ export const config = {
   ],
 };
 
-const createResponse = (req: NextRequest, isProtected: boolean = false) => {
+const createResponse = () => {
   const response = NextResponse.next();
-
   response.headers.set('Cache-Control', 'no-store, max-age=0');
   response.headers.set('x-middleware-cache', 'no-cache');
-
   return response;
 };
 
@@ -31,6 +29,38 @@ const createRedirectResponse = (url: string, req: NextRequest) => {
   response.headers.set('Cache-Control', 'no-store, max-age=0');
   return response;
 };
+
+function getFullRedirectPath(
+  routePattern: string,
+  actualPath: string,
+  langPrefix: string,
+  searchParams: string,
+): string {
+  let pathPart = actualPath.replace(langPrefix, '');
+  if (routePattern.includes('[')) {
+    const paramNames: string[] = [];
+    const matches = routePattern.matchAll(/\[([^\]]+)\]/g);
+    for (const match of matches) {
+      paramNames.push(match[1]);
+    }
+
+    const regexPattern = routePattern
+      .replace(/\[[^\]]+\]/g, '([^/]+)')
+      .replace(/\//g, '\\/');
+
+    const match = new RegExp(`^${regexPattern}$`).exec(actualPath);
+
+    if (match) {
+      let result = routePattern;
+      paramNames.forEach((param, index) => {
+        result = result.replace(`[${param}]`, match[index + 1]);
+      });
+      pathPart = result.replace(langPrefix, '');
+    }
+  }
+
+  return searchParams ? `${pathPart}?${searchParams}` : pathPart;
+}
 
 export async function middleware(req: NextRequest) {
   let lng;
@@ -61,7 +91,6 @@ export async function middleware(req: NextRequest) {
   }
 
   const langPrefix = `/${lng}`;
-
   const allProtectedRoutes = [
     ...COMMON_PROTECTED_ROUTES,
     ...CLIENT_PROTECTED_ROUTES,
@@ -80,14 +109,20 @@ export async function middleware(req: NextRequest) {
     const accessTokenPayload = await validateAccessTokenSignature();
 
     if (!accessTokenPayload) {
-      const redirectPath = protectedRouteFound.replace(langPrefix, '');
+      const redirectPath = getFullRedirectPath(
+        protectedRouteFound,
+        pathname,
+        langPrefix,
+        req.nextUrl.searchParams.toString(),
+      );
+
       if (!redirectPath.startsWith('/login')) {
         return createRedirectResponse(
           `/${lng}/login?redirect_to=${encodeURIComponent(redirectPath)}`,
           req,
         );
       }
-      return createResponse(req, true);
+      return createResponse();
     }
 
     // Role-based authorization
@@ -109,11 +144,11 @@ export async function middleware(req: NextRequest) {
       refererUrl.pathname.startsWith(`/${l}`),
     );
     if (lngInReferer) {
-      const response = createResponse(req, isProtectedRoute);
+      const response = createResponse();
       response.cookies.set(cookieName, lngInReferer);
       return response;
     }
   }
 
-  return createResponse(req, isProtectedRoute);
+  return createResponse();
 }

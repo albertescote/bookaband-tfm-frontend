@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
 import { Role } from '@/service/backend/user/domain/role';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const COMMON_PROTECTED_ROUTES: string[] = [
   '/offer-details',
@@ -44,12 +44,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [forceRefresh, setForceRefresh] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+
+  const getFullRedirectPath = (
+    routePattern: string,
+    actualPath: string,
+    langPrefix: string,
+  ): string => {
+    let pathPart = actualPath.replace(langPrefix, '');
+    if (routePattern.includes('[')) {
+      const paramNames: string[] = [];
+      for (const match of routePattern.matchAll(/\[([^\]]+)\]/g)) {
+        paramNames.push(match[1]);
+      }
+
+      const regexPattern = routePattern
+        .replace(/\[[^\]]+\]/g, '([^/]+)')
+        .replace(/\//g, '\\/');
+
+      const match = new RegExp(`^${regexPattern}$`).exec(actualPath);
+
+      if (match) {
+        let result = routePattern;
+        paramNames.forEach((param, index) => {
+          result = result.replace(`[${param}]`, match[index + 1]);
+        });
+        pathPart = result.replace(langPrefix, '');
+      }
+    }
+
+    const queryString = searchParams.toString();
+    return queryString ? `${pathPart}?${queryString}` : pathPart;
+  };
 
   const isProtectedRoute = (
     path: string | null,
     lng: string | undefined,
-  ): boolean => {
-    if (!path || !lng) return false;
+  ): { isProtected: boolean; routePattern?: string } => {
+    if (!path || !lng) return { isProtected: false };
 
     const allProtectedRoutes = [
       ...COMMON_PROTECTED_ROUTES,
@@ -58,12 +90,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     ];
 
     const langPrefix = `/${lng}`;
-    return allProtectedRoutes.some((route) => {
+    for (const route of allProtectedRoutes) {
       const routePattern = new RegExp(
         `^${langPrefix}${route.replace(/\[.*?\]/, '[^/]+')}$`,
       );
-      return routePattern.test(path);
-    });
+      if (routePattern.test(path)) {
+        return { isProtected: true, routePattern: route };
+      }
+    }
+    return { isProtected: false };
   };
 
   useEffect(() => {
@@ -77,11 +112,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (accessTokenPayload) {
           setAuthenticated(true);
           setRole(accessTokenPayload.role);
-        } else if (isProtectedRoute(pathname, pathname?.split('/')[1])) {
-          setAuthenticated(false);
-          setRole('none');
-          console.log(pathname);
-          router.push('/login');
+        } else {
+          const lng = pathname?.split('/')[1];
+          const { isProtected, routePattern } = isProtectedRoute(pathname, lng);
+
+          if (isProtected && pathname && routePattern && lng) {
+            setAuthenticated(false);
+            setRole('none');
+
+            const langPrefix = `/${lng}`;
+            const redirectPath = getFullRedirectPath(
+              routePattern,
+              pathname,
+              langPrefix,
+            );
+
+            router.push(
+              `/${lng}/login?redirect_to=${encodeURIComponent(redirectPath)}`,
+            );
+          }
         }
       } catch (error) {
         console.error('Auth validation failed:', error);
@@ -92,7 +141,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       isMounted = false;
     };
-  }, [pathname, forceRefresh]);
+  }, [pathname, forceRefresh, searchParams]);
 
   return (
     <AuthContext.Provider

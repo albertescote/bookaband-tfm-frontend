@@ -13,9 +13,7 @@ export default function Page({ params: { lng }, searchParams }: PageParams) {
       <LoginForm
         language={lng}
         redirectTo={
-          searchParams?.redirect_to
-            ? `/${searchParams?.redirect_to}`
-            : undefined
+          searchParams?.redirect_to ? searchParams?.redirect_to : undefined
         }
       />
     </div>
