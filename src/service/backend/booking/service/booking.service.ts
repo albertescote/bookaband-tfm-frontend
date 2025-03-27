@@ -32,7 +32,7 @@ export async function getAllUserBookings(): Promise<
   BookingWithDetails[] | undefined
 > {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.get('/bookings/user').then((res) => res.data),
+    authorizedAxiosInstance.get('/bookings/client').then((res) => res.data),
   );
 }
 

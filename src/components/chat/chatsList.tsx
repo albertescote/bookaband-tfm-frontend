@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import {
   getBandChats,
-  getUserChats,
+  getClientChats,
 } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
 
@@ -37,7 +37,7 @@ export function ChatsList({
         if (bandOptions?.id) {
           chatsView = await getBandChats(bandOptions.id);
         } else if (userId) {
-          chatsView = await getUserChats(userId);
+          chatsView = await getClientChats(userId);
         }
         setChats(chatsView || []);
       } catch (err) {

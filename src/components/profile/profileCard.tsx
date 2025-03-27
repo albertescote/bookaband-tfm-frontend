@@ -2,7 +2,6 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { User } from '@/service/backend/user/domain/user';
-import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
 import { Role } from '@/service/backend/user/domain/role';
@@ -34,18 +33,25 @@ export default function ProfileCard({
   const router = useRouter();
   const [invitations, setInvitations] = useState<Invitation[] | undefined>([]);
   const [userBands, setUserBands] = useState<UserBand[] | undefined>(undefined);
-  const { forceRefresh } = useAuth();
 
-  useEffect(() => {
+  const loadBands = () => {
+    getUserBands().then((userBandsArray) => {
+      setUserBands(userBandsArray);
+    });
+  };
+
+  const loadInvitations = () => {
     getUserInvitations().then((invitations) => {
       const pendingInvitations = invitations?.filter((invitation) => {
         return invitation.status === InvitationStatus.PENDING;
       });
       setInvitations(pendingInvitations);
     });
-    getUserBands().then((userBandsArray) => {
-      setUserBands(userBandsArray);
-    });
+  };
+
+  useEffect(() => {
+    loadBands();
+    loadInvitations();
   }, []);
 
   const navigateToCreateBand = () => {
@@ -54,22 +60,20 @@ export default function ProfileCard({
 
   const handleDeleteBand = (id: string) => {
     deleteBand(id).then(() => {
-      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
-      router.refresh();
+      loadBands();
     });
   };
 
   const handleAcceptInvitation = (id: string) => {
     acceptInvitation(id).then(() => {
-      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
-      router.refresh();
+      loadBands();
+      loadInvitations();
     });
   };
 
   const handleDeclineInvitation = (id: string) => {
     declineInvitation(id).then(() => {
-      forceRefresh.setForceRefresh(!forceRefresh.forceRefresh);
-      router.refresh();
+      loadInvitations();
     });
   };
 

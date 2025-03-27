@@ -5,11 +5,13 @@ import { getUserInfo } from '@/service/backend/user/service/user.service';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 
-export async function getUserChats(
+export async function getClientChats(
   userId: string,
 ): Promise<ChatView[] | undefined> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.get(`/chat/user/${userId}`).then((res) => res.data),
+    authorizedAxiosInstance
+      .get(`/chat/client/${userId}`)
+      .then((res) => res.data),
   );
 }
 
@@ -44,7 +46,7 @@ export async function createNewChat(
 export async function checkExistingChat(bandId: string) {
   const userInfo = await getUserInfo();
   if (userInfo) {
-    const chats = await getUserChats(userInfo.id);
+    const chats = await getClientChats(userInfo.id);
     const existingChat = chats?.find((chat) => chat.band.id == bandId);
     if (existingChat) {
       return existingChat.id;

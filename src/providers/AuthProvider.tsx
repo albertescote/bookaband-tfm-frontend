@@ -26,10 +26,6 @@ const MUSICIAN_PROTECTED_ROUTES: string[] = [
 ];
 
 interface AuthContextType {
-  forceRefresh: {
-    forceRefresh: boolean;
-    setForceRefresh: (forceRefresh: boolean) => void;
-  };
   authentication: {
     isAuthenticated: boolean;
     setAuthenticated: (auth: boolean) => void;
@@ -43,7 +39,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState('none');
   const pathname = usePathname();
   const router = useRouter();
-  const [forceRefresh, setForceRefresh] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
   const getFullRedirectPath = (
@@ -141,12 +136,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       isMounted = false;
     };
-  }, [pathname, forceRefresh, searchParams]);
+  }, [pathname, searchParams]);
 
   return (
     <AuthContext.Provider
       value={{
-        forceRefresh: { forceRefresh, setForceRefresh },
         authentication: {
           isAuthenticated,
           setAuthenticated,
