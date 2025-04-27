@@ -1,4 +1,7 @@
-import OffersList from '@/components/home/offersList';
+import Hero from '@/components/home/hero';
+import Testimonials from '@/components/home/testimonials';
+import CallToAction from '@/components/home/callToAction';
+import FeaturedArtists from '@/components/home/featuredArtists';
 
 interface PageParams {
   params: {
@@ -9,8 +12,11 @@ interface PageParams {
 export default async function Home({ params: { lng } }: PageParams) {
   return (
     <main>
-      <div className="flex min-h-[75vh] flex-col items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4">
-        <OffersList lng={lng} />
+      <div>
+        <Hero lng={lng} />
+        <FeaturedArtists lng={lng} />
+        <Testimonials lng={lng} />
+        <CallToAction lng={lng} />
       </div>
     </main>
   );

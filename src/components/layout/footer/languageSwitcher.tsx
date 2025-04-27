@@ -30,14 +30,14 @@ export default function LanguageSwitcher({ language }: { language: string }) {
 
   const handleChange = (lang: { id: string; value: string }) => {
     setSelectedLanguage(lang);
-    changeLanguage(lang.id);
+    changeLanguage(lang.id).then();
   };
 
   return (
     <div className="w-40 text-white">
       <Listbox value={selectedLanguage} onChange={handleChange}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-lg border bg-transparent py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+          <Listbox.Button className="relative w-full cursor-pointer rounded-full border bg-transparent py-2 pl-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
             <span className="block truncate">{t(selectedLanguage.value)}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronsUpDownIcon
