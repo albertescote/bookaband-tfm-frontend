@@ -17,13 +17,16 @@ const NavButton = ({ href, label }: NavButtonProps) => {
   };
 
   return (
-    <button onClick={navigateTo}>
+    <button onClick={navigateTo} className="mt-2 space-y-2">
       <p
-        className={`rounded-lg px-4 text-lg text-[#23395b] transition-colors duration-300 
-        ${isActive ? 'font-bold text-white' : 'font-semibold hover:font-bold hover:text-white'}`}
+        className={`px-4 text-base transition-colors duration-300 
+        ${isActive ? 'font-semibold text-[#15b7b9]' : 'text-[#565d6d] hover:text-[#15b7b9]'}`}
       >
         {label}
       </p>
+      <p
+        className={`${isActive ? 'border-b-2 border-[#15b7b9]' : 'invisible'}`}
+      ></p>
     </button>
   );
 };

@@ -10,6 +10,9 @@ export default function Navbar({ language }: { language: string }) {
 
   return (
     <nav className="flex space-x-4 p-4">
+      <NavLink href={`/`} label={t('home-tab')} />
+      <NavLink href={`/artists`} label={t('artists-tab')} />
+      <NavLink href={`/events`} label={t('events-tab')} />
       {authentication.isAuthenticated && (
         <div className="flex">
           <NavLink href={`/`} label={t('home-tab')} />

@@ -9,9 +9,18 @@
   "profile-tab": "Perfil",
   "chat-tab": "Xat",
   "home-tab": "Inici",
+  "artists-tab": "Artistes",
+  "events-tab": "Events",
   "bookings-tab": "Reserves",
   "manage-offers-tab": "Gestionar ofertes",
   "genre": "Gènere",
   "price": "Preu",
-  "no-offers": "No hi ha ofertes disponibles en aquest moment"
+  "no-offers": "No hi ha ofertes disponibles en aquest moment",
+  "terms": "Termes",
+  "privacy": "Privacitat",
+  "about-us": "Sobre nosaltres",
+  "features": "Característiques",
+  "help-center": "Centre d'ajuda",
+  "contact-us": "Contacta amb nosaltres",
+  "faqs": "FAQs"
 }

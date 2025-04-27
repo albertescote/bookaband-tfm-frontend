@@ -9,9 +9,18 @@
   "profile-tab": "Profile",
   "chat-tab": "Chat",
   "home-tab": "Home",
+  "artists-tab": "Artists",
+  "events-tab": "Events",
   "bookings-tab": "Bookings",
   "manage-offers-tab": "Manage offers",
   "genre": "Genre",
   "price": "Price",
-  "no-offers": "No offers available at the moment"
+  "no-offers": "No offers available at the moment",
+  "terms": "Terms",
+  "privacy": "Privacy",
+  "about-us": "About us",
+  "features": "Features",
+  "help-center": "Help center",
+  "contact-us": "Contact us",
+  "faqs": "FAQs"
 }
