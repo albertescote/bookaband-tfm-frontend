@@ -1,10 +1,12 @@
 'use client';
-import { Label } from '@/components/shared/label';
-import { Input } from '@/components/shared/input';
+
 import { FormEvent, useState } from 'react';
-import { useTranslation } from '@/app/i18n/client';
-import { authenticate } from '@/service/backend/auth/service/auth.service';
 import { useRouter } from 'next/navigation';
+import { authenticate } from '@/service/backend/auth/service/auth.service';
+import { useTranslation } from '@/app/i18n/client';
+import { Input } from '@/components/shared/input';
+import { Label } from '@/components/shared/label';
+import { ArrowLeft } from 'lucide-react';
 
 export default function LoginForm({
   language,
@@ -34,51 +36,66 @@ export default function LoginForm({
   };
 
   return (
-    <div className="mx-auto min-w-[500px] max-w-md space-y-6 overflow-hidden rounded-xl bg-white p-8 shadow-md md:max-w-2xl">
-      <div className="space-y-4 text-center">
-        <h1 className="text-3xl font-bold">{t('form-title')}</h1>
-        <p>{t('form-description')}</p>
-      </div>
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div className="space-y-2">
-          <Label htmlFor="email">{t('email')}</Label>
-          <Input
-            className="w-full rounded-md border-gray-300 shadow-sm transition focus:border-[#0077b6] focus:ring focus:ring-[#0077b6] focus:ring-opacity-50"
-            id="email"
-            name="email"
-            placeholder={t('email-placeholder')}
-            required
-            type="email"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">{t('password')}</Label>
-          <Input
-            className="w-full rounded-md border-gray-300 shadow-sm transition focus:border-[#0077b6] focus:ring focus:ring-[#0077b6] focus:ring-opacity-50"
-            id="password"
-            name="password"
-            placeholder={t('password-placeholder')}
-            required
-            type="password"
-            minLength={8}
-          />
-        </div>
-        <div className="flex justify-center pt-4">
+    <div
+      className="relative flex min-h-screen items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: `url('/assets/login-background2.jpg')` }}
+    >
+      <div className="absolute inset-0 bg-black opacity-30"></div>
+      <div className="relative z-10 w-full max-w-md rounded-xl bg-white p-8">
+        <button
+          onClick={() => router.back()}
+          className="mb-6 flex items-center text-gray-500 hover:text-gray-700"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <h1 className="mb-6 text-center text-2xl font-bold">
+          {t('form-title')}
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <Label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              {t('email')}
+            </Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder={t('email-placeholder')}
+              className="mt-2 w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
+              {t('password')}
+            </Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              required
+              placeholder={t('password-placeholder')}
+              className="mt-2 w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              minLength={8}
+            />
+          </div>
           <button
-            className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-4 py-2 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
             type="submit"
+            className="w-full rounded-md bg-[#15b7b9] px-4 py-2 font-semibold text-white transition hover:bg-[#109ea1]"
           >
             {t('sign-in-button')}
           </button>
-        </div>
-      </form>
-      <div
-        className="flex h-8 items-end justify-center"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+        </form>
         {errorMessage && (
-          <p className="text-center text-lg text-red-500">{errorMessage}</p>
+          <p className="mt-4 text-center text-sm text-red-500">
+            {errorMessage}
+          </p>
         )}
       </div>
     </div>
