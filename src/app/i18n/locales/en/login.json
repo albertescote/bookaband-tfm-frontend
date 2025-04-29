@@ -5,5 +5,11 @@
   "email-placeholder": "Enter your email",
   "password": "Password",
   "password-placeholder": "Enter your password",
-  "sign-in-button": "Sign in"
+  "sign-in-button": "Sign in",
+  "forgot-password": "Forgot your password?",
+  "register-link": "Sign up",
+  "register-text": "Don't have an account?",
+  "error-missing-fields": "Please fill in all fields.",
+  "error-login": "Login failed. Please check your credentials.",
+  "error-server": "Server error. Please try again later."
 }

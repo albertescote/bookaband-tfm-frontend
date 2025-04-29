@@ -5,5 +5,11 @@
   "email-placeholder": "Introduzca su email",
   "password": "Contraseña",
   "password-placeholder": "Introduzca su contraseña",
-  "sign-in-button": "Iniciar sesión"
+  "sign-in-button": "Iniciar sesión",
+  "forgot-password": "¿Olvidaste tu contraseña?",
+  "register-link": "Regístrate",
+  "register-text": "¿No tienes cuenta?",
+  "error-missing-fields": "Por favor, completa todos los campos.",
+  "error-login": "Error al iniciar sesión. Verifica tus credenciales.",
+  "error-server": "Error del servidor. Inténtalo de nuevo más tarde."
 }
