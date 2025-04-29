@@ -12,5 +12,19 @@
   "select-role": "Role",
   "musician": "Musician",
   "client": "Client",
-  "sign-up-button": "Create account"
+  "sign-up-button": "Create account",
+  "error-server": "Server error. Please try again later.",
+  "already-have-account-link": "Log in",
+  "already-have-account-text": "Already have an account?",
+  "password-mismatch": "Passwords do not match.",
+  "password-invalid": "The password does not meet the minimum requirements.",
+  "password-requirements": "Must have at least 8 characters, one uppercase letter, one lowercase letter, one number, and one symbol.",
+  "password-very-weak": "Very weak password",
+  "password-weak": "Weak password",
+  "password-medium": "Acceptable password",
+  "password-strong": "Strong password",
+  "password-very-strong": "Very strong password",
+  "confirm-password": "Confirm password",
+  "confirm-password-placeholder": "Repeat your password",
+    "error-signup": "Error creating account. Please try again later."
 }

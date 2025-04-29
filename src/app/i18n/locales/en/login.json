@@ -11,5 +11,8 @@
   "register-text": "Don't have an account?",
   "error-missing-fields": "Please fill in all fields.",
   "error-login": "Login failed. Please check your credentials.",
-  "error-server": "Server error. Please try again later."
+  "error-server": "Server error. Please try again later.",
+  "or": "or",
+  "sign-in-with-google": "Sin in with Google",
+  "remember-me": "Remember me"
 }

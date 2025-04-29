@@ -19,6 +19,7 @@ import axiosInstance from '@/service/aixosInstance';
 export async function authenticate(
   email: string | undefined,
   password: string | undefined,
+  rememberMe: boolean,
 ): Promise<AuthenticationResult> {
   try {
     const loginBody = {
@@ -39,8 +40,11 @@ export async function authenticate(
       (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
     );
     if (accessTokenCookie && refreshTokenCookie) {
-      setTokenCookie(accessTokenCookie);
-      setTokenCookie(refreshTokenCookie);
+      setTokenCookie(accessTokenCookie, rememberMe ? 60 * 15 : undefined);
+      setTokenCookie(
+        refreshTokenCookie,
+        rememberMe ? 60 * 60 * 24 * 30 : undefined,
+      );
       return { valid: true };
     }
     return {

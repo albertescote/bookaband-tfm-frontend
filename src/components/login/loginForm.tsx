@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { authenticate } from '@/service/backend/auth/service/auth.service';
 import { useTranslation } from '@/app/i18n/client';
 import { Input } from '@/components/shared/input';
@@ -20,6 +21,7 @@ export default function LoginForm({
   const { t } = useTranslation(language, 'login');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -35,7 +37,11 @@ export default function LoginForm({
 
     setLoading(true);
     try {
-      const authenticationResult = await authenticate(email, password);
+      const authenticationResult = await authenticate(
+        email,
+        password,
+        rememberMe,
+      );
       if (!authenticationResult.valid) {
         toast.error(authenticationResult.errorMessage || t('error-login'));
         setLoading(false);
@@ -48,6 +54,12 @@ export default function LoginForm({
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    await signIn('google', {
+      callbackUrl: redirectTo ? decodeURIComponent(redirectTo) : '/',
+    });
   };
 
   return (
@@ -138,7 +150,20 @@ export default function LoginForm({
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <label className="group relative flex cursor-pointer select-none items-center gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                name="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="peer h-4 w-4 appearance-none rounded border border-gray-300 bg-white transition-all checked:border-[#15b7b9] checked:bg-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2"
+              />
+              <span className="transition-colors duration-150 peer-checked:text-[#15b7b9]">
+                {t('remember-me')}
+              </span>
+            </label>
+
             <a
               href="/forgot-password"
               className="text-sm text-gray-500 transition-colors hover:text-[#15b7b9]"
@@ -155,6 +180,27 @@ export default function LoginForm({
             {loading ? t('signing-in') : t('sign-in-button')}
           </button>
         </form>
+
+        <div className="my-6 flex items-center">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-4 text-gray-500">{t('or')}</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+          >
+            <img
+              src="/assets/google-logo.svg"
+              alt="Google"
+              className="h-5 w-5"
+            />
+            {t('sign-in-with-google')}
+          </button>
+        </div>
       </motion.div>
     </div>
   );

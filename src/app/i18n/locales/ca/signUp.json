@@ -12,5 +12,19 @@
   "select-role": "Rol",
   "musician": "Músic",
   "client": "Client",
-  "sign-up-button": "Crear compte"
+  "sign-up-button": "Crear compte",
+  "error-server": "Error del servidor. Torna-ho a intentar més tard.",
+  "already-have-account-link": "Inicia sessió",
+  "already-have-account-text": "Ja tens un compte?",
+  "password-mismatch": "Les contrasenyes no coincideixen.",
+  "password-invalid": "La contrasenya no compleix els requisits mínims.",
+  "password-requirements": "Ha de tenir almenys 8 caràcters, una majúscula, una minúscula, un número i un símbol.",
+  "password-very-weak": "Contrasenya molt feble",
+  "password-weak": "Contrasenya feble",
+  "password-medium": "Contrasenya acceptable",
+  "password-strong": "Contrasenya segura",
+  "password-very-strong": "Contrasenya molt segura",
+  "confirm-password": "Confirmar contrasenya",
+  "confirm-password-placeholder": "Repeteix la teva contrasenya",
+    "error-signup": "Error al crear el compte. Torna-ho a intentar més tard."
 }

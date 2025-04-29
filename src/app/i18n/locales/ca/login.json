@@ -11,5 +11,8 @@
   "register-text": "No tens compte?",
   "error-missing-fields": "Si us plau, completa tots els camps.",
   "error-login": "Error en iniciar sessió. Verifica les teves credencials.",
-  "error-server": "Error del servidor. Torna-ho a intentar més tard."
+  "error-server": "Error del servidor. Torna-ho a intentar més tard.",
+  "or": "o",
+  "sign-in-with-google": "Iniciar sessió amb Google",
+  "remember-me": "Recorda'm"
 }

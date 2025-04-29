@@ -12,5 +12,19 @@
   "select-role": "Rol",
   "musician": "Músico",
   "client": "Cliente",
-  "sign-up-button": "Crear cuenta"
+  "sign-up-button": "Crear cuenta",
+  "error-server": "Error del servidor. Inténtalo de nuevo más tarde.",
+  "already-have-account-link": "Inicia sesión",
+  "already-have-account-text": "¿Ya tienes cuenta?",
+  "password-mismatch": "Las contraseñas no coinciden.",
+  "password-invalid": "La contraseña no cumple con los requisitos mínimos.",
+  "password-requirements": "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.",
+  "password-very-weak": "Contraseña muy débil",
+  "password-weak": "Contraseña débil",
+  "password-medium": "Contraseña aceptable",
+  "password-strong": "Contraseña segura",
+  "password-very-strong": "Contraseña muy segura",
+  "confirm-password": "Confirmar contraseña",
+  "confirm-password-placeholder": "Repite tu contraseña",
+  "error-signup": "Error al crear la cuenta. Por favor, inténtelo de nuevo más tarde."
 }
