@@ -26,5 +26,8 @@
   "password-very-strong": "Contraseña muy segura",
   "confirm-password": "Confirmar contraseña",
   "confirm-password-placeholder": "Repite tu contraseña",
-  "error-signup": "Error al crear la cuenta. Por favor, inténtelo de nuevo más tarde."
+  "error-signup": "Error al crear la cuenta. Por favor, inténtelo de nuevo más tarde.",
+  "or": "o",
+  "sign-in-with-google": "Iniciar sesión con Google",
+  "sign-up-with-email": "Crear cuenta con correo"
 }

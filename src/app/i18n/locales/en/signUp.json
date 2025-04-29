@@ -26,5 +26,8 @@
   "password-very-strong": "Very strong password",
   "confirm-password": "Confirm password",
   "confirm-password-placeholder": "Repeat your password",
-    "error-signup": "Error creating account. Please try again later."
+  "error-signup": "Error creating account. Please try again later.",
+  "or": "or",
+  "sign-in-with-google": "Sin in with Google",
+  "sign-up-with-email": "Sign up with email"
 }

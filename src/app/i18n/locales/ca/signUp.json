@@ -26,5 +26,8 @@
   "password-very-strong": "Contrasenya molt segura",
   "confirm-password": "Confirmar contrasenya",
   "confirm-password-placeholder": "Repeteix la teva contrasenya",
-    "error-signup": "Error al crear el compte. Torna-ho a intentar més tard."
+  "error-signup": "Error al crear el compte. Torna-ho a intentar més tard.",
+  "or": "o",
+  "sign-in-with-google": "Iniciar sessió amb Google",
+  "sign-up-with-email": "Crear compte amb correu"
 }

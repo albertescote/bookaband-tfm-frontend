@@ -12,15 +12,16 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import zxcvbn from 'zxcvbn';
+import { signIn } from 'next-auth/react';
 
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'signUp');
-  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -59,6 +60,12 @@ export default function SignUpForm({ language }: { language: string }) {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    await signIn('google', {
+      callbackUrl: '/register/complete',
+    });
+  };
+
   const passwordStrength = zxcvbn(password).score;
   const strengthColors = [
     'bg-red-400',
@@ -76,13 +83,20 @@ export default function SignUpForm({ language }: { language: string }) {
     t('password-very-strong'),
   ];
 
+  const handleNavigateBack = () => {
+    if (step === 2) {
+      setStep(1);
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <div
       className="relative flex min-h-screen items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: `url('/assets/login-background.jpg')` }}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -91,7 +105,7 @@ export default function SignUpForm({ language }: { language: string }) {
       >
         <div className="mb-6 flex items-center justify-between">
           <button
-            onClick={() => router.back()}
+            onClick={handleNavigateBack}
             className="flex items-center text-gray-500 hover:text-gray-700"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -108,161 +122,199 @@ export default function SignUpForm({ language }: { language: string }) {
             </a>
           </div>
         </div>
-
-        <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
-          {t('form-title')}
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <Label
-                htmlFor="firstName"
-                className="text-sm font-medium text-gray-700"
-              >
-                {t('first-name')}
-              </Label>
-              <Input
-                id="firstName"
-                name="firstName"
-                placeholder={t('first-name-placeholder')}
-                required
-                className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-              />
-            </div>
-            <div className="flex-1">
-              <Label
-                htmlFor="familyName"
-                className="text-sm font-medium text-gray-700"
-              >
-                {t('family-name')}
-              </Label>
-              <Input
-                id="familyName"
-                name="familyName"
-                placeholder={t('family-name-placeholder')}
-                required
-                className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t('email')}
-            </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder={t('email-placeholder')}
-              required
-              className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-            />
-          </div>
-
-          <div className="relative">
-            <Label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t('password')}
-            </Label>
-            <Input
-              id="password"
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder={t('password-placeholder')}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-            />
+        {step === 1 ? (
+          <>
+            <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
+              {t('form-title')}
+            </h1>
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-11 text-gray-400"
+              onClick={() => setStep(2)}
+              className="mb-4 w-full rounded-lg bg-gradient-to-r from-[#15b7b9] to-[#0e9fa1] px-4 py-2 font-bold text-white transition-transform hover:scale-105"
             >
-              {showPassword ? (
-                <EyeOff className="h-5 w-5" />
-              ) : (
-                <Eye className="h-5 w-5" />
-              )}
+              {t('sign-up-with-email')}
             </button>
-            {password && (
-              <>
-                <div className="mt-3 h-2 w-full rounded bg-gray-200">
-                  <div
-                    className={`h-2 rounded ${strengthColors[passwordStrength]}`}
-                    style={{ width: `${(passwordStrength + 1) * 20}%` }}
-                  ></div>
+            <div className="my-4 flex items-center">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-gray-500">{t('or')}</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+            >
+              <img
+                src="/assets/google-logo.svg"
+                alt="Google"
+                className="h-5 w-5"
+              />
+              {t('sign-in-with-google')}
+            </button>
+          </>
+        ) : (
+          <>
+            <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
+              {t('form-title')}
+            </h1>
+            <form onSubmit={handleSubmit}>
+              <div className="space-y-2">
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <Label
+                      htmlFor="firstName"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      {t('first-name')}
+                    </Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      placeholder={t('first-name-placeholder')}
+                      required
+                      className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Label
+                      htmlFor="familyName"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      {t('family-name')}
+                    </Label>
+                    <Input
+                      id="familyName"
+                      name="familyName"
+                      placeholder={t('family-name-placeholder')}
+                      required
+                      className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                    />
+                  </div>
                 </div>
-                <p className="mt-1 text-xs text-gray-600">
-                  {strengthText[passwordStrength]}
-                </p>
-              </>
-            )}
-            <p className="mt-1 text-xs text-gray-500">
-              {t('password-requirements')}
-            </p>
-          </div>
 
-          <div className="relative">
-            <Label
-              htmlFor="confirmPassword"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t('confirm-password')}
-            </Label>
-            <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
-              placeholder={t('confirm-password-placeholder')}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-11 text-gray-400"
-            >
-              {showConfirmPassword ? (
-                <EyeOff className="h-5 w-5" />
-              ) : (
-                <Eye className="h-5 w-5" />
-              )}
-            </button>
-          </div>
+                <div>
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t('email')}
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder={t('email-placeholder')}
+                    required
+                    className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                  />
+                </div>
 
-          <div>
-            <Label htmlFor="role" className="text-sm font-medium text-gray-700">
-              {t('select-role')}
-            </Label>
-            <select
-              id="role"
-              name="role"
-              required
-              className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-            >
-              <option value={Role.Musician}>{t('musician')}</option>
-              <option value={Role.Client}>{t('client')}</option>
-            </select>
-          </div>
+                <div className="relative">
+                  <Label
+                    htmlFor="password"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t('password')}
+                  </Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={t('password-placeholder')}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-11 text-gray-400"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                  {password && (
+                    <>
+                      <div className="mt-3 h-2 w-full rounded bg-gray-200">
+                        <div
+                          className={`h-2 rounded ${strengthColors[passwordStrength]}`}
+                          style={{ width: `${(passwordStrength + 1) * 20}%` }}
+                        ></div>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-600">
+                        {strengthText[passwordStrength]}
+                      </p>
+                    </>
+                  )}
+                  <p className="mt-1 text-xs text-gray-500">
+                    {t('password-requirements')}
+                  </p>
+                </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-gradient-to-r from-[#15b7b9] to-[#0e9fa1] px-4 py-2 font-bold text-white transition-transform hover:scale-105 disabled:opacity-50"
-          >
-            {loading ? t('signing-up') : t('sign-up-button')}
-          </button>
-        </form>
+                <div className="relative">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t('confirm-password')}
+                  </Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder={t('confirm-password-placeholder')}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-11 text-gray-400"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+
+                <div>
+                  <Label
+                    htmlFor="role"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t('select-role')}
+                  </Label>
+                  <select
+                    id="role"
+                    name="role"
+                    required
+                    className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                  >
+                    <option value={Role.Musician}>{t('musician')}</option>
+                    <option value={Role.Client}>{t('client')}</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full rounded-lg bg-gradient-to-r from-[#15b7b9] to-[#0e9fa1] px-4 py-2 font-bold text-white transition-transform hover:scale-105 disabled:opacity-50"
+                >
+                  {loading ? t('signing-up') : t('sign-up-button')}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </motion.div>
     </div>
   );
