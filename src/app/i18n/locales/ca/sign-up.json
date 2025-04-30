@@ -37,5 +37,7 @@
   "resend-available-in": "Reenviar disponible en",
   "seconds": "segons",
   "resend-verification": "Reenviar correu de verificació",
-  "verification-email-resent": "S'ha reenviat el correu de verificació"
+  "verification-email-resent": "S'ha reenviat el correu de verificació",
+  "already-verified-question": "Ja has rebut el correu electrònic?",
+  "go-to-login": "Inicia sessió"
 }

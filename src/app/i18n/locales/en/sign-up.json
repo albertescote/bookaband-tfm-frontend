@@ -37,5 +37,7 @@
   "resend-available-in": "Resend available in",
   "seconds": "seconds",
   "resend-verification": "Resend verification email",
-  "verification-email-resent": "Verification email has been resent"
+  "verification-email-resent": "Verification email has been resent",
+  "already-verified-question": "Already received the email?",
+  "go-to-login": "Go to Login"
 }

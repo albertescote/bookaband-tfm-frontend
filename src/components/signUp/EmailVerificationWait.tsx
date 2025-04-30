@@ -6,6 +6,7 @@ import { Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { resendEmail } from '@/service/backend/email/service/email.service';
+import Link from 'next/link';
 
 interface EmailVerificationWaitProps {
   language: string;
@@ -27,7 +28,6 @@ export default function EmailVerificationWait({
       const timer = setTimeout(() => {
         setCountdown((prev) => prev - 1);
       }, 1000);
-
       return () => clearTimeout(timer);
     } else if (countdown === 0) {
       setCanResend(true);
@@ -35,7 +35,7 @@ export default function EmailVerificationWait({
   }, [countdown, canResend]);
 
   const handleResend = () => {
-    resendEmail({ userId }).then((res) => {
+    resendEmail({ userId }).then(() => {
       toast.success(t('verification-email-resent'));
       setCanResend(false);
       setCountdown(30);
@@ -90,6 +90,16 @@ export default function EmailVerificationWait({
               {t('resend-verification')}
             </button>
           )}
+
+          <div className="mt-6 text-center text-sm text-gray-500">
+            {t('already-verified-question')}{' '}
+            <Link
+              href="/login"
+              className="font-semibold text-[#15b7b9] hover:underline"
+            >
+              {t('go-to-login')}
+            </Link>
+          </div>
         </div>
       </div>
     </motion.div>

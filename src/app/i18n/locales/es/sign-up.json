@@ -37,5 +37,7 @@
   "resend-available-in": "Reenviar disponible en",
   "seconds": "segundos",
   "resend-verification": "Reenviar correo de verificación",
-  "verification-email-resent": "Se ha reenviado el correo de verificación"
+  "verification-email-resent": "Se ha reenviado el correo de verificación",
+  "already-verified-question": "¿Ya recibiste el correo electrónico?",
+  "go-to-login": "Iniciar sesión"
 }
