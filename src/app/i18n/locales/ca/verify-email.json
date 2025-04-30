@@ -1,0 +1,14 @@
+{
+  "noToken": "No s'ha proporcionat cap token de verificació",
+  "error": "S'ha produït un error durant la verificació",
+  "success": {
+    "title": "Correu electrònic verificat correctament!",
+    "redirecting": "Redirigint a la pàgina principal..."
+  },
+  "failed": {
+    "title": "La verificació ha fallat",
+    "help": "Si creus que és un error, si us plau, prova el següent:",
+    "tryAgain": "Torna a intentar registrar-te",
+    "contactSupport": "Contacta amb l'equip de suport"
+  }
+}

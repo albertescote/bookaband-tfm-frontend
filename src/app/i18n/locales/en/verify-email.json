@@ -1,0 +1,14 @@
+{
+  "noToken": "No verification token provided",
+  "error": "An error occurred during verification",
+  "success": {
+    "title": "Email Verified Successfully!",
+    "redirecting": "Redirecting to home page..."
+  },
+  "failed": {
+    "title": "Verification Failed",
+    "help": "If you believe this is an error, please try the following:",
+    "tryAgain": "Try Signing Up Again",
+    "contactSupport": "Contact Support Team"
+  }
+}

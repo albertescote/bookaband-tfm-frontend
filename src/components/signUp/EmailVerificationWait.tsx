@@ -18,7 +18,7 @@ export default function EmailVerificationWait({
   email,
   userId,
 }: EmailVerificationWaitProps) {
-  const { t } = useTranslation(language, 'signUp');
+  const { t } = useTranslation(language, 'sign-up');
   const [canResend, setCanResend] = useState(false);
   const [countdown, setCountdown] = useState(30);
 

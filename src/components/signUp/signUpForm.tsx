@@ -15,7 +15,7 @@ import EmailVerificationWait from './EmailVerificationWait';
 import { createUser } from '@/service/backend/user/service/user.service';
 
 export default function SignUpForm({ language }: { language: string }) {
-  const { t } = useTranslation(language, 'signUp');
+  const { t } = useTranslation(language, 'sign-up');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState('');
