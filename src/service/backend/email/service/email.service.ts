@@ -23,3 +23,16 @@ export async function resendEmail(request: { userId?: string }): Promise<void> {
     return undefined;
   }
 }
+
+export async function sendResetPasswordEmail(request: {
+  email: string;
+  lng: string;
+}): Promise<void> {
+  try {
+    return await axiosInstance
+      .post('/email/password/reset', request)
+      .then((res) => res.data);
+  } catch (e) {
+    return undefined;
+  }
+}
