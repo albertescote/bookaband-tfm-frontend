@@ -1,4 +1,5 @@
 'use server';
+
 import { User } from '@/service/backend/user/domain/user';
 import { getAccessTokenCookie } from '@/service/utils';
 import { decodeJwt } from 'jose';
@@ -12,9 +13,10 @@ export async function createUser(request: {
   email?: string;
   password?: string;
   role?: string;
-}): Promise<void> {
+  lng?: string;
+}): Promise<User | undefined> {
   try {
-    await axiosInstance.post('/user', request);
+    return await axiosInstance.post('/user', request).then((res) => res.data);
   } catch (e) {
     return undefined;
   }

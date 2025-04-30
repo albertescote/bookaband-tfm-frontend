@@ -13,6 +13,7 @@
   "musician": "Musician",
   "client": "Client",
   "sign-up-button": "Create account",
+  "signing-up": "Signing up...",
   "error-server": "Server error. Please try again later.",
   "already-have-account-link": "Log in",
   "already-have-account-text": "Already have an account?",
@@ -29,5 +30,12 @@
   "error-signup": "Error creating account. Please try again later.",
   "or": "or",
   "sign-in-with-google": "Sin in with Google",
-  "sign-up-with-email": "Sign up with email"
+  "sign-up-with-email": "Sign up with email",
+  "verify-email-title": "Please verify your email",
+  "verify-email-message": "We've sent a verification link to",
+  "verify-email-hint": "Check your inbox and click the verification link to continue",
+  "resend-available-in": "Resend available in",
+  "seconds": "seconds",
+  "resend-verification": "Resend verification email",
+  "verification-email-resent": "Verification email has been resent"
 }

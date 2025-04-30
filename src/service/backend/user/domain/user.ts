@@ -4,6 +4,7 @@ export interface User {
   familyName: string;
   email: string;
   role: string;
+  emailVerified: boolean;
   bands?: string[];
   imageUrl?: string;
 }

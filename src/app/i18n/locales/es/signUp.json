@@ -13,6 +13,7 @@
   "musician": "Músico",
   "client": "Cliente",
   "sign-up-button": "Crear cuenta",
+  "signing-up": "Registrando...",
   "error-server": "Error del servidor. Inténtalo de nuevo más tarde.",
   "already-have-account-link": "Inicia sesión",
   "already-have-account-text": "¿Ya tienes cuenta?",
@@ -29,5 +30,12 @@
   "error-signup": "Error al crear la cuenta. Por favor, inténtelo de nuevo más tarde.",
   "or": "o",
   "sign-in-with-google": "Iniciar sesión con Google",
-  "sign-up-with-email": "Crear cuenta con correo"
+  "sign-up-with-email": "Crear cuenta con correo",
+  "verify-email-title": "Por favor, verifica tu correo electrónico",
+  "verify-email-message": "Hemos enviado un enlace de verificación a",
+  "verify-email-hint": "Revisa tu bandeja de entrada y haz clic en el enlace de verificación para continuar",
+  "resend-available-in": "Reenviar disponible en",
+  "seconds": "segundos",
+  "resend-verification": "Reenviar correo de verificación",
+  "verification-email-resent": "Se ha reenviado el correo de verificación"
 }

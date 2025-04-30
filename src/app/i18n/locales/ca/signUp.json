@@ -13,6 +13,7 @@
   "musician": "Músic",
   "client": "Client",
   "sign-up-button": "Crear compte",
+  "signing-up": "Registrant...",
   "error-server": "Error del servidor. Torna-ho a intentar més tard.",
   "already-have-account-link": "Inicia sessió",
   "already-have-account-text": "Ja tens un compte?",
@@ -29,5 +30,12 @@
   "error-signup": "Error al crear el compte. Torna-ho a intentar més tard.",
   "or": "o",
   "sign-in-with-google": "Iniciar sessió amb Google",
-  "sign-up-with-email": "Crear compte amb correu"
+  "sign-up-with-email": "Crear compte amb correu",
+  "verify-email-title": "Si us plau, verifica el teu correu electrònic",
+  "verify-email-message": "Hem enviat un enllaç de verificació a",
+  "verify-email-hint": "Revisa la teva safata d'entrada i fes clic a l'enllaç de verificació per continuar",
+  "resend-available-in": "Reenviar disponible en",
+  "seconds": "segons",
+  "resend-verification": "Reenviar correu de verificació",
+  "verification-email-resent": "S'ha reenviat el correu de verificació"
 }
