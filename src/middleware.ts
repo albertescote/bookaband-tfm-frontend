@@ -137,17 +137,13 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Language cookie handling from referer
-  if (req.headers.has('referer')) {
-    const refererUrl = new URL(req.headers.get('referer')!);
-    const lngInReferer = languages.find((l) =>
-      refererUrl.pathname.startsWith(`/${l}`),
-    );
-    if (lngInReferer) {
-      const response = createResponse();
-      response.cookies.set(cookieName, lngInReferer);
-      return response;
-    }
+  const detectedLngFromPath = languages.find((l) =>
+    pathname.startsWith(`/${l}`),
+  );
+  if (detectedLngFromPath) {
+    const response = createResponse();
+    response.cookies.set(cookieName, detectedLngFromPath);
+    return response;
   }
 
   return createResponse();
