@@ -15,6 +15,7 @@ import { AuthenticationResult } from '@/service/backend/auth/domain/authenticati
 import { AccessTokenPayload } from '@/service/backend/auth/domain/accessTokenPayload';
 import { ParsedCookie } from '@/service/backend/auth/domain/parsedCookie';
 import axiosInstance from '@/service/aixosInstance';
+import { BackendError } from '@/service/backend/shared/domain/backendError';
 
 export async function authenticate(
   email: string | undefined,
@@ -52,12 +53,11 @@ export async function authenticate(
       errorMessage: 'An error occurred while being authenticated',
     };
   } catch (error) {
-    console.log(
-      `Error status: ${(error as AxiosError).code}. Error message: ${
-        (error as AxiosError).message
-      }`,
-    );
-    return { valid: false, errorMessage: 'Invalid credentials!' };
+    console.log(error);
+    return {
+      valid: false,
+      errorMessage: (error as AxiosError<BackendError>)?.response?.data?.error,
+    };
   }
 }
 
