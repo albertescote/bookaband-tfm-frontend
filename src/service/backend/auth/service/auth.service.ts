@@ -53,7 +53,6 @@ export async function authenticate(
       errorMessage: 'An error occurred while being authenticated',
     };
   } catch (error) {
-    console.log(error);
     return {
       valid: false,
       errorMessage: (error as AxiosError<BackendError>)?.response?.data?.error,

@@ -14,5 +14,6 @@
   "error-server": "Server error. Please try again later.",
   "or": "or",
   "sign-in-with-google": "Sin in with Google",
-  "remember-me": "Remember me"
+  "remember-me": "Remember me",
+  "signing-in": "Signing in..."
 }

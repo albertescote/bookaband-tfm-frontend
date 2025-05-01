@@ -14,5 +14,6 @@
   "error-server": "Error del servidor. Inténtalo de nuevo más tarde.",
   "or": "o",
   "sign-in-with-google": "Iniciar sesión con Google",
-  "remember-me": "Recuérdame"
+  "remember-me": "Recuérdame",
+  "signing-in": "Iniciando sesión..."
 }
