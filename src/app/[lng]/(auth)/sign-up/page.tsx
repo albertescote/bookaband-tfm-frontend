@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/signUp/signUpForm';
+import SignUpForm from '@/components/sign-up/signUpForm';
 
 interface PageParams {
   params: {

@@ -38,3 +38,27 @@ export async function getUserInfo(): Promise<User | undefined> {
     authorizedAxiosInstance.get(`/user/${userId}`).then((res) => res.data),
   );
 }
+
+export async function sendResetPasswordEmail(request: {
+  email: string;
+  lng: string;
+}): Promise<void> {
+  return await axiosInstance
+    .post('/user/password/reset', request)
+    .then((res) => res.data);
+}
+
+export async function resetPassword(
+  token: string,
+  password: string,
+): Promise<void> {
+  return await axiosInstance
+    .put(
+      '/user/password',
+      { password: password },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    )
+    .then((res) => res.data);
+}

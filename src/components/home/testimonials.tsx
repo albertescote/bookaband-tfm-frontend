@@ -69,7 +69,6 @@ export default function Testimonials({ lng }: TestimonialsParams) {
   };
 
   const translateX = `-${currentPage * 50}%`;
-  console.log(translateX);
 
   return (
     <section className="bg-gray-50 py-16">

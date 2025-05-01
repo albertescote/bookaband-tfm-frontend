@@ -8,7 +8,7 @@ import { ArrowLeft, Mail } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
-import { sendResetPasswordEmail } from '@/service/backend/email/service/email.service';
+import { sendResetPasswordEmail } from '@/service/backend/user/service/user.service';
 
 export default function ForgotPassword({ language }: { language: string }) {
   const { t } = useTranslation(language, 'forgot-password');

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { verifyEmail } from '@/service/backend/email/service/email.service';
+import { verifyEmailToken } from '@/service/backend/email/service/email.service';
 import { VerificationStatus } from '@/service/backend/email/domain/verificationStatus';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -31,7 +31,7 @@ export default function EmailVerification({ lng }: EmailVerificationProps) {
 
     const verify = async () => {
       try {
-        const response = await verifyEmail({ token });
+        const response = await verifyEmailToken({ token });
         if (!response) {
           setStatus(VerificationStatus.FAILED);
           setMessage(t('error'));
