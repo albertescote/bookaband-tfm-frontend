@@ -1,0 +1,20 @@
+{
+  "form-title": "Completa el teu perfil",
+  "select-role": "Selecciona el teu rol",
+  "select-role-placeholder": "Escull un rol",
+  "role-musician": "Músic / Banda",
+  "role-client": "Client / Organitzador",
+  "first-name": "Nom",
+  "family-name": "Cognom",
+  "stage-name": "Nom artístic (opcional)",
+  "stage-name-placeholder": "El teu nom artístic o de banda",
+  "location": "Ubicació",
+  "location-placeholder": "Ciutat o zona",
+  "bio": "Biografia curta",
+  "bio-placeholder": "Explica una mica sobre tu",
+  "save-button": "Desar i continuar",
+  "saving": "Desant...",
+  "error-missing-fields": "Si us plau, completa tots els camps obligatoris.",
+  "profile-updated": "Perfil actualitzat amb èxit!",
+  "error-server": "Error del servidor. Torna-ho a intentar més tard."
+}

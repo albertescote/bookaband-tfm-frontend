@@ -42,7 +42,7 @@ export default function EmailVerification({ lng }: EmailVerificationProps) {
 
         if (response?.status === VerificationStatus.VERIFIED) {
           setTimeout(() => {
-            router.push('/');
+            router.push('/complete-profile');
           }, 3000);
         }
       } catch (error) {

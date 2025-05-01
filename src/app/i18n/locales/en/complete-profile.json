@@ -1,0 +1,20 @@
+{
+  "form-title": "Complete your profile",
+  "select-role": "Select your role",
+  "select-role-placeholder": "Choose a role",
+  "role-musician": "Musician / Band",
+  "role-client": "Client / Organizer",
+  "first-name": "First name",
+  "family-name": "Family name",
+  "stage-name": "Stage name (optional)",
+  "stage-name-placeholder": "Your artist or band name",
+  "location": "Location",
+  "location-placeholder": "City or area",
+  "bio": "Short biography",
+  "bio-placeholder": "Tell us a bit about yourself",
+  "save-button": "Save and continue",
+  "saving": "Saving...",
+  "error-missing-fields": "Please complete all required fields.",
+  "profile-updated": "Profile updated successfully!",
+  "error-server": "Server error. Please try again later."
+}
