@@ -15,5 +15,6 @@
   "or": "o",
   "sign-in-with-google": "Iniciar sessió amb Google",
   "remember-me": "Recorda'm",
-  "signing-in": "Iniciant sessió..."
+  "signing-in": "Iniciant sessió...",
+  "missing-code": "No s'ha trobat el codi d'autenticació."
 }

@@ -15,5 +15,6 @@
   "or": "or",
   "sign-in-with-google": "Sin in with Google",
   "remember-me": "Remember me",
-  "signing-in": "Signing in..."
+  "signing-in": "Signing in...",
+  "missing-code": "Authentication code not found."
 }

@@ -10,9 +10,9 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import zxcvbn from 'zxcvbn';
-import { signIn } from 'next-auth/react';
 import EmailVerificationWait from './EmailVerificationWait';
 import { createUser } from '@/service/backend/user/service/user.service';
+import { getLoginWithGoogleUrl } from '@/service/backend/auth/service/auth.service';
 
 export default function SignUpForm({ language }: { language: string }) {
   const { t } = useTranslation(language, 'sign-up');
@@ -71,8 +71,8 @@ export default function SignUpForm({ language }: { language: string }) {
   };
 
   const handleGoogleLogin = async () => {
-    await signIn('google', {
-      callbackUrl: '/register/complete',
+    getLoginWithGoogleUrl().then((url) => {
+      window.location.href = url;
     });
   };
 

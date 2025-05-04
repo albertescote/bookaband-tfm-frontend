@@ -1,5 +1,5 @@
 'use server';
-import { BACKEND_PUBLIC_KEY } from '@/config';
+import { BACKEND_PUBLIC_KEY, FRONTEND_URL, GOOGLE_CLIENT_ID } from '@/config';
 import { AxiosError } from 'axios';
 import { decodeJwt, importJWK, JWK, jwtVerify } from 'jose';
 import {
@@ -210,4 +210,53 @@ export async function logout(): Promise<void> {
     );
     return undefined;
   }
+}
+
+export async function loginWithGoogle(
+  code: string,
+): Promise<AuthenticationResult> {
+  try {
+    const loginWithGoogle = {
+      code,
+    };
+    const response = await axiosInstance.post(
+      '/auth/federation/google',
+      loginWithGoogle,
+    );
+    const setCookieHeader = response.headers['set-cookie'];
+    const parsedCookies: ParsedCookie[] | undefined = setCookieHeader?.map(
+      (cookie) => {
+        return parseCookie(cookie);
+      },
+    );
+    const accessTokenCookie = parsedCookies?.find(
+      (parsedCookie: ParsedCookie) => parsedCookie.name === 'access_token',
+    );
+    const refreshTokenCookie = parsedCookies?.find(
+      (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
+    );
+    if (accessTokenCookie && refreshTokenCookie) {
+      setTokenCookie(accessTokenCookie);
+      setTokenCookie(refreshTokenCookie);
+      return { valid: true };
+    }
+    return {
+      valid: false,
+      errorMessage: 'An error occurred while being authenticated with google',
+    };
+  } catch (error) {
+    return {
+      valid: false,
+      errorMessage: (error as AxiosError<BackendError>)?.response?.data?.error,
+    };
+  }
+}
+
+export async function getLoginWithGoogleUrl() {
+  const params = new URLSearchParams();
+  params.append('client_id', GOOGLE_CLIENT_ID);
+  params.append('redirect_uri', `${FRONTEND_URL}/federation/callback/google`);
+  params.append('response_type', 'code');
+  params.append('scope', 'openid email profile');
+  return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }

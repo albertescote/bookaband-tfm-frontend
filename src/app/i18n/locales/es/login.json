@@ -15,5 +15,6 @@
   "or": "o",
   "sign-in-with-google": "Iniciar sesión con Google",
   "remember-me": "Recuérdame",
-  "signing-in": "Iniciando sesión..."
+  "signing-in": "Iniciando sesión...",
+  "missing-code": "No se ha encontrado el código de autenticación."
 }

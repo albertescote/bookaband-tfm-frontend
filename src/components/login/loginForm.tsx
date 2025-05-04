@@ -1,9 +1,11 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-import { authenticate } from '@/service/backend/auth/service/auth.service';
+import {
+  authenticate,
+  getLoginWithGoogleUrl,
+} from '@/service/backend/auth/service/auth.service';
 import { useTranslation } from '@/app/i18n/client';
 import { Input } from '@/components/shared/input';
 import { Label } from '@/components/shared/label';
@@ -14,15 +16,29 @@ import { toast } from 'react-hot-toast';
 export default function LoginForm({
   language,
   redirectTo,
+  error,
 }: {
   language: string;
   redirectTo?: string;
+  error?: string;
 }) {
   const { t } = useTranslation(language, 'login');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (error) {
+      if (error === 'error-server') {
+        toast.error(t('error-server'));
+      } else if (error == 'missing-code') {
+        toast.error(t('missing-code'));
+      } else {
+        toast.error(decodeURIComponent(error));
+      }
+    }
+  }, [error]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -57,8 +73,8 @@ export default function LoginForm({
   };
 
   const handleGoogleLogin = async () => {
-    await signIn('google', {
-      callbackUrl: redirectTo ? decodeURIComponent(redirectTo) : '/',
+    getLoginWithGoogleUrl().then((url) => {
+      window.location.href = url;
     });
   };
 

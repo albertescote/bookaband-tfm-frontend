@@ -1,9 +1,9 @@
-import { Providers } from '@/components/providers';
 import LanguageSwitcher from '@/components/layout/footer/languageSwitcher';
+import { WebAppAuthProvider } from '@/providers/webAppAuthProvider';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Providers>
+    <WebAppAuthProvider>
       <div className="flex min-h-screen bg-gray-50">
         {/* Sidebar */}
         <aside className="hidden w-64 flex-col border-r bg-white shadow-md md:flex">
@@ -40,7 +40,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <main className="flex-1 p-6">{children}</main>
         </div>
       </div>
-    </Providers>
+    </WebAppAuthProvider>
   );
 }
 

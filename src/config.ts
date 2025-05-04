@@ -5,6 +5,11 @@ const checkStrVar = (variable: string | undefined, name: string): string => {
 const BACKEND_URL = checkStrVar(process.env.BACKEND_URL, 'BACKEND_URL');
 const FRONTEND_URL = checkStrVar(process.env.FRONTEND_URL, 'FRONTEND_URL');
 
+const GOOGLE_CLIENT_ID = checkStrVar(
+  process.env.GOOGLE_CLIENT_ID,
+  'GOOGLE_CLIENT_ID',
+);
+
 const BACKEND_PUBLIC_KEY = checkStrVar(
   process.env.BACKEND_PUBLIC_KEY,
   'BACKEND_PUBLIC_KEY',
@@ -32,4 +37,5 @@ export {
   COMMON_PROTECTED_ROUTES,
   CLIENT_PROTECTED_ROUTES,
   MUSICIAN_PROTECTED_ROUTES,
+  GOOGLE_CLIENT_ID,
 };
