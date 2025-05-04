@@ -9,13 +9,5 @@ interface PageParams {
 
 export default function Page({ params: { lng }, searchParams }: PageParams) {
   const error: string | undefined = searchParams?.error;
-  return (
-    <LoginForm
-      language={lng}
-      redirectTo={
-        searchParams?.redirect_to ? searchParams?.redirect_to : undefined
-      }
-      error={error}
-    />
-  );
+  return <LoginForm language={lng} error={error} />;
 }

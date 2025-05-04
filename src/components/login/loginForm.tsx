@@ -15,11 +15,9 @@ import { toast } from 'react-hot-toast';
 
 export default function LoginForm({
   language,
-  redirectTo,
   error,
 }: {
   language: string;
-  redirectTo?: string;
   error?: string;
 }) {
   const { t } = useTranslation(language, 'login');
@@ -63,8 +61,7 @@ export default function LoginForm({
         setLoading(false);
         return;
       }
-      const redirectUrl = redirectTo ? decodeURIComponent(redirectTo) : '/';
-      router.push(redirectUrl);
+      router.push('/');
     } catch (error) {
       toast.error(t('error-server'));
     } finally {

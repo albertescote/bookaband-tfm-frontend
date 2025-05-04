@@ -117,10 +117,7 @@ export async function middleware(req: NextRequest) {
       );
 
       if (!redirectPath.startsWith('/login')) {
-        return createRedirectResponse(
-          `/${lng}/login?redirect_to=${encodeURIComponent(redirectPath)}`,
-          req,
-        );
+        return createRedirectResponse(`/${lng}/login`, req);
       }
       return createResponse();
     }
