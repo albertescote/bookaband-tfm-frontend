@@ -39,5 +39,9 @@
   "resend-verification": "Resend verification email",
   "verification-email-resent": "Verification email has been resent",
   "already-verified-question": "Already received the email?",
-  "go-to-login": "Go to Login"
+  "go-to-login": "Go to Login",
+  "choose-role": "Select your role",
+  "musician-description": "Publish your music, connect with fans, and collaborate with other artists.",
+  "client-description": "Find talented musicians for your events, productions, or collaborations.",
+  "selected-role": "Selected role"
 }

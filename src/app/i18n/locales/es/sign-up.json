@@ -39,5 +39,9 @@
   "resend-verification": "Reenviar correo de verificación",
   "verification-email-resent": "Se ha reenviado el correo de verificación",
   "already-verified-question": "¿Ya recibiste el correo electrónico?",
-  "go-to-login": "Iniciar sesión"
+  "go-to-login": "Iniciar sesión",
+  "choose-role": "Selecciona tu rol",
+  "musician-description": "Publica tu música, conecta con fans y colabora con otros artistas.",
+  "client-description": "Encuentra músicos talentosos para tus eventos, producciones o colaboraciones.",
+  "selected-role": "Rol seleccionado"
 }

@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import zxcvbn from 'zxcvbn';
-import EmailVerificationWait from './EmailVerificationWait';
+import EmailVerificationWait from './emailVerificationWait';
 import { createUser } from '@/service/backend/user/service/user.service';
 import { getLoginWithGoogleUrl } from '@/service/backend/auth/service/auth.service';
 
@@ -25,6 +25,7 @@ export default function SignUpForm({ language }: { language: string }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [registeredEmail, setRegisteredEmail] = useState<string>('');
   const router = useRouter();
+  const [selectedRole, setSelectedRole] = useState<Role>();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ export default function SignUpForm({ language }: { language: string }) {
     const firstName = formData.get('firstName')?.toString();
     const familyName = formData.get('familyName')?.toString();
     const email = formData.get('email')?.toString();
-    const role = formData.get('role')?.toString();
+    const role = selectedRole;
 
     if (password !== confirmPassword) {
       toast.error(t('password-mismatch'));
@@ -71,7 +72,11 @@ export default function SignUpForm({ language }: { language: string }) {
   };
 
   const handleGoogleLogin = async () => {
-    getLoginWithGoogleUrl().then((url) => {
+    if (!selectedRole) {
+      toast.error(t('please-select-role'));
+      return;
+    }
+    getLoginWithGoogleUrl(selectedRole).then((url) => {
       window.location.href = url;
     });
   };
@@ -142,38 +147,62 @@ export default function SignUpForm({ language }: { language: string }) {
           {step === 1 ? (
             <>
               <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
-                {t('form-title')}
+                {t('choose-role')}
               </h1>
-              <button
-                type="button"
-                onClick={() => setStep(2)}
-                className="mb-4 w-full rounded-lg bg-gradient-to-r from-[#15b7b9] to-[#0e9fa1] px-4 py-2 font-bold text-white transition-transform hover:scale-105"
-              >
-                {t('sign-up-with-email')}
-              </button>
-              <div className="my-4 flex items-center">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-4 text-gray-500">{t('or')}</span>
-                <div className="flex-grow border-t border-gray-300"></div>
+              <div className="mb-6 space-y-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRole(Role.Musician);
+                    setStep(2);
+                  }}
+                  className={`w-full rounded-lg border ${
+                    selectedRole === Role.Musician
+                      ? 'border-[#15b7b9]'
+                      : 'border-gray-300'
+                  } bg-white p-4 text-left shadow-sm transition hover:border-[#15b7b9]`}
+                >
+                  <h2 className="text-lg font-bold text-gray-800">
+                    {t('musician')}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {t('musician-description')}
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRole(Role.Client);
+                    setStep(2);
+                  }}
+                  className={`w-full rounded-lg border ${
+                    selectedRole === Role.Client
+                      ? 'border-[#15b7b9]'
+                      : 'border-gray-300'
+                  } bg-white p-4 text-left shadow-sm transition hover:border-[#15b7b9]`}
+                >
+                  <h2 className="text-lg font-bold text-gray-800">
+                    {t('client')}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {t('client-description')}
+                  </p>
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={handleGoogleLogin}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
-              >
-                <img
-                  src="/assets/google-logo.svg"
-                  alt="Google"
-                  className="h-5 w-5"
-                />
-                {t('sign-in-with-google')}
-              </button>
             </>
           ) : (
             <>
               <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
                 {t('form-title')}
               </h1>
+              <p className="mb-4 text-sm text-gray-600">
+                {t('selected-role')}:{' '}
+                <span className="font-bold text-gray-800">
+                  {t(selectedRole || '')}
+                </span>
+              </p>
+
               <form onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <div className="flex gap-4">
@@ -303,24 +332,6 @@ export default function SignUpForm({ language }: { language: string }) {
                       )}
                     </button>
                   </div>
-
-                  <div>
-                    <Label
-                      htmlFor="role"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      {t('select-role')}
-                    </Label>
-                    <select
-                      id="role"
-                      name="role"
-                      required
-                      className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-                    >
-                      <option value={Role.Musician}>{t('musician')}</option>
-                      <option value={Role.Client}>{t('client')}</option>
-                    </select>
-                  </div>
                 </div>
                 <div className="mt-6">
                   <button
@@ -332,6 +343,24 @@ export default function SignUpForm({ language }: { language: string }) {
                   </button>
                 </div>
               </form>
+              <div className="my-4 flex items-center">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="mx-4 text-gray-500">{t('or')}</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+              >
+                <img
+                  src="/assets/google-logo.svg"
+                  alt="Google"
+                  className="h-5 w-5"
+                />
+                {t('sign-in-with-google')}
+              </button>
             </>
           )}
         </motion.div>

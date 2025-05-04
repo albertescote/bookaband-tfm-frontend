@@ -13,10 +13,11 @@ export default async function Page({
   searchParams,
 }: PageParams) {
   const code: string | undefined = searchParams?.code;
+  const role: string | undefined = searchParams?.role;
 
   if (!code) {
     redirect('/login?error=missing-code');
   }
 
-  return <Callback code={code!}></Callback>;
+  return <Callback code={code!} role={role}></Callback>;
 }

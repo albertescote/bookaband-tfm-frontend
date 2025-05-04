@@ -214,10 +214,12 @@ export async function logout(): Promise<void> {
 
 export async function loginWithGoogle(
   code: string,
+  role?: string,
 ): Promise<AuthenticationResult> {
   try {
     const loginWithGoogle = {
       code,
+      role,
     };
     const response = await axiosInstance.post(
       '/auth/federation/google',
@@ -252,10 +254,15 @@ export async function loginWithGoogle(
   }
 }
 
-export async function getLoginWithGoogleUrl() {
+export async function getLoginWithGoogleUrl(role?: string) {
   const params = new URLSearchParams();
   params.append('client_id', GOOGLE_CLIENT_ID);
-  params.append('redirect_uri', `${FRONTEND_URL}/federation/callback/google`);
+  params.append(
+    'redirect_uri',
+    role
+      ? `${FRONTEND_URL}/federation/callback/google?role=${role}`
+      : `${FRONTEND_URL}/federation/callback/google`,
+  );
   params.append('response_type', 'code');
   params.append('scope', 'openid email profile');
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;

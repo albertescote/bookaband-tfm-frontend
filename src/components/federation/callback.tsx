@@ -4,11 +4,17 @@ import { useRouter } from 'next/navigation';
 import { loginWithGoogle } from '@/service/backend/auth/service/auth.service';
 import { useEffect } from 'react';
 
-export default function Callback({ code }: { code: string }) {
+export default function Callback({
+  code,
+  role,
+}: {
+  code: string;
+  role?: string;
+}) {
   const router = useRouter();
 
   useEffect(() => {
-    loginWithGoogle(code).then((authenticationResult) => {
+    loginWithGoogle(code, role).then((authenticationResult) => {
       if (authenticationResult.valid) {
         router.push('/dashboard');
       } else {
