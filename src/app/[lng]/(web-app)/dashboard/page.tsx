@@ -1,3 +1,5 @@
+import Dashboard from '@/components/dashboard/dashboard';
+
 interface PageParams {
   params: {
     lng: string;
@@ -5,5 +7,9 @@ interface PageParams {
 }
 
 export default function Page({ params: { lng } }: PageParams) {
-  return <div></div>;
+  return (
+    <div>
+      <Dashboard language={lng}></Dashboard>
+    </div>
+  );
 }

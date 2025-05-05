@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { cookieName, fallbackLng, languages } from './app/i18n/settings';
-import { validateAccessTokenSignature } from '@/service/backend/auth/service/auth.service';
-import { Role } from '@/service/backend/user/domain/role';
-import {
-  CLIENT_PROTECTED_ROUTES,
-  COMMON_PROTECTED_ROUTES,
-  MUSICIAN_PROTECTED_ROUTES,
-} from '@/config';
 
 acceptLanguage.languages(languages);
 
@@ -30,38 +23,6 @@ const createRedirectResponse = (url: string, req: NextRequest) => {
   return response;
 };
 
-function getFullRedirectPath(
-  routePattern: string,
-  actualPath: string,
-  langPrefix: string,
-  searchParams: string,
-): string {
-  let pathPart = actualPath.replace(langPrefix, '');
-  if (routePattern.includes('[')) {
-    const paramNames: string[] = [];
-    const matches = routePattern.matchAll(/\[([^\]]+)\]/g);
-    for (const match of matches) {
-      paramNames.push(match[1]);
-    }
-
-    const regexPattern = routePattern
-      .replace(/\[[^\]]+\]/g, '([^/]+)')
-      .replace(/\//g, '\\/');
-
-    const match = new RegExp(`^${regexPattern}$`).exec(actualPath);
-
-    if (match) {
-      let result = routePattern;
-      paramNames.forEach((param, index) => {
-        result = result.replace(`[${param}]`, match[index + 1]);
-      });
-      pathPart = result.replace(langPrefix, '');
-    }
-  }
-
-  return searchParams ? `${pathPart}?${searchParams}` : pathPart;
-}
-
 export async function middleware(req: NextRequest) {
   let lng;
   if (req.cookies.has(cookieName)) {
@@ -73,6 +34,7 @@ export async function middleware(req: NextRequest) {
   // Path normalization
   const pathname = req.nextUrl.pathname.replace(/\/+/g, '/');
   if (pathname !== req.nextUrl.pathname) {
+    console.log('redirect1');
     return createRedirectResponse(pathname, req);
   }
 
@@ -82,58 +44,17 @@ export async function middleware(req: NextRequest) {
       const langPrefix = `/${loc}`;
       return pathname === langPrefix || pathname.startsWith(`${langPrefix}/`);
     }) &&
-    !pathname.startsWith('/_next')
+    !pathname.startsWith('/_next') &&
+    !pathname.startsWith('/federation/callback')
   ) {
+    console.log('redirect2', pathname);
     return createRedirectResponse(
       `/${lng}${pathname}${req.nextUrl.search}`,
       req,
     );
   }
 
-  const langPrefix = `/${lng}`;
-  const allProtectedRoutes = [
-    ...COMMON_PROTECTED_ROUTES,
-    ...CLIENT_PROTECTED_ROUTES,
-    ...MUSICIAN_PROTECTED_ROUTES,
-  ];
-
-  const protectedRouteFound = allProtectedRoutes.find((route) => {
-    const normalizedRoute = route.replace(/\[.*?\]/, '[^/]+');
-    return new RegExp(`^${langPrefix}${normalizedRoute}$`).test(pathname);
-  });
-
-  const isProtectedRoute = !!protectedRouteFound;
-
-  // Handle protected routes
-  if (isProtectedRoute) {
-    const accessTokenPayload = await validateAccessTokenSignature();
-
-    if (!accessTokenPayload) {
-      const redirectPath = getFullRedirectPath(
-        protectedRouteFound,
-        pathname,
-        langPrefix,
-        req.nextUrl.searchParams.toString(),
-      );
-
-      if (!redirectPath.startsWith('/login')) {
-        return createRedirectResponse(`/${lng}/login`, req);
-      }
-      return createResponse();
-    }
-
-    // Role-based authorization
-    const { role } = accessTokenPayload;
-    if (
-      (role === Role.Musician &&
-        CLIENT_PROTECTED_ROUTES.includes(protectedRouteFound)) ||
-      (role === Role.Client &&
-        MUSICIAN_PROTECTED_ROUTES.includes(protectedRouteFound))
-    ) {
-      return createRedirectResponse(`/${lng}/forbidden`, req);
-    }
-  }
-
+  // Set language cookie if detected from path
   const detectedLngFromPath = languages.find((l) =>
     pathname.startsWith(`/${l}`),
   );

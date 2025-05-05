@@ -8,10 +8,7 @@ interface PageParams {
   searchParams?: { [key: string]: string | undefined };
 }
 
-export default async function Page({
-  params: { lng },
-  searchParams,
-}: PageParams) {
+export default async function Page({ searchParams }: PageParams) {
   const code: string | undefined = searchParams?.code;
   const role: string | undefined = searchParams?.role;
 

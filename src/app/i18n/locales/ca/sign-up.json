@@ -29,7 +29,7 @@
   "confirm-password-placeholder": "Repeteix la teva contrasenya",
   "error-signup": "Error al crear el compte. Torna-ho a intentar més tard.",
   "or": "o",
-  "sign-in-with-google": "Iniciar sessió amb Google",
+  "sign-up-with-google": "Registrar-se amb Google",
   "sign-up-with-email": "Crear compte amb correu",
   "verify-email-title": "Si us plau, verifica el teu correu electrònic",
   "verify-email-message": "Hem enviat un enllaç de verificació a",
@@ -43,5 +43,6 @@
   "choose-role": "Selecciona el teu rol",
   "musician-description": "Publica la teva música, connecta amb els fans i col·labora amb altres artistes.",
   "client-description": "Troba músics amb talent per als teus esdeveniments, produccions o col·laboracions.",
-  "selected-role": "Rol seleccionat"
+  "selected-role": "Rol seleccionat",
+  "missing-code": "No s'ha trobat el codi d'autenticació."
 }

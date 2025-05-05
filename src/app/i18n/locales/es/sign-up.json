@@ -29,7 +29,7 @@
   "confirm-password-placeholder": "Repite tu contraseña",
   "error-signup": "Error al crear la cuenta. Por favor, inténtelo de nuevo más tarde.",
   "or": "o",
-  "sign-in-with-google": "Iniciar sesión con Google",
+  "sign-up-with-google": "Registrarse con Google",
   "sign-up-with-email": "Crear cuenta con correo",
   "verify-email-title": "Por favor, verifica tu correo electrónico",
   "verify-email-message": "Hemos enviado un enlace de verificación a",
@@ -43,5 +43,6 @@
   "choose-role": "Selecciona tu rol",
   "musician-description": "Publica tu música, conecta con fans y colabora con otros artistas.",
   "client-description": "Encuentra músicos talentosos para tus eventos, producciones o colaboraciones.",
-  "selected-role": "Rol seleccionado"
+  "selected-role": "Rol seleccionado",
+  "missing-code": "No se ha encontrado el código de autenticación."
 }

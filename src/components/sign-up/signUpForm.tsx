@@ -2,7 +2,7 @@
 
 import { Label } from '@/components/shared/label';
 import { Input } from '@/components/shared/input';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
@@ -12,9 +12,15 @@ import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import zxcvbn from 'zxcvbn';
 import EmailVerificationWait from './emailVerificationWait';
 import { createUser } from '@/service/backend/user/service/user.service';
-import { getLoginWithGoogleUrl } from '@/service/backend/auth/service/auth.service';
+import { getSignUpWithGoogleUrl } from '@/service/backend/auth/service/auth.service';
 
-export default function SignUpForm({ language }: { language: string }) {
+export default function SignUpForm({
+  language,
+  error,
+}: {
+  language: string;
+  error?: string;
+}) {
   const { t } = useTranslation(language, 'sign-up');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -26,6 +32,18 @@ export default function SignUpForm({ language }: { language: string }) {
   const [registeredEmail, setRegisteredEmail] = useState<string>('');
   const router = useRouter();
   const [selectedRole, setSelectedRole] = useState<Role>();
+
+  useEffect(() => {
+    if (error) {
+      if (error === 'error-server') {
+        toast.error(t('error-server'));
+      } else if (error == 'missing-code') {
+        toast.error(t('missing-code'));
+      } else {
+        toast.error(decodeURIComponent(error));
+      }
+    }
+  }, [error]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,7 +94,7 @@ export default function SignUpForm({ language }: { language: string }) {
       toast.error(t('please-select-role'));
       return;
     }
-    getLoginWithGoogleUrl(selectedRole).then((url) => {
+    getSignUpWithGoogleUrl(selectedRole).then((url) => {
       window.location.href = url;
     });
   };
@@ -359,7 +377,7 @@ export default function SignUpForm({ language }: { language: string }) {
                   alt="Google"
                   className="h-5 w-5"
                 />
-                {t('sign-in-with-google')}
+                {t('sign-up-with-google')}
               </button>
             </>
           )}

@@ -1,7 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { loginWithGoogle } from '@/service/backend/auth/service/auth.service';
+import {
+  loginWithGoogle,
+  signUpWithGoogle,
+} from '@/service/backend/auth/service/auth.service';
 import { useEffect } from 'react';
 
 export default function Callback({
@@ -14,18 +17,33 @@ export default function Callback({
   const router = useRouter();
 
   useEffect(() => {
-    loginWithGoogle(code, role).then((authenticationResult) => {
-      if (authenticationResult.valid) {
-        router.push('/dashboard');
-      } else {
-        let errorMessage = 'error-server';
-        if (authenticationResult.errorMessage) {
-          errorMessage = encodeURI(authenticationResult.errorMessage);
-        }
+    if (role) {
+      signUpWithGoogle(code, role).then((authenticationResult) => {
+        if (authenticationResult.valid) {
+          router.push('/dashboard');
+        } else {
+          let errorMessage = 'error-server';
+          if (authenticationResult.errorMessage) {
+            errorMessage = encodeURI(authenticationResult.errorMessage);
+          }
 
-        router.push(`/login?error=${errorMessage}`);
-      }
-    });
+          router.push(`/sign-up?error=${errorMessage}`);
+        }
+      });
+    } else {
+      loginWithGoogle(code).then((authenticationResult) => {
+        if (authenticationResult.valid) {
+          router.push('/dashboard');
+        } else {
+          let errorMessage = 'error-server';
+          if (authenticationResult.errorMessage) {
+            errorMessage = encodeURI(authenticationResult.errorMessage);
+          }
+
+          router.push(`/login?error=${errorMessage}`);
+        }
+      });
+    }
   }, [code]);
 
   return (
