@@ -34,7 +34,6 @@ export async function middleware(req: NextRequest) {
   // Path normalization
   const pathname = req.nextUrl.pathname.replace(/\/+/g, '/');
   if (pathname !== req.nextUrl.pathname) {
-    console.log('redirect1');
     return createRedirectResponse(pathname, req);
   }
 
@@ -47,7 +46,6 @@ export async function middleware(req: NextRequest) {
     !pathname.startsWith('/_next') &&
     !pathname.startsWith('/federation/callback')
   ) {
-    console.log('redirect2', pathname);
     return createRedirectResponse(
       `/${lng}${pathname}${req.nextUrl.search}`,
       req,
