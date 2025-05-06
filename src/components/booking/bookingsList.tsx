@@ -9,7 +9,7 @@ import {
   getAllUserBookings,
 } from '@/service/backend/booking/service/booking.service';
 import { Role } from '@/service/backend/user/domain/role';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 import { getAvatar } from '@/components/shared/avatar';
 

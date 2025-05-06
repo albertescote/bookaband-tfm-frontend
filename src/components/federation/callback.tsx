@@ -6,6 +6,7 @@ import {
   signUpWithGoogle,
 } from '@/service/backend/auth/service/auth.service';
 import { useEffect } from 'react';
+import { Role } from '@/service/backend/user/domain/role';
 
 export default function Callback({
   code,
@@ -20,7 +21,9 @@ export default function Callback({
     if (role) {
       signUpWithGoogle(code, role).then((authenticationResult) => {
         if (authenticationResult.valid) {
-          router.push('/dashboard');
+          router.push(
+            authenticationResult.role === Role.Client ? '/' : '/dashboard',
+          );
         } else {
           let errorMessage = 'error-server';
           if (authenticationResult.errorMessage) {
@@ -33,7 +36,9 @@ export default function Callback({
     } else {
       loginWithGoogle(code).then((authenticationResult) => {
         if (authenticationResult.valid) {
-          router.push('/dashboard');
+          router.push(
+            authenticationResult.role === Role.Client ? '/' : '/dashboard',
+          );
         } else {
           let errorMessage = 'error-server';
           if (authenticationResult.errorMessage) {

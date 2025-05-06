@@ -12,6 +12,7 @@ import { Label } from '@/components/shared/label';
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { Role } from '@/service/backend/user/domain/role';
 
 export default function LoginForm({
   language,
@@ -61,7 +62,11 @@ export default function LoginForm({
         setLoading(false);
         return;
       }
-      router.push(`/${language}/dashboard`);
+      router.push(
+        authenticationResult.role === Role.Client
+          ? `/${language}/`
+          : `/${language}/dashboard`,
+      );
     } catch (error) {
       toast.error(t('error-server'));
     } finally {

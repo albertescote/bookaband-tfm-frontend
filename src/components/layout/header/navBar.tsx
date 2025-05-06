@@ -2,7 +2,7 @@
 import { useTranslation } from '@/app/i18n/client';
 import NavLink from '@/components/layout/header/navLink';
 import { Role } from '@/service/backend/user/domain/role';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 
 export default function Navbar({ language }: { language: string }) {
   const { t } = useTranslation(language, 'home');

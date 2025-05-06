@@ -12,6 +12,7 @@
   "select-role": "Rol",
   "musician": "Músico",
   "client": "Cliente",
+  "provider": "Proveedor",
   "sign-up-button": "Crear cuenta",
   "signing-up": "Registrando...",
   "error-server": "Error del servidor. Inténtalo de nuevo más tarde.",
@@ -41,8 +42,9 @@
   "already-verified-question": "¿Ya recibiste el correo electrónico?",
   "go-to-login": "Iniciar sesión",
   "choose-role": "Selecciona tu rol",
-  "musician-description": "Publica tu música, conecta con fans y colabora con otros artistas.",
-  "client-description": "Encuentra músicos talentosos para tus eventos, producciones o colaboraciones.",
+  "client-description": "Encuentra y contrata músicos o servicios para tus eventos.",
+  "musician-description": "Muestra tu talento y recibe solicitudes de eventos.",
+  "provider-description": "Ofrece servicios técnicos o logísticos para eventos.",
   "selected-role": "Rol seleccionado",
   "missing-code": "No se ha encontrado el código de autenticación."
 }

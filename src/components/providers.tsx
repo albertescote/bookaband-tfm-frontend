@@ -1,8 +1,8 @@
 'use client';
 
-import { AuthProvider } from '@/providers/AuthProvider';
+import { WebPageAuthProvider } from '@/providers/webPageAuthProvider';
 import { ReactNode } from 'react';
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return <WebPageAuthProvider>{children}</WebPageAuthProvider>;
 }

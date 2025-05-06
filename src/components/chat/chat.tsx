@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';

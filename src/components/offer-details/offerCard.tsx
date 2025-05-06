@@ -1,6 +1,6 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';

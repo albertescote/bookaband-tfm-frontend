@@ -1,7 +1,7 @@
 'use client';
 import LoginButton from '@/components/layout/header/loginButton';
 import SignUpButton from '@/components/layout/header/signUpButton';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 
 const RegistrationButtons = ({ language }: { language: string }) => {
   const { authentication } = useAuth();

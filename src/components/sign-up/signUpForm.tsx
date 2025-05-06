@@ -207,6 +207,26 @@ export default function SignUpForm({
                     {t('client-description')}
                   </p>
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRole(Role.Provider);
+                    setStep(2);
+                  }}
+                  className={`w-full rounded-lg border ${
+                    selectedRole === Role.Provider
+                      ? 'border-[#15b7b9]'
+                      : 'border-gray-300'
+                  } bg-white p-4 text-left shadow-sm transition hover:border-[#15b7b9]`}
+                >
+                  <h2 className="text-lg font-bold text-gray-800">
+                    {t('provider')}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {t('provider-description')}
+                  </p>
+                </button>
               </div>
             </>
           ) : (

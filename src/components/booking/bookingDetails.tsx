@@ -3,7 +3,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 import { getStatusColor } from '@/lib/utils';
 import { ArrowLeft, Check, X } from 'lucide-react';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
 import {

@@ -1,7 +1,7 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/providers/webPageAuthProvider';
 import { logout } from '@/service/backend/auth/service/auth.service';
 import { LoginIcon } from '@heroicons/react/outline';
 

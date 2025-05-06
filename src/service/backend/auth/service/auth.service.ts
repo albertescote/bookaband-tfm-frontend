@@ -46,7 +46,11 @@ export async function authenticate(
         refreshTokenCookie,
         rememberMe ? 60 * 60 * 24 * 30 : undefined,
       );
-      return { valid: true };
+      const payload = decodeJwt(accessTokenCookie.value);
+      return {
+        valid: true,
+        role: (payload as unknown as AccessTokenPayload).role,
+      };
     }
     return {
       valid: false,
@@ -238,7 +242,11 @@ export async function loginWithGoogle(
     if (accessTokenCookie && refreshTokenCookie) {
       setTokenCookie(accessTokenCookie);
       setTokenCookie(refreshTokenCookie);
-      return { valid: true };
+      const payload = decodeJwt(accessTokenCookie.value);
+      return {
+        valid: true,
+        role: (payload as unknown as AccessTokenPayload).role,
+      };
     }
     return {
       valid: false,
@@ -280,7 +288,11 @@ export async function signUpWithGoogle(
     if (accessTokenCookie && refreshTokenCookie) {
       setTokenCookie(accessTokenCookie);
       setTokenCookie(refreshTokenCookie);
-      return { valid: true };
+      const payload = decodeJwt(accessTokenCookie.value);
+      return {
+        valid: true,
+        role: (payload as unknown as AccessTokenPayload).role,
+      };
     }
     return {
       valid: false,
