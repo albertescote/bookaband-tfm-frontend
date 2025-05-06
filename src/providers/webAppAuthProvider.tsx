@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { logout } from '@/service/backend/auth/service/auth.service';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
+import { Role } from '@/service/backend/user/domain/role';
 
 type User = {
   id: string;
@@ -35,7 +36,11 @@ export function WebAppAuthProvider({
     getUserInfo()
       .then((user) => {
         if (user) {
-          setUser(user);
+          if (user.role === Role.Client) {
+            router.push(`/${language}/`);
+          } else {
+            setUser(user);
+          }
         } else {
           setUser(null);
         }

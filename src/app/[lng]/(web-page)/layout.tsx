@@ -1,7 +1,7 @@
 import Footer from '@/components/layout/footer/footer';
 import Header from '@/components/layout/header/header';
 import { languages } from '@/app/i18n/settings';
-import { Providers } from '@/components/providers';
+import { WebPageAuthProvider } from '@/providers/webPageAuthProvider';
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
@@ -16,11 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <main>
-      <Providers>
+      <WebPageAuthProvider>
         <Header language={lng} />
         {children}
         <Footer language={lng} />
-      </Providers>
+      </WebPageAuthProvider>
     </main>
   );
 }

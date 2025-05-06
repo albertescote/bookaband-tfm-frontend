@@ -1,122 +1,91 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { validateAccessToken } from '@/service/backend/auth/service/auth.service';
+'use client';
+
+import { createContext, useContext, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { logout } from '@/service/backend/auth/service/auth.service';
+import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Role } from '@/service/backend/user/domain/role';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-const COMMON_PROTECTED_ROUTES: string[] = [
-  '/offer-details',
-  '/profile',
-  '/chat',
-  '/chat/[id]',
-  '/booking',
-  '/booking/[id]',
-];
+type User = {
+  id: string;
+  email: string;
+  name?: string;
+  role: string;
+};
 
-const CLIENT_PROTECTED_ROUTES: string[] = ['/chat/new'];
-const MUSICIAN_PROTECTED_ROUTES: string[] = [
-  '/manage-offers',
-  '/band',
-  '/offer',
-];
+type AuthContextType = {
+  user: User | null;
+  loading: boolean;
+  logoutUser: () => void;
+};
 
-interface AuthContextType {
-  authentication: {
-    isAuthenticated: boolean;
-    setAuthenticated: (auth: boolean) => void;
-  };
-  role: { role: string; setRole: (role: string) => void };
-}
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const WebPageAuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setAuthenticated] = useState(false);
-  const [role, setRole] = useState('none');
-  const pathname = usePathname();
+export function WebPageAuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const language = pathname?.split('/')[1];
 
-  const isProtectedRoute = (
-    path: string | null,
-    lng: string | undefined,
-  ): { isProtected: boolean; routePattern?: string } => {
-    if (!path || !lng) return { isProtected: false };
+  useEffect(() => {
+    getUserInfo()
+      .then((user) => {
+        if (user) {
+          if (user.role !== Role.Client) {
+            router.push(`/${language}/dashboard`);
+          } else {
+            setUser(user);
+          }
+        } else {
+          setUser(null);
+        }
+      })
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
+  }, []);
 
-    const allProtectedRoutes = [
-      ...COMMON_PROTECTED_ROUTES,
-      ...(role === Role.Client ? CLIENT_PROTECTED_ROUTES : []),
-      ...(role === Role.Musician ? MUSICIAN_PROTECTED_ROUTES : []),
-    ];
-
-    const langPrefix = `/${lng}`;
-    for (const route of allProtectedRoutes) {
-      const routePattern = new RegExp(
-        `^${langPrefix}${route.replace(/\[.*?\]/, '[^/]+')}$`,
-      );
-      if (routePattern.test(path)) {
-        return { isProtected: true, routePattern: route };
-      }
-    }
-    return { isProtected: false };
+  const logoutUser = async () => {
+    await logout();
+    setUser(null);
+    router.push(`/${language}/login`);
   };
 
   useEffect(() => {
-    let isMounted = true;
+    if (!loading && !user) {
+      router.push(`/${language}/login`);
+    }
+  }, [loading, user, router]);
 
-    const validateAuth = async () => {
-      try {
-        const accessTokenPayload = await validateAccessToken();
-        if (!isMounted) return;
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#15b7b9] border-t-transparent" />
+        </div>
+      </div>
+    );
+  }
 
-        if (accessTokenPayload) {
-          setAuthenticated(true);
-          setRole(accessTokenPayload.role);
-        } else {
-          const lng = pathname?.split('/')[1];
-          const { isProtected, routePattern } = isProtectedRoute(pathname, lng);
-
-          if (isProtected && pathname && routePattern && lng) {
-            setAuthenticated(false);
-            setRole('none');
-
-            router.push(`/${lng}/login`);
-          }
-        }
-      } catch (error) {
-        console.error('Auth validation failed:', error);
-      }
-    };
-
-    validateAuth().then();
-    return () => {
-      isMounted = false;
-    };
-  }, [pathname, searchParams]);
+  if (!user) {
+    return null;
+  }
 
   return (
-    <AuthContext.Provider
-      value={{
-        authentication: {
-          isAuthenticated,
-          setAuthenticated,
-        },
-        role: { role, setRole },
-      }}
-    >
+    <AuthContext.Provider value={{ user, loading, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useWebPageAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useWebPageAuth must be used within a WebPageAuthProvider');
   }
   return context;
-};
+}
