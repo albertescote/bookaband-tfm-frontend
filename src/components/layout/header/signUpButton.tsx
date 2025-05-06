@@ -8,7 +8,7 @@ const SignUpButton = ({ language }: { language: string }) => {
   const { t } = useTranslation(language, 'home');
 
   const signUp = () => {
-    router.push('/sign-up');
+    router.push(`/${language}/sign-up`);
   };
 
   return (

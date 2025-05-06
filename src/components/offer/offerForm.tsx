@@ -86,7 +86,7 @@ export default function OfferForm({
         bandId,
         visible: isVisible,
       }).then(() => {
-        router.push('/manage-offers');
+        router.push(`/${language}/manage-offers`);
         router.refresh();
       });
     } else {
@@ -96,7 +96,7 @@ export default function OfferForm({
         visible: isVisible,
         description,
       }).then(() => {
-        router.push('/manage-offers');
+        router.push(`/${language}/manage-offers`);
         router.refresh();
       });
     }
@@ -104,7 +104,7 @@ export default function OfferForm({
 
   const handleDelete = () => {
     deleteOffer(offer!.id).then(() => {
-      router.push('/manage-offers');
+      router.push(`/${language}/manage-offers`);
       router.refresh();
     });
   };

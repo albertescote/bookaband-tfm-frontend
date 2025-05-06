@@ -55,7 +55,7 @@ export default function ResetPassword({ language }: { language: string }) {
     try {
       await resetPassword(token, password);
       toast.success(t('success'));
-      router.push('/login');
+      router.push(`/${language}/login`);
     } catch {
       toast.error(t('error-server'));
     } finally {

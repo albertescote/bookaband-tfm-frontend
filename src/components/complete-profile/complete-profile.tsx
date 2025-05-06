@@ -38,7 +38,7 @@ export default function CompleteProfile({ language }: { language: string }) {
         bio,
       });*/
       toast.success(t('profile-updated'));
-      router.push('/');
+      router.push(`/${language}/`);
     } catch {
       toast.error(t('error-server'));
     } finally {

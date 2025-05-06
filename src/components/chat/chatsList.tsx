@@ -79,7 +79,7 @@ export function ChatsList({
             <li
               key={index}
               className="relative flex items-center rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
-              onClick={() => router.push(`/chat/${chat.id}`)}
+              onClick={() => router.push(`/${language}/chat/${chat.id}`)}
             >
               {getAvatar(
                 64,

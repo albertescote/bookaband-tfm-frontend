@@ -22,7 +22,7 @@ export default function OffersList({ lng }: OffersListParams) {
   }, []);
 
   const navigateToDetails = (id: string) => {
-    router.push(`/offer-details?id=${id}`);
+    router.push(`/${lng}/offer-details?id=${id}`);
   };
 
   return (

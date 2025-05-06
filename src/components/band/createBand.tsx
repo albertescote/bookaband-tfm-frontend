@@ -20,7 +20,7 @@ export default function CreateBand({ language }: { language: string }) {
     const genre = formData.get('genre')?.toString();
 
     createBand({ name, genre }).then((band: Band | undefined) => {
-      router.push(`/band?id=${band?.id}`);
+      router.push(`/${language}/band?id=${band?.id}`);
       router.refresh();
     });
   };

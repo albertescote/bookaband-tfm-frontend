@@ -18,10 +18,10 @@ export function BandOffers({ language }: { language: string }) {
   }, []);
 
   const navigateToViewOfferDetails = (offerId: string) => {
-    router.push(`/offer?id=${offerId}`);
+    router.push(`/${language}/offer?id=${offerId}`);
   };
   const navigateToCreateOffer = (bandId: string) => {
-    router.push(`/offer?band_id=${bandId}`);
+    router.push(`/${language}/offer?band_id=${bandId}`);
   };
 
   return (

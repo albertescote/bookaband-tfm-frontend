@@ -61,7 +61,7 @@ export default function LoginForm({
         setLoading(false);
         return;
       }
-      router.push('/dashboard');
+      router.push(`/${language}/dashboard`);
     } catch (error) {
       toast.error(t('error-server'));
     } finally {

@@ -83,7 +83,7 @@ export function BookingsList({
             <li
               key={index}
               className="relative flex items-center justify-between rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
-              onClick={() => router.push(`/booking/${booking.id}`)}
+              onClick={() => router.push(`/${language}/booking/${booking.id}`)}
             >
               {role.role === Role.Musician && booking?.userName && (
                 <div className="flex items-center gap-4">

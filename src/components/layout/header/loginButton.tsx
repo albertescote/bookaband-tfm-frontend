@@ -12,13 +12,13 @@ const LoginButton = ({ language }: { language: string }) => {
 
   const navigate = () => {
     if (!authentication.isAuthenticated) {
-      router.push('/login');
+      router.push(`/${language}/login`);
       return;
     }
     logout().then(() => {
       authentication.setAuthenticated(false);
       role.setRole('none');
-      router.push('/');
+      router.push(`/${language}/`);
     });
   };
   return (

@@ -56,7 +56,7 @@ export default function OfferCard({
       bookingDate.setMinutes(parseInt(minutes, 10));
       createBooking({ offerId: offerDetails?.id, date: bookingDate }).then(
         (booking) => {
-          router.push(`/booking/${booking?.id}`);
+          router.push(`/${language}/booking/${booking?.id}`);
         },
       );
     } else {
@@ -68,9 +68,9 @@ export default function OfferCard({
     if (offerDetails?.bandId) {
       checkExistingChat(offerDetails.bandId).then((existingChatId) => {
         if (existingChatId) {
-          router.push(`/chat/${existingChatId}`);
+          router.push(`/${language}/chat/${existingChatId}`);
         } else {
-          router.push(`/chat/new?band_id=${offerDetails.bandId}`);
+          router.push(`/${language}/chat/new?band_id=${offerDetails.bandId}`);
         }
       });
     }

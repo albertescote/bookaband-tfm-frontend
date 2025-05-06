@@ -55,7 +55,7 @@ export default function ProfileCard({
   }, []);
 
   const navigateToCreateBand = () => {
-    router.push('/band');
+    router.push(`/${language}/band`);
   };
 
   const handleDeleteBand = (id: string) => {

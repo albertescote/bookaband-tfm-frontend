@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { logout } from '@/service/backend/auth/service/auth.service';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 
@@ -28,6 +28,8 @@ export function WebAppAuthProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
+  const language = pathname?.split('/')[1];
 
   useEffect(() => {
     getUserInfo()
@@ -45,12 +47,12 @@ export function WebAppAuthProvider({
   const logoutUser = async () => {
     await logout();
     setUser(null);
-    router.push('/login');
+    router.push(`/${language}/login`);
   };
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.push(`/${language}/login`);
     }
   }, [loading, user, router]);
 
