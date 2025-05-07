@@ -1,16 +1,9 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { BookingStatus } from '@/service/backend/booking/domain/booking';
 import { getStatusColor } from '@/lib/utils';
-import { ArrowLeft, Check, X } from 'lucide-react';
-import { useAuth } from '@/providers/webPageAuthProvider';
-import { Role } from '@/service/backend/user/domain/role';
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import {
-  acceptBooking,
-  declineBooking,
-  getBookingById,
-} from '@/service/backend/booking/service/booking.service';
+import { getBookingById } from '@/service/backend/booking/service/booking.service';
 import React, { useEffect, useState } from 'react';
 import { getAvatar } from '@/components/shared/avatar';
 import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
@@ -23,7 +16,6 @@ export default function BookingDetails({
   bookingId: string;
 }) {
   const { t } = useTranslation(language, 'booking');
-  const { role } = useAuth();
   const router = useRouter();
   const [booking, setBooking] = useState<BookingWithDetails | undefined>();
 
@@ -33,20 +25,6 @@ export default function BookingDetails({
     });
   }, []);
 
-  const handleAccept = () => {
-    acceptBooking(booking?.id).then(() => {
-      const newBooking = { ...booking!, status: BookingStatus.ACCEPTED };
-      setBooking(newBooking);
-    });
-  };
-
-  const handleDecline = () => {
-    declineBooking(booking?.id).then(() => {
-      const newBooking = { ...booking!, status: BookingStatus.DECLINED };
-      setBooking(newBooking);
-    });
-  };
-
   const handleGoBack = () => {
     router.back();
   };
@@ -55,14 +33,7 @@ export default function BookingDetails({
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center">
         <ArrowLeft className="mr-4 cursor-pointer" onClick={handleGoBack} />
-        {role.role === Role.Musician && booking?.userName && (
-          <div className="flex items-center gap-4">
-            {getAvatar(96, 96, booking.userImageUrl, booking.userName)}
-            <p className="text-lg font-semibold">{booking.userName}</p>
-          </div>
-        )}
-
-        {role.role === Role.Client && booking?.bandName && (
+        {booking?.bandName && (
           <div className="flex items-center gap-4">
             {getAvatar(96, 96, booking.bandImageUrl, booking.bandName)}
             <p className="text-lg font-semibold">{booking.bandName}</p>
@@ -94,26 +65,6 @@ export default function BookingDetails({
         )}
 
         <span className="mt-2 text-sm text-gray-500">{booking?.id}</span>
-
-        {booking?.status === BookingStatus.PENDING &&
-          role.role === Role.Musician && (
-            <div className="mt-4 flex w-full justify-center gap-4">
-              <button
-                onClick={handleAccept}
-                className="flex items-center justify-center rounded-lg bg-green-500 px-4 py-2 text-white transition hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
-                <Check className="mr-2 h-5 w-5" />
-                {t('accept')}
-              </button>
-              <button
-                onClick={handleDecline}
-                className="flex items-center justify-center rounded-lg bg-red-500 px-4 py-2 text-white transition hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              >
-                <X className="mr-2 h-5 w-5" />
-                {t('decline')}
-              </button>
-            </div>
-          )}
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { useAuth } from '@/providers/webPageAuthProvider';
-import { Role } from '@/service/backend/user/domain/role';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
@@ -24,7 +22,6 @@ export default function OfferCard({
   offerId?: string;
 }) {
   const { t } = useTranslation(language, 'offer-details');
-  const { role } = useAuth();
   const today = new Date();
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string>('12:00');
@@ -125,41 +122,39 @@ export default function OfferCard({
           description={offerDetails?.description}
           t={t}
         />
-        {role.role === Role.Client && (
-          <div className="mt-6 w-full">
-            <h3 className="mb-4 text-lg font-medium text-gray-700">
-              {t('availability')}
-            </h3>
-            <AnimatePresence mode="wait">
-              {showCalendar ? (
-                <CalendarPicker
-                  date={date}
-                  today={today}
-                  bookedDates={bookedDates}
-                  isDateBooked={isDateBooked}
-                  handleDateSelection={handleDateSelection}
-                  language={language}
-                />
-              ) : (
-                <TimePicker
-                  date={date}
-                  time={time}
-                  setTime={setTime}
-                  handleBackToCalendar={handleBackToCalendar}
-                  generateTimeOptions={generateTimeOptions}
-                  language={language}
-                  t={t}
-                />
-              )}
-            </AnimatePresence>
-            <BookingActions
-              handleBooking={handleBooking}
-              handleSendMessage={handleSendMessage}
-              isDateSelected={!!date}
-              t={t}
-            />
-          </div>
-        )}
+        <div className="mt-6 w-full">
+          <h3 className="mb-4 text-lg font-medium text-gray-700">
+            {t('availability')}
+          </h3>
+          <AnimatePresence mode="wait">
+            {showCalendar ? (
+              <CalendarPicker
+                date={date}
+                today={today}
+                bookedDates={bookedDates}
+                isDateBooked={isDateBooked}
+                handleDateSelection={handleDateSelection}
+                language={language}
+              />
+            ) : (
+              <TimePicker
+                date={date}
+                time={time}
+                setTime={setTime}
+                handleBackToCalendar={handleBackToCalendar}
+                generateTimeOptions={generateTimeOptions}
+                language={language}
+                t={t}
+              />
+            )}
+          </AnimatePresence>
+          <BookingActions
+            handleBooking={handleBooking}
+            handleSendMessage={handleSendMessage}
+            isDateSelected={!!date}
+            t={t}
+          />
+        </div>
       </div>
     </div>
   );

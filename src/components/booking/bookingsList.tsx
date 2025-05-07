@@ -8,8 +8,6 @@ import {
   getAllBandBookings,
   getAllUserBookings,
 } from '@/service/backend/booking/service/booking.service';
-import { Role } from '@/service/backend/user/domain/role';
-import { useAuth } from '@/providers/webPageAuthProvider';
 import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 import { getAvatar } from '@/components/shared/avatar';
 
@@ -31,7 +29,6 @@ export function BookingsList({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { role } = useAuth();
 
   useEffect(() => {
     async function fetchBookings() {
@@ -85,14 +82,7 @@ export function BookingsList({
               className="relative flex items-center justify-between rounded-md p-4 transition hover:cursor-pointer hover:bg-gray-100"
               onClick={() => router.push(`/${language}/booking/${booking.id}`)}
             >
-              {role.role === Role.Musician && booking?.userName && (
-                <div className="flex items-center gap-4">
-                  {getAvatar(64, 64, booking.userImageUrl, booking.userName)}
-                  <p className="text-lg font-semibold">{booking.userName}</p>
-                </div>
-              )}
-
-              {role.role === Role.Client && booking?.bandName && (
+              {booking?.bandName && (
                 <div className="flex items-center gap-4">
                   {getAvatar(64, 64, booking.bandImageUrl, booking.bandName)}
                   <p className="text-lg font-semibold">{booking.bandName}</p>

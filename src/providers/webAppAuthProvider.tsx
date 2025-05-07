@@ -52,7 +52,7 @@ export function WebAppAuthProvider({
   const logoutUser = async () => {
     await logout();
     setUser(null);
-    router.push(`/${language}/login`);
+    router.push(`/${language}/`);
   };
 
   useEffect(() => {

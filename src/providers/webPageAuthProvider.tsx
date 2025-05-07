@@ -5,13 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { logout } from '@/service/backend/auth/service/auth.service';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Role } from '@/service/backend/user/domain/role';
-
-type User = {
-  id: string;
-  email: string;
-  name?: string;
-  role: string;
-};
+import { User } from '@/service/backend/user/domain/user';
 
 type AuthContextType = {
   user: User | null;
@@ -20,6 +14,8 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const publicRoutes = ['/'];
 
 export function WebPageAuthProvider({
   children,
@@ -31,6 +27,9 @@ export function WebPageAuthProvider({
   const router = useRouter();
   const pathname = usePathname();
   const language = pathname?.split('/')[1];
+
+  const normalizedPath = pathname?.split('/').slice(2).join('/') || '';
+  const pathWithoutLang = '/' + normalizedPath;
 
   useEffect(() => {
     getUserInfo()
@@ -52,14 +51,22 @@ export function WebPageAuthProvider({
   const logoutUser = async () => {
     await logout();
     setUser(null);
-    router.push(`/${language}/login`);
+    router.push(`/${language}/`);
   };
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push(`/${language}/login`);
+      const isPublic = publicRoutes.some(
+        (publicRoute) =>
+          pathWithoutLang === publicRoute ||
+          pathWithoutLang.startsWith(publicRoute + '/'),
+      );
+
+      if (!isPublic) {
+        router.push(`/${language}/login`);
+      }
     }
-  }, [loading, user, router]);
+  }, [loading, user, router, pathWithoutLang]);
 
   if (loading) {
     return (
@@ -69,10 +76,6 @@ export function WebPageAuthProvider({
         </div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (

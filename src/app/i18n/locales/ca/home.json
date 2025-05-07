@@ -6,13 +6,6 @@
   "sign-in": "Iniciar sessió",
   "sign-out": "Tancar sessió",
   "rights": "© 2024 BookaBand. Tots els drets reservats.",
-  "profile-tab": "Perfil",
-  "chat-tab": "Xat",
-  "home-tab": "Inici",
-  "artists-tab": "Artistes",
-  "events-tab": "Events",
-  "bookings-tab": "Reserves",
-  "manage-offers-tab": "Gestionar ofertes",
   "genre": "Gènere",
   "price": "Preu",
   "no-offers": "No hi ha ofertes disponibles en aquest moment",
@@ -31,5 +24,13 @@
   "cta-button": "Explora",
   "featured-musicians-title": "Músics destacats",
   "view-profile": "Veure perfil",
-  "testimonials-title": "Escolta què diuen els nostres usuaris!"
+  "testimonials-title": "Escolta què diuen els nostres usuaris!",
+  "search-musicians-tab": "Buscar artistes",
+  "providers-tab": "Proveïdors",
+  "bookings-tab": "Reserves",
+  "chat-tab": "Missatges",
+  "how-it-works-tab": "Com funciona",
+  "about-tab": "Sobre nosaltres",
+  "contact-tab": "Contacte",
+  "profile-tab": "Perfil"
 }

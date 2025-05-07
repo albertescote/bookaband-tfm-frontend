@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
-import { useAuth } from '@/providers/webPageAuthProvider';
-import { Role } from '@/service/backend/user/domain/role';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
@@ -24,7 +22,6 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
   const { t } = useTranslation(language, 'chat');
-  const { role } = useAuth();
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
   const [allMessages, setAllMessages] = useState<ChatMessage[]>([]);
@@ -89,17 +86,11 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
   }, []);
 
   useEffect(() => {
-    if (chat && role.role !== 'none') {
-      const newSenderId =
-        role.role === Role.Client ? chat.user.id : chat.band.id;
-      const newRecipientId =
-        role.role === Role.Client ? chat.band.id : chat.user.id;
-      const newImageUrl =
-        role.role === Role.Client ? chat.band?.imageUrl : chat.user?.imageUrl;
-      const newDisplayName =
-        role.role === Role.Client
-          ? chat.band?.name || 'Unknown'
-          : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim();
+    if (chat) {
+      const newSenderId = chat.user.id;
+      const newRecipientId = chat.band.id;
+      const newImageUrl = chat.band?.imageUrl;
+      const newDisplayName = chat.band?.name || 'Unknown';
 
       setSenderId(newSenderId);
       setRecipientId(newRecipientId);
@@ -115,7 +106,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
         })),
       );
     }
-  }, [chat, role]);
+  }, [chat]);
 
   const { messages, sendMessage } = useChat(senderId);
 
@@ -201,11 +192,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
                     <ArrowLeft className="h-6 w-6" />
                   </button>
                   {getAvatar(64, 64, imageUrl, displayName)}
-                  <span className="ml-4 text-xl">
-                    {role.role === Role.Client
-                      ? chat.band.name
-                      : `${chat.user.firstName} ${chat.user.familyName}`}
-                  </span>
+                  <span className="ml-4 text-xl">{chat.band.name}</span>
                 </div>
               </div>
 

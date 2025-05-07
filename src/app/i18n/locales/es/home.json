@@ -6,12 +6,9 @@
   "sign-in": "Iniciar sesión",
   "sign-out": "Cerrar sesión",
   "rights": "© 2024 BookaBand. Todos los derechos reservados.",
-  "profile-tab": "Perfil",
-  "chat-tab": "Chat",
   "home-tab": "Inicio",
   "artists-tab": "Artistas",
   "events-tab": "Eventos",
-  "bookings-tab": "Reservas",
   "manage-offers-tab": "Gestionar ofertas",
   "genre": "Género",
   "price": "Precio",
@@ -31,5 +28,13 @@
   "cta-button": "Explora",
   "featured-musicians-title": "Músicos destacados",
   "view-profile": "Ver perfil",
-  "testimonials-title": "Escucha lo que dicen nuestros usuarios!"
+  "testimonials-title": "Escucha lo que dicen nuestros usuarios!",
+  "search-musicians-tab": "Buscar artistas",
+  "providers-tab": "Proveedores",
+  "bookings-tab": "Reservas",
+  "chat-tab": "Mensajes",
+  "how-it-works-tab": "Cómo funciona",
+  "about-tab": "Sobre nosotros",
+  "contact-tab": "Contacto",
+  "profile-tab": "Perfil"
 }
