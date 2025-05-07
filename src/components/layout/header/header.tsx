@@ -2,12 +2,20 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/header/navBar';
 import RegistrationButtons from '@/components/layout/header/registrationButtons';
+import { useWebPageAuth } from '@/providers/webPageAuthProvider';
+import { Bell, Calendar, MessageSquareText } from 'lucide-react';
+import { getAvatar } from '@/components/shared/avatar';
+import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
+import { getClientChats } from '@/service/backend/chat/service/chat.service';
 
 export default function Header({ language }: { language: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useWebPageAuth();
+  const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
+  const [unreadMessages, setUnreadMessages] = useState<number>(0);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -26,9 +34,55 @@ export default function Header({ language }: { language: string }) {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    let notificationsInterval: NodeJS.Timeout;
+    let messagesInterval: NodeJS.Timeout;
+
+    if (user?.id) {
+      const getNotificationsAndUpdateUnread = (userId: string) => {
+        getClientNotifications(userId).then((receivedNotifications) => {
+          if (receivedNotifications) {
+            const totalUnread = receivedNotifications.filter(
+              (notification) => notification.unread,
+            ).length;
+            setUnreadNotifications(totalUnread);
+          }
+        });
+      };
+
+      const getChatsAndUpdateUnreadMessages = (userId: string) => {
+        getClientChats(userId).then((receivedChats) => {
+          if (receivedChats) {
+            const totalUnreadMessages = receivedChats.reduce(
+              (total, chat) => total + chat.unreadMessagesCount,
+              0,
+            );
+            setUnreadMessages(totalUnreadMessages);
+          }
+        });
+      };
+
+      getNotificationsAndUpdateUnread(user.id);
+      getChatsAndUpdateUnreadMessages(user.id);
+
+      notificationsInterval = setInterval(() => {
+        getNotificationsAndUpdateUnread(user.id);
+      }, 30000);
+
+      messagesInterval = setInterval(() => {
+        getChatsAndUpdateUnreadMessages(user.id);
+      }, 30000);
+    }
+
+    return () => {
+      if (notificationsInterval) clearInterval(notificationsInterval);
+      if (messagesInterval) clearInterval(messagesInterval);
+    };
+  }, [user?.id]);
+
   return (
-    <header className="sticky top-0 z-30 bg-[#f3f4f6] px-4 py-2 sm:px-6">
-      <div className="relative flex items-center justify-between">
+    <header className="sticky top-0 z-30 h-16 bg-[#f3f4f6] px-4 py-2 sm:px-6">
+      <div className="relative flex h-full items-center justify-between">
         <Link href="/" className="relative z-10">
           <Image
             src="/assets/logo.svg"
@@ -84,13 +138,58 @@ export default function Header({ language }: { language: string }) {
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="mt-16 flex flex-col items-center space-y-6 p-6">
-            <div className="w-full">
-              <Navbar language={language} onLinkClick={closeMenu} />
+          <div className="flex h-full flex-col">
+            <div className="mt-16 flex flex-col items-center space-y-6 p-6">
+              <div className="w-full">
+                <Navbar language={language} onLinkClick={closeMenu} />
+              </div>
+              {!user && (
+                <div className="w-full">
+                  <RegistrationButtons language={language} />
+                </div>
+              )}
             </div>
-            <div className="w-full">
-              <RegistrationButtons language={language} />
-            </div>
+
+            {user && (
+              <div className="mt-auto border-t border-gray-200 p-4">
+                <div className="flex items-center justify-around">
+                  <Link
+                    href="/chat"
+                    className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+                    onClick={closeMenu}
+                  >
+                    <MessageSquareText size={24} />
+                    {unreadMessages > 0 && (
+                      <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-[#15b7b9] ring-2 ring-white"></span>
+                    )}
+                  </Link>
+                  <Link
+                    href="/notifications"
+                    className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+                    onClick={closeMenu}
+                  >
+                    <Bell size={24} />
+                    {unreadNotifications > 0 && (
+                      <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-[#15b7b9] ring-2 ring-white"></span>
+                    )}
+                  </Link>
+                  <Link
+                    href="/bookings"
+                    className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+                    onClick={closeMenu}
+                  >
+                    <Calendar size={24} />
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+                    onClick={closeMenu}
+                  >
+                    {getAvatar(36, 36, user.imageUrl, user.firstName)}
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
