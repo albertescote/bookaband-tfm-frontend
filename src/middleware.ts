@@ -31,13 +31,11 @@ export async function middleware(req: NextRequest) {
   if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'));
   if (!lng) lng = fallbackLng;
 
-  // Path normalization
   const pathname = req.nextUrl.pathname.replace(/\/+/g, '/');
   if (pathname !== req.nextUrl.pathname) {
     return createRedirectResponse(pathname, req);
   }
 
-  // Language prefix redirection
   if (
     !languages.some((loc) => {
       const langPrefix = `/${loc}`;
@@ -52,7 +50,6 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  // Set language cookie if detected from path
   const detectedLngFromPath = languages.find((l) =>
     pathname.startsWith(`/${l}`),
   );

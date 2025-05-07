@@ -7,5 +7,7 @@
   "type-a-message": "Type a message...",
   "recent-messages": "Recent messages",
   "no-messages": "No messages",
-  "no-chats": "No conversations available"
+  "no-chats": "No conversations available",
+  "view-all-messages": "View all messages"
+
 }

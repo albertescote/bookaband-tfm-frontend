@@ -7,5 +7,6 @@
   "type-a-message": "Escriu un missatge...",
   "recent-messages": "Missatges recents",
   "no-messages": "Cap missatge",
-  "no-chats": "No hi ha converses disponibles"
+  "no-chats": "No hi ha converses disponibles",
+  "view-all-messages": "Veure tots els missatges"
 }

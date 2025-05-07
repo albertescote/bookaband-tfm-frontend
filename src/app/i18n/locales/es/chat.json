@@ -7,5 +7,6 @@
   "type-a-message": "Escribe un mensaje...",
   "recent-messages": "Mensajes recientes",
   "no-messages": "Sin mensajes",
-  "no-chats": "No hay conversaciones disponibles"
+  "no-chats": "No hay conversaciones disponibles",
+  "view-all-messages": "Ver todos los mensajes"
 }

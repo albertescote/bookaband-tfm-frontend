@@ -45,26 +45,26 @@ export default function UserMenu({ language }: { language: string }) {
       </button>
 
       {menuOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border border-[#15b7b9] bg-white shadow-xl">
+        <div className="animate-fade-in absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border border-[#15b7b9] bg-white shadow-xl">
           <Link
             href={`/${language}/bookings`}
-            className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 transition hover:bg-[#15b7b9]/10"
+            className="flex items-center gap-2 px-4 py-3 text-sm text-[#565d6d] transition hover:bg-[#15b7b9]/10"
           >
-            <CalendarCheck2 size={18} />
+            <CalendarCheck2 size={20} className="mr-2" />
             {t('bookings-tab')}
           </Link>
           <Link
             href={`/${language}/profile`}
-            className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 transition hover:bg-[#15b7b9]/10"
+            className="flex items-center gap-2 px-4 py-3 text-sm text-[#565d6d] transition hover:bg-[#15b7b9]/10"
           >
-            <User size={18} />
+            <User size={20} className="mr-2" />
             {t('profile-tab')}
           </Link>
           <button
             onClick={logoutUser}
             className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-[#15b7b9] transition hover:bg-[#15b7b9]/10"
           >
-            <LogOut size={18} />
+            <LogOut size={20} className="mr-2" />
             {t('sign-out')}
           </button>
         </div>
