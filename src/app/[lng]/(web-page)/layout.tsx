@@ -1,5 +1,5 @@
-import Footer from '@/components/layout/footer/footer';
-import Header from '@/components/layout/header/header';
+import Footer from '@/components/web-page/layout/footer/footer';
+import Header from '@/components/web-page/layout/header/header';
 import { languages } from '@/app/i18n/settings';
 import { WebPageAuthProvider } from '@/providers/webPageAuthProvider';
 

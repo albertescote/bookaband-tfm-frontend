@@ -1,4 +1,4 @@
-import OfferForm from '@/components/offer/offerForm';
+import OfferForm from '@/components/web-page/offer/offerForm';
 
 interface PageParams {
   params: {

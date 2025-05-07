@@ -1,10 +1,19 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Search, Plus, Music, Users, MapPin, Phone, Mail, Calendar, DollarSign, UserPlus, History, ChevronUp, ChevronDown } from 'lucide-react';
-import DataTable from '@/components/ui/data-table';
-import MetricCard from '@/components/ui/metric-card';
-import FormModal from '@/components/ui/form-modal';
+import { useMemo, useState } from 'react';
+import {
+  Calendar,
+  DollarSign,
+  Mail,
+  MapPin,
+  Phone,
+  Plus,
+  UserPlus,
+  Users,
+} from 'lucide-react';
+import DataTable from '@/components/web-app/ui/data-table';
+import MetricCard from '@/components/web-app/ui/metric-card';
+import FormModal from '@/components/web-app/ui/form-modal';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 
@@ -184,7 +193,9 @@ export default function BandsPage() {
   const { t } = useTranslation(language, 'bands');
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [selectedBand, setSelectedBand] = useState<Band | null>(null);
-  const [sortConfig, setSortConfig] = useState<SortConfig | undefined>(undefined);
+  const [sortConfig, setSortConfig] = useState<SortConfig | undefined>(
+    undefined,
+  );
   const [filterConfig, setFilterConfig] = useState<FilterConfig | null>(null);
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
   const [isPerformanceModalOpen, setIsPerformanceModalOpen] = useState(false);
@@ -192,8 +203,12 @@ export default function BandsPage() {
 
   // Form states
   const [newMember, setNewMember] = useState<Partial<BandMember>>({});
-  const [newPerformance, setNewPerformance] = useState<Partial<Performance>>({});
-  const [newFinancial, setNewFinancial] = useState<Partial<FinancialRecord>>({});
+  const [newPerformance, setNewPerformance] = useState<Partial<Performance>>(
+    {},
+  );
+  const [newFinancial, setNewFinancial] = useState<Partial<FinancialRecord>>(
+    {},
+  );
 
   const bandColumns = [
     { key: 'name', label: t('name') },
@@ -209,8 +224,8 @@ export default function BandsPage() {
             item.status === 'active'
               ? 'bg-green-100 text-green-800'
               : item.status === 'on_break'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
+                ? 'bg-yellow-100 text-yellow-800'
+                : 'bg-red-100 text-red-800'
           }`}
         >
           {t(`status-${item.status}`)}
@@ -257,8 +272,8 @@ export default function BandsPage() {
             item.status === 'completed'
               ? 'bg-green-100 text-green-800'
               : item.status === 'upcoming'
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-red-100 text-red-800'
+                ? 'bg-blue-100 text-blue-800'
+                : 'bg-red-100 text-red-800'
           }`}
         >
           {t(`status-${item.status}`)}
@@ -283,8 +298,8 @@ export default function BandsPage() {
             item.status === 'paid'
               ? 'bg-green-100 text-green-800'
               : item.status === 'pending'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
+                ? 'bg-yellow-100 text-yellow-800'
+                : 'bg-red-100 text-red-800'
           }`}
         >
           {t(`status-${item.status}`)}
@@ -311,9 +326,15 @@ export default function BandsPage() {
   const filteredBands = useMemo(() => {
     let result = mockBands.filter(
       (band) =>
-        band.name.toLowerCase().includes(filterConfig?.value?.toLowerCase() || '') ||
-        band.genre.toLowerCase().includes(filterConfig?.value?.toLowerCase() || '') ||
-        band.location.toLowerCase().includes(filterConfig?.value?.toLowerCase() || '')
+        band.name
+          .toLowerCase()
+          .includes(filterConfig?.value?.toLowerCase() || '') ||
+        band.genre
+          .toLowerCase()
+          .includes(filterConfig?.value?.toLowerCase() || '') ||
+        band.location
+          .toLowerCase()
+          .includes(filterConfig?.value?.toLowerCase() || ''),
     );
 
     // Apply sorting
@@ -430,36 +451,58 @@ export default function BandsPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-lg border p-4">
-                <h3 className="mb-2 text-sm font-medium text-gray-500">{t('contact-info')}</h3>
+                <h3 className="mb-2 text-sm font-medium text-gray-500">
+                  {t('contact-info')}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Mail className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-900">{selectedBand.contact.email}</span>
+                    <span className="text-sm text-gray-900">
+                      {selectedBand.contact.email}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Phone className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-900">{selectedBand.contact.phone}</span>
+                    <span className="text-sm text-gray-900">
+                      {selectedBand.contact.phone}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <MapPin className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-900">{selectedBand.location}</span>
+                    <span className="text-sm text-gray-900">
+                      {selectedBand.location}
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="rounded-lg border p-4">
-                <h3 className="mb-2 text-sm font-medium text-gray-500">{t('quick-stats')}</h3>
+                <h3 className="mb-2 text-sm font-medium text-gray-500">
+                  {t('quick-stats')}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{t('total-members')}</span>
-                    <span className="text-sm font-medium text-gray-900">{selectedBand.members}</span>
+                    <span className="text-sm text-gray-500">
+                      {t('total-members')}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      {selectedBand.members}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{t('upcoming-performances')}</span>
-                    <span className="text-sm font-medium text-gray-900">{selectedBand.upcomingPerformances}</span>
+                    <span className="text-sm text-gray-500">
+                      {t('upcoming-performances')}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      {selectedBand.upcomingPerformances}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{t('monthly-revenue')}</span>
-                    <span className="text-sm font-medium text-gray-900">${selectedBand.monthlyRevenue.toLocaleString()}</span>
+                    <span className="text-sm text-gray-500">
+                      {t('monthly-revenue')}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      ${selectedBand.monthlyRevenue.toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -474,7 +517,9 @@ export default function BandsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">{t('bands')}</h1>
         <button
-          onClick={() => {/* handle add band */}}
+          onClick={() => {
+            /* handle add band */
+          }}
           className="flex items-center space-x-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-sm font-medium text-white hover:bg-[#15b7b9]/90"
         >
           <Plus className="h-4 w-4" />
@@ -492,7 +537,10 @@ export default function BandsPage() {
         <MetricCard
           icon={<Calendar className="h-5 w-5 text-[#15b7b9]" />}
           title={t('upcoming-performances')}
-          value={mockBands.reduce((acc, band) => acc + band.upcomingPerformances, 0)}
+          value={mockBands.reduce(
+            (acc, band) => acc + band.upcomingPerformances,
+            0,
+          )}
           trend={{ value: 8, isPositive: true }}
         />
         <MetricCard
@@ -582,9 +630,7 @@ export default function BandsPage() {
           </nav>
         </div>
 
-        <div className="p-6">
-          {renderTabContent()}
-        </div>
+        <div className="p-6">{renderTabContent()}</div>
       </div>
 
       {/* Modals */}
@@ -593,9 +639,7 @@ export default function BandsPage() {
         onClose={() => setIsMemberModalOpen(false)}
         title={t('add-member')}
       >
-        <div className="space-y-4">
-          {/* Member form content */}
-        </div>
+        <div className="space-y-4">{/* Member form content */}</div>
       </FormModal>
 
       <FormModal
@@ -603,9 +647,7 @@ export default function BandsPage() {
         onClose={() => setIsPerformanceModalOpen(false)}
         title={t('add-performance')}
       >
-        <div className="space-y-4">
-          {/* Performance form content */}
-        </div>
+        <div className="space-y-4">{/* Performance form content */}</div>
       </FormModal>
 
       <FormModal
@@ -613,10 +655,8 @@ export default function BandsPage() {
         onClose={() => setIsFinancialModalOpen(false)}
         title={t('add-transaction')}
       >
-        <div className="space-y-4">
-          {/* Financial form content */}
-        </div>
+        <div className="space-y-4">{/* Financial form content */}</div>
       </FormModal>
     </div>
   );
-} 
+}

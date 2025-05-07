@@ -1,4 +1,4 @@
-import { BandOffers } from '@/components/manage-offers/bandOffers';
+import { BandOffers } from '@/components/web-page/manage-offers/bandOffers';
 
 interface PageParams {
   params: {

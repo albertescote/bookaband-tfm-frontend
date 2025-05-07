@@ -1,5 +1,5 @@
-import BandDetails from '@/components/band/bandDetails';
-import CreateBand from '@/components/band/createBand';
+import BandDetails from '@/components/web-page/band/bandDetails';
+import CreateBand from '@/components/web-page/band/createBand';
 
 interface PageParams {
   params: {

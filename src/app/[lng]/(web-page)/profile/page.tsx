@@ -1,6 +1,5 @@
-import ProfileCard from '@/components/profile/profileCard';
-
 import { getUserInfo } from '@/service/backend/user/service/user.service';
+import ProfileCard from '@/components/web-page/profile/profileCard';
 
 interface PageParams {
   params: {

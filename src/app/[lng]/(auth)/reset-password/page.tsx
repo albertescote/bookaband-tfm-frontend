@@ -1,4 +1,4 @@
-import ResetPassword from '@/components/reset-password/resetPassword';
+import ResetPassword from '@/components/auth/reset-password/resetPassword';
 
 interface PageParams {
   params: {

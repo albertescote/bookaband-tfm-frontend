@@ -1,8 +1,8 @@
 import { Role } from '@/service/backend/user/domain/role';
-import { SelectBand } from '@/components/chat/selectBand';
-import { ChatsList } from '@/components/chat/chatsList';
 
 import { getUserInfo } from '@/service/backend/user/service/user.service';
+import { SelectBand } from '@/components/web-page/chat/selectBand';
+import { ChatsList } from '@/components/web-page/chat/chatsList';
 
 interface PageParams {
   params: {

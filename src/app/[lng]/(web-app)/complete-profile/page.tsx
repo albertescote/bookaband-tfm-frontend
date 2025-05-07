@@ -1,4 +1,4 @@
-import CompleteProfile from '@/components/complete-profile/complete-profile';
+import CompleteProfile from '@/components/web-app/complete-profile/complete-profile';
 
 interface PageParams {
   params: {

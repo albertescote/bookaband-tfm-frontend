@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { useTranslation } from '@/app/i18n';
-import FAQsContent from '@/components/faqs/faqs-content';
+import FAQsContent from '@/components/web-page/faqs/faqs-content';
 
 export async function generateMetadata({
   params: { lng },
@@ -24,4 +24,4 @@ export default function FAQsPage({
       <FAQsContent language={lng} />
     </div>
   );
-} 
+}

@@ -1,6 +1,6 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import NavLink from '@/components/layout/header/navLink';
+import NavLink from '@/components/web-page/layout/header/navLink';
 
 export default function Navbar({
   language,

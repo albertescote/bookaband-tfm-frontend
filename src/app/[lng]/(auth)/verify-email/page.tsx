@@ -1,7 +1,11 @@
 'use client';
 
-import EmailVerification from '@/components/email/EmailVerification';
+import EmailVerification from '@/components/auth/email/EmailVerification';
 
-export default function VerifyEmailPage({ params: { lng } }: { params: { lng: string } }) {
+export default function VerifyEmailPage({
+  params: { lng },
+}: {
+  params: { lng: string };
+}) {
   return <EmailVerification lng={lng} />;
 }

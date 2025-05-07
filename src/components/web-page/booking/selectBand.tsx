@@ -2,13 +2,13 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import { useTranslation } from '@/app/i18n/client';
 import { useEffect, useState } from 'react';
-import { ChatsList } from '@/components/chat/chatsList';
 import { getUserBands } from '@/service/backend/band/service/band.service';
-import { UserBand } from '@/service/backend/band/domain/userBand';
 import { Spinner } from '@/components/shared/spinner';
+import { BookingsList } from '@/components/web-page/booking/bookingsList';
+import { UserBand } from '@/service/backend/band/domain/userBand';
 
 export function SelectBand({ language }: { language: string }) {
-  const { t } = useTranslation(language, 'chat');
+  const { t } = useTranslation(language, 'booking');
   const [userBands, setUserBands] = useState<UserBand[] | undefined>([]);
   const [bandId, setBandId] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -28,7 +28,7 @@ export function SelectBand({ language }: { language: string }) {
       <div className="flex min-h-[25vh] flex-col items-center justify-center gap-4">
         <Spinner className="h-12 w-12 text-blue-500" />
         <p className="text-lg font-medium text-gray-600">
-          Loading your chats...
+          Loading your bookings...
         </p>
       </div>
     );
@@ -59,14 +59,14 @@ export function SelectBand({ language }: { language: string }) {
           )}
         </div>
       ) : (
-        <ChatsList
+        <BookingsList
           language={language}
           bandOptions={{
             id: bandId,
             setBandId: setBandId,
             multiple: userBands?.length ? userBands.length > 1 : false,
           }}
-        ></ChatsList>
+        ></BookingsList>
       )}
     </div>
   );

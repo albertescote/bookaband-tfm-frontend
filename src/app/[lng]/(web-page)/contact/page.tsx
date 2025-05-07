@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { useTranslation } from '@/app/i18n';
-import ContactForm from '@/components/contact/contactForm';
+import ContactForm from '@/components/web-page/contact/contactForm';
 
 export async function generateMetadata({
   params: { lng },

@@ -1,6 +1,6 @@
 import { WebAppAuthProvider } from '@/providers/webAppAuthProvider';
-import WebAppHeader from '@/components/layout/web-app-header/web-app-header';
-import Sidebar from '@/components/layout/sidebar/sidebar';
+import WebAppHeader from '@/components/web-app/layout/web-app-header/web-app-header';
+import Sidebar from '@/components/web-app/layout/sidebar/sidebar';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

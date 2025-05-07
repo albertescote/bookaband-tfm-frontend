@@ -1,5 +1,5 @@
 import { useTranslation } from '@/app/i18n';
-import BookingDetails from '@/components/booking/bookingDetails';
+import BookingDetails from '@/components/web-page/booking/bookingDetails';
 
 interface PageParams {
   params: {

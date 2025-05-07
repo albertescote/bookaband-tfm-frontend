@@ -1,4 +1,4 @@
-import Chat from '@/components/chat/chat';
+import Chat from '@/components/web-page/chat/chat';
 
 interface PageParams {
   params: {

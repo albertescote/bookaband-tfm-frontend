@@ -1,7 +1,7 @@
 import { Role } from '@/service/backend/user/domain/role';
-import { SelectBand } from '@/components/booking/selectBand';
-import { BookingsList } from '@/components/booking/bookingsList';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
+import { SelectBand } from '@/components/web-page/booking/selectBand';
+import { BookingsList } from '@/components/web-page/booking/bookingsList';
 
 export const dynamic = 'force-dynamic';
 

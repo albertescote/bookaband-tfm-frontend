@@ -1,4 +1,4 @@
-import ForgotPassword from '@/components/forgot-password/forgotPassword';
+import ForgotPassword from '@/components/auth/forgot-password/forgotPassword';
 
 interface PageParams {
   params: {

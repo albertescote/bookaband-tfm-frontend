@@ -1,4 +1,4 @@
-import LoginForm from '@/components/login/loginForm';
+import LoginForm from '@/components/auth/login/loginForm';
 
 interface PageParams {
   params: {

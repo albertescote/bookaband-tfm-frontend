@@ -1,6 +1,6 @@
 import { useTranslation } from '@/app/i18n';
 import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
-import LanguageSwitcher from '@/components/layout/footer/languageSwitcher';
+import LanguageSwitcher from '@/components/web-page/layout/footer/languageSwitcher';
 import Image from 'next/image';
 import Link from 'next/link';
 

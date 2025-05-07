@@ -1,7 +1,7 @@
-import Hero from '@/components/home/hero';
-import Testimonials from '@/components/home/testimonials';
-import CallToAction from '@/components/home/callToAction';
-import FeaturedArtists from '@/components/home/featuredArtists';
+import Hero from '@/components/web-page/home/hero';
+import FeaturedArtists from '@/components/web-page/home/featuredArtists';
+import Testimonials from '@/components/web-page/home/testimonials';
+import CallToAction from '@/components/web-page/home/callToAction';
 
 interface PageParams {
   params: {

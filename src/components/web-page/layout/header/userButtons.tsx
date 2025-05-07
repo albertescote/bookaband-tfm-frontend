@@ -1,11 +1,11 @@
 'use client';
-import LoginButton from '@/components/layout/header/loginButton';
-import SignUpButton from '@/components/layout/header/signUpButton';
+import LoginButton from '@/components/web-page/layout/header/loginButton';
+import SignUpButton from '@/components/web-page/layout/header/signUpButton';
 import { useWebPageAuth } from '@/providers/webPageAuthProvider';
-import UserMenu from '@/components/layout/header/userMenu';
+import UserMenu from '@/components/web-page/layout/header/userMenu';
 import React from 'react';
-import NotificationsMenu from '@/components/layout/header/notificationsMenu';
-import MessagesMenu from '@/components/layout/header/messagesMenu';
+import NotificationsMenu from '@/components/web-page/layout/header/notificationsMenu';
+import MessagesMenu from '@/components/web-page/layout/header/messagesMenu';
 
 const UserButtons = ({ language }: { language: string }) => {
   const { user } = useWebPageAuth();

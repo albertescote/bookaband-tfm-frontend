@@ -3,10 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import Navbar from '@/components/layout/header/navBar';
-import UserButtons from '@/components/layout/header/userButtons';
+import Navbar from '@/components/web-page/layout/header/navBar';
+import UserButtons from '@/components/web-page/layout/header/userButtons';
 import { useWebPageAuth } from '@/providers/webPageAuthProvider';
-import { Bell, Calendar, MessageSquareText, LogOut } from 'lucide-react';
+import { Bell, Calendar, LogOut, MessageSquareText } from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
 import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
@@ -83,7 +83,7 @@ export default function Header({ language }: { language: string }) {
   return (
     <header className="sticky top-0 z-30 h-16 bg-[#f3f4f6] px-4 py-2 sm:px-6">
       <div className="relative flex h-full items-center justify-between">
-        <Link href="/" className="relative z-10">
+        <Link href="/public" className="relative z-10">
           <Image
             src="/assets/logo.svg"
             alt="logo"

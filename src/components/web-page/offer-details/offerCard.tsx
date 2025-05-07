@@ -3,16 +3,16 @@ import { useTranslation } from '@/app/i18n/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
-import BandInfo from '@/components/offer-details/bandInfo';
-import CalendarPicker from '@/components/offer-details/calendarPicker';
-import TimePicker from '@/components/offer-details/timePicker';
-import BookingActions from '@/components/offer-details/bookingActions';
 import { checkExistingChat } from '@/service/backend/chat/service/chat.service';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { ArrowLeft } from 'lucide-react';
 import { OfferDetails } from '@/service/backend/offer/domain/offerDetails';
 import { getOfferDetailsById } from '@/service/backend/offer/service/offer.service';
+import TimePicker from '@/components/web-page/offer-details/timePicker';
+import BookingActions from '@/components/web-page/offer-details/bookingActions';
+import CalendarPicker from '@/components/web-page/offer-details/calendarPicker';
+import BandInfo from '@/components/web-page/offer-details/bandInfo';
 
 export default function OfferCard({
   language,

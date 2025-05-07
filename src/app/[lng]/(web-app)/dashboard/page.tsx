@@ -1,8 +1,8 @@
 'use client';
 
 import { CalendarDays, Music, Users, Wallet } from 'lucide-react';
-import MetricCard from '@/components/ui/metric-card';
-import DataTable from '@/components/ui/data-table';
+import MetricCard from '@/components/web-app/ui/metric-card';
+import DataTable from '@/components/web-app/ui/data-table';
 
 interface RecentActivity {
   id: string;
@@ -49,8 +49,8 @@ const activityColumns = [
           item.status === 'completed'
             ? 'bg-green-100 text-green-800'
             : item.status === 'pending'
-            ? 'bg-yellow-100 text-yellow-800'
-            : 'bg-red-100 text-red-800'
+              ? 'bg-yellow-100 text-yellow-800'
+              : 'bg-red-100 text-red-800'
         }`}
       >
         {item.status.charAt(0).toUpperCase() + item.status.slice(1)}

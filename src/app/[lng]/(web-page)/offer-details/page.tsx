@@ -1,4 +1,4 @@
-import OfferCard from '@/components/offer-details/offerCard';
+import OfferCard from '@/components/web-page/offer-details/offerCard';
 
 interface PageParams {
   params: {
