@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "Preguntas Frecuentes | Music Manager",
+    "description": "Encuentra respuestas a preguntas comunes sobre Music Manager y cómo puede ayudarte a gestionar tu trayectoria musical."
+  },
+  "hero": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre Music Manager"
+  },
+  "categories": {
+    "general": {
+      "title": "Preguntas Generales",
+      "questions": {
+        "what": {
+          "question": "¿Qué es Music Manager?",
+          "answer": "Music Manager es una plataforma integral diseñada para ayudar a los músicos a organizar y gestionar su trayectoria musical. Proporciona herramientas para la gestión de proyectos, colaboración, seguimiento de progreso y gestión de oportunidades."
+        },
+        "who": {
+          "question": "¿Quién puede usar Music Manager?",
+          "answer": "Music Manager está diseñado para músicos de todos los niveles, desde principiantes hasta profesionales. Ya seas un artista solista, parte de una banda o profesor de música, nuestra plataforma puede ayudarte a gestionar tu carrera musical."
+        },
+        "cost": {
+          "question": "¿Cuánto cuesta Music Manager?",
+          "answer": "Music Manager ofrece un plan básico gratuito con funciones esenciales. También proporcionamos planes premium con funciones avanzadas para músicos profesionales. Consulta nuestra página de precios para obtener información detallada."
+        }
+      }
+    },
+    "features": {
+      "title": "Características y Funcionalidad",
+      "questions": {
+        "projects": {
+          "question": "¿Cómo puedo gestionar mis proyectos musicales?",
+          "answer": "Puedes crear y organizar proyectos, establecer plazos, realizar un seguimiento del progreso y colaborar con otros músicos. Nuestra interfaz intuitiva facilita mantener todo en un solo lugar."
+        },
+        "collaboration": {
+          "question": "¿Cómo funciona la colaboración?",
+          "answer": "Puedes invitar a otros músicos a tus proyectos, compartir archivos, comunicarte a través de nuestra plataforma y realizar un seguimiento de las contribuciones de todos. Nuestras herramientas de colaboración facilitan el trabajo conjunto."
+        },
+        "opportunities": {
+          "question": "¿Cómo puedo realizar un seguimiento de las oportunidades?",
+          "answer": "Puedes crear y gestionar una base de datos de oportunidades, establecer recordatorios para fechas importantes y realizar un seguimiento de tus solicitudes y respuestas. Nunca pierdas la oportunidad de mostrar tu talento."
+        }
+      }
+    },
+    "technical": {
+      "title": "Soporte Técnico",
+      "questions": {
+        "devices": {
+          "question": "¿Qué dispositivos son compatibles?",
+          "answer": "Music Manager es una plataforma web que funciona en cualquier dispositivo con un navegador web moderno. También ofrecemos aplicaciones móviles para iOS y Android para acceso en movimiento."
+        },
+        "security": {
+          "question": "¿Qué tan seguros son mis datos?",
+          "answer": "Nos tomamos la seguridad muy en serio. Tus datos están encriptados, respaldados regularmente y protegidos por medidas de seguridad estándar de la industria. Nunca compartimos tu información con terceros."
+        },
+        "support": {
+          "question": "¿Cómo puedo obtener ayuda?",
+          "answer": "Ofrecemos múltiples canales de soporte, incluyendo soporte por correo electrónico, chat en vivo y un centro de ayuda completo. Nuestro equipo de soporte está disponible para ayudarte con cualquier pregunta o problema."
+        }
+      }
+    }
+  },
+  "cta": {
+    "title": "¿Aún tienes preguntas?",
+    "description": "¿No encuentras lo que buscas? Contacta con nuestro equipo de soporte para obtener ayuda personalizada.",
+    "button": "Contactar Soporte"
+  }
+} 
