@@ -1,18 +1,35 @@
 {
-  "contact-title": "Contacta amb nosaltres",
-  "contact-subtitle": "Tens alguna pregunta o proposta? Estem aquí per ajudar-te.",
+  "metadata": {
+    "title": "Contacta'ns | Music Manager",
+    "description": "Posa't en contacte amb Music Manager - Estem aquí per ajudar-te en la teva trajectòria musical."
+  },
+  "hero": {
+    "title": "Contacta'ns",
+    "subtitle": "Tens preguntes o necessites ajuda? Estem aquí per ajudar-te en la teva trajectòria musical."
+  },
+  "additional-info": {
+    "title": "Altres Formes de Connectar",
+    "community": {
+      "title": "Uneix-te a la Nostra Comunitat",
+      "description": "Connecta amb altres músics, comparteix les teves experiències i creix la teva xarxa a la nostra vibrant comunitat."
+    },
+    "updates": {
+      "title": "Mantingues-te Informat",
+      "description": "Segueix-nos a les xarxes socials per estar al dia de noves funcions, oportunitats i esdeveniments de la comunitat."
+    }
+  },
   "name": "Nom",
   "name-placeholder": "El teu nom",
   "email": "Correu electrònic",
-  "email-placeholder": "El teu correu electrònic",
+  "email-placeholder": "el.teu.correu@exemple.com",
   "subject": "Assumpte",
-  "subject-placeholder": "De què vols parlar?",
+  "subject-placeholder": "Sobre què vols contactar-nos?",
   "message": "Missatge",
-  "message-placeholder": "Escriu el teu missatge aquí...",
-  "send-message": "Enviar missatge",
-  "missing-fields": "Si us plau, omple tots els camps obligatoris.",
-  "message-sent": "Missatge enviat correctament!",
-  "error-sending": "Hi ha hagut un error en enviar el missatge. Torna-ho a provar.",
-  "we-will-contact-soon": "Ens posarem en contacte amb tu tan aviat com sigui possible.",
-  "back-home": "Tornar a l'inici"
+  "message-placeholder": "Explica'ns com podem ajudar-te...",
+  "send-message": "Enviar Missatge",
+  "missing-fields": "Si us plau, completa tots els camps requerits",
+  "message-sent": "¡Missatge Enviat!",
+  "error-sending": "Hi ha hagut un error en enviar el teu missatge. Si us plau, torna-ho a provar.",
+  "we-will-contact-soon": "Gràcies per contactar-nos! Et respondrem el més aviat possible.",
+  "back-home": "Tornar a l'Inici"
 }

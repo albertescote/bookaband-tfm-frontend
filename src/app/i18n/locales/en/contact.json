@@ -1,18 +1,35 @@
 {
-  "contact-title": "Contact us",
-  "contact-subtitle": "Have any questions or proposals? We're here to help.",
+  "metadata": {
+    "title": "Contact Us | Music Manager",
+    "description": "Get in touch with Music Manager - We're here to help you with your musical journey."
+  },
+  "hero": {
+    "title": "Contact Us",
+    "subtitle": "Have questions or need assistance? We're here to help you with your musical journey."
+  },
+  "additional-info": {
+    "title": "Other Ways to Connect",
+    "community": {
+      "title": "Join Our Community",
+      "description": "Connect with other musicians, share your experiences, and grow your network in our vibrant community."
+    },
+    "updates": {
+      "title": "Stay Updated",
+      "description": "Follow us on social media to stay informed about new features, opportunities, and community events."
+    }
+  },
   "name": "Name",
   "name-placeholder": "Your name",
   "email": "Email",
-  "email-placeholder": "Your email",
+  "email-placeholder": "your.email@example.com",
   "subject": "Subject",
-  "subject-placeholder": "What would you like to discuss?",
+  "subject-placeholder": "What is this regarding?",
   "message": "Message",
-  "message-placeholder": "Type your message here...",
-  "send-message": "Send message",
-  "missing-fields": "Please fill in all required fields.",
-  "message-sent": "Message sent successfully!",
-  "error-sending": "There was an error sending the message. Please try again.",
-  "we-will-contact-soon": "We will get in touch with you as soon as possible.",
-  "back-home": "Back to home"
+  "message-placeholder": "Tell us how we can help you...",
+  "send-message": "Send Message",
+  "message-sent": "Message Sent!",
+  "we-will-contact-soon": "Thank you for reaching out! We'll get back to you as soon as possible.",
+  "back-home": "Back to Home",
+  "missing-fields": "Please fill in all required fields",
+  "error-sending": "There was an error sending your message. Please try again."
 }

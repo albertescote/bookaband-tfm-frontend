@@ -1,18 +1,37 @@
 {
+  "metadata": {
+    "title": "Contáctanos | Music Manager",
+    "description": "Ponte en contacto con Music Manager - Estamos aquí para ayudarte en tu trayectoria musical."
+  },
+  "hero": {
+    "title": "Contáctanos",
+    "subtitle": "¿Tienes preguntas o necesitas ayuda? Estamos aquí para ayudarte en tu trayectoria musical."
+  },
+  "additional-info": {
+    "title": "Otras Formas de Conectarnos",
+    "community": {
+      "title": "Únete a Nuestra Comunidad",
+      "description": "Conéctate con otros músicos, comparte tus experiencias y crece tu red en nuestra vibrante comunidad."
+    },
+    "updates": {
+      "title": "Mantente Informado",
+      "description": "Síguenos en redes sociales para estar al día de nuevas funciones, oportunidades y eventos de la comunidad."
+    }
+  },
   "contact-title": "Contacta con nosotros",
   "contact-subtitle": "¿Tienes alguna pregunta o propuesta? Estamos aquí para ayudarte.",
   "name": "Nombre",
   "name-placeholder": "Tu nombre",
   "email": "Correo electrónico",
-  "email-placeholder": "Tu correo electrónico",
+  "email-placeholder": "tu.correo@ejemplo.com",
   "subject": "Asunto",
-  "subject-placeholder": "¿Sobre qué quieres hablar?",
+  "subject-placeholder": "¿Sobre qué quieres contactarnos?",
   "message": "Mensaje",
-  "message-placeholder": "Escribe tu mensaje aquí...",
-  "send-message": "Enviar mensaje",
-  "missing-fields": "Por favor, completa todos los campos obligatorios.",
-  "message-sent": "¡Mensaje enviado correctamente!",
-  "error-sending": "Hubo un error al enviar el mensaje. Inténtalo de nuevo.",
-  "we-will-contact-soon": "Nos pondremos en contacto contigo lo antes posible.",
-  "back-home": "Volver al inicio"
+  "message-placeholder": "Cuéntanos cómo podemos ayudarte...",
+  "send-message": "Enviar Mensaje",
+  "missing-fields": "Por favor, completa todos los campos requeridos",
+  "message-sent": "¡Mensaje Enviado!",
+  "error-sending": "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+  "we-will-contact-soon": "¡Gracias por contactarnos! Te responderemos lo antes posible.",
+  "back-home": "Volver al Inicio"
 }
