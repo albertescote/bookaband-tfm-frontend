@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "title": "Sobre Nosotros | Music Manager",
+    "description": "Conoce más sobre Music Manager - Tu plataforma para conectar músicos y gestionar oportunidades musicales."
+  },
+  "hero": {
+    "title": "Sobre Music Manager",
+    "subtitle": "Conectando músicos con oportunidades y ayudándoles a gestionar su trayectoria musical"
+  },
+  "mission": {
+    "title": "Nuestra Misión",
+    "description": "Music Manager fue creado con una visión simple pero poderosa: hacer más fácil para los músicos encontrar y gestionar sus oportunidades. Creemos que cada músico merece acceso a las herramientas y conexiones que necesita para triunfar en su trayectoria musical."
+  },
+  "features": {
+    "title": "Lo Que Ofrecemos",
+    "band": {
+      "title": "Gestión de Bandas",
+      "description": "Crea y gestiona el perfil de tu banda, conéctate con otros músicos y muestra tu música a potenciales oportunidades."
+    },
+    "booking": {
+      "title": "Sistema de Reservas",
+      "description": "Optimiza tu proceso de reservas con nuestro calendario integrado y herramientas de comunicación."
+    },
+    "offers": {
+      "title": "Gestión de Ofertas",
+      "description": "Crea y gestiona ofertas de actuación, maneja negociaciones y lleva un control de todas tus oportunidades en un solo lugar."
+    }
+  },
+  "cta": {
+    "title": "¿Listo para Empezar?",
+    "description": "Únete a nuestra comunidad de músicos y comienza a gestionar tu trayectoria musical hoy.",
+    "button": "Iniciar Sesión"
+  }
+} 

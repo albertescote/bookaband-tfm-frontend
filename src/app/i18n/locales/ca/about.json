@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "title": "Sobre Nosaltres | Music Manager",
+    "description": "Coneix més sobre Music Manager - La teva plataforma per connectar músics i gestionar oportunitats musicals."
+  },
+  "hero": {
+    "title": "Sobre Music Manager",
+    "subtitle": "Connectant músics amb oportunitats i ajudant-los a gestionar la seva trajectòria musical"
+  },
+  "mission": {
+    "title": "La Nostra Missió",
+    "description": "Music Manager va ser creat amb una visió simple però poderosa: fer més fàcil per als músics trobar i gestionar les seves oportunitats. Creiem que cada músic mereix accés a les eines i connexions que necessita per triomfar en la seva trajectòria musical."
+  },
+  "features": {
+    "title": "El Que Oferim",
+    "band": {
+      "title": "Gestió de Bandes",
+      "description": "Crea i gestiona el perfil de la teva banda, connecta't amb altres músics i mostra la teva música a potencials oportunitats."
+    },
+    "booking": {
+      "title": "Sistema de Reserves",
+      "description": "Optimitza el teu procés de reserves amb el nostre calendari integrat i eines de comunicació."
+    },
+    "offers": {
+      "title": "Gestió d'Ofertes",
+      "description": "Crea i gestiona ofertes d'actuació, gestiona negociacions i porta un control de totes les teves oportunitats en un sol lloc."
+    }
+  },
+  "cta": {
+    "title": "Preparat per Començar?",
+    "description": "Uneix-te a la nostra comunitat de músics i comença a gestionar la teva trajectòria musical avui.",
+    "button": "Iniciar Sessió"
+  }
+} 
