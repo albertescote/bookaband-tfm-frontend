@@ -5,13 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { logout } from '@/service/backend/auth/service/auth.service';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Role } from '@/service/backend/user/domain/role';
-
-type User = {
-  id: string;
-  email: string;
-  name?: string;
-  role: string;
-};
+import { User } from '@/service/backend/user/domain/user';
 
 type AuthContextType = {
   user: User | null;
