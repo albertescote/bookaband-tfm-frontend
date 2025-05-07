@@ -15,7 +15,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const publicRoutes = ['/'];
+const publicRoutes = ['/', '/contact'];
 
 export function WebPageAuthProvider({
   children,

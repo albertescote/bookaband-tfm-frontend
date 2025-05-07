@@ -56,8 +56,18 @@ export default function MessagesMenu({ language }: { language: string }) {
     };
   }, []);
 
-  const handleNavigateToChat = (unreadMessagesFromOpenedChat: number) => {
+  const handleNavigateToChat = (
+    unreadMessagesFromOpenedChat: number,
+    chatId: string,
+  ) => {
     setUnreadMessages(unreadMessages - unreadMessagesFromOpenedChat);
+
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === chatId ? { ...chat, unreadMessagesCount: 0 } : chat,
+      ),
+    );
+
     setMenuOpen(false);
   };
 
@@ -98,7 +108,7 @@ export default function MessagesMenu({ language }: { language: string }) {
                     key={chat.id}
                     href={`/${language}/chat/${chat.id}`}
                     onClick={() => {
-                      handleNavigateToChat(chat.unreadMessagesCount);
+                      handleNavigateToChat(chat.unreadMessagesCount, chat.id);
                     }}
                     className="flex items-center justify-between gap-2 rounded-md px-4 py-3 text-sm text-[#4a4f5a] transition-colors duration-200 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
                   >

@@ -1,0 +1,18 @@
+{
+  "contact-title": "Contacta amb nosaltres",
+  "contact-subtitle": "Tens alguna pregunta o proposta? Estem aquí per ajudar-te.",
+  "name": "Nom",
+  "name-placeholder": "El teu nom",
+  "email": "Correu electrònic",
+  "email-placeholder": "El teu correu electrònic",
+  "subject": "Assumpte",
+  "subject-placeholder": "De què vols parlar?",
+  "message": "Missatge",
+  "message-placeholder": "Escriu el teu missatge aquí...",
+  "send-message": "Enviar missatge",
+  "missing-fields": "Si us plau, omple tots els camps obligatoris.",
+  "message-sent": "Missatge enviat correctament!",
+  "error-sending": "Hi ha hagut un error en enviar el missatge. Torna-ho a provar.",
+  "we-will-contact-soon": "Ens posarem en contacte amb tu tan aviat com sigui possible.",
+  "back-home": "Tornar a l'inici"
+}

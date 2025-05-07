@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import { useWebPageAuth } from '@/providers/webPageAuthProvider';
-import { getClientNotifications } from '@/service/backend/notifications/service/chat.service';
+import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
 import { Notification } from '@/service/backend/notifications/domain/notification';
 
 export default function NotificationsMenu({ language }: { language: string }) {

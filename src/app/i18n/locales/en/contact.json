@@ -1,0 +1,18 @@
+{
+  "contact-title": "Contact us",
+  "contact-subtitle": "Have any questions or proposals? We're here to help.",
+  "name": "Name",
+  "name-placeholder": "Your name",
+  "email": "Email",
+  "email-placeholder": "Your email",
+  "subject": "Subject",
+  "subject-placeholder": "What would you like to discuss?",
+  "message": "Message",
+  "message-placeholder": "Type your message here...",
+  "send-message": "Send message",
+  "missing-fields": "Please fill in all required fields.",
+  "message-sent": "Message sent successfully!",
+  "error-sending": "There was an error sending the message. Please try again.",
+  "we-will-contact-soon": "We will get in touch with you as soon as possible.",
+  "back-home": "Back to home"
+}
