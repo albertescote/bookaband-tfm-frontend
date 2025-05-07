@@ -41,7 +41,7 @@ export default function UserMenu({ language }: { language: string }) {
         >
           {user.firstName} {user.familyName}
         </p>
-        {getAvatar(36, 36, user.imageUrl, user.firstName)}
+        {getAvatar(42, 42, user.imageUrl, user.firstName)}
       </button>
 
       {menuOpen && (

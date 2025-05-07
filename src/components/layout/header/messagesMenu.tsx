@@ -2,10 +2,17 @@
 import { MessageSquareText } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useTranslation } from '@/app/i18n/client';
+import { ChatView } from '@/service/backend/chat/domain/chatView';
+import { getClientChats } from '@/service/backend/chat/service/chat.service';
+import { useWebPageAuth } from '@/providers/webPageAuthProvider';
 
 export default function MessagesMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [chats, setChats] = useState<ChatView[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation(language, 'chat');
+  const { user } = useWebPageAuth();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -19,6 +26,16 @@ export default function MessagesMenu({ language }: { language: string }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (menuOpen && user?.id) {
+      getClientChats(user.id).then((data) => {
+        if (data) {
+          setChats(data);
+        }
+      });
+    }
+  }, [menuOpen]);
+
   return (
     <div ref={menuRef} className="relative">
       <button
@@ -29,29 +46,40 @@ export default function MessagesMenu({ language }: { language: string }) {
       </button>
 
       {menuOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-72 rounded-xl border border-[#15b7b9] bg-white shadow-xl">
-          <p className="px-4 py-2 text-sm font-semibold text-gray-700">
-            Missatges recents
+        <div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-[#15b7b9] bg-white shadow-xl">
+          <p className="px-4 py-2 text-sm font-semibold text-[#565d6d]">
+            {t('recent-messages')}
           </p>
           <div className="divide-y">
-            <Link
-              href={`/${language}/chat`}
-              className="block px-4 py-3 text-sm hover:bg-[#15b7b9]/10"
-            >
-              Marta G.: Confirmem horari?
-            </Link>
-            <Link
-              href={`/${language}/chat`}
-              className="block px-4 py-3 text-sm hover:bg-[#15b7b9]/10"
-            >
-              Jordi L.: Gràcies pel contracte!
-            </Link>
-            <Link
-              href={`/${language}/chat`}
-              className="block px-4 py-3 text-sm hover:bg-[#15b7b9]/10"
-            >
-              Carla B.: Podem revisar el rider?
-            </Link>
+            {chats.length > 0 ? (
+              chats.map((chat) => {
+                const lastMessage =
+                  chat.messages.length > 0
+                    ? chat.messages[chat.messages.length - 1].content
+                    : t('no-messages');
+
+                const name =
+                  chat.band?.name ||
+                  `${chat.user.firstName} ${chat.user.familyName}`;
+
+                return (
+                  <Link
+                    key={chat.id}
+                    href={`/${language}/chat/${chat.id}`}
+                    className="block px-4 py-3 text-sm hover:bg-[#15b7b9]/10"
+                  >
+                    <span className="font-semibold">{name}</span>: {lastMessage}
+                    {chat.unreadMessagesCount > 0 && (
+                      <span className="ml-2 rounded-full bg-red-500 px-2 py-0.5 text-xs text-white">
+                        {chat.unreadMessagesCount}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })
+            ) : (
+              <p className="px-4 py-3 text-sm text-gray-500">{t('no-chats')}</p>
+            )}
           </div>
         </div>
       )}

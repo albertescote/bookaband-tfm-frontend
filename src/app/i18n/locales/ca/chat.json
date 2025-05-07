@@ -4,5 +4,8 @@
   "no-messages-yet": "Encara no tens cap missatge",
   "no-chats-available": "Encara no tens cap xat",
   "your-chats": "Els teus xats",
-  "type-a-message": "Escriu un missatge..."
+  "type-a-message": "Escriu un missatge...",
+  "recent-messages": "Missatges recents",
+  "no-messages": "Cap missatge",
+  "no-chats": "No hi ha converses disponibles"
 }
