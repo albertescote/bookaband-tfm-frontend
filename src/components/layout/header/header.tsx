@@ -4,16 +4,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/header/navBar';
-import RegistrationButtons from '@/components/layout/header/registrationButtons';
+import UserButtons from '@/components/layout/header/userButtons';
 import { useWebPageAuth } from '@/providers/webPageAuthProvider';
-import { Bell, Calendar, MessageSquareText } from 'lucide-react';
+import { Bell, Calendar, MessageSquareText, LogOut } from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
 import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
 
 export default function Header({ language }: { language: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useWebPageAuth();
+  const { user, logoutUser } = useWebPageAuth();
   const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
   const [unreadMessages, setUnreadMessages] = useState<number>(0);
 
@@ -98,7 +98,7 @@ export default function Header({ language }: { language: string }) {
             <Navbar language={language} />
           </div>
           <div className="ml-auto">
-            <RegistrationButtons language={language} />
+            <UserButtons language={language} />
           </div>
         </div>
 
@@ -145,7 +145,7 @@ export default function Header({ language }: { language: string }) {
               </div>
               {!user && (
                 <div className="w-full">
-                  <RegistrationButtons language={language} />
+                  <UserButtons language={language} />
                 </div>
               )}
             </div>
@@ -180,6 +180,15 @@ export default function Header({ language }: { language: string }) {
                   >
                     <Calendar size={24} />
                   </Link>
+                  <button
+                    onClick={() => {
+                      logoutUser();
+                      closeMenu();
+                    }}
+                    className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+                  >
+                    <LogOut size={24} />
+                  </button>
                   <Link
                     href="/profile"
                     className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"

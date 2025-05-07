@@ -7,7 +7,7 @@ import React from 'react';
 import NotificationsMenu from '@/components/layout/header/notificationsMenu';
 import MessagesMenu from '@/components/layout/header/messagesMenu';
 
-const RegistrationButtons = ({ language }: { language: string }) => {
+const UserButtons = ({ language }: { language: string }) => {
   const { user } = useWebPageAuth();
 
   return (
@@ -20,13 +20,13 @@ const RegistrationButtons = ({ language }: { language: string }) => {
         </>
       )}
       {!user && (
-        <>
+        <div className="flex w-full items-center justify-center space-x-4">
           <LoginButton language={language}></LoginButton>
           <SignUpButton language={language}></SignUpButton>
-        </>
+        </div>
       )}
     </div>
   );
 };
 
-export default RegistrationButtons;
+export default UserButtons;
