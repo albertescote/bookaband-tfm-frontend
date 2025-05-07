@@ -11,7 +11,7 @@ const RegistrationButtons = ({ language }: { language: string }) => {
   const { user } = useWebPageAuth();
 
   return (
-    <div className="flex items-center space-x-8 py-4">
+    <div className="ml-4 flex items-center py-4 lg:space-x-8">
       {!!user && (
         <>
           <NotificationsMenu language={language}></NotificationsMenu>

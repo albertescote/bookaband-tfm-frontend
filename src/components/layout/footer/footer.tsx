@@ -10,7 +10,6 @@ export default async function Footer({ language }: { language: string }) {
   return (
     <footer className="bg-[#15b7b9] pb-8 pt-12 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Top Section with Logo and Language Switcher */}
         <div className="mb-12 flex items-center justify-between">
           <Image
             src="/assets/logo-white.svg"
@@ -22,9 +21,7 @@ export default async function Footer({ language }: { language: string }) {
           <LanguageSwitcher language={language} />
         </div>
 
-        {/* Main Content Sections */}
         <div className="mx-auto grid max-w-3xl grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
-          {/* Main Navigation */}
           <div>
             <h3 className="mb-4 text-lg font-semibold">
               {t('navigation.title')}
@@ -64,7 +61,6 @@ export default async function Footer({ language }: { language: string }) {
             </ul>
           </div>
 
-          {/* Support Section */}
           <div>
             <h3 className="mb-4 text-lg font-semibold">{t('support.title')}</h3>
             <ul className="space-y-3">
@@ -81,45 +77,25 @@ export default async function Footer({ language }: { language: string }) {
             </ul>
           </div>
 
-          {/* Social Media Section */}
           <div>
-            <h3 className="mb-4 text-lg font-semibold">
-              {t('social.title')}
-            </h3>
+            <h3 className="mb-4 text-lg font-semibold">{t('social.title')}</h3>
             <div className="flex gap-6 text-2xl">
-              <a
-                href="#"
-                aria-label="Twitter"
-                className="hover:text-white/80"
-              >
+              <a href="#" aria-label="Twitter" className="hover:text-white/80">
                 <FaTwitter />
               </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="hover:text-white/80"
-              >
+              <a href="#" aria-label="Facebook" className="hover:text-white/80">
                 <FaFacebook />
               </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className="hover:text-white/80"
-              >
+              <a href="#" aria-label="LinkedIn" className="hover:text-white/80">
                 <FaLinkedin />
               </a>
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="hover:text-white/80"
-              >
+              <a href="#" aria-label="YouTube" className="hover:text-white/80">
                 <FaYoutube />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Section */}
         <div className="mt-12 border-t border-white/20 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 text-sm md:flex-row">
             <p>© 2024 BookaBand, Inc. All rights reserved.</p>

@@ -1,34 +1,31 @@
 'use client';
-import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-interface NavButtonProps {
+interface NavLinkProps {
   href: string;
   label: string;
+  onClick?: () => void;
 }
 
-const NavButton = ({ href, label }: NavButtonProps) => {
+export default function NavLink({ href, label, onClick }: NavLinkProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const isActive = pathname.endsWith(href);
-
-  const navigateTo = () => {
-    router.push(href);
-  };
+  const isActive = pathname === href;
 
   return (
-    <button onClick={navigateTo} className="mt-2 space-y-2">
-      <p
-        className={`px-4 text-base transition-colors duration-300 
-        ${isActive ? 'font-semibold text-[#15b7b9]' : 'text-[#565d6d] hover:text-[#15b7b9]'}`}
-      >
-        {label}
-      </p>
+    <Link
+      href={href}
+      className={`text-base font-medium hover:text-[#15b7b9] ${
+        isActive
+          ? 'font-semibold text-[#15b7b9]'
+          : 'text-[#565d6d] hover:text-[#15b7b9]'
+      }`}
+      onClick={onClick}
+    >
+      {label}
       <p
         className={`${isActive ? 'border-b-2 border-[#15b7b9]' : 'invisible'}`}
       ></p>
-    </button>
+    </Link>
   );
-};
-
-export default NavButton;
+}
