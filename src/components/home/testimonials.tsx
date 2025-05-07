@@ -76,7 +76,6 @@ export default function Testimonials({ lng }: TestimonialsParams) {
         {t('testimonials-title')}
       </h2>
 
-      {/* Slider */}
       <div className="relative mx-auto max-w-[1100px] overflow-hidden">
         <div
           className="flex transition-transform duration-500 ease-in-out"

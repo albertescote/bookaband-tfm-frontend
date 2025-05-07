@@ -22,7 +22,6 @@ export default async function AboutPage({
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-[#565d6d] sm:text-5xl md:text-6xl">
@@ -34,7 +33,6 @@ export default async function AboutPage({
         </div>
       </section>
 
-      {/* Mission Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#15b7b9] to-[#15b7b9]/90 p-8 md:p-12">
           <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-white/10" />
@@ -49,7 +47,6 @@ export default async function AboutPage({
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="mb-12 text-center text-3xl font-bold text-[#565d6d]">
           {t('features.title')}
@@ -127,7 +124,6 @@ export default async function AboutPage({
         </div>
       </section>
 
-      {/* Login CTA Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8 text-center md:p-12">
           <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-[#15b7b9]/5" />
