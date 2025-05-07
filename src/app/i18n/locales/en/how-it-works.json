@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "title": "How It Works | Music Manager",
+    "description": "Discover how Music Manager helps you organize and manage your musical journey effectively."
+  },
+  "hero": {
+    "title": "How It Works",
+    "subtitle": "A simple and effective way to manage your musical journey"
+  },
+  "features": {
+    "title": "Key Features",
+    "subtitle": "Everything you need to manage your music career",
+    "items": {
+      "organization": {
+        "title": "Smart Organization",
+        "description": "Keep all your musical projects, contacts, and opportunities in one place. Our intuitive system helps you stay organized and focused on what matters most."
+      },
+      "collaboration": {
+        "title": "Easy Collaboration",
+        "description": "Connect with other musicians, share projects, and collaborate seamlessly. Our platform makes it easy to work together and grow your network."
+      },
+      "tracking": {
+        "title": "Progress Tracking",
+        "description": "Monitor your musical growth, track your achievements, and set goals for your career. Stay motivated with clear progress indicators."
+      },
+      "opportunities": {
+        "title": "Opportunity Management",
+        "description": "Never miss a chance to showcase your talent. Keep track of auditions, gigs, and other opportunities in one organized place."
+      }
+    }
+  },
+  "process": {
+    "title": "Getting Started",
+    "subtitle": "Three simple steps to begin your journey",
+    "steps": {
+      "signup": {
+        "title": "Create Your Account",
+        "description": "Sign up for free and set up your musician profile. It only takes a few minutes to get started."
+      },
+      "setup": {
+        "title": "Set Up Your Workspace",
+        "description": "Organize your projects, add your contacts, and customize your dashboard to match your needs."
+      },
+      "start": {
+        "title": "Start Managing",
+        "description": "Begin tracking your musical journey, connect with other musicians, and take control of your career."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "description": "Join our community of musicians and start managing your musical journey today.",
+    "button": "Sign Up Now"
+  }
+} 

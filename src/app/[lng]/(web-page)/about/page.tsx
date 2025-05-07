@@ -135,9 +135,11 @@ export default async function AboutPage({
             <h2 className="mb-4 text-3xl font-bold text-[#565d6d]">
               {t('cta.title')}
             </h2>
-            <p className="mb-8 text-lg text-[#565d6d]/80">{t('cta.description')}</p>
+            <p className="mb-8 text-lg text-[#565d6d]/80">
+              {t('cta.description')}
+            </p>
             <a
-              href={`/${lng}/login`}
+              href={`/${lng}/sign-up`}
               className="inline-block rounded-lg bg-[#15b7b9] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#15b7b9]/90"
             >
               {t('cta.button')}

@@ -1,0 +1,128 @@
+import { Metadata } from 'next';
+import { useTranslation } from '@/app/i18n';
+import Link from 'next/link';
+
+export async function generateMetadata({
+  params: { lng },
+}: {
+  params: { lng: string };
+}): Promise<Metadata> {
+  const { t } = await useTranslation(lng, 'how-it-works');
+  return {
+    title: t('metadata.title'),
+    description: t('metadata.description'),
+  };
+}
+
+export default async function HowItWorksPage({
+  params: { lng },
+}: {
+  params: { lng: string };
+}) {
+  const { t } = await useTranslation(lng, 'how-it-works');
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-[#565d6d] sm:text-5xl md:text-6xl">
+            {t('hero.title')}
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#565d6d]/80">
+            {t('hero.subtitle')}
+          </p>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-[#565d6d] sm:text-4xl">
+            {t('features.title')}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-[#565d6d]/80">
+            {t('features.subtitle')}
+          </p>
+        </div>
+        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {Object.entries(t('features.items', { returnObjects: true })).map(
+            ([key, item]: [string, any]) => (
+              <div
+                key={key}
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8"
+              >
+                <div className="absolute right-0 top-0 h-32 w-32 -translate-y-1/2 translate-x-1/2 rounded-full bg-[#15b7b9]/5" />
+                <div className="relative">
+                  <h3 className="text-xl font-semibold text-[#565d6d]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 text-[#565d6d]/80">{item.description}</p>
+                </div>
+              </div>
+            ),
+          )}
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#15b7b9] to-[#15b7b9]/90 p-8 md:p-12">
+          <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-white/10" />
+          <div className="relative">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                {t('process.title')}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+                {t('process.subtitle')}
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
+              {Object.entries(t('process.steps', { returnObjects: true })).map(
+                ([key, step]: [string, any], index) => (
+                  <div key={key} className="relative">
+                    <div className="flex items-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-xl font-bold text-white">
+                        {index + 1}
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-xl font-semibold text-white">
+                          {step.title}
+                        </h3>
+                        <p className="mt-2 text-white/90">{step.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8 md:p-12">
+          <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-[#15b7b9]/5" />
+          <div className="relative text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-[#565d6d] sm:text-4xl">
+              {t('cta.title')}
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-[#565d6d]/80">
+              {t('cta.description')}
+            </p>
+            <div className="mt-8">
+              <Link
+                href={`/${lng}/sign-up`}
+                className="inline-block rounded-lg bg-[#15b7b9] px-8 py-4 text-center font-semibold text-white transition-colors hover:bg-[#15b7b9]/90"
+              >
+                {t('cta.button')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

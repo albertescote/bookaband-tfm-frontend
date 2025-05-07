@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "title": "Cómo Funciona | Music Manager",
+    "description": "Descubre cómo Music Manager te ayuda a organizar y gestionar tu trayectoria musical de manera efectiva."
+  },
+  "hero": {
+    "title": "Cómo Funciona",
+    "subtitle": "Una forma simple y efectiva de gestionar tu trayectoria musical"
+  },
+  "features": {
+    "title": "Características Principales",
+    "subtitle": "Todo lo que necesitas para gestionar tu carrera musical",
+    "items": {
+      "organization": {
+        "title": "Organización Inteligente",
+        "description": "Mantén todos tus proyectos musicales, contactos y oportunidades en un solo lugar. Nuestro sistema intuitivo te ayuda a mantenerte organizado y enfocado en lo más importante."
+      },
+      "collaboration": {
+        "title": "Colaboración Fácil",
+        "description": "Conéctate con otros músicos, comparte proyectos y colabora sin problemas. Nuestra plataforma facilita el trabajo conjunto y el crecimiento de tu red."
+      },
+      "tracking": {
+        "title": "Seguimiento de Progreso",
+        "description": "Monitorea tu crecimiento musical, registra tus logros y establece objetivos para tu carrera. Mantente motivado con indicadores claros de progreso."
+      },
+      "opportunities": {
+        "title": "Gestión de Oportunidades",
+        "description": "Nunca pierdas la oportunidad de mostrar tu talento. Mantén un registro de audiciones, conciertos y otras oportunidades en un lugar organizado."
+      }
+    }
+  },
+  "process": {
+    "title": "Comenzar",
+    "subtitle": "Tres simples pasos para iniciar tu viaje",
+    "steps": {
+      "signup": {
+        "title": "Crea Tu Cuenta",
+        "description": "Regístrate gratis y configura tu perfil de músico. Solo toma unos minutos comenzar."
+      },
+      "setup": {
+        "title": "Configura Tu Espacio",
+        "description": "Organiza tus proyectos, añade tus contactos y personaliza tu panel de control según tus necesidades."
+      },
+      "start": {
+        "title": "Comienza a Gestionar",
+        "description": "Empieza a seguir tu trayectoria musical, conéctate con otros músicos y toma el control de tu carrera."
+      }
+    }
+  },
+  "cta": {
+    "title": "¿Listo para Empezar?",
+    "description": "Únete a nuestra comunidad de músicos y comienza a gestionar tu trayectoria musical hoy.",
+    "button": "Regístrate Ahora"
+  }
+} 

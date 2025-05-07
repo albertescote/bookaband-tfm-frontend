@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "title": "Com Funciona | Music Manager",
+    "description": "Descobreix com Music Manager t'ajuda a organitzar i gestionar la teva trajectòria musical de manera efectiva."
+  },
+  "hero": {
+    "title": "Com Funciona",
+    "subtitle": "Una forma simple i efectiva de gestionar la teva trajectòria musical"
+  },
+  "features": {
+    "title": "Característiques Principals",
+    "subtitle": "Tot el que necessites per gestionar la teva carrera musical",
+    "items": {
+      "organization": {
+        "title": "Organització Intel·ligent",
+        "description": "Mantén tots els teus projectes musicals, contactes i oportunitats en un sol lloc. El nostre sistema intuïtiu t'ajuda a mantenir-te organitzat i centrat en el més important."
+      },
+      "collaboration": {
+        "title": "Col·laboració Fàcil",
+        "description": "Connecta amb altres músics, comparteix projectes i col·labora sense problemes. La nostra plataforma facilita el treball conjunt i el creixement de la teva xarxa."
+      },
+      "tracking": {
+        "title": "Seguiment de Progrés",
+        "description": "Monitoritza el teu creixement musical, registra els teus assoliments i estableix objectius per a la teva carrera. Mantingues-te motivat amb indicadors clars de progrés."
+      },
+      "opportunities": {
+        "title": "Gestió d'Oportunitats",
+        "description": "Mai perdis l'oportunitat de mostrar el teu talent. Mantén un registre d'audicions, concerts i altres oportunitats en un lloc organitzat."
+      }
+    }
+  },
+  "process": {
+    "title": "Començar",
+    "subtitle": "Tres simples passos per iniciar el teu viatge",
+    "steps": {
+      "signup": {
+        "title": "Crea el Teu Compte",
+        "description": "Registra't gratis i configura el teu perfil de músic. Només trigues uns minuts a començar."
+      },
+      "setup": {
+        "title": "Configura el Teu Espai",
+        "description": "Organitza els teus projectes, afegeix els teus contactes i personalitza el teu tauler de control segons les teves necessitats."
+      },
+      "start": {
+        "title": "Comença a Gestionar",
+        "description": "Comença a seguir la teva trajectòria musical, connecta amb altres músics i pren el control de la teva carrera."
+      }
+    }
+  },
+  "cta": {
+    "title": "Preparat per Començar?",
+    "description": "Uneix-te a la nostra comunitat de músics i comença a gestionar la teva trajectòria musical avui.",
+    "button": "Registra't Ara"
+  }
+} 
