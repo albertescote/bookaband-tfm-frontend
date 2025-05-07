@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "title": "Navegació",
+    "search": "Buscar Músics",
+    "providers": "Proveïdors",
+    "howItWorks": "Com Funciona",
+    "about": "Sobre Nosaltres",
+    "contact": "Contacte"
+  },
+  "legal": {
+    "title": "Legal",
+    "terms": "Termes i Condicions",
+    "privacy": "Política de Privacitat",
+    "cookies": "Política de Cookies",
+    "notice": "Avís Legal"
+  },
+  "support": {
+    "title": "Suport",
+    "faqs": "Preguntes Freqüents",
+    "help": "Ajuda i Suport"
+  },
+  "social": {
+    "title": "Segueix-nos"
+  }
+} 
