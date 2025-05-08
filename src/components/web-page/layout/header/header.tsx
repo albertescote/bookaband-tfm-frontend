@@ -93,7 +93,7 @@ export default function Header({ language }: { language: string }) {
           />
         </Link>
 
-        <div className="ml-4 hidden flex-1 items-center justify-between lg:flex">
+        <div className="ml-8 hidden flex-1 items-center justify-between lg:flex">
           <div className="flex-1">
             <Navbar language={language} />
           </div>
