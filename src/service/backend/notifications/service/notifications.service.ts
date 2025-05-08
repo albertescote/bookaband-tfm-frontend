@@ -10,7 +10,6 @@ export async function getClientNotifications(
   //     .then((res) => res.data),
   // );
   // TODO: implement me
-  return [];
   return [
     {
       id: '1',
