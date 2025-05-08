@@ -37,7 +37,7 @@ export default function UserMenu({ language }: { language: string }) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="flex items-center gap-3 rounded-full px-4 py-2 transition-colors duration-200 hover:bg-gray-100"
+        className="flex items-center gap-3 rounded-full py-2 pl-2 transition-colors duration-200 hover:bg-gray-100"
         aria-expanded={menuOpen}
         aria-haspopup="true"
       >
