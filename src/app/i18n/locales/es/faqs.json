@@ -1,68 +1,68 @@
 {
   "metadata": {
-    "title": "Preguntas Frecuentes | Music Manager",
-    "description": "Encuentra respuestas a preguntas comunes sobre Music Manager y cómo puede ayudarte a gestionar tu trayectoria musical."
+    "title": "Preguntas frecuentes | BookaBand",
+    "description": "Encuentra respuestas a las preguntas más comunes sobre BookaBand y cómo ayuda a músicos, clientes y proveedores a conectar y gestionar contrataciones."
   },
   "hero": {
-    "title": "Preguntas Frecuentes",
-    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre Music Manager"
+    "title": "Preguntas frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más habituales sobre BookaBand"
   },
   "categories": {
     "general": {
-      "title": "Preguntas Generales",
+      "title": "Preguntas generales",
       "questions": {
         "what": {
-          "question": "¿Qué es Music Manager?",
-          "answer": "Music Manager es una plataforma integral diseñada para ayudar a los músicos a organizar y gestionar su trayectoria musical. Proporciona herramientas para la gestión de proyectos, colaboración, seguimiento de progreso y gestión de oportunidades."
+          "question": "¿Qué es BookaBand?",
+          "answer": "BookaBand es una plataforma completa diseñada para ayudar a músicos, clientes y proveedores a conectar y gestionar contrataciones. Ofrece herramientas para crear perfiles, gestionar reservas, manejar propuestas y pagos seguros."
         },
         "who": {
-          "question": "¿Quién puede usar Music Manager?",
-          "answer": "Music Manager está diseñado para músicos de todos los niveles, desde principiantes hasta profesionales. Ya seas un artista solista, parte de una banda o profesor de música, nuestra plataforma puede ayudarte a gestionar tu carrera musical."
+          "question": "¿Quién puede usar BookaBand?",
+          "answer": "BookaBand está dirigido a músicos, clientes de eventos y proveedores técnicos. Ya seas un artista que busca actuaciones, un cliente que organiza un evento o un proveedor que ofrece servicios, BookaBand te ayuda a conectar y gestionar tus contrataciones."
         },
         "cost": {
-          "question": "¿Cuánto cuesta Music Manager?",
-          "answer": "Music Manager ofrece un plan básico gratuito con funciones esenciales. También proporcionamos planes premium con funciones avanzadas para músicos profesionales. Consulta nuestra página de precios para obtener información detallada."
+          "question": "¿Cuánto cuesta BookaBand?",
+          "answer": "BookaBand ofrece un plan básico gratuito para todos los usuarios. También hay funciones premium y opciones promocionales disponibles para músicos y proveedores. Consulta nuestra página de precios para más información."
         }
       }
     },
     "features": {
-      "title": "Características y Funcionalidad",
+      "title": "Características y funcionalidad",
       "questions": {
-        "projects": {
-          "question": "¿Cómo puedo gestionar mis proyectos musicales?",
-          "answer": "Puedes crear y organizar proyectos, establecer plazos, realizar un seguimiento del progreso y colaborar con otros músicos. Nuestra interfaz intuitiva facilita mantener todo en un solo lugar."
+        "profiles": {
+          "question": "¿Cómo puedo crear un perfil profesional?",
+          "answer": "Músicos y proveedores pueden crear perfiles fácilmente donde muestran sus servicios, experiencia y disponibilidad para atraer clientes."
         },
-        "collaboration": {
-          "question": "¿Cómo funciona la colaboración?",
-          "answer": "Puedes invitar a otros músicos a tus proyectos, compartir archivos, comunicarte a través de nuestra plataforma y realizar un seguimiento de las contribuciones de todos. Nuestras herramientas de colaboración facilitan el trabajo conjunto."
+        "booking": {
+          "question": "¿Cómo funciona la contratación?",
+          "answer": "Los clientes pueden buscar músicos y proveedores, crear solicitudes de contratación y gestionar todas las comunicaciones y contratos dentro de la plataforma."
         },
-        "opportunities": {
-          "question": "¿Cómo puedo realizar un seguimiento de las oportunidades?",
-          "answer": "Puedes crear y gestionar una base de datos de oportunidades, establecer recordatorios para fechas importantes y realizar un seguimiento de tus solicitudes y respuestas. Nunca pierdas la oportunidad de mostrar tu talento."
+        "payments": {
+          "question": "¿El pago es seguro?",
+          "answer": "Sí, BookaBand utiliza pasarelas de pago seguras y ofrece servicios de depósito en garantía para proteger a ambas partes hasta que se complete el evento."
         }
       }
     },
     "technical": {
-      "title": "Soporte Técnico",
+      "title": "Soporte técnico",
       "questions": {
         "devices": {
           "question": "¿Qué dispositivos son compatibles?",
-          "answer": "Music Manager es una plataforma web que funciona en cualquier dispositivo con un navegador web moderno. También ofrecemos aplicaciones móviles para iOS y Android para acceso en movimiento."
+          "answer": "BookaBand es una plataforma basada en la web accesible desde cualquier navegador moderno. También ofrecemos una versión optimizada para móviles."
         },
         "security": {
-          "question": "¿Qué tan seguros son mis datos?",
-          "answer": "Nos tomamos la seguridad muy en serio. Tus datos están encriptados, respaldados regularmente y protegidos por medidas de seguridad estándar de la industria. Nunca compartimos tu información con terceros."
+          "question": "¿Qué tan segura es mi información?",
+          "answer": "Tus datos están cifrados, se respaldan regularmente y están protegidos con prácticas de seguridad estándar de la industria. No compartimos tu información con terceros."
         },
         "support": {
           "question": "¿Cómo puedo obtener ayuda?",
-          "answer": "Ofrecemos múltiples canales de soporte, incluyendo soporte por correo electrónico, chat en vivo y un centro de ayuda completo. Nuestro equipo de soporte está disponible para ayudarte con cualquier pregunta o problema."
+          "answer": "Puedes contactar con nuestro equipo de soporte por correo electrónico, chat en vivo o consultar nuestro centro de ayuda para guías detalladas y preguntas frecuentes."
         }
       }
     }
   },
   "cta": {
     "title": "¿Aún tienes preguntas?",
-    "description": "¿No encuentras lo que buscas? Contacta con nuestro equipo de soporte para obtener ayuda personalizada.",
-    "button": "Contactar Soporte"
+    "description": "¿No encuentras lo que buscas? Contacta con nuestro equipo de soporte para obtener asistencia personalizada.",
+    "button": "Contactar soporte"
   }
-} 
+}

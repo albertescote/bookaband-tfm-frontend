@@ -1,68 +1,68 @@
 {
   "metadata": {
-    "title": "Preguntes Freqüents | Music Manager",
-    "description": "Troba respostes a preguntes comunes sobre Music Manager i com pot ajudar-te a gestionar la teva trajectòria musical."
+    "title": "Preguntes freqüents | BookaBand",
+    "description": "Troba respostes a les preguntes més comunes sobre BookaBand i com ajuda músics, clients i proveïdors a connectar i gestionar contractacions."
   },
   "hero": {
-    "title": "Preguntes Freqüents",
-    "subtitle": "Troba respostes a les preguntes més comunes sobre Music Manager"
+    "title": "Preguntes freqüents",
+    "subtitle": "Troba respostes a les preguntes més habituals sobre BookaBand"
   },
   "categories": {
     "general": {
-      "title": "Preguntes Generals",
+      "title": "Preguntes generals",
       "questions": {
         "what": {
-          "question": "Què és Music Manager?",
-          "answer": "Music Manager és una plataforma integral dissenyada per ajudar els músics a organitzar i gestionar la seva trajectòria musical. Proporciona eines per a la gestió de projectes, col·laboració, seguiment de progrés i gestió d'oportunitats."
+          "question": "Què és BookaBand?",
+          "answer": "BookaBand és una plataforma completa dissenyada per ajudar músics, clients i proveïdors a connectar i gestionar contractacions. Ofereix eines per crear perfils, gestionar reserves, propostes i pagaments segurs."
         },
         "who": {
-          "question": "Qui pot utilitzar Music Manager?",
-          "answer": "Music Manager està dissenyat per a músics de tots els nivells, des de principiants fins a professionals. Tant si ets un artista en solitari, part d'una banda o professor de música, la nostra plataforma pot ajudar-te a gestionar la teva carrera musical."
+          "question": "Qui pot utilitzar BookaBand?",
+          "answer": "BookaBand està pensat per a músics, clients d’esdeveniments i proveïdors tècnics. Tant si ets un artista que busca actuacions, un client que organitza un esdeveniment o un proveïdor que ofereix serveis, BookaBand t’ajuda a connectar i gestionar les teves contractacions."
         },
         "cost": {
-          "question": "Quant costa Music Manager?",
-          "answer": "Music Manager ofereix un pla bàsic gratuït amb funcions essencials. També proporcionem plans premium amb funcions avançades per a músics professionals. Consulta la nostra pàgina de preus per obtenir informació detallada."
+          "question": "Quant costa BookaBand?",
+          "answer": "BookaBand ofereix un pla bàsic gratuït per a tots els usuaris. També hi ha funcions premium i opcions promocionals disponibles per a músics i proveïdors. Consulta la nostra pàgina de preus per a més informació."
         }
       }
     },
     "features": {
-      "title": "Característiques i Funcionalitat",
+      "title": "Característiques i funcionalitat",
       "questions": {
-        "projects": {
-          "question": "Com puc gestionar els meus projectes musicals?",
-          "answer": "Pots crear i organitzar projectes, establir terminis, realitzar un seguiment del progrés i col·laborar amb altres músics. La nostra interfície intuïtiva facilita mantenir tot en un sol lloc."
+        "profiles": {
+          "question": "Com puc crear un perfil professional?",
+          "answer": "Músics i proveïdors poden crear perfils fàcilment mostrant els seus serveis, experiència i disponibilitat per atreure clients."
         },
-        "collaboration": {
-          "question": "Com funciona la col·laboració?",
-          "answer": "Pots convidar altres músics als teus projectes, compartir arxius, comunicar-te a través de la nostra plataforma i realitzar un seguiment de les contribucions de tothom. Les nostres eines de col·laboració faciliten el treball conjunt."
+        "booking": {
+          "question": "Com funciona la contractació?",
+          "answer": "Els clients poden buscar músics i proveïdors, crear sol·licituds de contractació i gestionar totes les comunicacions i contractes dins de la plataforma."
         },
-        "opportunities": {
-          "question": "Com puc realitzar un seguiment de les oportunitats?",
-          "answer": "Pots crear i gestionar una base de dades d'oportunitats, establir recordatoris per a dates importants i realitzar un seguiment de les teves sol·licituds i respostes. Mai perdis l'oportunitat de mostrar el teu talent."
+        "payments": {
+          "question": "El pagament és segur?",
+          "answer": "Sí, BookaBand utilitza passarel·les de pagament segures i ofereix serveis d’escrow per protegir ambdues parts fins que l’esdeveniment s’hagi completat."
         }
       }
     },
     "technical": {
-      "title": "Suport Tècnic",
+      "title": "Suport tècnic",
       "questions": {
         "devices": {
           "question": "Quins dispositius són compatibles?",
-          "answer": "Music Manager és una plataforma web que funciona en qualsevol dispositiu amb un navegador web modern. També oferim aplicacions mòbils per a iOS i Android per a accés en moviment."
+          "answer": "BookaBand és una plataforma basada en web accessible des de qualsevol navegador modern. També oferim una versió optimitzada per a mòbils."
         },
         "security": {
-          "question": "Quan segurs són les meves dades?",
-          "answer": "Ens prenem la seguretat molt en seriós. Les teves dades estan encriptades, respaldades regularment i protegides per mesures de seguretat estàndard de la indústria. Mai compartim la teva informació amb tercers."
+          "question": "Com de segura és la meva informació?",
+          "answer": "Les teves dades estan encriptades, es fan còpies de seguretat regularment i estan protegides amb pràctiques de seguretat estàndard del sector. No compartim la teva informació amb tercers."
         },
         "support": {
           "question": "Com puc obtenir ajuda?",
-          "answer": "Oferim múltiples canals de suport, incloent suport per correu electrònic, xat en directe i un centre d'ajuda complet. El nostre equip de suport està disponible per ajudar-te amb qualsevol pregunta o problema."
+          "answer": "Pots contactar amb el nostre equip de suport per correu electrònic, xat en viu o consultar el nostre centre d’ajuda per a guies detallades i preguntes freqüents."
         }
       }
     }
   },
   "cta": {
     "title": "Encara tens preguntes?",
-    "description": "No trobes el que busques? Contacta amb el nostre equip de suport per obtenir ajuda personalitzada.",
-    "button": "Contactar Suport"
+    "description": "No trobes el que busques? Contacta amb el nostre equip de suport per obtenir assistència personalitzada.",
+    "button": "Contactar suport"
   }
-} 
+}

@@ -1,55 +1,55 @@
 {
   "metadata": {
-    "title": "Com Funciona | Music Manager",
-    "description": "Descobreix com Music Manager t'ajuda a organitzar i gestionar la teva trajectòria musical de manera efectiva."
+    "title": "Com funciona | BookaBand",
+    "description": "Descobreix com BookaBand ajuda músics, clients i proveïdors a connectar i gestionar contractacions fàcilment."
   },
   "hero": {
-    "title": "Com Funciona",
-    "subtitle": "Una forma simple i efectiva de gestionar la teva trajectòria musical"
+    "title": "Com funciona",
+    "subtitle": "Una manera senzilla i eficaç de connectar i gestionar esdeveniments inoblidables."
   },
   "features": {
-    "title": "Característiques Principals",
-    "subtitle": "Tot el que necessites per gestionar la teva carrera musical",
+    "title": "Característiques principals",
+    "subtitle": "Tot el que necessites per crear i gestionar esdeveniments amb èxit",
     "items": {
       "organization": {
-        "title": "Organització Intel·ligent",
-        "description": "Mantén tots els teus projectes musicals, contactes i oportunitats en un sol lloc. El nostre sistema intuïtiu t'ajuda a mantenir-te organitzat i centrat en el més important."
+        "title": "Perfils professionals",
+        "description": "Els músics i proveïdors poden crear perfils professionals que mostren els seus serveis, experiència i disponibilitat."
       },
       "collaboration": {
-        "title": "Col·laboració Fàcil",
-        "description": "Connecta amb altres músics, comparteix projectes i col·labora sense problemes. La nostra plataforma facilita el treball conjunt i el creixement de la teva xarxa."
+        "title": "Connexió fàcil",
+        "description": "Els clients poden buscar, filtrar i connectar fàcilment amb músics i proveïdors segons les necessitats del seu esdeveniment."
       },
       "tracking": {
-        "title": "Seguiment de Progrés",
-        "description": "Monitoritza el teu creixement musical, registra els teus assoliments i estableix objectius per a la teva carrera. Mantingues-te motivat amb indicadors clars de progrés."
+        "title": "Gestió de propostes i contractes",
+        "description": "Gestiona propostes, contractes i negociacions directament a la plataforma amb seguiment clar i eines segures."
       },
       "opportunities": {
-        "title": "Gestió d'Oportunitats",
-        "description": "Mai perdis l'oportunitat de mostrar el teu talent. Mantén un registre d'audicions, concerts i altres oportunitats en un lloc organitzat."
+        "title": "Gestió de contractacions",
+        "description": "Fes seguiment de totes les teves contractacions, disponibilitat i comunicacions en un sol lloc."
       }
     }
   },
   "process": {
-    "title": "Començar",
-    "subtitle": "Tres simples passos per iniciar el teu viatge",
+    "title": "Com començar",
+    "subtitle": "Tres passos senzills per començar",
     "steps": {
       "signup": {
-        "title": "Crea el Teu Compte",
-        "description": "Registra't gratis i configura el teu perfil de músic. Només trigues uns minuts a començar."
+        "title": "Crea el teu compte",
+        "description": "Registra’t gratis i escull si ets músic, client o proveïdor."
       },
       "setup": {
-        "title": "Configura el Teu Espai",
-        "description": "Organitza els teus projectes, afegeix els teus contactes i personalitza el teu tauler de control segons les teves necessitats."
+        "title": "Configura el teu perfil",
+        "description": "Completa el teu perfil amb la informació essencial per connectar i rebre oportunitats."
       },
       "start": {
-        "title": "Comença a Gestionar",
-        "description": "Comença a seguir la teva trajectòria musical, connecta amb altres músics i pren el control de la teva carrera."
+        "title": "Comença a connectar",
+        "description": "Cerca, connecta, gestiona contractacions i crea esdeveniments inoblidables."
       }
     }
   },
   "cta": {
-    "title": "Preparat per Començar?",
-    "description": "Uneix-te a la nostra comunitat de músics i comença a gestionar la teva trajectòria musical avui.",
-    "button": "Registra't Ara"
+    "title": "Preparat per començar?",
+    "description": "Uneix-te a la comunitat BookaBand i comença a crear esdeveniments amb èxit avui mateix.",
+    "button": "Registra’t ara"
   }
-} 
+}

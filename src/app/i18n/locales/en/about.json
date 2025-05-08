@@ -1,34 +1,34 @@
 {
   "metadata": {
-    "title": "About Us | Music Manager",
-    "description": "Learn more about Music Manager - Your platform for connecting musicians and managing music opportunities."
+    "title": "About Us | BookaBand",
+    "description": "Learn more about BookaBand — The platform that connects musicians, clients, and providers for unforgettable events."
   },
   "hero": {
-    "title": "About Music Manager",
-    "subtitle": "Connecting musicians with opportunities and helping them manage their musical journey"
+    "title": "About BookaBand",
+    "subtitle": "Connecting musicians, clients, and providers to create extraordinary events."
   },
   "mission": {
     "title": "Our Mission",
-    "description": "Music Manager was created with a simple yet powerful vision: to make it easier for musicians to find and manage their opportunities. We believe that every musician deserves access to the tools and connections they need to succeed in their musical journey."
+    "description": "BookaBand was created with a clear purpose: to make it easier for musicians, clients, and providers to connect and collaborate. We believe that every event deserves access to the right talent and technical support, empowering all parties to focus on creating exceptional experiences."
   },
   "features": {
     "title": "What We Offer",
     "band": {
-      "title": "Band Management",
-      "description": "Create and manage your band profile, connect with other musicians, and showcase your music to potential opportunities."
+      "title": "Professional Profiles",
+      "description": "Musicians and providers can create and manage professional profiles, showcase their work, and connect with potential clients."
     },
     "booking": {
       "title": "Booking System",
-      "description": "Streamline your booking process with our integrated calendar and communication tools."
+      "description": "Streamline the booking process with our integrated calendar, proposal management, and secure payment tools."
     },
     "offers": {
-      "title": "Offer Management",
-      "description": "Create and manage performance offers, handle negotiations, and keep track of all your opportunities in one place."
+      "title": "Proposal and Contract Management",
+      "description": "Easily create and manage proposals and contracts, handle negotiations, and track all your engagements in one place."
     }
   },
   "cta": {
     "title": "Ready to Get Started?",
-    "description": "Join our community of musicians and start managing your musical journey today.",
+    "description": "Join the BookaBand community and start creating unforgettable events today.",
     "button": "Sign Up Now"
   }
 }

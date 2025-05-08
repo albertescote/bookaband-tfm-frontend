@@ -1,34 +1,34 @@
 {
   "metadata": {
-    "title": "Sobre Nosaltres | Music Manager",
-    "description": "Coneix més sobre Music Manager - La teva plataforma per connectar músics i gestionar oportunitats musicals."
+    "title": "Sobre Nosaltres | BookaBand",
+    "description": "Descobreix més sobre BookaBand — La plataforma que connecta músics, clients i proveïdors per a esdeveniments inoblidables."
   },
   "hero": {
-    "title": "Sobre Music Manager",
-    "subtitle": "Connectant músics amb oportunitats i ajudant-los a gestionar la seva trajectòria musical"
+    "title": "Sobre BookaBand",
+    "subtitle": "Connectant músics, clients i proveïdors per crear esdeveniments extraordinaris."
   },
   "mission": {
-    "title": "La Nostra Missió",
-    "description": "Music Manager va ser creat amb una visió simple però poderosa: fer més fàcil per als músics trobar i gestionar les seves oportunitats. Creiem que cada músic mereix accés a les eines i connexions que necessita per triomfar en la seva trajectòria musical."
+    "title": "La nostra missió",
+    "description": "BookaBand es va crear amb un propòsit clar: facilitar la connexió i col·laboració entre músics, clients i proveïdors. Creiem que cada esdeveniment mereix comptar amb el talent i el suport tècnic adequats, permetent a totes les parts centrar-se en crear experiències excepcionals."
   },
   "features": {
-    "title": "El Que Oferim",
+    "title": "Què oferim",
     "band": {
-      "title": "Gestió de Bandes",
-      "description": "Crea i gestiona el perfil de la teva banda, connecta't amb altres músics i mostra la teva música a potencials oportunitats."
+      "title": "Perfils professionals",
+      "description": "Els músics i proveïdors poden crear i gestionar perfils professionals, mostrar el seu treball i connectar amb possibles clients."
     },
     "booking": {
-      "title": "Sistema de Reserves",
-      "description": "Optimitza el teu procés de reserves amb el nostre calendari integrat i eines de comunicació."
+      "title": "Sistema de reserves",
+      "description": "Agilitza el procés de contractació amb el nostre calendari integrat, gestió de propostes i eines de pagament segur."
     },
     "offers": {
-      "title": "Gestió d'Ofertes",
-      "description": "Crea i gestiona ofertes d'actuació, gestiona negociacions i porta un control de totes les teves oportunitats en un sol lloc."
+      "title": "Gestió de Propostes i Contractes",
+      "description": "Crea i gestiona propostes i contractes fàcilment, gestiona negociacions i fes seguiment de tots els teus compromisos en un sol lloc."
     }
   },
   "cta": {
-    "title": "Preparat per Començar?",
-    "description": "Uneix-te a la nostra comunitat de músics i comença a gestionar la teva trajectòria musical avui.",
-    "button": "Registra't Ara"
+    "title": "Preparat per començar?",
+    "description": "Uneix-te a la comunitat BookaBand i comença a crear esdeveniments inoblidables avui mateix.",
+    "button": "Registra’t ara"
   }
 }

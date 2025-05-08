@@ -1,68 +1,68 @@
 {
   "metadata": {
-    "title": "Frequently Asked Questions | Music Manager",
-    "description": "Find answers to common questions about Music Manager and how it can help you manage your musical journey."
+    "title": "Frequently asked questions | BookaBand",
+    "description": "Find answers to common questions about BookaBand and how it helps musicians, clients, and providers connect and manage bookings."
   },
   "hero": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to the most common questions about Music Manager"
+    "title": "Frequently asked questions",
+    "subtitle": "Find answers to the most common questions about BookaBand"
   },
   "categories": {
     "general": {
-      "title": "General Questions",
+      "title": "General questions",
       "questions": {
         "what": {
-          "question": "What is Music Manager?",
-          "answer": "Music Manager is a comprehensive platform designed to help musicians organize and manage their musical journey. It provides tools for project management, collaboration, progress tracking, and opportunity management."
+          "question": "What is BookaBand?",
+          "answer": "BookaBand is a comprehensive platform designed to help musicians, clients, and providers connect and manage bookings. It offers tools for profile creation, booking management, proposal handling, and secure payments."
         },
         "who": {
-          "question": "Who can use Music Manager?",
-          "answer": "Music Manager is designed for musicians of all levels, from beginners to professionals. Whether you're a solo artist, part of a band, or a music teacher, our platform can help you manage your musical career."
+          "question": "Who can use BookaBand?",
+          "answer": "BookaBand is for musicians, event clients, and technical providers. Whether you are an artist looking for gigs, a client organizing an event, or a provider offering services, BookaBand can help you connect and manage your engagements."
         },
         "cost": {
-          "question": "How much does Music Manager cost?",
-          "answer": "Music Manager offers a free basic plan with essential features. We also provide premium plans with advanced features for professional musicians. Check our pricing page for detailed information."
+          "question": "How much does BookaBand cost?",
+          "answer": "BookaBand offers a free basic plan for all users. Additional premium features and promotional options are available for musicians and providers. See our pricing page for more details."
         }
       }
     },
     "features": {
-      "title": "Features & Functionality",
+      "title": "Features and functionality",
       "questions": {
-        "projects": {
-          "question": "How can I manage my musical projects?",
-          "answer": "You can create and organize projects, set deadlines, track progress, and collaborate with other musicians. Our intuitive interface makes it easy to keep everything in one place."
+        "profiles": {
+          "question": "How can I create a professional profile?",
+          "answer": "Musicians and providers can easily create profiles that showcase their services, experience, and availability to attract clients."
         },
-        "collaboration": {
-          "question": "How does collaboration work?",
-          "answer": "You can invite other musicians to your projects, share files, communicate through our platform, and track everyone's contributions. Our collaboration tools make it easy to work together."
+        "booking": {
+          "question": "How does booking work?",
+          "answer": "Clients can search for musicians and providers, create booking requests, and manage all communications and contracts within the platform."
         },
-        "opportunities": {
-          "question": "How can I track opportunities?",
-          "answer": "You can create and manage a database of opportunities, set reminders for important dates, and track your applications and responses. Never miss a chance to showcase your talent."
+        "payments": {
+          "question": "Is payment secure?",
+          "answer": "Yes, BookaBand uses secure payment gateways and offers escrow services to protect both parties until the event is completed."
         }
       }
     },
     "technical": {
-      "title": "Technical Support",
+      "title": "Technical support",
       "questions": {
         "devices": {
           "question": "What devices are supported?",
-          "answer": "Music Manager is a web-based platform that works on any device with a modern web browser. We also offer mobile apps for iOS and Android for on-the-go access."
+          "answer": "BookaBand is a web-based platform accessible on any modern browser. A mobile-friendly version is also available for easy access on smartphones and tablets."
         },
         "security": {
           "question": "How secure is my data?",
-          "answer": "We take security seriously. Your data is encrypted, regularly backed up, and protected by industry-standard security measures. We never share your information with third parties."
+          "answer": "Your data is encrypted, regularly backed up, and protected by industry-standard security practices. We do not share your information with third parties."
         },
         "support": {
           "question": "How can I get help?",
-          "answer": "We offer multiple support channels including email support, live chat, and a comprehensive help center. Our support team is available to assist you with any questions or issues."
+          "answer": "You can reach our support team via email, live chat, or consult our help center for detailed guides and FAQs."
         }
       }
     }
   },
   "cta": {
-    "title": "Still Have Questions?",
+    "title": "Still have questions?",
     "description": "Can't find what you're looking for? Contact our support team for personalized assistance.",
-    "button": "Contact Support"
+    "button": "Contact support"
   }
-} 
+}

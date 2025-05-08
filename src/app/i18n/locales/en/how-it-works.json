@@ -1,55 +1,55 @@
 {
   "metadata": {
-    "title": "How It Works | Music Manager",
-    "description": "Discover how Music Manager helps you organize and manage your musical journey effectively."
+    "title": "How it works | BookaBand",
+    "description": "Discover how BookaBand helps musicians, clients, and providers connect and manage bookings seamlessly."
   },
   "hero": {
-    "title": "How It Works",
-    "subtitle": "A simple and effective way to manage your musical journey"
+    "title": "How it works",
+    "subtitle": "A simple and effective way to connect and manage unforgettable events."
   },
   "features": {
-    "title": "Key Features",
-    "subtitle": "Everything you need to manage your music career",
+    "title": "Main features",
+    "subtitle": "Everything you need to create and manage successful events",
     "items": {
       "organization": {
-        "title": "Smart Organization",
-        "description": "Keep all your musical projects, contacts, and opportunities in one place. Our intuitive system helps you stay organized and focused on what matters most."
+        "title": "Professional profiles",
+        "description": "Musicians and providers can create professional profiles showcasing their services, experience, and availability."
       },
       "collaboration": {
-        "title": "Easy Collaboration",
-        "description": "Connect with other musicians, share projects, and collaborate seamlessly. Our platform makes it easy to work together and grow your network."
+        "title": "Easy connection",
+        "description": "Clients can easily search, filter, and connect with musicians and providers to meet their specific event needs."
       },
       "tracking": {
-        "title": "Progress Tracking",
-        "description": "Monitor your musical growth, track your achievements, and set goals for your career. Stay motivated with clear progress indicators."
+        "title": "Proposal and contract management",
+        "description": "Manage proposals, contracts, and negotiations directly within the platform with clear tracking and secure tools."
       },
       "opportunities": {
-        "title": "Opportunity Management",
-        "description": "Never miss a chance to showcase your talent. Keep track of auditions, gigs, and other opportunities in one organized place."
+        "title": "Booking management",
+        "description": "Keep track of all your bookings, availability, and communications in one organized place."
       }
     }
   },
   "process": {
-    "title": "Getting Started",
-    "subtitle": "Three simple steps to begin your journey",
+    "title": "Getting started",
+    "subtitle": "Three simple steps to begin",
     "steps": {
       "signup": {
-        "title": "Create Your Account",
-        "description": "Sign up for free and set up your musician profile. It only takes a few minutes to get started."
+        "title": "Create your account",
+        "description": "Sign up for free and choose whether you are a musician, client, or provider."
       },
       "setup": {
-        "title": "Set Up Your Workspace",
-        "description": "Organize your projects, add your contacts, and customize your dashboard to match your needs."
+        "title": "Set up your profile",
+        "description": "Complete your profile with essential details to connect and receive opportunities."
       },
       "start": {
-        "title": "Start Managing",
-        "description": "Begin tracking your musical journey, connect with other musicians, and take control of your career."
+        "title": "Start connecting",
+        "description": "Search, connect, manage bookings, and create unforgettable events."
       }
     }
   },
   "cta": {
-    "title": "Ready to Get Started?",
-    "description": "Join our community of musicians and start managing your musical journey today.",
-    "button": "Sign Up Now"
+    "title": "Ready to get started?",
+    "description": "Join the BookaBand community and start creating successful events today.",
+    "button": "Sign up now"
   }
-} 
+}

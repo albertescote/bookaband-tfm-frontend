@@ -1,35 +1,35 @@
 {
   "metadata": {
-    "title": "Contacta'ns | Music Manager",
-    "description": "Posa't en contacte amb Music Manager - Estem aquí per ajudar-te en la teva trajectòria musical."
+    "title": "Contacta'ns | BookaBand",
+    "description": "Posa't en contacte amb BookaBand — Estem aquí per ajudar-te i fer que els teus esdeveniments musicals siguin inoblidables."
   },
   "hero": {
     "title": "Contacta'ns",
-    "subtitle": "Tens preguntes o necessites ajuda? Estem aquí per ajudar-te en la teva trajectòria musical."
+    "subtitle": "Tens preguntes o necessites ajuda? Estem aquí per connectar-te amb músics i fer que el teu esdeveniment sigui un èxit."
   },
   "additional-info": {
-    "title": "Altres Formes de Connectar",
+    "title": "Altres formes de contacte",
     "community": {
-      "title": "Uneix-te a la Nostra Comunitat",
-      "description": "Connecta amb altres músics, comparteix les teves experiències i creix la teva xarxa a la nostra vibrant comunitat."
+      "title": "Uneix-te a la nostra comunitat",
+      "description": "Connecta amb altres músics, clients i proveïdors. Comparteix experiències i amplia la teva xarxa dins la comunitat BookaBand."
     },
     "updates": {
-      "title": "Mantingues-te Informat",
-      "description": "Segueix-nos a les xarxes socials per estar al dia de noves funcions, oportunitats i esdeveniments de la comunitat."
+      "title": "Mantén-te actualitzat",
+      "description": "Segueix-nos per estar al dia de les noves funcions, esdeveniments i oportunitats exclusives."
     }
   },
   "name": "Nom",
   "name-placeholder": "El teu nom",
   "email": "Correu electrònic",
-  "email-placeholder": "el.teu.correu@exemple.com",
+  "email-placeholder": "el.teu.email@example.com",
   "subject": "Assumpte",
-  "subject-placeholder": "Sobre què vols contactar-nos?",
+  "subject-placeholder": "Sobre què tracta?",
   "message": "Missatge",
-  "message-placeholder": "Explica'ns com podem ajudar-te...",
-  "send-message": "Enviar Missatge",
-  "missing-fields": "Si us plau, completa tots els camps requerits",
-  "message-sent": "¡Missatge Enviat!",
-  "error-sending": "Hi ha hagut un error en enviar el teu missatge. Si us plau, torna-ho a provar.",
-  "we-will-contact-soon": "Gràcies per contactar-nos! Et respondrem el més aviat possible.",
-  "back-home": "Tornar a l'Inici"
+  "message-placeholder": "Explica’ns com et podem ajudar...",
+  "send-message": "Enviar missatge",
+  "message-sent": "Missatge enviat!",
+  "we-will-contact-soon": "Gràcies per contactar amb BookaBand. Ens posarem en contacte amb tu tan aviat com sigui possible per atendre la teva sol·licitud.",
+  "back-home": "Tornar a l'inici",
+  "missing-fields": "Si us plau, omple tots els camps obligatoris.",
+  "error-sending": "Hi ha hagut un error en enviar el missatge. Torna-ho a provar."
 }

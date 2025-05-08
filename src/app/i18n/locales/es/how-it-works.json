@@ -1,55 +1,55 @@
 {
   "metadata": {
-    "title": "Cómo Funciona | Music Manager",
-    "description": "Descubre cómo Music Manager te ayuda a organizar y gestionar tu trayectoria musical de manera efectiva."
+    "title": "Cómo funciona | BookaBand",
+    "description": "Descubre cómo BookaBand ayuda a músicos, clientes y proveedores a conectarse y gestionar contrataciones de manera sencilla."
   },
   "hero": {
-    "title": "Cómo Funciona",
-    "subtitle": "Una forma simple y efectiva de gestionar tu trayectoria musical"
+    "title": "Cómo funciona",
+    "subtitle": "Una forma sencilla y eficaz de conectar y gestionar eventos inolvidables."
   },
   "features": {
-    "title": "Características Principales",
-    "subtitle": "Todo lo que necesitas para gestionar tu carrera musical",
+    "title": "Características principales",
+    "subtitle": "Todo lo que necesitas para crear y gestionar eventos exitosos",
     "items": {
       "organization": {
-        "title": "Organización Inteligente",
-        "description": "Mantén todos tus proyectos musicales, contactos y oportunidades en un solo lugar. Nuestro sistema intuitivo te ayuda a mantenerte organizado y enfocado en lo más importante."
+        "title": "Perfiles profesionales",
+        "description": "Músicos y proveedores pueden crear perfiles profesionales que muestran sus servicios, experiencia y disponibilidad."
       },
       "collaboration": {
-        "title": "Colaboración Fácil",
-        "description": "Conéctate con otros músicos, comparte proyectos y colabora sin problemas. Nuestra plataforma facilita el trabajo conjunto y el crecimiento de tu red."
+        "title": "Conexión fácil",
+        "description": "Los clientes pueden buscar, filtrar y conectar fácilmente con músicos y proveedores según las necesidades de su evento."
       },
       "tracking": {
-        "title": "Seguimiento de Progreso",
-        "description": "Monitorea tu crecimiento musical, registra tus logros y establece objetivos para tu carrera. Mantente motivado con indicadores claros de progreso."
+        "title": "Gestión de propuestas y contratos",
+        "description": "Gestiona propuestas, contratos y negociaciones directamente en la plataforma con seguimiento claro y herramientas seguras."
       },
       "opportunities": {
-        "title": "Gestión de Oportunidades",
-        "description": "Nunca pierdas la oportunidad de mostrar tu talento. Mantén un registro de audiciones, conciertos y otras oportunidades en un lugar organizado."
+        "title": "Gestión de contrataciones",
+        "description": "Lleva un control de todas tus contrataciones, disponibilidad y comunicaciones en un solo lugar."
       }
     }
   },
   "process": {
-    "title": "Comenzar",
-    "subtitle": "Tres simples pasos para iniciar tu viaje",
+    "title": "Cómo empezar",
+    "subtitle": "Tres pasos sencillos para comenzar",
     "steps": {
       "signup": {
-        "title": "Crea Tu Cuenta",
-        "description": "Regístrate gratis y configura tu perfil de músico. Solo toma unos minutos comenzar."
+        "title": "Crea tu cuenta",
+        "description": "Regístrate gratis y elige si eres músico, cliente o proveedor."
       },
       "setup": {
-        "title": "Configura Tu Espacio",
-        "description": "Organiza tus proyectos, añade tus contactos y personaliza tu panel de control según tus necesidades."
+        "title": "Configura tu perfil",
+        "description": "Completa tu perfil con información esencial para conectar y recibir oportunidades."
       },
       "start": {
-        "title": "Comienza a Gestionar",
-        "description": "Empieza a seguir tu trayectoria musical, conéctate con otros músicos y toma el control de tu carrera."
+        "title": "Empieza a conectar",
+        "description": "Busca, conecta, gestiona contrataciones y crea eventos inolvidables."
       }
     }
   },
   "cta": {
-    "title": "¿Listo para Empezar?",
-    "description": "Únete a nuestra comunidad de músicos y comienza a gestionar tu trayectoria musical hoy.",
-    "button": "Regístrate Ahora"
+    "title": "¿Listo para empezar?",
+    "description": "Únete a la comunidad BookaBand y comienza a crear eventos exitosos hoy mismo.",
+    "button": "Regístrate ahora"
   }
-} 
+}
