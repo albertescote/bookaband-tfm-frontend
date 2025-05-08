@@ -75,20 +75,20 @@ export default async function HowItWorksPage({
                 {t('process.subtitle')}
               </p>
             </div>
-            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
+            <div className="mt-8 space-y-6 md:mt-12 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
               {Object.entries(t('process.steps', { returnObjects: true })).map(
                 ([key, step]: [string, any], index) => (
-                  <div key={key} className="relative">
-                    <div className="flex items-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-xl font-bold text-white">
+                  <div key={key} className="relative flex items-start">
+                    <div className="mt-1 flex-shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-lg font-bold text-white md:h-12 md:w-12 md:text-xl">
                         {index + 1}
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-xl font-semibold text-white">
-                          {step.title}
-                        </h3>
-                        <p className="mt-2 text-white/90">{step.description}</p>
-                      </div>
+                    </div>
+                    <div className="ml-4 flex-grow">
+                      <h3 className="text-xl font-semibold text-white">
+                        {step.title}
+                      </h3>
+                      <p className="mt-2 text-white/90">{step.description}</p>
                     </div>
                   </div>
                 ),
