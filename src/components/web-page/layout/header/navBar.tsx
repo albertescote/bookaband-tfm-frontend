@@ -14,7 +14,7 @@ export default function Navbar({
   return (
     <nav className="flex flex-col items-center space-y-4 text-center lg:flex-row lg:space-x-6 lg:space-y-0">
       <NavLink
-        href={`/${language}/artists`}
+        href={`/${language}/find-artists`}
         label={t('search-musicians-tab')}
         onClick={onLinkClick}
       />

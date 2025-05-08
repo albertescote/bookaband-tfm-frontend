@@ -15,7 +15,14 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const publicRoutes = ['/', '/contact', '/about', '/how-it-works', '/faqs'];
+const publicRoutes = [
+  '/',
+  '/contact',
+  '/about',
+  '/how-it-works',
+  '/faqs',
+  '/find-artists',
+];
 
 export function WebPageAuthProvider({
   children,
