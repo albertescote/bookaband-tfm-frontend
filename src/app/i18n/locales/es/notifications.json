@@ -1,6 +1,7 @@
 {
+  "title": "Notificaciones",
+  "description": "Mantente al día con tu actividad musical",
+  "noNotifications": "Aún no hay notificaciones",
   "recent-notifications": "Notificaciones recientes",
-  "no-notifications": "No hay notificaciones",
   "view-all-notifications": "Ver todas las notificaciones"
-
 }
