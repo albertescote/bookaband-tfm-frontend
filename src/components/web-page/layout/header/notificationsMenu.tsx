@@ -1,5 +1,6 @@
 'use client';
-import { Bell } from 'lucide-react';
+
+import { Bell, BellOff } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -76,45 +77,62 @@ export default function NotificationsMenu({ language }: { language: string }) {
 
       {menuOpen && (
         <div
-          className="animate-fade-in absolute right-0 z-50 mt-2 w-80 transform rounded-xl border border-[#15b7b9] bg-white shadow-2xl transition-all duration-300 ease-out"
-          style={{ minWidth: '18rem' }}
+          className="absolute right-0 z-50 mt-6 w-80 overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+          style={{ maxHeight: '500px' }}
         >
-          <p className="px-4 py-3 text-sm font-semibold tracking-wide text-[#222]">
-            {t('recent-notifications')}
-          </p>
-          <div className="divide-y divide-gray-200">
-            {notifications.length > 0 ? (
-              notifications.map((notification) => (
-                <Link
-                  key={notification.id}
-                  href={`/${language}${notification.link}`}
-                  onClick={() =>
-                    handleNavigateToNotification(notification.unread)
-                  }
-                  className="flex items-center justify-between gap-2 rounded-md px-4 py-3 text-sm text-[#4a4f5a] transition-colors duration-200 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
-                >
-                  <div className="flex flex-grow flex-col overflow-hidden">
-                    <span className="truncate font-semibold">
-                      {notification.title}
-                    </span>
-                    <span className="max-w-[14rem] truncate text-xs text-gray-500">
-                      {notification.description}
-                    </span>
-                  </div>
-                  {notification.unread && (
-                    <span className="flex-shrink-0 rounded-full bg-[#15b7b9] px-2 py-0.5 text-xs text-white">
-                      !
-                    </span>
-                  )}
-                </Link>
-              ))
-            ) : (
-              <p className="px-4 py-3 text-sm text-gray-500">
-                {t('no-notifications')}
-              </p>
+          <div className="flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-[#15b7b9]/10 to-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-gray-900">
+              {t('recent-notifications')}
+            </h3>
+            {unreadNotifications > 0 && (
+              <span className="rounded-full bg-[#15b7b9] px-2 py-1 text-xs font-medium text-white">
+                {unreadNotifications} {t('new')}
+              </span>
             )}
           </div>
-          <div className="border-t border-gray-200">
+
+          <div className="overflow-y-auto" style={{ maxHeight: '320px' }}>
+            {notifications.length > 0 ? (
+              <div className="divide-y divide-gray-100">
+                {notifications.map((notification) => (
+                  <Link
+                    key={notification.id}
+                    href={`/${language}${notification.link}`}
+                    onClick={() =>
+                      handleNavigateToNotification(notification.unread)
+                    }
+                    className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 hover:bg-[#15b7b9]/5"
+                  >
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9]/20 text-[#15b7b9]">
+                      <Bell size={16} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex items-center justify-between">
+                        <span className="truncate text-sm font-medium text-gray-900">
+                          {notification.title}
+                        </span>
+                        {notification.unread && (
+                          <span className="flex-shrink-0 rounded-full bg-[#15b7b9] px-2 py-0.5 text-xs text-white">
+                            !
+                          </span>
+                        )}
+                      </div>
+                      <p className="truncate text-xs text-gray-500">
+                        {notification.description}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center px-4 py-6 text-center">
+                <BellOff size={36} className="mb-2 text-gray-300" />
+                <p className="text-sm text-gray-500">{t('no-notifications')}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-gray-100">
             <Link
               href={`/${language}/notifications`}
               onClick={() => setMenuOpen(false)}

@@ -1,5 +1,6 @@
 'use client';
-import { MessageSquareText } from 'lucide-react';
+
+import { MessageSquareOff, MessageSquareText } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -85,52 +86,73 @@ export default function MessagesMenu({ language }: { language: string }) {
 
       {menuOpen && (
         <div
-          className="animate-fade-in absolute right-0 z-50 mt-2 w-80 transform rounded-xl border border-[#15b7b9] bg-white shadow-2xl transition-all duration-300 ease-out"
-          style={{ minWidth: '18rem' }}
+          className="absolute right-0 z-50 mt-6 w-80 overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+          style={{ maxHeight: '500px' }}
         >
-          <p className="px-4 py-3 text-sm font-semibold tracking-wide text-[#222]">
-            {t('recent-messages')}
-          </p>
-          <div className="divide-y divide-gray-200">
-            {chats.length > 0 ? (
-              chats.map((chat) => {
-                const lastMessage =
-                  chat.messages.length > 0
-                    ? chat.messages[chat.messages.length - 1].content
-                    : t('no-messages');
-
-                const name =
-                  chat.band?.name ||
-                  `${chat.user.firstName} ${chat.user.familyName}`;
-
-                return (
-                  <Link
-                    key={chat.id}
-                    href={`/${language}/chat/${chat.id}`}
-                    onClick={() => {
-                      handleNavigateToChat(chat.unreadMessagesCount, chat.id);
-                    }}
-                    className="flex items-center justify-between gap-2 rounded-md px-4 py-3 text-sm text-[#4a4f5a] transition-colors duration-200 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
-                  >
-                    <div className="flex flex-grow flex-col overflow-hidden">
-                      <span className="truncate font-semibold">{name}</span>
-                      <span className="max-w-[14rem] truncate text-xs text-gray-500">
-                        {lastMessage}
-                      </span>
-                    </div>
-                    {chat.unreadMessagesCount > 0 && (
-                      <span className="flex-shrink-0 rounded-full bg-[#15b7b9] px-2 py-0.5 text-xs text-white">
-                        {chat.unreadMessagesCount}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })
-            ) : (
-              <p className="px-4 py-3 text-sm text-gray-500">{t('no-chats')}</p>
+          <div className="flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-[#15b7b9]/10 to-white px-4 py-3">
+            <h3 className="text-sm font-semibold text-gray-900">
+              {t('recent-messages')}
+            </h3>
+            {unreadMessages > 0 && (
+              <span className="rounded-full bg-[#15b7b9] px-2 py-1 text-xs font-medium text-white">
+                {unreadMessages} {t('new')}
+              </span>
             )}
           </div>
-          <div className="border-t border-gray-200">
+
+          <div className="overflow-y-auto" style={{ maxHeight: '320px' }}>
+            {chats.length > 0 ? (
+              <div className="divide-y divide-gray-100">
+                {chats.map((chat) => {
+                  const lastMessage =
+                    chat.messages.length > 0
+                      ? chat.messages[chat.messages.length - 1].content
+                      : t('no-messages');
+
+                  const name =
+                    chat.band?.name ||
+                    `${chat.user.firstName} ${chat.user.familyName}`;
+
+                  return (
+                    <Link
+                      key={chat.id}
+                      href={`/${language}/chat/${chat.id}`}
+                      onClick={() => {
+                        handleNavigateToChat(chat.unreadMessagesCount, chat.id);
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 hover:bg-[#15b7b9]/5"
+                    >
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9]/20 text-[#15b7b9]">
+                        <MessageSquareText size={16} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-1 flex items-center justify-between">
+                          <span className="truncate text-sm font-medium text-gray-900">
+                            {name}
+                          </span>
+                          {chat.unreadMessagesCount > 0 && (
+                            <span className="flex-shrink-0 rounded-full bg-[#15b7b9] px-2 py-0.5 text-xs text-white">
+                              {chat.unreadMessagesCount}
+                            </span>
+                          )}
+                        </div>
+                        <p className="truncate text-xs text-gray-500">
+                          {lastMessage}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center px-4 py-6 text-center">
+                <MessageSquareOff size={36} className="mb-2 text-gray-300" />
+                <p className="text-sm text-gray-500">{t('no-chats')}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-gray-100">
             <Link
               href={`/${language}/chat`}
               onClick={() => setMenuOpen(false)}

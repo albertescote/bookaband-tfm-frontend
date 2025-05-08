@@ -8,6 +8,7 @@ import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.servi
 export async function getClientChats(
   userId: string,
 ): Promise<ChatView[] | undefined> {
+  return [];
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get(`/chat/client/${userId}`)

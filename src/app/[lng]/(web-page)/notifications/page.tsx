@@ -52,7 +52,7 @@ export default async function NotificationsPage({
       <div className="space-y-4">
         {notifications.length === 0 ? (
           <div className="py-8 text-center text-gray-500">
-            {t('noNotifications')}
+            {t('no-otifications')}
           </div>
         ) : (
           notifications.map((notification) => (

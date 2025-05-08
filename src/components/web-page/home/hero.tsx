@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslation } from '@/app/i18n/client';
+import { useRouter } from 'next/navigation';
 
 interface HeroParams {
   lng: string;
@@ -8,6 +9,7 @@ interface HeroParams {
 
 export default function Hero({ lng }: HeroParams) {
   const { t } = useTranslation(lng, 'home');
+  const router = useRouter();
 
   return (
     <section className="relative w-full">
@@ -20,7 +22,12 @@ export default function Hero({ lng }: HeroParams) {
             {t('hero-title')}
           </h1>
           <p className="mb-6 text-lg md:text-2xl">{t('hero-subtitle')}</p>
-          <button className="rounded-full bg-[#15b7b9] px-6 py-3 font-semibold text-white hover:bg-[#f3f4f6] hover:text-[#15b7b9]">
+          <button
+            onClick={() => {
+              router.push(`/${lng}/how-it-works`);
+            }}
+            className="rounded-full bg-[#15b7b9] px-6 py-3 font-semibold text-white hover:bg-[#f3f4f6] hover:text-[#15b7b9]"
+          >
             {t('hero-button')}
           </button>
         </div>
