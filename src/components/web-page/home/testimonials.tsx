@@ -3,7 +3,7 @@
 import { useTranslation } from '@/app/i18n/client';
 import { FaStar } from 'react-icons/fa';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TestimonialsParams {
   lng: string;
@@ -51,8 +51,34 @@ export default function Testimonials({ lng }: TestimonialsParams) {
     },
   ];
 
-  const itemsPerPage = 3;
+  // Responsive state for items per page
+  const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
+
+  // Update items per page based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerPage(1); // Mobile: show 1 per page
+      } else if (window.innerWidth < 1024) {
+        setItemsPerPage(2); // Tablet: show 2 per page
+      } else {
+        setItemsPerPage(3); // Desktop: show 3 per page
+      }
+
+      // Reset to first page when layout changes to avoid empty pages
+      setCurrentPage(0);
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const maxPage = Math.ceil(testimonials.length / itemsPerPage) - 1;
 
@@ -68,34 +94,44 @@ export default function Testimonials({ lng }: TestimonialsParams) {
     }
   };
 
-  const translateX = `-${currentPage * 50}%`;
+  // Calculate card width based on items per page
+  const cardWidth = 100 / itemsPerPage;
+
+  // Calculate translation value for the slider - move by itemsPerPage cards at a time
+  const translateX = `-${currentPage * ((100 / testimonials.length) * itemsPerPage)}%`;
 
   return (
-    <section className="bg-gray-50 py-16">
-      <h2 className="mb-12 text-center text-3xl font-bold">
+    <section className="bg-gray-50 py-8 md:py-12 lg:py-16">
+      <h2 className="mb-8 text-center text-2xl font-bold md:mb-12 md:text-3xl">
         {t('testimonials-title')}
       </h2>
 
-      <div className="relative mx-auto max-w-[1100px] overflow-hidden">
+      <div className="relative mx-auto w-full max-w-[90%] overflow-hidden md:max-w-[95%] lg:max-w-[1100px]">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
-            width: `${(testimonials.length / itemsPerPage) * 100}%`,
+            width: `${testimonials.length * (100 / itemsPerPage)}%`,
             transform: `translateX(${translateX})`,
           }}
         >
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="flex w-1/3 flex-col p-4">
-              <div className="flex h-full flex-col justify-between rounded-xl border bg-white p-6 shadow-sm">
-                <div className="mb-4 flex items-center gap-4">
+            <div
+              key={index}
+              className="px-2 md:px-4"
+              style={{ width: `${cardWidth}%` }}
+            >
+              <div className="flex h-full flex-col justify-between rounded-xl border bg-white p-4 shadow-sm md:p-6">
+                <div className="mb-4 flex flex-col items-center gap-2 sm:flex-row sm:items-start md:gap-4">
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="h-16 w-16 rounded-full object-cover"
+                    className="h-12 w-12 rounded-full object-cover md:h-16 md:w-16"
                   />
-                  <div className="flex flex-col">
-                    <h3 className="text-lg font-bold">{testimonial.name}</h3>
-                    <div className="flex text-yellow-400">
+                  <div className="flex flex-col items-center sm:items-start">
+                    <h3 className="text-center text-base font-bold sm:text-left md:text-lg">
+                      {testimonial.name}
+                    </h3>
+                    <div className="flex text-sm text-yellow-400 md:text-base">
                       {Array.from({ length: testimonial.rating }).map(
                         (_, starIndex) => (
                           <FaStar key={starIndex} />
@@ -104,33 +140,50 @@ export default function Testimonials({ lng }: TestimonialsParams) {
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-700">{testimonial.text}</p>
+                <p className="text-sm text-gray-700 md:text-base">
+                  {testimonial.text}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div className="mt-10 flex justify-center gap-4">
+      <div className="mt-6 flex items-center justify-center gap-2 md:mt-10 md:gap-4">
         <button
           onClick={handlePrev}
           disabled={currentPage === 0}
-          className={`${currentPage === 0 ? 'opacity-50' : 'group flex items-center justify-center rounded-full p-2 transition hover:bg-teal-100'}`}
+          className="group flex items-center justify-center rounded-full p-1 transition hover:bg-teal-100 disabled:cursor-not-allowed md:p-2"
+          aria-label="Previous testimonials"
         >
           <ChevronLeftCircle
-            width={30}
-            height={30}
-            className="text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]"
+            width={24}
+            height={24}
+            className={`${currentPage === 0 ? 'opacity-50' : ''} text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]`}
           />
         </button>
+        {/* Show page indicators for better UX */}
+        <div className="flex items-center gap-1 px-2 md:gap-2">
+          {Array.from({ length: maxPage + 1 }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index)}
+              className={`h-2 w-2 rounded-full md:h-3 md:w-3 ${
+                currentPage === index ? 'bg-[#15b7b9]' : 'bg-gray-300'
+              }`}
+              aria-label={`Go to page ${index + 1}`}
+            />
+          ))}
+        </div>
         <button
           onClick={handleNext}
           disabled={currentPage === maxPage}
-          className={`${currentPage === maxPage ? 'opacity-50' : 'group flex items-center justify-center rounded-full p-2 transition hover:bg-teal-100'}`}
+          className="group flex items-center justify-center rounded-full p-1 transition hover:bg-teal-100 disabled:cursor-not-allowed md:p-2"
+          aria-label="Next testimonials"
         >
           <ChevronRightCircle
-            width={30}
-            height={30}
-            className="text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]"
+            width={24}
+            height={24}
+            className={`${currentPage === maxPage ? 'opacity-50' : ''} text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]`}
           />
         </button>
       </div>
