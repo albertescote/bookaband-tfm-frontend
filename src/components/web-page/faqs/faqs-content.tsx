@@ -2,50 +2,7 @@
 
 import { useTranslation } from '@/app/i18n/client';
 import Link from 'next/link';
-import { useState } from 'react';
-
-function AccordionItem({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-gray-200">
-      <button
-        className="flex w-full items-center justify-between py-4 text-left"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="text-lg font-medium text-[#565d6d]">{question}</span>
-        <svg
-          className={`h-6 w-6 transform text-[#15b7b9] transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? 'max-h-96' : 'max-h-0'
-        }`}
-      >
-        <p className="pb-4 text-[#565d6d]/80">{answer}</p>
-      </div>
-    </div>
-  );
-}
+import { AccordionItem } from '@/components/web-page/faqs/accordion-item';
 
 export default function FAQsContent({ language }: { language: string }) {
   const { t } = useTranslation(language, 'faqs');
@@ -109,4 +66,4 @@ export default function FAQsContent({ language }: { language: string }) {
       </section>
     </>
   );
-} 
+}
