@@ -1,45 +1,30 @@
 'use client';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
-import {
-  getBandChats,
-  getClientChats,
-} from '@/service/backend/chat/service/chat.service';
+import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
+import { useWebPageAuth } from '@/providers/webPageAuthProvider';
 
-export function ChatsList({
-  language,
-  bandOptions,
-  userId,
-}: {
-  language: string;
-  userId?: string;
-  bandOptions?: {
-    id: string;
-    setBandId: Dispatch<SetStateAction<string | undefined>>;
-    multiple: boolean;
-  };
-}) {
+export function ChatsList({ language }: { language: string }) {
   const { t } = useTranslation(language, 'chat');
   const [chats, setChats] = useState<ChatView[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useWebPageAuth();
 
   useEffect(() => {
     async function fetchChats() {
       try {
         setLoading(true);
-        let chatsView: ChatView[] | undefined = [];
-        if (bandOptions?.id) {
-          chatsView = await getBandChats(bandOptions.id);
-        } else if (userId) {
-          chatsView = await getClientChats(userId);
+        let chatsView: ChatView[] = [];
+        if (user?.id) {
+          chatsView = (await getClientChats(user?.id)) ?? [];
         }
-        setChats(chatsView || []);
+        setChats(chatsView);
       } catch (err) {
         setError('Failed to load chats.');
       } finally {
@@ -47,7 +32,7 @@ export function ChatsList({
       }
     }
     fetchChats().then();
-  }, [bandOptions?.id, userId]);
+  }, [user]);
 
   if (loading)
     return (
@@ -60,17 +45,6 @@ export function ChatsList({
 
   return (
     <div>
-      <div className="mb-4 flex">
-        {!!bandOptions?.id && bandOptions.multiple && (
-          <ArrowLeft
-            className="cursor-pointer"
-            onClick={() => {
-              bandOptions.setBandId(undefined);
-            }}
-          />
-        )}
-        <h2 className="ml-4 text-lg font-semibold">{t('your-chats')}</h2>
-      </div>
       {chats.length === 0 ? (
         <p className="text-center text-gray-500">{t('no-chats-available')}</p>
       ) : (
@@ -84,16 +58,12 @@ export function ChatsList({
               {getAvatar(
                 64,
                 64,
-                userId ? chat.band?.imageUrl : chat.user?.imageUrl,
-                userId
-                  ? chat.band?.name || 'Unknown'
-                  : `${chat.user?.firstName || ''} ${chat.user?.familyName || ''}`.trim(),
+                chat.band?.imageUrl,
+                chat.band?.name || 'Unknown',
               )}
               <div className="ml-6 flex-1">
                 <strong className="block text-gray-800">
-                  {userId
-                    ? chat.band?.name
-                    : `${chat.user?.firstName} ${chat.user?.familyName}`}
+                  {chat.band?.name}
                 </strong>
                 <p className="mt-2 text-sm text-gray-600">
                   {chat.messages?.length > 0
