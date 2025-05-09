@@ -15,6 +15,7 @@ import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
 import {
   createNewChat,
   getChatById,
+  getClientChats,
 } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
@@ -23,14 +24,16 @@ import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { ChatView } from '@/service/backend/chat/domain/chatView';
 
 interface ChatProps {
   language: string;
+  setChats: React.Dispatch<React.SetStateAction<ChatView[]>>;
   chatId?: string;
   bandId?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
+const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
@@ -147,6 +150,10 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
           setAllMessages((prev) => [...prev, newMessage]);
 
           sendMessage(chat!.id, recipientId, message);
+          getClientChats(senderId).then((chats) => {
+            if ('error' in chats) return;
+            setChats(chats);
+          });
           setMessage('');
           setShowEmojis(false);
         });

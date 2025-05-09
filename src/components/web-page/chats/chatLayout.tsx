@@ -75,10 +75,15 @@ export function ChatLayout({
   };
 
   const renderMainContent = () => {
-    if (bandId) {
-      return <Chat language={language} bandId={bandId} />;
-    } else if (activeChatId) {
-      return <Chat language={language} chatId={activeChatId} />;
+    if (activeChatId || bandId) {
+      return (
+        <Chat
+          language={language}
+          setChats={setChatsState}
+          bandId={bandId}
+          chatId={activeChatId}
+        />
+      );
     } else {
       return (
         <div className="flex h-full items-center justify-center p-4">
