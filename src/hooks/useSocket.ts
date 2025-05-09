@@ -8,6 +8,7 @@ export interface ChatMessage {
   senderId: string;
   recipientId: string;
   message: string;
+  timestamp: string | Date;
 }
 
 export const useChat = (userId: string) => {

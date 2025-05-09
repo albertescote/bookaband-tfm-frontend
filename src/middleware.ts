@@ -10,6 +10,20 @@ export const config = {
   ],
 };
 
+const publicRoutes = [
+  '/',
+  '/contact',
+  '/about',
+  '/how-it-works',
+  '/faqs',
+  '/find-artists',
+  '/login',
+  '/sign-up',
+  '/forgot-password',
+  '/reset-password',
+  '/verify-email',
+];
+
 const createResponse = () => {
   const response = NextResponse.next();
   response.headers.set('Cache-Control', 'no-store, max-age=0');
@@ -53,9 +67,28 @@ export async function middleware(req: NextRequest) {
   const detectedLngFromPath = languages.find((l) =>
     pathname.startsWith(`/${l}`),
   );
+
   if (detectedLngFromPath) {
     const response = createResponse();
     response.cookies.set(cookieName, detectedLngFromPath);
+
+    const normalizedPathParts = pathname.split('/').slice(2);
+    const normalizedPath =
+      normalizedPathParts.length > 0
+        ? '/' + normalizedPathParts.join('/')
+        : '/';
+
+    const isPublic = publicRoutes.some(
+      (route) =>
+        normalizedPath === route || normalizedPath.startsWith(`${route}/`),
+    );
+
+    const authCookie = req.cookies.get('access_token')?.value;
+
+    if (!isPublic && !authCookie) {
+      return createRedirectResponse(`/${detectedLngFromPath}/login`, req);
+    }
+
     return response;
   }
 

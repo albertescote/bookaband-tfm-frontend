@@ -10,12 +10,13 @@ import { Bell, Calendar, LogOut, MessageSquareText } from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
 import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
+import { toast } from 'react-hot-toast';
 
 export default function Header({ language }: { language: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logoutUser } = useWebPageAuth();
+  const { user, unreadMessages, setUnreadMessages, logoutUser } =
+    useWebPageAuth();
   const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
-  const [unreadMessages, setUnreadMessages] = useState<number>(0);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -52,7 +53,9 @@ export default function Header({ language }: { language: string }) {
 
       const getChatsAndUpdateUnreadMessages = (userId: string) => {
         getClientChats(userId).then((receivedChats) => {
-          if (receivedChats) {
+          if ('error' in receivedChats) {
+            toast.error(receivedChats.error);
+          } else {
             const totalUnreadMessages = receivedChats.reduce(
               (total, chat) => total + chat.unreadMessagesCount,
               0,
@@ -154,7 +157,7 @@ export default function Header({ language }: { language: string }) {
               <div className="mt-auto border-t border-gray-200 p-4">
                 <div className="flex items-center justify-around">
                   <Link
-                    href="/chat"
+                    href="/chats"
                     className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
                     onClick={closeMenu}
                   >

@@ -7,18 +7,20 @@ import { useTranslation } from '@/app/i18n/client';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { useWebPageAuth } from '@/providers/webPageAuthProvider';
+import { toast } from 'react-hot-toast';
 
 export default function MessagesMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [chats, setChats] = useState<ChatView[]>([]);
-  const [unreadMessages, setUnreadMessages] = useState<number>(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation(language, 'chat');
-  const { user } = useWebPageAuth();
+  const { user, unreadMessages, setUnreadMessages } = useWebPageAuth();
 
   const getChatsAndUpdateUnreadMessages = (userId: string) => {
     getClientChats(userId).then((receivedChats) => {
-      if (receivedChats) {
+      if ('error' in receivedChats) {
+        toast.error(receivedChats.error);
+      } else {
         setChats(receivedChats);
         const totalUnreadMessages = receivedChats.reduce(
           (total, chat) => total + chat.unreadMessagesCount,
@@ -116,7 +118,7 @@ export default function MessagesMenu({ language }: { language: string }) {
                   return (
                     <Link
                       key={chat.id}
-                      href={`/${language}/chat/${chat.id}`}
+                      href={`/${language}/chats?chat_id=${chat.id}`}
                       onClick={() => {
                         handleNavigateToChat(chat.unreadMessagesCount, chat.id);
                       }}
@@ -154,7 +156,7 @@ export default function MessagesMenu({ language }: { language: string }) {
 
           <div className="border-t border-gray-100">
             <Link
-              href={`/${language}/chat`}
+              href={`/${language}/chats`}
               onClick={() => setMenuOpen(false)}
               className="block w-full px-4 py-3 text-center text-sm font-semibold text-[#15b7b9] transition-colors duration-200 hover:bg-[#15b7b9]/10"
             >

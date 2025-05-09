@@ -22,7 +22,7 @@ export async function getClientNotifications(
       id: '2',
       title: 'Missatge rebut',
       description: 'Tens un nou missatge de Marta G.',
-      link: '/chat',
+      link: '/chats',
       unread: false,
     },
     {

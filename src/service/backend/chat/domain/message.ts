@@ -3,5 +3,5 @@ export interface MessagePrimitives {
   senderId: string;
   recipientId: string;
   content: string;
-  timestamp?: string | Date;
+  timestamp: string | Date;
 }

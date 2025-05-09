@@ -9,5 +9,18 @@
   "no-messages": "No messages",
   "no-chats": "No conversations available",
   "view-all-messages": "View all messages",
-  "new": "new"
+  "new": "new",
+  "chats": "Chats",
+  "start-chatting": "Start Chatting",
+  "no-chats-start-new": "You don't have any active chats. Start a new conversation with a band!",
+  "browse-bands": "Browse Bands",
+  "back-to-chats": "Back to Chats",
+  "loading-chat": "Loading chat...",
+  "search-chats": "Search chats...",
+  "no-chats-found": "No chats found",
+  "unknown": "Unknown",
+  "band-id-required": "Band ID is required",
+  "failed-to-get-user": "Failed to get user information",
+  "band-not-found": "Band not found",
+  "chat-or-band-id-required": "Chat ID or Band ID is required"
 }

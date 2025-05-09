@@ -65,9 +65,9 @@ export default function OfferCard({
     if (offerDetails?.bandId) {
       checkExistingChat(offerDetails.bandId).then((existingChatId) => {
         if (existingChatId) {
-          router.push(`/${language}/chat/${existingChatId}`);
+          router.push(`/${language}/chats?chat_id=${existingChatId}`);
         } else {
-          router.push(`/${language}/chat/new?band_id=${offerDetails.bandId}`);
+          router.push(`/${language}/chats?band_id=${offerDetails.bandId}`);
         }
       });
     }

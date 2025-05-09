@@ -22,17 +22,17 @@ export async function createUser(request: {
   }
 }
 
-export async function getUserInfo(): Promise<User | undefined> {
+export async function getUserInfo(): Promise<User | null> {
   let accessToken = getAccessTokenCookie();
   if (!accessToken) {
     console.log('Get user info failed: access token cookie not found');
-    return undefined;
+    return null;
   }
   const decodedJwt = decodeJwt(accessToken);
   const userId = decodedJwt.sub;
   if (!userId) {
     console.log('Invalid access token: missing sub property');
-    return undefined;
+    return null;
   }
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance.get(`/user/${userId}`).then((res) => res.data),

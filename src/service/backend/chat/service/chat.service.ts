@@ -4,10 +4,11 @@ import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
+import { BackendError } from '@/service/backend/shared/domain/backendError';
 
 export async function getClientChats(
   userId: string,
-): Promise<ChatView[] | undefined> {
+): Promise<ChatView[] | BackendError> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get(`/chat/client/${userId}`)
