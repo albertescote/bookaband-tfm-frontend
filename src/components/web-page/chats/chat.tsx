@@ -286,17 +286,17 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
               <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                   {/* Back button removed as we're using the unified layout */}
-                  {getAvatar(40, 40, imageUrl, displayName)}
+                  {getAvatar(48, 48, imageUrl, displayName)}
                   <div>
                     <h2 className="font-medium">{displayName}</h2>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Phone size={20} />
+                    <Phone size={22} />
                   </button>
                   <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Video size={20} />
+                    <Video size={22} />
                   </button>
                 </div>
               </div>
@@ -385,7 +385,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
               <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
                   <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Paperclip size={20} />
+                    <Paperclip size={22} />
                   </button>
                   <div className="relative flex-1">
                     <input
