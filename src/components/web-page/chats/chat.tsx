@@ -22,6 +22,7 @@ import { getBandViewById } from '@/service/backend/band/service/band.service';
 import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 interface ChatProps {
   language: string;
@@ -45,6 +46,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
 
   const createEmptyChat = async (
     bandId: string,
@@ -208,6 +210,26 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
     router.push(`/${language}/chats`);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojis(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const onEmojiClick = (emojiData: EmojiClickData) => {
+    setMessage((prevMessage) => prevMessage + emojiData.emoji);
+  };
+
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -366,13 +388,35 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, bandId }) => {
                       onChange={(e) => setMessage(e.target.value)}
                       onKeyDown={handleKeyPress}
                       placeholder={t('type-a-message')}
-                      className="w-full rounded-full border border-gray-200 py-3 pl-4 pr-12 focus:border-[#15b7b9] focus:outline-none focus:ring-1 focus:ring-[#15b7b9]"
+                      className="w-full rounded-full border border-gray-200 py-3 pl-4 focus:border-[#15b7b9] focus:outline-none focus:ring-1 focus:ring-[#15b7b9]"
                     />
+                    <div
+                      ref={emojiPickerRef}
+                      className="absolute bottom-12 right-0 z-50"
+                    >
+                      {showEmojis && (
+                        <EmojiPicker
+                          onEmojiClick={onEmojiClick}
+                          width={350}
+                          height={400}
+                          searchDisabled={false}
+                          skinTonesDisabled={true}
+                        />
+                      )}
+                    </div>
                     <button
                       onClick={() => setShowEmojis(!showEmojis)}
-                      className="absolute right-12 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-500 hover:bg-gray-100"
+                      className={`absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-2 transition-all duration-200 ${
+                        showEmojis
+                          ? 'bg-[#15b7b9] text-white'
+                          : 'text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]'
+                      }`}
+                      title={t('add-emoji')}
                     >
-                      <Smile size={20} />
+                      <Smile
+                        size={24}
+                        className="transition-transform duration-200 hover:scale-110"
+                      />
                     </button>
                   </div>
                   <button
