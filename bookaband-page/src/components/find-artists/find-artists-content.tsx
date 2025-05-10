@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Music, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { Artist, fetchArtists } from '@/service/backend/artist/artist.service';
+import { Artist, fetchAllArtists, fetchFilteredArtists } from '@/service/backend/artist/artist.service';
 import SearchBar from './searchBar';
 import ArtistsGrid from './artistsGrid';
 import LoadMoreButton from './loadMoreButton';
@@ -52,7 +52,7 @@ export default function FindArtistsContent({
 
   useEffect(() => {
     // Initial load
-    fetchArtists(1, pageSize).then(
+    fetchAllArtists(1, pageSize).then(
       ({ artists: newArtists, hasMore, total }) => {
         setArtists(newArtists);
         setFilteredArtists(newArtists);
@@ -67,45 +67,55 @@ export default function FindArtistsContent({
     setIsLoadingMore(true);
     const nextPage = currentPage + 1;
 
-    fetchArtists(nextPage, pageSize).then(
-      ({ artists: newArtists, hasMore, total }) => {
-        setArtists((prev) => [...prev, ...newArtists]);
-        setFilteredArtists((prev) => [...prev, ...newArtists]); // smoother appending
-        setCurrentPage(nextPage);
-        setHasMore(hasMore);
-        setIsLoadingMore(false);
-        setTotalArtists(total);
-      },
-    );
+    if (hasSearched) {
+      fetchFilteredArtists(nextPage, pageSize, { location, date, searchQuery }).then(
+        ({ artists: newArtists, hasMore, total }) => {
+          setArtists((prev) => [...prev, ...newArtists]);
+          setFilteredArtists((prev) => [...prev, ...newArtists]);
+          setCurrentPage(nextPage);
+          setHasMore(hasMore);
+          setIsLoadingMore(false);
+          setTotalArtists(total);
+        },
+      );
+    } else {
+      fetchAllArtists(nextPage, pageSize).then(
+        ({ artists: newArtists, hasMore, total }) => {
+          setArtists((prev) => [...prev, ...newArtists]);
+          setFilteredArtists((prev) => [...prev, ...newArtists]);
+          setCurrentPage(nextPage);
+          setHasMore(hasMore);
+          setIsLoadingMore(false);
+          setTotalArtists(total);
+        },
+      );
+    }
   };
 
   const handleSearch = () => {
-    console.log('Search triggered'); // Debug log
-    let filtered = artists;
-    if (location.trim()) {
-      filtered = filtered.filter((artist) =>
-        artist.location?.toLowerCase().includes(location.trim().toLowerCase()),
-      );
-    }
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(
-        (artist) =>
-          artist.name
-            ?.toLowerCase()
-            .includes(searchQuery.trim().toLowerCase()) ||
-          artist.genre
-            ?.toLowerCase()
-            .includes(searchQuery.trim().toLowerCase()),
-      );
-    }
-    setFilteredArtists(filtered);
-    setHasSearched(true);
-    console.log('hasSearched set to true'); // Debug log
+    fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
+      ({ artists: newArtists, hasMore, total }) => {
+        setArtists(newArtists);
+        setFilteredArtists(newArtists);
+        setHasMore(hasMore);
+        setCurrentPage(1);
+        setTotalArtists(total);
+        setHasSearched(true);
+      }
+    );
   };
 
   const handleClearSearch = () => {
     setHasSearched(false);
-    setFilteredArtists(artists);
+    fetchAllArtists(1, pageSize).then(
+      ({ artists: newArtists, hasMore, total }) => {
+        setArtists(newArtists);
+        setFilteredArtists(newArtists);
+        setHasMore(hasMore);
+        setCurrentPage(1);
+        setTotalArtists(total);
+      }
+    );
   };
 
   let allArtists = [...filteredArtists];

@@ -157,16 +157,46 @@ const ARTISTS: Artist[] = [
   },
 ];
 
-export async function fetchArtists(
+export async function fetchAllArtists(
   page: number = 1,
-  pageSize: number = 10,
+  pageSize: number = 10
 ): Promise<{ artists: Artist[]; hasMore: boolean; total: number }> {
-  // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
   const start = (page - 1) * pageSize;
   const end = start + pageSize;
   const artists = ARTISTS.slice(start, end);
   const hasMore = end < ARTISTS.length;
   const total = ARTISTS.length;
+  return { artists, hasMore, total };
+}
+
+export async function fetchFilteredArtists(
+  page: number = 1,
+  pageSize: number = 10,
+  filters?: { location?: string; date?: string; searchQuery?: string }
+): Promise<{ artists: Artist[]; hasMore: boolean; total: number }> {
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  let filteredArtists = ARTISTS;
+  if (filters) {
+    if (filters.location && filters.location.trim()) {
+      filteredArtists = filteredArtists.filter((artist) =>
+        artist.location?.toLowerCase().includes(filters.location!.trim().toLowerCase())
+      );
+    }
+    if (filters.searchQuery && filters.searchQuery.trim()) {
+      filteredArtists = filteredArtists.filter(
+        (artist) =>
+          artist.name?.toLowerCase().includes(filters.searchQuery!.trim().toLowerCase()) ||
+          artist.genre?.toLowerCase().includes(filters.searchQuery!.trim().toLowerCase())
+      );
+    }
+    // Date filter can be added here if needed
+  }
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  const artists = filteredArtists.slice(start, end);
+  const hasMore = end < filteredArtists.length;
+  const total = filteredArtists.length;
   return { artists, hasMore, total };
 }
