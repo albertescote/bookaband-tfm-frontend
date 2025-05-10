@@ -3,7 +3,7 @@ export interface Artist {
   name: string;
   genre: string;
   location: string;
-  price: number;
+  price?: number;
   image: string;
   featured?: boolean;
   rating: number;
@@ -16,7 +16,6 @@ const ARTISTS: Artist[] = [
     name: 'The Jazz Cats',
     genre: 'Jazz',
     location: 'Barcelona',
-    price: 120,
     image:
       'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=facearea&w=400&h=400&q=80',
     featured: true,
