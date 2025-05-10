@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MapPin, Music, X } from 'lucide-react';
+import { Music, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { Artist, fetchArtists } from '@/service/backend/artist/artist.service';
 import SearchBar from './searchBar';
@@ -136,9 +136,7 @@ export default function FindArtistsContent({
       {/* Hero Section */}
       <div className="mb-10 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
         <h1 className="mb-3 text-4xl font-bold">{t('find-artists')}</h1>
-        <p className="mb-6 text-lg opacity-90">
-          {t('hero-subtitle')}
-        </p>
+        <p className="mb-6 text-lg opacity-90">{t('hero-subtitle')}</p>
 
         {/* Search Bar */}
         <SearchBar
@@ -196,21 +194,6 @@ export default function FindArtistsContent({
               >
                 <X className="h-5 w-5" />
               </button>
-            </div>
-
-            {/* Location Filter */}
-            <div className="mb-6">
-              <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
-                <MapPin className="h-4 w-4 text-[#15b7b9]" />
-                {t('location')}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder={t('enter-location')}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-gray-700 focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                />
-              </div>
             </div>
 
             {/* Genre Filter */}
