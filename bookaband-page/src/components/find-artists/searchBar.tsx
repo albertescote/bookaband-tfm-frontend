@@ -3,6 +3,7 @@ import { Calendar, Search, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './datepicker-custom.css';
 import { es } from 'date-fns/locale/es';
 import { ca } from 'date-fns/locale/ca';
 
@@ -126,7 +127,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="flex flex-col gap-4 md:flex-row">
       <div className="w-full">
-        <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-white p-2 shadow-lg sm:flex-row sm:rounded-full sm:px-4 sm:py-0">
+        <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-white p-2 shadow-lg sm:flex-row sm:items-center sm:rounded-full sm:px-4 sm:py-0">
           {/* Where? */}
           <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
@@ -181,125 +182,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 <Calendar className="h-4 w-4" />
               </button>
               {isDatePickerOpen && (
-                <div className="fixed left-0 right-0 top-1/2 z-50 mx-auto w-[90%] -translate-y-1/2 sm:absolute sm:left-1/2 sm:top-full sm:mt-6 sm:w-auto sm:-translate-x-1/2">
-                  <style jsx global>{`
-                    .react-datepicker {
-                      font-family: inherit;
-                      border: none;
-                      border-radius: 1rem;
-                      box-shadow:
-                        0 4px 6px -1px rgb(0 0 0 / 0.1),
-                        0 2px 4px -2px rgb(0 0 0 / 0.1);
-                      background-color: white;
-                      padding: 1.5rem;
-                      width: 100%;
-                      max-width: 350px;
-                      margin: 0 auto;
-                    }
-                    @media (min-width: 640px) {
-                      .react-datepicker {
-                        max-width: 400px;
-                        padding: 2rem;
-                      }
-                      .react-datepicker__day,
-                      .react-datepicker__day-name {
-                        width: 3rem;
-                        height: 3rem;
-                        line-height: 3rem;
-                        font-size: 1rem;
-                      }
-                      .react-datepicker__current-month {
-                        font-size: 1.25rem;
-                        margin-bottom: 1.25rem;
-                      }
-                      .react-datepicker__day-name {
-                        font-size: 1rem;
-                      }
-                      .react-datepicker__navigation {
-                        top: 1.5rem;
-                      }
-                      .react-datepicker__navigation--previous {
-                        left: 1.5rem;
-                      }
-                      .react-datepicker__navigation--next {
-                        right: 1.5rem;
-                      }
-                    }
-                    .react-datepicker__month-container {
-                      width: 100%;
-                    }
-                    .react-datepicker__header {
-                      background-color: white;
-                      border-bottom: none;
-                      padding-top: 0;
-                      padding-bottom: 0.5rem;
-                    }
-                    .react-datepicker__current-month {
-                      font-size: 1.125rem;
-                      font-weight: 600;
-                      color: #374151;
-                      margin-bottom: 1rem;
-                    }
-                    .react-datepicker__day-names {
-                      display: flex;
-                      justify-content: space-between;
-                      margin-bottom: 0.5rem;
-                    }
-                    .react-datepicker__day-name {
-                      color: #6b7280;
-                      font-size: 0.875rem;
-                      font-weight: 500;
-                      width: 2.5rem;
-                      margin: 0;
-                      text-align: center;
-                    }
-                    .react-datepicker__week {
-                      display: flex;
-                      justify-content: space-between;
-                      margin-bottom: 0.25rem;
-                    }
-                    .react-datepicker__day {
-                      width: 2.5rem;
-                      height: 2.5rem;
-                      line-height: 2.5rem;
-                      margin: 0;
-                      border-radius: 9999px;
-                      color: #374151;
-                      font-size: 0.875rem;
-                      text-align: center;
-                    }
-                    .react-datepicker__day:hover {
-                      background-color: #f3f4f6;
-                    }
-                    .react-datepicker__day--selected {
-                      background-color: #15b7b9 !important;
-                      color: white !important;
-                      font-weight: 600;
-                    }
-                    .react-datepicker__day--keyboard-selected {
-                      background-color: #15b7b9 !important;
-                      color: white !important;
-                    }
-                    .react-datepicker__day--disabled {
-                      color: #d1d5db;
-                    }
-                    .react-datepicker__navigation {
-                      top: 1.25rem;
-                    }
-                    .react-datepicker__navigation-icon::before {
-                      border-color: #6b7280;
-                      border-width: 2px 2px 0 0;
-                    }
-                    .react-datepicker__navigation:hover *::before {
-                      border-color: #15b7b9;
-                    }
-                    .react-datepicker__navigation--previous {
-                      left: 1rem;
-                    }
-                    .react-datepicker__navigation--next {
-                      right: 1rem;
-                    }
-                  `}</style>
+                <div className="fixed left-0 right-0 top-1/2 z-50 mx-auto w-[90%] -translate-y-1/2 sm:absolute sm:left-1/3 sm:top-full sm:mt-6 sm:w-auto sm:-translate-x-1/2 sm:translate-y-0">
                   <DatePicker
                     selected={date ? new Date(date) : null}
                     onChange={handleDateChange}
@@ -338,14 +221,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </div>
           {/* Search Button */}
           <button
-            className="mt-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c] disabled:opacity-50 sm:ml-2 sm:mt-0 sm:h-12 sm:w-12"
+            className="mt-2 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c] disabled:opacity-50 sm:mt-0"
             onClick={handleSearchClick}
             type="button"
             disabled={isLoading}
           >
             {isLoading ? (
               <svg
-                className="h-5 w-5 animate-spin text-white"
+                className="h-6 w-6 animate-spin text-white"
                 viewBox="0 0 24 24"
               >
                 <circle
@@ -363,7 +246,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 />
               </svg>
             ) : (
-              <Search className="h-5 w-5 text-white sm:h-6 sm:w-6" />
+              <Search className="h-6 w-6 text-white" strokeWidth={2.5} />
             )}
           </button>
         </div>
