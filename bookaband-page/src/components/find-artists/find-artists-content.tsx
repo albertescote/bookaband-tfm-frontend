@@ -137,7 +137,7 @@ export default function FindArtistsContent({
       <div className="mb-10 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
         <h1 className="mb-3 text-4xl font-bold">{t('find-artists')}</h1>
         <p className="mb-6 text-lg opacity-90">
-          Book the perfect music for your next event
+          {t('hero-subtitle')}
         </p>
 
         {/* Search Bar */}

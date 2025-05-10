@@ -80,23 +80,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   if (hasSearched) {
     return (
-      <div className="flex items-center justify-between rounded-full border border-gray-100 bg-white px-4 py-2 shadow-lg">
+      <div className="flex items-center justify-between rounded-full border border-gray-100 bg-white px-3 py-2 shadow-lg sm:px-4 sm:py-2">
         <div
-          className="flex cursor-pointer items-center gap-4 rounded-full px-2 py-1 transition-colors hover:bg-gray-50"
+          className="flex cursor-pointer items-center gap-2 rounded-full px-2 py-1 transition-colors hover:bg-gray-50 sm:gap-4"
           onClick={() => setHasSearched(false)}
         >
           {location && (
-            <span className="flex items-center gap-1 text-sm text-gray-600">
+            <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
               <span className="font-medium">{t('where')}:</span> {location}
             </span>
           )}
           {date && (
-            <span className="flex items-center gap-1 text-sm text-gray-600">
+            <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
               <span className="font-medium">{t('when')}:</span> {date}
             </span>
           )}
           {searchQuery && (
-            <span className="flex items-center gap-1 text-sm text-gray-600">
+            <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
               <span className="font-medium">
                 {t('search-style-or-artist')}:
               </span>{' '}
@@ -106,7 +106,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 shadow-sm transition-colors hover:bg-gray-200"
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 sm:h-8 sm:w-8"
             onClick={() => {
               setLocation('');
               setDate('');
@@ -116,7 +116,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             type="button"
             title={t('clear-search')}
           >
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3 sm:h-4 sm:w-4" />
           </button>
         </div>
       </div>
@@ -126,10 +126,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="flex flex-col gap-4 md:flex-row">
       <div className="w-full">
-        <div className="flex items-center rounded-full border border-gray-100 bg-white px-2 py-2 shadow-lg md:px-4 md:py-0">
+        <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-white p-2 shadow-lg sm:flex-row sm:rounded-full sm:px-4 sm:py-0">
           {/* Where? */}
-          <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
-            <span className="text-base font-semibold text-gray-800">
+          <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
+            <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('where')}
             </span>
             <input
@@ -152,10 +152,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </div>
           {/* Divider */}
-          <div className="mx-2 hidden h-8 w-px bg-gray-200 md:block" />
+          <div className="hidden h-8 w-px bg-gray-200 sm:block" />
           {/* When? */}
-          <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
-            <span className="text-base font-semibold text-gray-800">
+          <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
+            <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('when')}
             </span>
             <div className="relative">
@@ -181,7 +181,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 <Calendar className="h-4 w-4" />
               </button>
               {isDatePickerOpen && (
-                <div className="absolute left-1/2 top-full z-10 mt-6 -translate-x-1/2">
+                <div className="fixed left-0 right-0 top-1/2 z-50 mx-auto w-[90%] -translate-y-1/2 sm:absolute sm:left-1/2 sm:top-full sm:mt-6 sm:w-auto sm:-translate-x-1/2">
                   <style jsx global>{`
                     .react-datepicker {
                       font-family: inherit;
@@ -191,17 +191,58 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         0 4px 6px -1px rgb(0 0 0 / 0.1),
                         0 2px 4px -2px rgb(0 0 0 / 0.1);
                       background-color: white;
-                      padding: 1rem;
+                      padding: 1.5rem;
+                      width: 100%;
+                      max-width: 350px;
+                      margin: 0 auto;
+                    }
+                    @media (min-width: 640px) {
+                      .react-datepicker {
+                        max-width: 400px;
+                        padding: 2rem;
+                      }
+                      .react-datepicker__day,
+                      .react-datepicker__day-name {
+                        width: 3rem;
+                        height: 3rem;
+                        line-height: 3rem;
+                        font-size: 1rem;
+                      }
+                      .react-datepicker__current-month {
+                        font-size: 1.25rem;
+                        margin-bottom: 1.25rem;
+                      }
+                      .react-datepicker__day-name {
+                        font-size: 1rem;
+                      }
+                      .react-datepicker__navigation {
+                        top: 1.5rem;
+                      }
+                      .react-datepicker__navigation--previous {
+                        left: 1.5rem;
+                      }
+                      .react-datepicker__navigation--next {
+                        right: 1.5rem;
+                      }
+                    }
+                    .react-datepicker__month-container {
+                      width: 100%;
                     }
                     .react-datepicker__header {
                       background-color: white;
                       border-bottom: none;
                       padding-top: 0;
+                      padding-bottom: 0.5rem;
                     }
                     .react-datepicker__current-month {
-                      font-size: 1rem;
+                      font-size: 1.125rem;
                       font-weight: 600;
                       color: #374151;
+                      margin-bottom: 1rem;
+                    }
+                    .react-datepicker__day-names {
+                      display: flex;
+                      justify-content: space-between;
                       margin-bottom: 0.5rem;
                     }
                     .react-datepicker__day-name {
@@ -209,16 +250,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
                       font-size: 0.875rem;
                       font-weight: 500;
                       width: 2.5rem;
-                      margin: 0.2rem;
+                      margin: 0;
+                      text-align: center;
+                    }
+                    .react-datepicker__week {
+                      display: flex;
+                      justify-content: space-between;
+                      margin-bottom: 0.25rem;
                     }
                     .react-datepicker__day {
                       width: 2.5rem;
                       height: 2.5rem;
                       line-height: 2.5rem;
-                      margin: 0.2rem;
+                      margin: 0;
                       border-radius: 9999px;
                       color: #374151;
                       font-size: 0.875rem;
+                      text-align: center;
                     }
                     .react-datepicker__day:hover {
                       background-color: #f3f4f6;
@@ -236,7 +284,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                       color: #d1d5db;
                     }
                     .react-datepicker__navigation {
-                      top: 1rem;
+                      top: 1.25rem;
                     }
                     .react-datepicker__navigation-icon::before {
                       border-color: #6b7280;
@@ -244,6 +292,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     }
                     .react-datepicker__navigation:hover *::before {
                       border-color: #15b7b9;
+                    }
+                    .react-datepicker__navigation--previous {
+                      left: 1rem;
+                    }
+                    .react-datepicker__navigation--next {
+                      right: 1rem;
                     }
                   `}</style>
                   <DatePicker
@@ -267,10 +321,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </div>
           {/* Divider */}
-          <div className="mx-2 hidden h-8 w-px bg-gray-200 md:block" />
+          <div className="hidden h-8 w-px bg-gray-200 sm:block" />
           {/* What style or artist? */}
-          <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
-            <span className="text-base font-semibold text-gray-800">
+          <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
+            <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('search-style-or-artist')}
             </span>
             <input
@@ -284,7 +338,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </div>
           {/* Search Button */}
           <button
-            className="ml-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c] disabled:opacity-50"
+            className="mt-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c] disabled:opacity-50 sm:ml-2 sm:mt-0 sm:h-12 sm:w-12"
             onClick={handleSearchClick}
             type="button"
             disabled={isLoading}
@@ -309,7 +363,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 />
               </svg>
             ) : (
-              <Search className="h-6 w-6 text-white" />
+              <Search className="h-5 w-5 text-white sm:h-6 sm:w-6" />
             )}
           </button>
         </div>
