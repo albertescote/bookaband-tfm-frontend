@@ -3,11 +3,19 @@
   "search-placeholder": "Buscar por nombre, género o ubicación...",
   "filters": "Filtros",
   "location": "Ubicación",
-  "enter-location": "Ingresa ubicación",
+  "enter-location": "Introduce una ubicación",
   "genre": "Género",
   "select-genre": "Selecciona género",
   "band-size": "Tamaño de la Banda",
   "select-size": "Selecciona tamaño",
   "apply-filters": "Aplicar Filtros",
-  "view-profile": "Ver Perfil"
+  "view-profile": "Ver perfil",
+  "featured-artist": "Artista destacado",
+  "load-more-artists": "Cargar más artistas",
+  "search-style-or-artist": "¿Qué estilo o artista buscas?",
+  "where": "¿Dónde?",
+  "when": "¿Cuándo?",
+  "add-dates": "Añade fecha(s)",
+  "type-style-or-artist": "Escribe un estilo o nombre de artista",
+  "loading": "Cargando..."
 }

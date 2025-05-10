@@ -6,7 +6,6 @@ import {
   MapPin,
   Music,
   Search,
-  SlidersHorizontal,
   Star,
   Users,
   X,
@@ -23,11 +22,18 @@ export default function FindArtistsContent({
 }: FindArtistsContentProps) {
   const { t } = useTranslation(language, 'find-artists');
   const [searchQuery, setSearchQuery] = useState('');
+  const [location, setLocation] = useState('');
+  const [date, setDate] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedBandSize, setSelectedBandSize] = useState('');
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const genres = [
     { value: 'rock', label: 'Rock', emoji: '🎸' },
@@ -45,10 +51,53 @@ export default function FindArtistsContent({
   ];
 
   useEffect(() => {
-    fetchArtists().then((fetchedArtists) => {
-      setArtists(fetchedArtists);
+    // Initial load
+    fetchArtists(1, pageSize).then(({ artists: newArtists, hasMore }) => {
+      setArtists(newArtists);
+      setFilteredArtists(newArtists);
+      setHasMore(hasMore);
+      setCurrentPage(1);
     });
   }, []);
+
+  const loadMoreArtists = () => {
+    setIsLoadingMore(true);
+    const nextPage = currentPage + 1;
+
+    fetchArtists(nextPage, pageSize).then(
+      ({ artists: newArtists, hasMore }) => {
+        setArtists((prev) => [...prev, ...newArtists]);
+        setFilteredArtists((prev) => [...prev, ...newArtists]); // smoother appending
+        setCurrentPage(nextPage);
+        setHasMore(hasMore);
+        setIsLoadingMore(false);
+      },
+    );
+  };
+
+  const handleSearch = () => {
+    let filtered = artists;
+    if (location.trim()) {
+      filtered = filtered.filter((artist) =>
+        artist.location?.toLowerCase().includes(location.trim().toLowerCase()),
+      );
+    }
+    if (searchQuery.trim()) {
+      filtered = filtered.filter(
+        (artist) =>
+          artist.name
+            ?.toLowerCase()
+            .includes(searchQuery.trim().toLowerCase()) ||
+          artist.genre
+            ?.toLowerCase()
+            .includes(searchQuery.trim().toLowerCase()),
+      );
+    }
+    setFilteredArtists(filtered);
+  };
+
+  // All artists (including featured) are shown in the grid, in backend order
+  const allArtists = filteredArtists;
 
   return (
     <div className="container mx-auto bg-gray-50 px-4 py-8">
@@ -61,25 +110,57 @@ export default function FindArtistsContent({
 
         {/* Search Bar */}
         <div className="flex flex-col gap-4 md:flex-row">
-          <div className="relative flex-1">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder={t('search-placeholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-full border-none bg-white/90 py-4 pl-12 pr-4 text-gray-800 shadow-md backdrop-blur-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-white/20"
-              />
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+          <div className="w-full">
+            <div className="flex items-center rounded-full border border-gray-100 bg-white px-2 py-2 shadow-lg md:px-4 md:py-0">
+              {/* Where? */}
+              <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
+                <span className="text-xs font-bold text-gray-800">{t('where')}</span>
+                <input
+                  type="text"
+                  placeholder={t('enter-location')}
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0"
+                />
+              </div>
+              {/* Divider */}
+              <div className="mx-2 hidden h-8 w-px bg-gray-200 md:block" />
+              {/* When? */}
+              <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
+                <span className="text-xs font-bold text-gray-800">{t('when')}</span>
+                <input
+                  type="text"
+                  placeholder={t('add-dates')}
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0"
+                />
+              </div>
+              {/* Divider */}
+              <div className="mx-2 hidden h-8 w-px bg-gray-200 md:block" />
+              {/* What style or artist? */}
+              <div className="flex min-w-0 flex-1 flex-col px-4 py-2 md:py-4">
+                <span className="text-xs font-bold text-gray-800">
+                  {t('search-style-or-artist')}
+                </span>
+                <input
+                  type="text"
+                  placeholder={t('type-style-or-artist')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0"
+                />
+              </div>
+              {/* Search Button */}
+              <button
+                className="ml-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c]"
+                onClick={handleSearch}
+                type="button"
+              >
+                <Search className="h-6 w-6 text-white" />
+              </button>
             </div>
           </div>
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center justify-center gap-2 rounded-full border-2 border-white/30 bg-white/20 px-6 py-3.5 font-medium text-white backdrop-blur-sm transition-all hover:bg-white/30"
-          >
-            <SlidersHorizontal className="h-5 w-5" />
-            <span>{t('filters')}</span>
-          </button>
         </div>
       </div>
 
@@ -236,144 +317,100 @@ export default function FindArtistsContent({
             </div>
           </div>
 
-          {/* Featured Artist */}
-          {artists
-            .filter((a) => a.featured)
-            .slice(0, 1)
-            .map((artist) => (
+          {/* Artists Grid */}
+          <div className="transition-fade grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {allArtists.map((artist) => (
               <div
                 key={artist.id}
-                className="mb-8 overflow-hidden rounded-xl bg-white shadow-md"
+                className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md"
               >
-                <div className="relative h-64 w-full overflow-hidden md:h-80">
-                  <div className="absolute left-6 top-6 rounded-full bg-[#15b7b9] px-4 py-1.5 font-medium text-white">
-                    Featured Artist
-                  </div>
+                <div className="relative aspect-square overflow-hidden">
                   <img
                     src={artist.image}
                     alt={artist.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+                  {artist.featured && (
+                    <span className="absolute left-3 top-3 z-10 rounded-full bg-[#15b7b9] px-3 py-1 text-xs font-semibold text-white shadow">
+                      {t('featured-artist')}
+                    </span>
+                  )}
                 </div>
-                <div className="flex flex-col p-6 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <h3 className="mb-1 text-xl font-bold text-[#565d6d]">
-                      {artist.name}
-                    </h3>
-                    <div className="mb-2 flex items-center gap-4">
-                      <span className="flex items-center gap-1 text-sm text-gray-600">
-                        <Music className="h-3.5 w-3.5" />
-                        {artist.genre}
-                      </span>
-                      <span className="flex items-center gap-1 text-sm text-gray-600">
-                        <MapPin className="h-3.5 w-3.5" />
-                        {artist.location}
-                      </span>
-                      <span className="flex items-center gap-1 text-sm text-gray-600">
-                        <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium text-gray-800">
-                          {artist.rating}
-                        </span>
-                        <span>({artist.reviewCount})</span>
-                      </span>
-                    </div>
+                <div className="p-5">
+                  <h3 className="mb-1 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
+                    {artist.name}
+                  </h3>
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex items-center gap-1 text-xs text-gray-600">
+                      <Music className="h-3 w-3" />
+                      {artist.genre}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-gray-600">
+                      <MapPin className="h-3 w-3" />
+                      {artist.location}
+                    </span>
                   </div>
-                  <div className="mt-4 flex items-center gap-4 md:mt-0">
+                  <div className="mb-3 flex items-center gap-1 text-sm">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="font-medium text-gray-800">
+                      {artist.rating}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      ({artist.reviewCount} reviews)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
                     <span className="text-lg font-semibold text-[#15b7b9]">
                       ${artist.price}
-                      <span className="text-sm font-normal text-gray-500">
+                      <span className="text-xs font-normal text-gray-500">
                         /hour
                       </span>
                     </span>
-                    <button className="rounded-full bg-[#15b7b9] px-6 py-2.5 font-medium text-white shadow-sm transition-all hover:bg-[#15b7b9]/90 hover:shadow">
+                    <button className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20">
                       {t('view-profile')}
                     </button>
                   </div>
                 </div>
               </div>
             ))}
-
-          {/* Artists Grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {artists
-              .filter((a) => !a.featured || artists.indexOf(a) > 0)
-              .map((artist) => (
-                <div
-                  key={artist.id}
-                  className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md"
-                >
-                  <div className="relative aspect-square overflow-hidden">
-                    <img
-                      src={artist.image}
-                      alt={artist.name}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="mb-1 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
-                      {artist.name}
-                    </h3>
-                    <div className="mb-3 flex items-center gap-3">
-                      <span className="flex items-center gap-1 text-xs text-gray-600">
-                        <Music className="h-3 w-3" />
-                        {artist.genre}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-gray-600">
-                        <MapPin className="h-3 w-3" />
-                        {artist.location}
-                      </span>
-                    </div>
-                    <div className="mb-3 flex items-center gap-1 text-sm">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-medium text-gray-800">
-                        {artist.rating}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        ({artist.reviewCount} reviews)
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold text-[#15b7b9]">
-                        ${artist.price}
-                        <span className="text-xs font-normal text-gray-500">
-                          /hour
-                        </span>
-                      </span>
-                      <button className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20">
-                        {t('view-profile')}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
           </div>
 
-          {/* Pagination */}
-          <div className="mt-10 flex justify-center">
-            <div className="inline-flex items-center gap-1">
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50">
-                &laquo;
-              </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#15b7b9] bg-[#15b7b9]/10 font-medium text-[#15b7b9]">
-                1
-              </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
-                2
-              </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
-                3
-              </button>
-              <span className="flex h-10 items-center justify-center px-2 text-gray-500">
-                ...
-              </span>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50">
-                12
-              </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50">
-                &raquo;
+          {/* Load More Artists Button */}
+          {hasMore && (
+            <div className="mt-10 flex justify-center">
+              <button
+                className="flex items-center gap-2 rounded-full bg-[#15b7b9] px-6 py-2.5 font-medium text-white shadow-sm transition-all hover:bg-[#109a9c] disabled:opacity-50"
+                onClick={loadMoreArtists}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? (
+                  <>
+                    <svg
+                      className="h-5 w-5 animate-spin text-white"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
+                    </svg>
+                    {t('loading')}
+                  </>
+                ) : (
+                  t('load-more-artists')
+                )}
               </button>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

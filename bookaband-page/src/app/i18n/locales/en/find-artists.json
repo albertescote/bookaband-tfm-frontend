@@ -9,5 +9,13 @@
   "band-size": "Band Size",
   "select-size": "Select size",
   "apply-filters": "Apply Filters",
-  "view-profile": "View Profile"
+  "view-profile": "View Profile",
+  "featured-artist": "Featured Artist",
+  "load-more-artists": "Load more artists",
+  "search-style-or-artist": "What style or artist are you looking for?",
+  "where": "Where?",
+  "when": "When?",
+  "add-dates": "Add date(s)",
+  "type-style-or-artist": "Type a style or artist name",
+  "loading": "Loading..."
 }

@@ -29,8 +29,7 @@ const ARTISTS: Artist[] = [
     genre: 'Rock',
     location: 'Madrid',
     price: 150,
-    image:
-      'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=400&h=400&q=80',
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
     rating: 4.8,
     reviewCount: 127,
   },
@@ -73,15 +72,102 @@ const ARTISTS: Artist[] = [
     genre: 'Jazz',
     location: 'Girona',
     price: 90,
-    image:
-      'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=400&h=400&q=80',
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '7',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '8',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '9',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '10',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '11',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '12',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '13',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
+    rating: 4.8,
+    reviewCount: 127,
+  },
+  {
+    id: '14',
+    name: 'Solo Sax',
+    genre: 'Jazz',
+    location: 'Girona',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1565103420311-8cbbc3cd87b8',
     rating: 4.8,
     reviewCount: 127,
   },
 ];
 
-export async function fetchArtists(): Promise<Artist[]> {
+export async function fetchArtists(
+  page: number = 1,
+  pageSize: number = 10,
+): Promise<{ artists: Artist[]; hasMore: boolean }> {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
-  return ARTISTS;
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  const artists = ARTISTS.slice(start, end);
+  console.log(artists.length);
+  const hasMore = end < ARTISTS.length;
+  return { artists, hasMore };
 }

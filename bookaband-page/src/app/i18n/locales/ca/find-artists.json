@@ -3,11 +3,19 @@
   "search-placeholder": "Cercar per nom, gènere o ubicació...",
   "filters": "Filtres",
   "location": "Ubicació",
-  "enter-location": "Introdueix ubicació",
+  "enter-location": "Introdueix una ubicació",
   "genre": "Gènere",
   "select-genre": "Selecciona gènere",
   "band-size": "Mida de la Banda",
   "select-size": "Selecciona mida",
   "apply-filters": "Aplicar Filtres",
-  "view-profile": "Veure Perfil"
+  "view-profile": "Veure perfil",
+  "featured-artist": "Artista destacat",
+  "load-more-artists": "Carrega més artistes",
+  "search-style-or-artist": "Quin estil o artista busques?",
+  "where": "On?",
+  "when": "Quan?",
+  "add-dates": "Afegeix data/es",
+  "type-style-or-artist": "Escriu un estil o nom d'artista",
+  "loading": "Carregant..."
 }
