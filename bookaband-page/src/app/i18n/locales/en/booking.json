@@ -1,0 +1,13 @@
+{
+  "booking-not-found": "Booking not found",
+  "status.pending": "Pending",
+  "status.accepted": "Accepted",
+  "status.declined": "Declined",
+  "date": "Date",
+  "created-at": "Created at",
+  "your-bookings": "Your bookings",
+  "no-bookings": "You don't have any booking yet",
+  "not-in-a-band-yet": "You must be member of a band to be able to view bookings",
+  "accept": "Accept",
+  "decline": "Decline"
+}

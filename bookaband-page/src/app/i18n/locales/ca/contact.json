@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "title": "Contacta'ns | BookaBand",
+    "description": "Posa't en contacte amb BookaBand — Estem aquí per ajudar-te i fer que els teus esdeveniments musicals siguin inoblidables."
+  },
+  "hero": {
+    "title": "Contacta'ns",
+    "subtitle": "Tens preguntes o necessites ajuda? Estem aquí per connectar-te amb músics i fer que el teu esdeveniment sigui un èxit."
+  },
+  "additional-info": {
+    "title": "Altres formes de contacte",
+    "community": {
+      "title": "Uneix-te a la nostra comunitat",
+      "description": "Connecta amb altres músics, clients i proveïdors. Comparteix experiències i amplia la teva xarxa dins la comunitat BookaBand."
+    },
+    "updates": {
+      "title": "Mantén-te actualitzat",
+      "description": "Segueix-nos per estar al dia de les noves funcions, esdeveniments i oportunitats exclusives."
+    }
+  },
+  "name": "Nom",
+  "name-placeholder": "El teu nom",
+  "email": "Correu electrònic",
+  "email-placeholder": "el.teu.email@example.com",
+  "subject": "Assumpte",
+  "subject-placeholder": "Sobre què tracta?",
+  "message": "Missatge",
+  "message-placeholder": "Explica’ns com et podem ajudar...",
+  "send-message": "Enviar missatge",
+  "message-sent": "Missatge enviat!",
+  "we-will-contact-soon": "Gràcies per contactar amb BookaBand. Ens posarem en contacte amb tu tan aviat com sigui possible per atendre la teva sol·licitud.",
+  "back-home": "Tornar a l'inici",
+  "missing-fields": "Si us plau, omple tots els camps obligatoris.",
+  "error-sending": "Hi ha hagut un error en enviar el missatge. Torna-ho a provar."
+}

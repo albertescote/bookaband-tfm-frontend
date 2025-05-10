@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "title": "How it works | BookaBand",
+    "description": "Discover how BookaBand helps musicians, clients, and providers connect and manage bookings seamlessly."
+  },
+  "hero": {
+    "title": "How it works",
+    "subtitle": "A simple and effective way to connect and manage unforgettable events."
+  },
+  "features": {
+    "title": "Main features",
+    "subtitle": "Everything you need to create and manage successful events",
+    "items": {
+      "organization": {
+        "title": "Professional profiles",
+        "description": "Musicians and providers can create professional profiles showcasing their services, experience, and availability."
+      },
+      "collaboration": {
+        "title": "Easy connection",
+        "description": "Clients can easily search, filter, and connect with musicians and providers to meet their specific event needs."
+      },
+      "tracking": {
+        "title": "Proposal and contract management",
+        "description": "Manage proposals, contracts, and negotiations directly within the platform with clear tracking and secure tools."
+      },
+      "opportunities": {
+        "title": "Booking management",
+        "description": "Keep track of all your bookings, availability, and communications in one organized place."
+      }
+    }
+  },
+  "process": {
+    "title": "Getting started",
+    "subtitle": "Three simple steps to begin",
+    "steps": {
+      "signup": {
+        "title": "Create your account",
+        "description": "Sign up for free and choose whether you are a musician, client, or provider."
+      },
+      "setup": {
+        "title": "Set up your profile",
+        "description": "Complete your profile with essential details to connect and receive opportunities."
+      },
+      "start": {
+        "title": "Start connecting",
+        "description": "Search, connect, manage bookings, and create unforgettable events."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to get started?",
+    "description": "Join the BookaBand community and start creating successful events today.",
+    "button": "Sign up now"
+  }
+}

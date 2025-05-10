@@ -1,0 +1,13 @@
+{
+  "find-artists": "Find Artists",
+  "search-placeholder": "Search by name, genre, or location...",
+  "filters": "Filters",
+  "location": "Location",
+  "enter-location": "Enter location",
+  "genre": "Genre",
+  "select-genre": "Select genre",
+  "band-size": "Band Size",
+  "select-size": "Select size",
+  "apply-filters": "Apply Filters",
+  "view-profile": "View Profile"
+}

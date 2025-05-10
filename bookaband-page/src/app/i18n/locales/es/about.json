@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "title": "Sobre Nosotros | BookaBand",
+    "description": "Descubre más sobre BookaBand — La plataforma que conecta músicos, clientes y proveedores para eventos inolvidables."
+  },
+  "hero": {
+    "title": "Sobre BookaBand",
+    "subtitle": "Conectando músicos, clientes y proveedores para crear eventos extraordinarios."
+  },
+  "mission": {
+    "title": "Nuestra Misión",
+    "description": "BookaBand se creó con un propósito claro: facilitar la conexión y colaboración entre músicos, clientes y proveedores. Creemos que cada evento merece contar con el talento y el soporte técnico adecuados, permitiendo a todas las partes centrarse en crear experiencias excepcionales."
+  },
+  "features": {
+    "title": "Qué Ofrecemos",
+    "band": {
+      "title": "Perfiles Profesionales",
+      "description": "Músicos y proveedores pueden crear y gestionar perfiles profesionales, mostrar su trabajo y conectar con posibles clientes."
+    },
+    "booking": {
+      "title": "Sistema de Reservas",
+      "description": "Agiliza el proceso de contratación con nuestro calendario integrado, gestión de propuestas y herramientas de pago seguro."
+    },
+    "offers": {
+      "title": "Gestión de Propuestas y Contratos",
+      "description": "Crea y gestiona propuestas y contratos fácilmente, maneja negociaciones y lleva un seguimiento de todos tus compromisos en un solo lugar."
+    }
+  },
+  "cta": {
+    "title": "¿Listo para empezar?",
+    "description": "Únete a la comunidad BookaBand y comienza a crear eventos inolvidables hoy mismo.",
+    "button": "Regístrate ahora"
+  }
+}

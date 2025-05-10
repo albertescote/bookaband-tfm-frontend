@@ -1,0 +1,20 @@
+{
+  "form-title": "Iniciar sessió",
+  "form-description": "Si us plau, iniciï sessió per a continuar",
+  "email": "Email",
+  "email-placeholder": "Introdueixi el seu email",
+  "password": "Contrasenya",
+  "password-placeholder": "Introdueixi la seva contrasenya",
+  "sign-in-button": "Iniciar sessió",
+  "forgot-password": "Has oblidat la teva contrasenya?",
+  "register-link": "Registra't",
+  "register-text": "No tens compte?",
+  "error-missing-fields": "Si us plau, completa tots els camps.",
+  "error-login": "Error en iniciar sessió. Verifica les teves credencials.",
+  "error-server": "Error del servidor. Torna-ho a intentar més tard.",
+  "or": "o",
+  "sign-in-with-google": "Iniciar sessió amb Google",
+  "remember-me": "Recorda'm",
+  "signing-in": "Iniciant sessió...",
+  "missing-code": "No s'ha trobat el codi d'autenticació."
+}

@@ -1,0 +1,14 @@
+{
+  "noToken": "No se ha proporcionado ningún token de verificación",
+  "error": "Se ha producido un error durante la verificación",
+  "success": {
+    "title": "¡Correo electrónico verificado correctamente!",
+    "redirecting": "Redirigiendo a la página principal..."
+  },
+  "failed": {
+    "title": "La verificación ha fallado",
+    "help": "Si crees que es un error, por favor, prueba lo siguiente:",
+    "tryAgain": "Vuelve a intentar registrarte",
+    "contactSupport": "Contacta con el equipo de soporte"
+  }
+}

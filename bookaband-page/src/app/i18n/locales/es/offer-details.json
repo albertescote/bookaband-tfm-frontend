@@ -1,0 +1,10 @@
+{
+  "genre": "Género",
+  "price": "Precio",
+  "availability": "Disponibilidad",
+  "book-now": "Reserva ahora",
+  "send-message": "Envía un mensaje",
+  "select-time": "Seleccione la hora",
+  "change-date": "Cambiar fecha",
+  "selected-date": "Fecha seleccionada"
+}

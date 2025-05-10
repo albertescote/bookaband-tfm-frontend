@@ -1,0 +1,27 @@
+import { getTranslation } from '@/app/i18n';
+import BookingDetails from '@/components/booking/bookingDetails';
+
+interface PageParams {
+  params: {
+    lng: string;
+    bookingId: string;
+  };
+}
+
+export default async function BookingPage({
+  params: { lng, bookingId },
+}: PageParams) {
+  const { t } = await getTranslation(lng, 'booking');
+
+  return (
+    <div className="flex min-h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4 py-12">
+      <div className="w-full min-w-[90vh] max-w-md transform rounded-2xl bg-white p-8 shadow-lg">
+        {bookingId ? (
+          <BookingDetails language={lng} bookingId={bookingId}></BookingDetails>
+        ) : (
+          <h1 className="text-center">{t('booking-not-found')}</h1>
+        )}
+      </div>
+    </div>
+  );
+}

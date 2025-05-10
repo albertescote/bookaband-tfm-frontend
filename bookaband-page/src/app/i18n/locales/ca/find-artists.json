@@ -1,0 +1,13 @@
+{
+  "find-artists": "Trobar Artistes",
+  "search-placeholder": "Cercar per nom, gènere o ubicació...",
+  "filters": "Filtres",
+  "location": "Ubicació",
+  "enter-location": "Introdueix ubicació",
+  "genre": "Gènere",
+  "select-genre": "Selecciona gènere",
+  "band-size": "Mida de la Banda",
+  "select-size": "Selecciona mida",
+  "apply-filters": "Aplicar Filtres",
+  "view-profile": "Veure Perfil"
+}

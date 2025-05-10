@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  bookaband-page:
+    build:
+      context: ./bookaband-page
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./bookaband-page:/app
+      - /app/node_modules
+
+  bookaband-auth:
+    build:
+      context: ./bookaband-auth
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./bookaband-auth:/app
+      - /app/node_modules
+
+  bookaband-app:
+    build:
+      context: ./bookaband-app
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./bookaband-app:/app
+      - /app/node_modules

@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "title": "Navegación",
+    "search": "Buscar Músicos",
+    "providers": "Proveedores",
+    "howItWorks": "Cómo Funciona",
+    "about": "Sobre Nosotros",
+    "contact": "Contacto"
+  },
+  "legal": {
+    "title": "Legal",
+    "terms": "Términos y Condiciones",
+    "privacy": "Política de Privacidad",
+    "cookies": "Política de Cookies",
+    "notice": "Aviso Legal"
+  },
+  "support": {
+    "title": "Soporte",
+    "faqs": "Preguntas Frecuentes",
+    "help": "Ayuda y Soporte"
+  },
+  "social": {
+    "title": "Síguenos"
+  }
+}

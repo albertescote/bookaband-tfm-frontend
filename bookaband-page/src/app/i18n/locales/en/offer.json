@@ -1,0 +1,14 @@
+{
+  "update-offer-title": "Edit offer",
+  "create-offer-title": "Create offer",
+  "price": "Price",
+  "price-placeholder": "Enter the price",
+  "band-name": "Band",
+  "description": "Description",
+  "description-placeholder": "Enter a description",
+  "update-button": "Update",
+  "create-button": "Create",
+  "delete-button": "Delete",
+  "copied": "Copied!",
+  "visibility": "Visibility"
+}

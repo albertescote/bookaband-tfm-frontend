@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "title": "Contact Us | BookaBand",
+    "description": "Get in touch with BookaBand — We're here to assist you and make your musical events unforgettable."
+  },
+  "hero": {
+    "title": "Contact Us",
+    "subtitle": "Have questions or need assistance? We're here to help you connect with musicians and make your event a success."
+  },
+  "additional-info": {
+    "title": "Other Ways to Connect",
+    "community": {
+      "title": "Join Our Community",
+      "description": "Connect with other musicians, clients, and providers. Share experiences and grow your network within the BookaBand community."
+    },
+    "updates": {
+      "title": "Stay Updated",
+      "description": "Follow us to stay informed about new features, upcoming events, and exclusive opportunities."
+    }
+  },
+  "name": "Name",
+  "name-placeholder": "Your name",
+  "email": "Email",
+  "email-placeholder": "your.email@example.com",
+  "subject": "Subject",
+  "subject-placeholder": "What is this regarding?",
+  "message": "Message",
+  "message-placeholder": "Tell us how we can assist you...",
+  "send-message": "Send Message",
+  "message-sent": "Message Sent!",
+  "we-will-contact-soon": "Thank you for reaching out to BookaBand. We'll get back to you as soon as possible to assist with your request.",
+  "back-home": "Back to Home",
+  "missing-fields": "Please fill in all required fields.",
+  "error-sending": "There was an error sending your message. Please try again."
+}
