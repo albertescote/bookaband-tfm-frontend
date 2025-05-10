@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, Search, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
+import './autocomplete-custom.css';
 import { es } from 'date-fns/locale/es';
 import { ca } from 'date-fns/locale/ca';
 
@@ -26,6 +27,12 @@ interface SearchBarProps {
   setHasSearched: (val: boolean) => void;
 }
 
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 const SearchBar: React.FC<SearchBarProps> = ({
   language,
   location,
@@ -43,6 +50,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const { t } = useTranslation(language, 'find-artists');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
+  const locationInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<any>(null);
+  const [displayLocation, setDisplayLocation] = useState(location);
 
   // Map language to locale
   const getLocale = () => {
@@ -55,6 +65,49 @@ const SearchBar: React.FC<SearchBarProps> = ({
         return 'en';
     }
   };
+
+  const initializeAutocomplete = () => {
+    if (window.google && locationInputRef.current) {
+      const options = {
+        componentRestrictions: { country: ['es'] }, // Restrict to Spain
+        fields: ['address_components', 'formatted_address'],
+        types: ['(cities)'], // Only show cities
+      };
+
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(
+        locationInputRef.current,
+        options,
+      );
+
+      autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current.getPlace();
+        if (place.address_components) {
+          // Find the city component
+          const cityComponent = place.address_components.find(
+            (component: any) => component.types.includes('locality'),
+          );
+
+          if (cityComponent) {
+            // Use the city name for filtering
+            setLocation(cityComponent.long_name);
+            // Use the full formatted address for display
+            setDisplayLocation(place.formatted_address);
+          }
+          setShowValidation(false);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    initializeAutocomplete();
+  }, []);
+
+  useEffect(() => {
+    if (!hasSearched) {
+      initializeAutocomplete();
+    }
+  }, [hasSearched]);
 
   const handleSearchClick = () => {
     if (!location.trim() || !date.trim()) {
@@ -88,7 +141,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         >
           {location && (
             <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
-              <span className="font-medium">{t('where')}:</span> {location}
+              <span className="font-medium">{t('where')}:</span>{' '}
+              {displayLocation}
             </span>
           )}
           {date && (
@@ -110,6 +164,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 sm:h-8 sm:w-8"
             onClick={() => {
               setLocation('');
+              setDisplayLocation('');
               setDate('');
               setSearchQuery('');
               onClearSearch();
@@ -134,10 +189,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {t('where')}
             </span>
             <input
+              ref={locationInputRef}
               type="text"
               placeholder={t('enter-location')}
-              value={location}
+              value={displayLocation}
               onChange={(e) => {
+                setDisplayLocation(e.target.value);
                 setLocation(e.target.value);
                 setShowValidation(false);
               }}
