@@ -6,7 +6,7 @@ export default async function Page({
   params: { lng: string };
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f3f4f6] to-white">
+    <div className="min-h-screen">
       <FindArtistsContent language={lng} />
     </div>
   );

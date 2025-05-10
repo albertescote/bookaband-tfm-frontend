@@ -17,5 +17,11 @@
   "when": "Quan?",
   "add-dates": "Afegeix data/es",
   "type-style-or-artist": "Escriu un estil o nom d'artista",
-  "loading": "Carregant..."
+  "loading": "Carregant...",
+  "artists-found": "artistes trobats",
+  "sort-most-popular": "Més popular",
+  "sort-price-asc": "Preu: Menor-Major",
+  "sort-price-desc": "Preu: Major-Menor",
+  "sort-name-asc": "Nom: A-Z",
+  "sort-name-desc": "Nom: Z-A"
 }

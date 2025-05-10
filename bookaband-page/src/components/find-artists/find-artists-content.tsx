@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronDown, MapPin, Music, X } from 'lucide-react';
+import { MapPin, Music, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { Artist, fetchArtists } from '@/service/backend/artist/artist.service';
 import SearchBar from './searchBar';
@@ -30,6 +30,8 @@ export default function FindArtistsContent({
   const pageSize = 6;
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [totalArtists, setTotalArtists] = useState<number>(0);
+  const [sortOption, setSortOption] = useState<string>('most-popular');
   const { user } = useAuth();
 
   const genres = [
@@ -49,12 +51,15 @@ export default function FindArtistsContent({
 
   useEffect(() => {
     // Initial load
-    fetchArtists(1, pageSize).then(({ artists: newArtists, hasMore }) => {
-      setArtists(newArtists);
-      setFilteredArtists(newArtists);
-      setHasMore(hasMore);
-      setCurrentPage(1);
-    });
+    fetchArtists(1, pageSize).then(
+      ({ artists: newArtists, hasMore, total }) => {
+        setArtists(newArtists);
+        setFilteredArtists(newArtists);
+        setHasMore(hasMore);
+        setCurrentPage(1);
+        setTotalArtists(total);
+      },
+    );
   }, []);
 
   const loadMoreArtists = () => {
@@ -62,12 +67,13 @@ export default function FindArtistsContent({
     const nextPage = currentPage + 1;
 
     fetchArtists(nextPage, pageSize).then(
-      ({ artists: newArtists, hasMore }) => {
+      ({ artists: newArtists, hasMore, total }) => {
         setArtists((prev) => [...prev, ...newArtists]);
         setFilteredArtists((prev) => [...prev, ...newArtists]); // smoother appending
         setCurrentPage(nextPage);
         setHasMore(hasMore);
         setIsLoadingMore(false);
+        setTotalArtists(total);
       },
     );
   };
@@ -93,11 +99,31 @@ export default function FindArtistsContent({
     setFilteredArtists(filtered);
   };
 
-  // All artists (including featured) are shown in the grid, in backend order
-  const allArtists = filteredArtists;
+  let allArtists = [...filteredArtists];
+  if (sortOption === 'most-popular') {
+    allArtists.sort((a, b) => b.rating - a.rating);
+  } else if (sortOption === 'price-asc') {
+    allArtists.sort((a, b) => {
+      if (a.price === undefined && b.price === undefined) return 0;
+      if (a.price === undefined) return 1;
+      if (b.price === undefined) return -1;
+      return a.price - b.price;
+    });
+  } else if (sortOption === 'price-desc') {
+    allArtists.sort((a, b) => {
+      if (a.price === undefined && b.price === undefined) return 0;
+      if (a.price === undefined) return 1;
+      if (b.price === undefined) return -1;
+      return b.price - a.price;
+    });
+  } else if (sortOption === 'name-asc') {
+    allArtists.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortOption === 'name-desc') {
+    allArtists.sort((a, b) => b.name.localeCompare(a.name));
+  }
 
   return (
-    <div className="container mx-auto bg-gray-50 px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="mb-10 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
         <h1 className="mb-3 text-4xl font-bold">{t('find-artists')}</h1>
@@ -263,14 +289,25 @@ export default function FindArtistsContent({
           {/* Sort Options */}
           <div className="mb-6 flex items-center justify-between">
             <div className="text-sm text-gray-600">
-              <span className="font-medium text-gray-800">32</span> artists
-              found
+              <span className="font-medium text-gray-800">{totalArtists}</span>{' '}
+              {t('artists-found')}
             </div>
             <div className="relative">
-              <button className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                <span>Most Popular</span>
-                <ChevronDown className="h-4 w-4" />
-              </button>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm focus:border-[#15b7b9] focus:outline-none"
+              >
+                <option value="most-popular">{t('sort-most-popular')}</option>
+                {user && (
+                  <option value="price-asc">{t('sort-price-asc')}</option>
+                )}
+                {user && (
+                  <option value="price-desc">{t('sort-price-desc')}</option>
+                )}
+                <option value="name-asc">{t('sort-name-asc')}</option>
+                <option value="name-desc">{t('sort-name-desc')}</option>
+              </select>
             </div>
           </div>
 

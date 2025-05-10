@@ -17,5 +17,11 @@
   "when": "¿Cuándo?",
   "add-dates": "Añade fecha(s)",
   "type-style-or-artist": "Escribe un estilo o nombre de artista",
-  "loading": "Cargando..."
+  "loading": "Cargando...",
+  "artists-found": "artistas encontrados",
+  "sort-most-popular": "Más popular",
+  "sort-price-asc": "Precio: Menor-Mayor",
+  "sort-price-desc": "Precio: Mayor-Menor",
+  "sort-name-asc": "Nombre: A-Z",
+  "sort-name-desc": "Nombre: Z-A"
 }

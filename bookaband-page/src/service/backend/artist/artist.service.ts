@@ -160,13 +160,13 @@ const ARTISTS: Artist[] = [
 export async function fetchArtists(
   page: number = 1,
   pageSize: number = 10,
-): Promise<{ artists: Artist[]; hasMore: boolean }> {
+): Promise<{ artists: Artist[]; hasMore: boolean; total: number }> {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
   const start = (page - 1) * pageSize;
   const end = start + pageSize;
   const artists = ARTISTS.slice(start, end);
-  console.log(artists.length);
   const hasMore = end < ARTISTS.length;
-  return { artists, hasMore };
+  const total = ARTISTS.length;
+  return { artists, hasMore, total };
 }
