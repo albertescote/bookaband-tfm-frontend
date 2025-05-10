@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { Role } from '@/service/backend/user/domain/role';
 import { APP_URL, PAGE_URL } from '@/publicConfig';
+import { LuHouse } from 'react-icons/lu';
 
 export default function LoginForm({
   language,
@@ -95,12 +96,20 @@ export default function LoginForm({
         className="relative z-10 w-full max-w-md rounded-2xl bg-white/90 p-8 shadow-2xl backdrop-blur-md"
       >
         <div className="mb-6 flex items-center justify-between">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center text-gray-500 hover:text-gray-700"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
+          <div className="flex">
+            <button
+              onClick={() => router.back()}
+              className="flex items-center text-gray-500 hover:text-gray-700"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => (window.location.href = PAGE_URL)}
+              className="flex items-center pl-4 text-gray-500 hover:text-gray-700"
+            >
+              <LuHouse className="h-5 w-5" />
+            </button>
+          </div>
           <div>
             <a className="text-sm text-gray-500">{t('register-text')}</a>
             <a

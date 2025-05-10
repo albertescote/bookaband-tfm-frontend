@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getUserInfo()
       .then((user) => {
         if (user) {
-          if (user.role !== Role.Musician || user.role !== Role.Provider) {
+          if (user.role !== Role.Musician) {
             window.location.href = AUTH_URL + `/${language}/login`;
           } else {
             setUser(user);

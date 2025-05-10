@@ -100,7 +100,7 @@ export function ChatLayout({
 
             <div className="flex flex-col space-y-3">
               <Link
-                href={`/${language}/bands`}
+                href={`/${language}/find-artists`}
                 className="w-full rounded-full bg-[#15b7b9] px-6 py-3 font-medium text-white transition-colors hover:bg-[#109a9c]"
               >
                 {t('browse-bands')}
