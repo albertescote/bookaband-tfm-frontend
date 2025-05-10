@@ -23,5 +23,9 @@
   "sort-price-asc": "Price: Low-High",
   "sort-price-desc": "Price: High-Low",
   "sort-name-asc": "Name: A-Z",
-  "sort-name-desc": "Name: Z-A"
+  "sort-name-desc": "Name: Z-A",
+  "location-required": "Location is required",
+  "date-required": "Date is required",
+  "select-date": "Select a date for your event",
+  "clear-search": "Clear search"
 }

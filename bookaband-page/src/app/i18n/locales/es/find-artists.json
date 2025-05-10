@@ -23,5 +23,9 @@
   "sort-price-asc": "Precio: Menor-Mayor",
   "sort-price-desc": "Precio: Mayor-Menor",
   "sort-name-asc": "Nombre: A-Z",
-  "sort-name-desc": "Nombre: Z-A"
+  "sort-name-desc": "Nombre: Z-A",
+  "location-required": "La ubicación es obligatoria",
+  "date-required": "La fecha es obligatoria",
+  "select-date": "Selecciona una fecha para tu evento",
+  "clear-search": "Limpiar búsqueda"
 }
