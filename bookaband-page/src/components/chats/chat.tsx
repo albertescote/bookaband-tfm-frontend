@@ -149,6 +149,28 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
           };
           setAllMessages((prev) => [...prev, newMessage]);
 
+          setChats((prevChats) => {
+            return prevChats.map((c) => {
+              if (c.id === chat!.id) {
+                return {
+                  ...c,
+                  messages: [
+                    ...c.messages,
+                    {
+                      id: crypto.randomUUID(),
+                      content: message,
+                      senderId,
+                      recipientId,
+                      timestamp: new Date(),
+                    },
+                  ],
+                  updatedAt: new Date(),
+                };
+              }
+              return c;
+            });
+          });
+
           sendMessage(chat!.id, recipientId, message);
           getClientChats(senderId).then((chats) => {
             if ('error' in chats) return;
@@ -166,6 +188,28 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
           timestamp: new Date(),
         };
         setAllMessages((prev) => [...prev, newMessage]);
+
+        setChats((prevChats) => {
+          return prevChats.map((c) => {
+            if (c.id === chat!.id) {
+              return {
+                ...c,
+                messages: [
+                  ...c.messages,
+                  {
+                    id: crypto.randomUUID(),
+                    content: message,
+                    senderId,
+                    recipientId,
+                    timestamp: new Date(),
+                  },
+                ],
+                updatedAt: new Date(),
+              };
+            }
+            return c;
+          });
+        });
 
         sendMessage(chat!.id, recipientId, message);
         setMessage('');
