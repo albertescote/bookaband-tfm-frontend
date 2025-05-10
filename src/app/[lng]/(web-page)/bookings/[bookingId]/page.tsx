@@ -1,4 +1,4 @@
-import { useTranslation } from '@/app/i18n';
+import { getTranslation } from '@/app/i18n';
 import BookingDetails from '@/components/web-page/booking/bookingDetails';
 
 interface PageParams {
@@ -11,7 +11,7 @@ interface PageParams {
 export default async function BookingPage({
   params: { lng, bookingId },
 }: PageParams) {
-  const { t } = await useTranslation(lng, 'booking');
+  const { t } = await getTranslation(lng, 'booking');
 
   return (
     <div className="flex min-h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4 py-12">

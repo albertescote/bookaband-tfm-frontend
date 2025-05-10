@@ -1,12 +1,13 @@
 import { Metadata } from 'next';
-import { useTranslation } from '@/app/i18n';
+import { getTranslation } from '@/app/i18n';
 
 export async function generateMetadata({
   params: { lng },
 }: {
   params: { lng: string };
 }): Promise<Metadata> {
-  const { t } = await useTranslation(lng, 'about');
+  const { t } = await getTranslation(lng, 'about');
+
   return {
     title: t('metadata.title'),
     description: t('metadata.description'),
@@ -18,7 +19,7 @@ export default async function AboutPage({
 }: {
   params: { lng: string };
 }) {
-  const { t } = await useTranslation(lng, 'about');
+  const { t } = await getTranslation(lng, 'about');
 
   return (
     <div className="min-h-screen bg-white">

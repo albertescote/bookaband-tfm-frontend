@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
-import { useTranslation } from '@/app/i18n';
 import FAQsContent from '@/components/web-page/faqs/faqs-content';
+import { getTranslation } from '@/app/i18n';
 
 export async function generateMetadata({
   params: { lng },
 }: {
   params: { lng: string };
 }): Promise<Metadata> {
-  const { t } = await useTranslation(lng, 'faqs');
+  const { t } = await getTranslation(lng, 'faqs');
   return {
     title: t('metadata.title'),
     description: t('metadata.description'),

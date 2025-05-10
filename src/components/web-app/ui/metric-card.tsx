@@ -11,7 +11,13 @@ interface MetricCardProps {
   className?: string;
 }
 
-export default function MetricCard({ title, value, icon, trend, className = '' }: MetricCardProps) {
+export default function MetricCard({
+  title,
+  value,
+  icon,
+  trend,
+  className = '',
+}: MetricCardProps) {
   return (
     <div className={`rounded-lg bg-white p-6 shadow-sm ${className}`}>
       <div className="flex items-center justify-between">
@@ -35,4 +41,4 @@ export default function MetricCard({ title, value, icon, trend, className = '' }
       </div>
     </div>
   );
-} 
+}

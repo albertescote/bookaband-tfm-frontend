@@ -1,11 +1,11 @@
-import { useTranslation } from '@/app/i18n';
+import { getTranslation } from '@/app/i18n';
 import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import LanguageSwitcher from '@/components/web-page/layout/footer/languageSwitcher';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default async function Footer({ language }: { language: string }) {
-  const { t } = await useTranslation(language, 'footer');
+  const { t } = await getTranslation(language, 'footer');
 
   return (
     <footer className="bg-[#15b7b9] pb-8 pt-12 text-white">

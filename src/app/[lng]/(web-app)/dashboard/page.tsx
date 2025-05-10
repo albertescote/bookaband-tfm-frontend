@@ -1,10 +1,8 @@
-'use client';
-
 import { CalendarDays, Music, Users, Wallet } from 'lucide-react';
 import MetricCard from '@/components/web-app/ui/metric-card';
-import DataTable from '@/components/web-app/ui/data-table';
+import DataTableWrapper from '@/components/web-app/ui/dataTableWrapper';
 
-interface RecentActivity {
+export interface RecentActivity {
   id: string;
   type: string;
   description: string;
@@ -36,30 +34,16 @@ const recentActivities: RecentActivity[] = [
   },
 ];
 
-const activityColumns = [
-  { header: 'Type', accessor: 'type' as const },
-  { header: 'Description', accessor: 'description' as const },
-  { header: 'Date', accessor: 'date' as const },
-  {
-    header: 'Status',
-    accessor: 'status' as const,
-    cell: (item: RecentActivity) => (
-      <span
-        className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-          item.status === 'completed'
-            ? 'bg-green-100 text-green-800'
-            : item.status === 'pending'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
-        }`}
-      >
-        {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-      </span>
-    ),
-  },
-];
-
-export default function DashboardPage() {
+interface PageParams {
+  params: {
+    lng: string;
+  };
+  searchParams?: { [key: string]: string | undefined };
+}
+export default async function DashboardPage({
+  params: { lng },
+  searchParams,
+}: PageParams) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -93,11 +77,7 @@ export default function DashboardPage() {
         <h2 className="mb-4 text-lg font-semibold text-gray-900">
           Recent Activities
         </h2>
-        <DataTable
-          columns={activityColumns}
-          data={recentActivities}
-          onRowClick={(item) => console.log('Clicked:', item)}
-        />
+        <DataTableWrapper language={lng} data={recentActivities} />
       </div>
     </div>
   );

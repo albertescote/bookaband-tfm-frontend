@@ -1,8 +1,8 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
+import React from 'react';
 
 interface SortConfig {
   key: string;
@@ -10,6 +10,7 @@ interface SortConfig {
 }
 
 interface DataTableProps<T> {
+  language: string;
   data: T[];
   columns: {
     key: string;
@@ -19,17 +20,19 @@ interface DataTableProps<T> {
   onSort?: (key: string) => void;
   onFilter?: (key: string, value: string) => void;
   sortConfig?: SortConfig;
+
+  onRowClick?: (item: T) => void;
 }
 
 export default function DataTable<T>({
+  language,
   data,
   columns,
   onSort,
   onFilter,
   sortConfig,
+  onRowClick,
 }: DataTableProps<T>) {
-  const params = useParams();
-  const language = params.lng as string;
   const { t } = useTranslation(language, 'home');
 
   return (
@@ -101,7 +104,11 @@ export default function DataTable<T>({
             </tr>
           ) : (
             data.map((item, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+              <tr
+                key={index}
+                className="cursor-pointer hover:bg-gray-50"
+                onClick={() => onRowClick?.(item)}
+              >
                 {columns.map((column, colIndex) => (
                   <td
                     key={`${column.key}-${index}-${colIndex}`}
@@ -119,4 +126,4 @@ export default function DataTable<T>({
       </table>
     </div>
   );
-} 
+}

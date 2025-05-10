@@ -45,24 +45,24 @@ export default function CalendarPage() {
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
-    0
+    0,
   ).getDate();
 
   const firstDayOfMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    1
+    1,
   ).getDay();
 
   const prevMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1),
     );
   };
 
   const nextMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1),
     );
   };
 
@@ -71,7 +71,7 @@ export default function CalendarPage() {
       (event) =>
         new Date(event.date).getDate() === day &&
         new Date(event.date).getMonth() === currentDate.getMonth() &&
-        new Date(event.date).getFullYear() === currentDate.getFullYear()
+        new Date(event.date).getFullYear() === currentDate.getFullYear(),
     );
   };
 
@@ -138,8 +138,8 @@ export default function CalendarPage() {
                         event.type === 'performance'
                           ? 'bg-blue-100 text-blue-800'
                           : event.type === 'rehearsal'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-purple-100 text-purple-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-purple-100 text-purple-800'
                       }`}
                     >
                       {event.title}
@@ -153,4 +153,4 @@ export default function CalendarPage() {
       </div>
     </div>
   );
-} 
+}

@@ -1,5 +1,5 @@
 import { Bell } from 'lucide-react';
-import { useTranslation } from '@/app/i18n';
+import { getTranslation } from '@/app/i18n';
 
 interface Notification {
   id: string;
@@ -20,7 +20,7 @@ export default async function NotificationsPage({
   params: { lng },
   searchParams,
 }: PageParams) {
-  const { t } = await useTranslation(lng, 'notifications');
+  const { t } = await getTranslation(lng, 'notifications');
 
   const notifications: Notification[] = [
     {

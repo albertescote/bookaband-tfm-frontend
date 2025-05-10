@@ -27,7 +27,7 @@ export default function ProfileCard({
   user,
 }: {
   language: string;
-  user: User | undefined;
+  user: User | null;
 }) {
   const { t } = useTranslation(language, 'profile');
   const router = useRouter();

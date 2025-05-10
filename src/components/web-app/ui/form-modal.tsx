@@ -7,7 +7,12 @@ interface FormModalProps {
   children: React.ReactNode;
 }
 
-export default function FormModal({ isOpen, onClose, title, children }: FormModalProps) {
+export default function FormModal({
+  isOpen,
+  onClose,
+  title,
+  children,
+}: FormModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -27,4 +32,4 @@ export default function FormModal({ isOpen, onClose, title, children }: FormModa
       </div>
     </div>
   );
-} 
+}

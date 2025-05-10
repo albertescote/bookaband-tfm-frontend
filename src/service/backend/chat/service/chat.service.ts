@@ -48,6 +48,9 @@ export async function checkExistingChat(bandId: string) {
   const userInfo = await getUserInfo();
   if (userInfo) {
     const chats = await getClientChats(userInfo.id);
+    if ('error' in chats) {
+      return undefined;
+    }
     const existingChat = chats?.find((chat) => chat.band.id == bandId);
     if (existingChat) {
       return existingChat.id;

@@ -406,6 +406,7 @@ export default function BandsPage() {
     if (!selectedBand) {
       return (
         <DataTable
+          language={language}
           columns={bandColumns}
           data={mockBands}
           onSort={handleSort}
@@ -419,6 +420,7 @@ export default function BandsPage() {
       case 'members':
         return (
           <DataTable
+            language={language}
             columns={memberColumns}
             data={selectedBand.memberList}
             onSort={handleSort}
@@ -429,6 +431,7 @@ export default function BandsPage() {
       case 'performances':
         return (
           <DataTable
+            language={language}
             columns={performanceColumns}
             data={selectedBand.performances}
             onSort={handleSort}
@@ -439,6 +442,7 @@ export default function BandsPage() {
       case 'financials':
         return (
           <DataTable
+            language={language}
             columns={financialColumns}
             data={selectedBand.financials}
             onSort={handleSort}

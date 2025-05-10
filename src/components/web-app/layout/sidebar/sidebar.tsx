@@ -38,7 +38,7 @@ export default function Sidebar() {
         </div>
         <div className="space-y-1">
           <LanguageSwitcher language={language} />
-          <button 
+          <button
             onClick={logoutUser}
             className="flex w-full items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600"
           >

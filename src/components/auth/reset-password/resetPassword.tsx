@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from '@/app/i18n/client';
@@ -11,11 +11,15 @@ import { Eye, EyeOff } from 'lucide-react';
 import { resetPassword } from '@/service/backend/user/service/user.service';
 import zxcvbn from 'zxcvbn';
 
-export default function ResetPassword({ language }: { language: string }) {
+export default function ResetPassword({
+  language,
+  token,
+}: {
+  language: string;
+  token: string;
+}) {
   const { t } = useTranslation(language, 'reset-password');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get('token') || '';
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

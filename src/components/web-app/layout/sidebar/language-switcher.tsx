@@ -75,4 +75,4 @@ export default function LanguageSwitcher({ language }: { language: string }) {
       </div>
     </Listbox>
   );
-} 
+}

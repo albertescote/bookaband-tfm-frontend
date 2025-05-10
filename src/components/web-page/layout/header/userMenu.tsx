@@ -13,8 +13,6 @@ export default function UserMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  if (!user) return null;
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -32,6 +30,8 @@ export default function UserMenu({ language }: { language: string }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [menuOpen]);
+
+  if (!user) return null;
 
   return (
     <div className="relative" ref={menuRef}>

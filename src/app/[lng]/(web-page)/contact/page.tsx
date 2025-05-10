@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { useTranslation } from '@/app/i18n';
+import { getTranslation } from '@/app/i18n';
 import ContactForm from '@/components/web-page/contact/contactForm';
 
 export async function generateMetadata({
@@ -7,7 +7,7 @@ export async function generateMetadata({
 }: {
   params: { lng: string };
 }): Promise<Metadata> {
-  const { t } = await useTranslation(lng, 'contact');
+  const { t } = await getTranslation(lng, 'contact');
   return {
     title: t('metadata.title'),
     description: t('metadata.description'),
@@ -19,7 +19,7 @@ export default async function ContactPage({
 }: {
   params: { lng: string };
 }) {
-  const { t } = await useTranslation(lng, 'contact');
+  const { t } = await getTranslation(lng, 'contact');
 
   return (
     <div className="min-h-screen bg-white">
