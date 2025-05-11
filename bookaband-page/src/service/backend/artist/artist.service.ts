@@ -178,6 +178,7 @@ export async function fetchFilteredArtists(
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
   let filteredArtists = ARTISTS;
+  
   if (filters) {
     if (filters.location && filters.location.trim()) {
       filteredArtists = filteredArtists.filter((artist) =>
@@ -199,10 +200,16 @@ export async function fetchFilteredArtists(
     }
     // Date filter can be added here if needed
   }
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-  const artists = filteredArtists.slice(start, end);
-  const hasMore = end < filteredArtists.length;
-  const total = filteredArtists.length;
-  return { artists, hasMore, total };
+
+  // If no filters are applied, return empty results
+  if (filters && Object.values(filters).some(value => value && value.trim())) {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const artists = filteredArtists.slice(start, end);
+    const hasMore = end < filteredArtists.length;
+    const total = filteredArtists.length;
+    return { artists, hasMore, total };
+  }
+
+  return { artists: [], hasMore: false, total: 0 };
 }

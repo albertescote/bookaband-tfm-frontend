@@ -1,7 +1,7 @@
 {
   "find-artists": "Find Artists",
   "hero-subtitle": "Book the perfect music for your next event",
-  "search-placeholder": "Search by name, genre, or location...",
+  "search-placeholder": "Search by artist name, genre, or location...",
   "filters": "Filters",
   "location": "Location",
   "enter-location": "Enter location",
@@ -28,5 +28,11 @@
   "location-required": "Location is required",
   "date-required": "Date is required",
   "select-date": "Select a date for your event",
-  "clear-search": "Clear search"
+  "clear-search": "Clear search",
+  "no-search-results": "No Artists Found",
+  "no-search-results-description": "We couldn't find any artists matching your search criteria. Try adjusting your search terms or filters.",
+  "no-filter-results": "No Artists Match Your Filters",
+  "no-filter-results-description": "No artists match your current filter criteria. Try adjusting your filters to see more results.",
+  "try-again": "Try Again",
+  "clear-filters": "Clear Filters"
 }

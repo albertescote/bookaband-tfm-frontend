@@ -33,6 +33,7 @@ export default function FindArtistsContent({
   const [totalArtists, setTotalArtists] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>('most-popular');
   const [hasSearched, setHasSearched] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
   const { user } = useAuth();
 
   const genres = [
@@ -93,6 +94,12 @@ export default function FindArtistsContent({
   };
 
   const handleSearch = () => {
+    if (!location.trim() || !date.trim()) {
+      setShowValidation(true);
+      return;
+    }
+    setShowValidation(false);
+    
     fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
       ({ artists: newArtists, hasMore, total }) => {
         setArtists(newArtists);
@@ -319,7 +326,11 @@ export default function FindArtistsContent({
           </div>
 
           {/* Artists Grid */}
-          <ArtistsGrid artists={allArtists} language={language} />
+          <ArtistsGrid 
+            artists={allArtists} 
+            language={language} 
+            hasSearched={hasSearched}
+          />
 
           {/* Load More Artists Button */}
           <LoadMoreButton

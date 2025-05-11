@@ -88,10 +88,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           );
 
           if (cityComponent) {
-            // Use the city name for filtering
-            setLocation(cityComponent.long_name);
-            // Use the full formatted address for display
-            setDisplayLocation(place.formatted_address);
+            // Use the city name for both display and filtering
+            const cityName = cityComponent.long_name;
+            setLocation(cityName);
+            setDisplayLocation(cityName);
           }
           setShowValidation(false);
         }
