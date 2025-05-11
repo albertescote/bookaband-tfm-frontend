@@ -1,13 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Music, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { Artist, fetchAllArtists, fetchFilteredArtists } from '@/service/backend/artist/artist.service';
+import {
+  Artist,
+  fetchAllArtists,
+  fetchFilteredArtists,
+} from '@/service/backend/artist/artist.service';
 import SearchBar from './searchBar';
 import ArtistsGrid from './artistsGrid';
 import LoadMoreButton from './loadMoreButton';
 import { useAuth } from '@/providers/authProvider';
+import AdditionalFilters from '@/components/find-artists/additionalFilters';
 
 interface FindArtistsContentProps {
   language: string;
@@ -22,8 +27,6 @@ export default function FindArtistsContent({
   const [date, setDate] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [selectedBandSize, setSelectedBandSize] = useState('');
   const [artists, setArtists] = useState<Artist[]>([]);
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,21 +38,6 @@ export default function FindArtistsContent({
   const [hasSearched, setHasSearched] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
   const { user } = useAuth();
-
-  const genres = [
-    { value: 'rock', label: 'Rock', emoji: '🎸' },
-    { value: 'pop', label: 'Pop', emoji: '🎤' },
-    { value: 'jazz', label: 'Jazz', emoji: '🎷' },
-    { value: 'classical', label: 'Classical', emoji: '🎻' },
-    { value: 'electronic', label: 'Electronic', emoji: '🎧' },
-  ];
-
-  const bandSizes = [
-    { value: 'solo', label: 'Solo', count: 1 },
-    { value: 'duo', label: 'Duo', count: 2 },
-    { value: 'trio', label: 'Trio', count: 3 },
-    { value: 'band', label: 'Band (4+)', count: 4 },
-  ];
 
   useEffect(() => {
     // Initial load
@@ -69,16 +57,18 @@ export default function FindArtistsContent({
     const nextPage = currentPage + 1;
 
     if (hasSearched) {
-      fetchFilteredArtists(nextPage, pageSize, { location, date, searchQuery }).then(
-        ({ artists: newArtists, hasMore, total }) => {
-          setArtists((prev) => [...prev, ...newArtists]);
-          setFilteredArtists((prev) => [...prev, ...newArtists]);
-          setCurrentPage(nextPage);
-          setHasMore(hasMore);
-          setIsLoadingMore(false);
-          setTotalArtists(total);
-        },
-      );
+      fetchFilteredArtists(nextPage, pageSize, {
+        location,
+        date,
+        searchQuery,
+      }).then(({ artists: newArtists, hasMore, total }) => {
+        setArtists((prev) => [...prev, ...newArtists]);
+        setFilteredArtists((prev) => [...prev, ...newArtists]);
+        setCurrentPage(nextPage);
+        setHasMore(hasMore);
+        setIsLoadingMore(false);
+        setTotalArtists(total);
+      });
     } else {
       fetchAllArtists(nextPage, pageSize).then(
         ({ artists: newArtists, hasMore, total }) => {
@@ -99,7 +89,7 @@ export default function FindArtistsContent({
       return;
     }
     setShowValidation(false);
-    
+
     fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
       ({ artists: newArtists, hasMore, total }) => {
         setArtists(newArtists);
@@ -108,7 +98,7 @@ export default function FindArtistsContent({
         setCurrentPage(1);
         setTotalArtists(total);
         setHasSearched(true);
-      }
+      },
     );
   };
 
@@ -121,8 +111,36 @@ export default function FindArtistsContent({
         setHasMore(hasMore);
         setCurrentPage(1);
         setTotalArtists(total);
-      }
+      },
     );
+  };
+
+  const handleAdditionalFiltersChange = (filters: any) => {
+    // Apply filters immediately
+    const filteredResults = artists.filter((artist) => {
+      if (filters.minRating && artist.rating < filters.minRating) return false;
+      if (filters.hasSoundEquipment && !artist.hasSoundEquipment) return false;
+      if (filters.hasLighting && !artist.hasLighting) return false;
+      if (filters.hasMicrophone && !artist.hasMicrophone) return false;
+      if (filters.selectedGenre && artist.genre !== filters.selectedGenre)
+        return false;
+      if (
+        filters.selectedBandSize &&
+        artist.bandSize !== filters.selectedBandSize
+      )
+        return false;
+      if (filters.eventTypes) {
+        const hasMatchingEventType = Object.entries(filters.eventTypes).some(
+          ([type, isSelected]) =>
+            isSelected && artist.eventTypes?.includes(type),
+        );
+        if (hasMatchingEventType) return true;
+        return false;
+      }
+      return true;
+    });
+
+    setFilteredArtists(filteredResults);
   };
 
   let allArtists = [...filteredArtists];
@@ -213,61 +231,11 @@ export default function FindArtistsContent({
               </button>
             </div>
 
-            {/* Genre Filter */}
-            <div className="mb-6">
-              <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
-                <Music className="h-4 w-4 text-[#15b7b9]" />
-                {t('genre')}
-              </label>
-              <div className="space-y-2">
-                {genres.map((genre) => (
-                  <label
-                    key={genre.value}
-                    className="flex items-center gap-2 rounded-lg border border-transparent px-3 py-2 hover:border-gray-200 hover:bg-gray-50"
-                  >
-                    <input
-                      type="checkbox"
-                      value={genre.value}
-                      checked={selectedGenre === genre.value}
-                      onChange={() => setSelectedGenre(genre.value)}
-                      className="h-4 w-4 rounded border-gray-300 text-[#15b7b9] focus:ring-[#15b7b9]"
-                    />
-                    <span className="text-gray-700">
-                      {genre.emoji} {genre.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Band Size Filter */}
-            <div className="mb-6">
-              <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
-                <Music className="h-4 w-4 text-[#15b7b9]" />
-                {t('band-size')}
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {bandSizes.map((size) => (
-                  <label
-                    key={size.value}
-                    className={`flex cursor-pointer items-center justify-center rounded-lg border border-gray-200 px-2 py-3 text-sm transition-all hover:border-[#15b7b9]/30 hover:bg-[#15b7b9]/5 ${
-                      selectedBandSize === size.value
-                        ? 'border-[#15b7b9] bg-[#15b7b9]/10 font-medium text-[#15b7b9]'
-                        : 'text-gray-600'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      value={size.value}
-                      checked={selectedBandSize === size.value}
-                      onChange={() => setSelectedBandSize(size.value)}
-                      className="sr-only"
-                    />
-                    <span>{size.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+            {/* Additional Filters */}
+            <AdditionalFilters
+              language={language}
+              onFilterChange={handleAdditionalFiltersChange}
+            />
 
             {/* Price Range */}
             {user && (
@@ -291,10 +259,6 @@ export default function FindArtistsContent({
                 </div>
               </div>
             )}
-
-            <button className="w-full rounded-lg bg-[#15b7b9] px-4 py-3 font-medium text-white transition-colors hover:bg-[#15b7b9]/90">
-              {t('apply-filters')}
-            </button>
           </div>
         )}
 
@@ -326,9 +290,9 @@ export default function FindArtistsContent({
           </div>
 
           {/* Artists Grid */}
-          <ArtistsGrid 
-            artists={allArtists} 
-            language={language} 
+          <ArtistsGrid
+            artists={allArtists}
+            language={language}
             hasSearched={hasSearched}
           />
 

@@ -39,5 +39,20 @@
   "location-required": "La ubicación es obligatoria",
   "date-required": "La fecha es obligatoria",
   "select-date": "Selecciona una fecha para tu evento",
-  "clear-search": "Limpiar búsqueda"
+  "clear-search": "Limpiar búsqueda",
+  "ratings": "Valoraciones",
+  "star": "estrella",
+  "stars": "estrellas",
+  "available-equipment": "Equipamiento Disponible",
+  "equipment-note": "Si el músico trae su propio equipamiento",
+  "sound-equipment": "Equipo de Sonido",
+  "lighting": "Iluminación",
+  "microphone": "Micrófono",
+  "event-type": "Tipo de Evento",
+  "event-type-note": "Para asegurar la compatibilidad",
+  "weddings": "Bodas",
+  "private-parties": "Fiestas Privadas",
+  "festivals": "Festivales",
+  "restaurants-hotels": "Restaurantes / Hoteles",
+  "businesses": "Empresas"
 }
