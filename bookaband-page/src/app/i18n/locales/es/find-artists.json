@@ -37,7 +37,9 @@
   "sort-name-asc": "Nombre: A a Z",
   "sort-name-desc": "Nombre: Z a A",
   "location-required": "La ubicación es obligatoria",
+  "invalid-location": "Formato de ubicación inválido",
   "date-required": "La fecha es obligatoria",
+  "invalid-date": "Formato de fecha inválido (AAAA-MM-DD)",
   "select-date": "Selecciona una fecha para tu evento",
   "clear-search": "Limpiar búsqueda",
   "ratings": "Valoraciones",
@@ -66,5 +68,6 @@
   "no-results-description": "Intenta ajustar tus criterios de búsqueda o filtros",
   "applied-filters": "Filtros Aplicados",
   "reset-all": "Restablecer Todo",
-  "no-filters": "No hay filtros aplicados"
+  "no-filters": "No hay filtros aplicados",
+  "invalid-search-query": "Formato de búsqueda inválido"
 }

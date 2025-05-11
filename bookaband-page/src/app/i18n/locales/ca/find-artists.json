@@ -32,7 +32,9 @@
   "sort-name-asc": "Nom: A a Z",
   "sort-name-desc": "Nom: Z a A",
   "location-required": "La ubicació és obligatòria",
+  "invalid-location": "Format d'ubicació invàlid",
   "date-required": "La data és obligatòria",
+  "invalid-date": "Format de data invàlid (AAAA-MM-DD)",
   "select-date": "Selecciona una data per al teu esdeveniment",
   "clear-search": "Netejar cerca",
   "no-search-results": "No S'han Trobat Artistes",
@@ -60,5 +62,6 @@
   "businesses": "Empreses",
   "applied-filters": "Filtres Aplicats",
   "reset-all": "Restablir Tot",
-  "no-filters": "No hi ha filtres aplicats"
+  "no-filters": "No hi ha filtres aplicats",
+  "invalid-search-query": "Format de cerca invàlid"
 }

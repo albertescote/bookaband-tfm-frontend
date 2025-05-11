@@ -26,7 +26,9 @@
   "sort-name-asc": "Name: A to Z",
   "sort-name-desc": "Name: Z to A",
   "location-required": "Location is required",
+  "invalid-location": "Invalid location format",
   "date-required": "Date is required",
+  "invalid-date": "Invalid date format (YYYY-MM-DD)",
   "select-date": "Select a date for your event",
   "clear-search": "Clear search",
   "no-search-results": "No Artists Found",
@@ -60,5 +62,6 @@
   "no-results-description": "Try adjusting your search criteria or filters",
   "applied-filters": "Applied Filters",
   "reset-all": "Reset All",
-  "no-filters": "No filters applied"
+  "no-filters": "No filters applied",
+  "invalid-search-query": "Invalid search query format"
 }

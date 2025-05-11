@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Artist,
   fetchAllArtists,
@@ -13,6 +14,11 @@ import ArtistsGrid from './artistsGrid';
 import LoadMoreButton from './loadMoreButton';
 import { useAuth } from '@/providers/authProvider';
 import AdditionalFilters from '@/components/find-artists/additionalFilters';
+import {
+  sanitizeText,
+  validateSearchParams,
+  ValidationErrors,
+} from '@/lib/validators/searchValidators';
 
 interface FindArtistsContentProps {
   language: string;
@@ -22,11 +28,19 @@ export default function FindArtistsContent({
   language,
 }: FindArtistsContentProps) {
   const { t } = useTranslation(language, 'find-artists');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [location, setLocation] = useState('');
-  const [date, setDate] = useState('');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState(
+    sanitizeText(decodeURIComponent(searchParams.get('q') || '')),
+  );
+  const [location, setLocation] = useState(
+    sanitizeText(decodeURIComponent(searchParams.get('location') || '')),
+  );
+  const [date, setDate] = useState(
+    sanitizeText(decodeURIComponent(searchParams.get('date') || '')),
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,13 +48,107 @@ export default function FindArtistsContent({
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [totalArtists, setTotalArtists] = useState<number>(0);
-  const [sortOption, setSortOption] = useState<string>('most-popular');
-  const [hasSearched, setHasSearched] = useState(false);
-  const [showValidation, setShowValidation] = useState(false);
+  const [sortOption, setSortOption] = useState<string>(
+    sanitizeText(
+      decodeURIComponent(searchParams.get('sort') || 'most-popular'),
+    ),
+  );
+  const [hasSearched, setHasSearched] = useState(
+    !!searchParams.get('location') && !!searchParams.get('date'),
+  );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {},
+  );
   const { user } = useAuth();
 
   useEffect(() => {
-    // Initial load
+    // Initial load based on URL parameters
+    if (hasSearched) {
+      fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
+        ({ artists: newArtists, hasMore, total }) => {
+          setArtists(newArtists);
+          setFilteredArtists(newArtists);
+          setHasMore(hasMore);
+          setCurrentPage(1);
+          setTotalArtists(total);
+        },
+      );
+    } else {
+      fetchAllArtists(1, pageSize).then(
+        ({ artists: newArtists, hasMore, total }) => {
+          setArtists(newArtists);
+          setFilteredArtists(newArtists);
+          setHasMore(hasMore);
+          setCurrentPage(1);
+          setTotalArtists(total);
+        },
+      );
+    }
+  }, []);
+
+  const updateUrlParams = (params: Record<string, string>) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+
+    // Update or remove parameters
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        current.set(key, encodeURIComponent(sanitizeText(value)));
+      } else {
+        current.delete(key);
+      }
+    });
+
+    const search = current.toString();
+    const query = search ? `?${search}` : '';
+    router.push(`${window.location.pathname}${query}`);
+  };
+
+  const handleSearch = () => {
+    // Reset validation errors
+    setValidationErrors({});
+
+    // Validate inputs
+    const errors = validateSearchParams({ location, date, searchQuery }, t);
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    updateUrlParams({
+      location,
+      date,
+      q: searchQuery,
+      sort: sortOption,
+    });
+
+    fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
+      ({ artists: newArtists, hasMore, total }) => {
+        setArtists(newArtists);
+        setFilteredArtists(newArtists);
+        setHasMore(hasMore);
+        setCurrentPage(1);
+        setTotalArtists(total);
+        setHasSearched(true);
+      },
+    );
+  };
+
+  const handleClearSearch = () => {
+    setHasSearched(false);
+    setLocation('');
+    setDate('');
+    setSearchQuery('');
+    setSortOption('most-popular');
+
+    // Clear URL parameters
+    updateUrlParams({
+      location: '',
+      date: '',
+      q: '',
+      sort: '',
+    });
+
     fetchAllArtists(1, pageSize).then(
       ({ artists: newArtists, hasMore, total }) => {
         setArtists(newArtists);
@@ -50,7 +158,14 @@ export default function FindArtistsContent({
         setTotalArtists(total);
       },
     );
-  }, []);
+  };
+
+  // Update URL when sort option changes
+  useEffect(() => {
+    if (hasSearched) {
+      updateUrlParams({ sort: sortOption });
+    }
+  }, [sortOption]);
 
   const loadMoreArtists = () => {
     setIsLoadingMore(true);
@@ -81,38 +196,6 @@ export default function FindArtistsContent({
         },
       );
     }
-  };
-
-  const handleSearch = () => {
-    if (!location.trim() || !date.trim()) {
-      setShowValidation(true);
-      return;
-    }
-    setShowValidation(false);
-
-    fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-      ({ artists: newArtists, hasMore, total }) => {
-        setArtists(newArtists);
-        setFilteredArtists(newArtists);
-        setHasMore(hasMore);
-        setCurrentPage(1);
-        setTotalArtists(total);
-        setHasSearched(true);
-      },
-    );
-  };
-
-  const handleClearSearch = () => {
-    setHasSearched(false);
-    fetchAllArtists(1, pageSize).then(
-      ({ artists: newArtists, hasMore, total }) => {
-        setArtists(newArtists);
-        setFilteredArtists(newArtists);
-        setHasMore(hasMore);
-        setCurrentPage(1);
-        setTotalArtists(total);
-      },
-    );
   };
 
   const handleAdditionalFiltersChange = (filters: any) => {
@@ -193,27 +276,28 @@ export default function FindArtistsContent({
           onClearSearch={handleClearSearch}
           setHasSearched={setHasSearched}
         />
-      </div>
 
-      {/* Active Filters */}
-      {activeFilters.length > 0 && (
-        <div className="mb-6 flex flex-wrap gap-2">
-          {activeFilters.map((filter, index) => (
-            <div
-              key={index}
-              className="flex items-center rounded-full bg-[#15b7b9]/10 px-3 py-1.5 text-sm font-medium text-[#15b7b9]"
-            >
-              <span>{filter}</span>
-              <button className="ml-2">
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-          <button className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-[#15b7b9]">
-            Clear all
-          </button>
-        </div>
-      )}
+        {/* Validation Errors */}
+        {(validationErrors.location || validationErrors.date || validationErrors.searchQuery) && (
+          <div className="mt-4 space-y-2">
+            {validationErrors.location && (
+              <p className="text-sm text-red-200">
+                {validationErrors.location}
+              </p>
+            )}
+            {validationErrors.date && (
+              <p className="text-sm text-red-200">
+                {validationErrors.date}
+              </p>
+            )}
+            {validationErrors.searchQuery && (
+              <p className="text-sm text-red-200">
+                {validationErrors.searchQuery}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Main Content */}
       <div className="flex flex-col gap-8 lg:flex-row">
