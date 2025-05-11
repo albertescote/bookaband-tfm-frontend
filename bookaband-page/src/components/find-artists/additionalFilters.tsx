@@ -21,6 +21,41 @@ interface AdditionalFiltersProps {
   }) => void;
 }
 
+interface Sections {
+  genre: boolean;
+  bandSize: boolean;
+  ratings: boolean;
+  equipment: boolean;
+  eventType: boolean;
+}
+
+interface FilterHeaderProps {
+  icon: React.ReactNode;
+  title: string;
+  section: keyof Sections;
+}
+
+type EventTypeKey =
+  | 'weddings'
+  | 'privateParties'
+  | 'festivals'
+  | 'restaurantsHotels'
+  | 'businesses';
+
+interface EventTypeItem {
+  id: EventTypeKey;
+  label: string;
+  icon: React.ReactNode;
+}
+
+type EquipmentTypeKey = 'hasSoundEquipment' | 'hasLighting' | 'hasMicrophone';
+
+interface EquipmentTypeItem {
+  id: EquipmentTypeKey;
+  label: string;
+  icon: React.ReactNode;
+}
+
 const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   language,
   onFilterChange,
@@ -42,7 +77,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     restaurantsHotels: false,
     businesses: false,
   });
-  const [expanded, setExpanded] = useState({
+  const [expanded, setExpanded] = useState<Sections>({
     genre: true,
     bandSize: false,
     ratings: true,
@@ -68,20 +103,20 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     onFilterChange({ selectedBandSize: newSize });
   };
 
-  const handleEquipmentChange = (key, checked) => {
+  const handleEquipmentChange = (key: string, checked: boolean) => {
     const newEquipmentFilters = { ...equipmentFilters, [key]: checked };
     setEquipmentFilters(newEquipmentFilters);
     onFilterChange(newEquipmentFilters);
   };
 
-  const handleEventTypeChange = (key, checked) => {
+  const handleEventTypeChange = (key: string, checked: boolean) => {
     const newEventTypes = { ...eventTypes, [key]: checked };
     setEventTypes(newEventTypes);
     onFilterChange({ eventTypes: newEventTypes });
   };
 
-  const toggleSection = (section) => {
-    setExpanded({ ...expanded, [section]: !expanded[section] });
+  const toggleSection = (section: keyof Sections) => {
+    setExpanded((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
   const genres = [
@@ -99,13 +134,13 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     { value: 'band', label: 'Band (4+)', count: 4 },
   ];
 
-  const equipmentItems = [
+  const equipmentItems: EquipmentTypeItem[] = [
     { id: 'hasSoundEquipment', label: t('sound-equipment'), icon: '🔊' },
     { id: 'hasLighting', label: t('lighting'), icon: '💡' },
     { id: 'hasMicrophone', label: t('microphone'), icon: '🎤' },
   ];
 
-  const eventTypeItems = [
+  const eventTypeItems: EventTypeItem[] = [
     { id: 'weddings', label: t('weddings'), icon: '💍' },
     { id: 'privateParties', label: t('private-parties'), icon: '🎉' },
     { id: 'festivals', label: t('festivals'), icon: '🎪' },
@@ -113,7 +148,11 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     { id: 'businesses', label: t('businesses'), icon: '🏢' },
   ];
 
-  const FilterHeader = ({ icon, title, section }) => (
+  const FilterHeader: React.FC<FilterHeaderProps> = ({
+    icon,
+    title,
+    section,
+  }) => (
     <button
       onClick={() => toggleSection(section)}
       className="flex w-full items-center justify-between rounded-lg p-3 text-left transition-all hover:bg-gray-50"

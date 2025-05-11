@@ -119,9 +119,11 @@ export default function FindArtistsContent({
     // Apply filters immediately
     const filteredResults = artists.filter((artist) => {
       if (filters.minRating && artist.rating < filters.minRating) return false;
-      if (filters.hasSoundEquipment && !artist.hasSoundEquipment) return false;
-      if (filters.hasLighting && !artist.hasLighting) return false;
-      if (filters.hasMicrophone && !artist.hasMicrophone) return false;
+      if (filters.hasSoundEquipment && !artist.equipment.hasSoundEquipment)
+        return false;
+      if (filters.hasLighting && !artist.equipment.hasLighting) return false;
+      if (filters.hasMicrophone && !artist.equipment.hasMicrophone)
+        return false;
       if (filters.selectedGenre && artist.genre !== filters.selectedGenre)
         return false;
       if (
@@ -132,7 +134,10 @@ export default function FindArtistsContent({
       if (filters.eventTypes) {
         const hasMatchingEventType = Object.entries(filters.eventTypes).some(
           ([type, isSelected]) =>
-            isSelected && artist.eventTypes?.includes(type),
+            isSelected &&
+            artist.availableForEvents[
+              type as keyof typeof artist.availableForEvents
+            ],
         );
         if (hasMatchingEventType) return true;
         return false;
