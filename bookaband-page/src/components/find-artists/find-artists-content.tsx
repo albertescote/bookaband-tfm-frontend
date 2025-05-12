@@ -61,6 +61,7 @@ export default function FindArtistsContent({
   useEffect(() => {
     // Initial load based on URL parameters
     if (hasSearched) {
+      console.log('load');
       fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
         ({ offers: newArtists, hasMore, total }) => {
           setArtists(newArtists);
