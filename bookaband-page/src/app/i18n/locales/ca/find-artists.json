@@ -63,5 +63,6 @@
   "applied-filters": "Filtres aplicats",
   "reset-all": "Restablir tot",
   "no-filters": "No hi ha filtres aplicats",
-  "invalid-search-query": "Format de cerca no vàlid"
+  "invalid-search-query": "Format de cerca invàlid",
+  "reviews": "ressenyes"
 }

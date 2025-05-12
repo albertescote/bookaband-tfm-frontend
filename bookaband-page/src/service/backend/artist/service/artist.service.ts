@@ -28,7 +28,7 @@ export async function fetchFilteredArtists(
         params: {
           page,
           pageSize,
-          ...(filters && { filters }),
+          ...(filters || {}),
         },
       })
       .then((res) => res.data),

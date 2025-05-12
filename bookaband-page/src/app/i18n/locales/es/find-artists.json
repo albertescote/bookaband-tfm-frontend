@@ -63,5 +63,6 @@
   "applied-filters": "Filtros aplicados",
   "reset-all": "Restablecer todo",
   "no-filters": "No hay filtros aplicados",
-  "invalid-search-query": "Formato de búsqueda no válido"
+  "invalid-search-query": "Formato de búsqueda inválido",
+  "reviews": "reseñas"
 }

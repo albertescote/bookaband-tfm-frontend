@@ -8,6 +8,10 @@ interface ArtistCardProps {
   language: string;
 }
 
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
   const { t } = useTranslation(language, 'find-artists');
 
@@ -32,7 +36,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
         <div className="mb-3 flex items-center gap-3">
           <span className="flex items-center gap-1 text-xs text-gray-600">
             <Music className="h-3 w-3" />
-            {artist.genre}
+            {capitalizeFirstLetter(artist.genre)}
           </span>
           <span className="flex items-center gap-1 text-xs text-gray-600">
             <MapPin className="h-3 w-3" />
@@ -43,7 +47,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           <span className="font-medium text-gray-800">{artist.rating}</span>
           <span className="text-xs text-gray-500">
-            ({artist.reviewCount} reviews)
+            ({artist.reviewCount} {t('reviews')})
           </span>
         </div>
         <div className="flex items-center justify-between">
