@@ -36,5 +36,28 @@
   "how-it-works-tab": "Cómo funciona",
   "about-tab": "Sobre nosotros",
   "contact-tab": "Contacto",
-  "profile-tab": "Perfil"
+  "profile-tab": "Perfil",
+  "loading": "Cargando...",
+  "slides": [
+    {
+      "title": "Descubre músicos para cualquier evento",
+      "subtitle": "Explora cientos de bandas y artistas disponibles cerca de ti.",
+      "image": "/assets/landing-slides-1.jpeg"
+    },
+    {
+      "title": "Contratación sencilla y segura",
+      "subtitle": "Gestiona contratos y pagos directamente desde nuestra plataforma.",
+      "image": "/assets/landing-slides-2.jpg"
+    },
+    {
+      "title": "Perfiles verificados y reseñas reales",
+      "subtitle": "Consulta valoraciones de otros usuarios antes de tomar tu decisión.",
+      "image": "/assets/landing-slides-3.jpg"
+    },
+    {
+      "title": "Planifica tu evento con tranquilidad",
+      "subtitle": "Utiliza nuestra cobertura de cancelación y soporte técnico en vivo.",
+      "image": "/assets/landing-slides-4.jpg"
+    }
+  ]
 }

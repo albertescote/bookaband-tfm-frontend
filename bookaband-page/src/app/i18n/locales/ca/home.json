@@ -32,5 +32,28 @@
   "how-it-works-tab": "Com funciona",
   "about-tab": "Sobre nosaltres",
   "contact-tab": "Contacte",
-  "profile-tab": "Perfil"
+  "profile-tab": "Perfil",
+  "loading": "Carregant...",
+  "slides": [
+    {
+      "title": "Descobreix músics per a qualsevol esdeveniment",
+      "subtitle": "Explora centenars de bandes i artistes disponibles prop teu.",
+      "image": "/assets/landing-slides-1.jpeg"
+    },
+    {
+      "title": "Contractació senzilla i segura",
+      "subtitle": "Gestiona contractes i pagaments directament des de la nostra plataforma.",
+      "image": "/assets/landing-slides-2.jpg"
+    },
+    {
+      "title": "Perfils verificats i ressenyes reals",
+      "subtitle": "Consulta les valoracions d’altres usuaris abans de prendre una decisió.",
+      "image": "/assets/landing-slides-3.jpg"
+    },
+    {
+      "title": "Planifica el teu esdeveniment amb tranquil·litat",
+      "subtitle": "Utilitza la nostra cobertura de cancel·lació i suport tècnic en directe.",
+      "image": "/assets/landing-slides-4.jpg"
+    }
+  ]
 }

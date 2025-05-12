@@ -39,6 +39,7 @@ export async function fetchFeaturedArtists(
   page: number = 1,
   pageSize: number = 10,
 ): Promise<ArtistsFeaturedResponse> {
+  console.log(page, pageSize);
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get('/offers/featured', {

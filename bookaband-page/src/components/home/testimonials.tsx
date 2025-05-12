@@ -152,15 +152,19 @@ export default function Testimonials({ lng }: TestimonialsParams) {
         <button
           onClick={handlePrev}
           disabled={currentPage === 0}
-          className="group flex items-center justify-center rounded-full p-1 transition hover:bg-teal-100 disabled:cursor-not-allowed md:p-2"
+          className="group flex items-center justify-center rounded-full p-1 transition
+             hover:bg-teal-100 disabled:hover:bg-transparent md:p-2"
           aria-label="Previous testimonials"
         >
           <ChevronLeftCircle
             width={24}
             height={24}
-            className={`${currentPage === 0 ? 'opacity-50' : ''} text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]`}
+            className={`${
+              currentPage === 0 ? 'opacity-50' : ''
+            } text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b] group-disabled:group-hover:text-[#15b7b9]`}
           />
         </button>
+
         {/* Show page indicators for better UX */}
         <div className="flex items-center gap-1 px-2 md:gap-2">
           {Array.from({ length: maxPage + 1 }).map((_, index) => (
@@ -177,13 +181,13 @@ export default function Testimonials({ lng }: TestimonialsParams) {
         <button
           onClick={handleNext}
           disabled={currentPage === maxPage}
-          className="group flex items-center justify-center rounded-full p-1 transition hover:bg-teal-100 disabled:cursor-not-allowed md:p-2"
+          className="group flex items-center justify-center rounded-full p-1 transition hover:bg-teal-100 disabled:hover:bg-transparent md:p-2"
           aria-label="Next testimonials"
         >
           <ChevronRightCircle
             width={24}
             height={24}
-            className={`${currentPage === maxPage ? 'opacity-50' : ''} text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b]`}
+            className={`${currentPage === maxPage ? 'opacity-50' : ''} text-[#15b7b9] transition-colors group-hover:text-[#0d7a7b] group-disabled:group-hover:text-[#15b7b9]`}
           />
         </button>
       </div>
