@@ -4,11 +4,7 @@ import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  Artist,
-  fetchAllArtists,
-  fetchFilteredArtists,
-} from '@/service/backend/artist/artist.service';
+import { fetchFilteredArtists } from '@/service/backend/artist/service/artist.service';
 import SearchBar from './searchBar';
 import ArtistsGrid from './artistsGrid';
 import LoadMoreButton from './loadMoreButton';
@@ -19,6 +15,7 @@ import {
   validateSearchParams,
   ValidationErrors,
 } from '@/lib/validators/searchValidators';
+import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
 
 interface FindArtistsContentProps {
   language: string;
@@ -41,8 +38,8 @@ export default function FindArtistsContent({
     sanitizeText(decodeURIComponent(searchParams.get('date') || '')),
   );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [artists, setArtists] = useState<Artist[]>([]);
-  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
+  const [artists, setArtists] = useState<OfferDetails[]>([]);
+  const [filteredArtists, setFilteredArtists] = useState<OfferDetails[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
   const [hasMore, setHasMore] = useState(true);
@@ -65,7 +62,7 @@ export default function FindArtistsContent({
     // Initial load based on URL parameters
     if (hasSearched) {
       fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-        ({ artists: newArtists, hasMore, total }) => {
+        ({ offers: newArtists, hasMore, total }) => {
           setArtists(newArtists);
           setFilteredArtists(newArtists);
           setHasMore(hasMore);
@@ -74,8 +71,8 @@ export default function FindArtistsContent({
         },
       );
     } else {
-      fetchAllArtists(1, pageSize).then(
-        ({ artists: newArtists, hasMore, total }) => {
+      fetchFilteredArtists(1, pageSize).then(
+        ({ offers: newArtists, hasMore, total }) => {
           setArtists(newArtists);
           setFilteredArtists(newArtists);
           setHasMore(hasMore);
@@ -123,7 +120,7 @@ export default function FindArtistsContent({
     });
 
     fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-      ({ artists: newArtists, hasMore, total }) => {
+      ({ offers: newArtists, hasMore, total }) => {
         setArtists(newArtists);
         setFilteredArtists(newArtists);
         setHasMore(hasMore);
@@ -149,8 +146,8 @@ export default function FindArtistsContent({
       sort: '',
     });
 
-    fetchAllArtists(1, pageSize).then(
-      ({ artists: newArtists, hasMore, total }) => {
+    fetchFilteredArtists(1, pageSize).then(
+      ({ offers: newArtists, hasMore, total }) => {
         setArtists(newArtists);
         setFilteredArtists(newArtists);
         setHasMore(hasMore);
@@ -176,7 +173,7 @@ export default function FindArtistsContent({
         location,
         date,
         searchQuery,
-      }).then(({ artists: newArtists, hasMore, total }) => {
+      }).then(({ offers: newArtists, hasMore, total }) => {
         setArtists((prev) => [...prev, ...newArtists]);
         setFilteredArtists((prev) => [...prev, ...newArtists]);
         setCurrentPage(nextPage);
@@ -185,8 +182,8 @@ export default function FindArtistsContent({
         setTotalArtists(total);
       });
     } else {
-      fetchAllArtists(nextPage, pageSize).then(
-        ({ artists: newArtists, hasMore, total }) => {
+      fetchFilteredArtists(nextPage, pageSize).then(
+        ({ offers: newArtists, hasMore, total }) => {
           setArtists((prev) => [...prev, ...newArtists]);
           setFilteredArtists((prev) => [...prev, ...newArtists]);
           setCurrentPage(nextPage);
@@ -199,32 +196,41 @@ export default function FindArtistsContent({
   };
 
   const handleAdditionalFiltersChange = (filters: any) => {
-    // Apply filters immediately
     const filteredResults = artists.filter((artist) => {
-      if (filters.minRating && artist.rating < filters.minRating) return false;
-      if (filters.hasSoundEquipment && !artist.equipment.hasSoundEquipment)
+      const equipmentSet = new Set(artist.equipment);
+      const eventTypeSet = new Set(artist.eventTypeIds);
+
+      if (filters.minRating && (artist.rating ?? 0) < filters.minRating) {
         return false;
-      if (filters.hasLighting && !artist.equipment.hasLighting) return false;
-      if (filters.hasMicrophone && !artist.equipment.hasMicrophone)
+      }
+      if (filters.hasSoundEquipment && !equipmentSet.has('sound')) {
         return false;
-      if (filters.selectedGenre && artist.genre !== filters.selectedGenre)
+      }
+      if (filters.hasLighting && !equipmentSet.has('lighting')) {
         return false;
+      }
+      if (filters.hasMicrophone && !equipmentSet.has('microphone')) {
+        return false;
+      }
+      if (filters.selectedGenre && artist.genre !== filters.selectedGenre) {
+        return false;
+      }
       if (
         filters.selectedBandSize &&
         artist.bandSize !== filters.selectedBandSize
-      )
-        return false;
-      if (filters.eventTypes) {
-        const hasMatchingEventType = Object.entries(filters.eventTypes).some(
-          ([type, isSelected]) =>
-            isSelected &&
-            artist.availableForEvents[
-              type as keyof typeof artist.availableForEvents
-            ],
-        );
-        if (hasMatchingEventType) return true;
+      ) {
         return false;
       }
+
+      if (filters.eventTypes) {
+        const hasMatchingEventType = Object.entries(filters.eventTypes).some(
+          ([type, isSelected]) => isSelected && eventTypeSet.has(type),
+        );
+        if (!hasMatchingEventType) {
+          return false;
+        }
+      }
+
       return true;
     });
 
@@ -233,7 +239,7 @@ export default function FindArtistsContent({
 
   let allArtists = [...filteredArtists];
   if (sortOption === 'most-popular') {
-    allArtists.sort((a, b) => b.rating - a.rating);
+    allArtists.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   } else if (sortOption === 'price-asc') {
     allArtists.sort((a, b) => {
       if (a.price === undefined && b.price === undefined) return 0;
@@ -249,9 +255,9 @@ export default function FindArtistsContent({
       return b.price - a.price;
     });
   } else if (sortOption === 'name-asc') {
-    allArtists.sort((a, b) => a.name.localeCompare(b.name));
+    allArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
   } else if (sortOption === 'name-desc') {
-    allArtists.sort((a, b) => b.name.localeCompare(a.name));
+    allArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
   }
 
   return (
@@ -278,7 +284,9 @@ export default function FindArtistsContent({
         />
 
         {/* Validation Errors */}
-        {(validationErrors.location || validationErrors.date || validationErrors.searchQuery) && (
+        {(validationErrors.location ||
+          validationErrors.date ||
+          validationErrors.searchQuery) && (
           <div className="mt-4 space-y-2">
             {validationErrors.location && (
               <p className="text-sm text-red-200">
@@ -286,9 +294,7 @@ export default function FindArtistsContent({
               </p>
             )}
             {validationErrors.date && (
-              <p className="text-sm text-red-200">
-                {validationErrors.date}
-              </p>
+              <p className="text-sm text-red-200">{validationErrors.date}</p>
             )}
             {validationErrors.searchQuery && (
               <p className="text-sm text-red-200">

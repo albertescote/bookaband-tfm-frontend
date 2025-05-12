@@ -1,19 +1,26 @@
 import React from 'react';
-import { Artist } from '@/service/backend/artist/artist.service';
 import ArtistCard from './artistCard';
 import NoResults from './noResults';
+import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
 
 interface ArtistsGridProps {
-  artists: Artist[];
+  artists: OfferDetails[];
   language: string;
   hasSearched?: boolean;
 }
 
-const ArtistsGrid: React.FC<ArtistsGridProps> = ({ artists, language, hasSearched = false }) => {
+const ArtistsGrid: React.FC<ArtistsGridProps> = ({
+  artists,
+  language,
+  hasSearched = false,
+}) => {
   if (!artists || artists.length === 0) {
     return (
       <div className="w-full">
-        <NoResults language={language} type={hasSearched ? 'search' : 'filter'} />
+        <NoResults
+          language={language}
+          type={hasSearched ? 'search' : 'filter'}
+        />
       </div>
     );
   }

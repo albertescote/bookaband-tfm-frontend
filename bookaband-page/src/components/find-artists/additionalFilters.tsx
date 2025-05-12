@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mic, Music, PartyPopper, Star, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
+import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 
 interface AdditionalFiltersProps {
   language: string;
@@ -70,13 +71,8 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     hasLighting: false,
     hasMicrophone: false,
   });
-  const [eventTypes, setEventTypes] = useState({
-    weddings: false,
-    privateParties: false,
-    festivals: false,
-    restaurantsHotels: false,
-    businesses: false,
-  });
+  const [eventTypes, setEventTypes] = useState<Record<string, boolean>>({});
+  const [eventTypeItems, setEventTypeItems] = useState<EventTypeItem[]>([]);
   const [expanded, setExpanded] = useState<Sections>({
     genre: true,
     bandSize: false,
@@ -140,13 +136,25 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     { id: 'hasMicrophone', label: t('microphone'), icon: '🎤' },
   ];
 
-  const eventTypeItems: EventTypeItem[] = [
-    { id: 'weddings', label: t('weddings'), icon: '💍' },
-    { id: 'privateParties', label: t('private-parties'), icon: '🎉' },
-    { id: 'festivals', label: t('festivals'), icon: '🎪' },
-    { id: 'restaurantsHotels', label: t('restaurants-hotels'), icon: '🍽️' },
-    { id: 'businesses', label: t('businesses'), icon: '🏢' },
-  ];
+  useEffect(() => {
+    fetchEventTypes().then((data) => {
+      if ('error' in data) return;
+
+      const mappedItems: EventTypeItem[] = data.map((item: any) => ({
+        id: item.id,
+        label: item.label[language] || item.label['en'],
+        icon: item.icon,
+      }));
+
+      setEventTypeItems(mappedItems);
+
+      const initialStates = mappedItems.reduce(
+        (acc, item) => ({ ...acc, [item.id]: false }),
+        {},
+      );
+      setEventTypes(initialStates);
+    });
+  }, [language]);
 
   const FilterHeader: React.FC<FilterHeaderProps> = ({
     icon,
@@ -363,13 +371,13 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
                 hasLighting: false,
                 hasMicrophone: false,
               });
-              setEventTypes({
-                weddings: false,
-                privateParties: false,
-                festivals: false,
-                restaurantsHotels: false,
-                businesses: false,
-              });
+
+              const resetEventTypes = Object.keys(eventTypes).reduce(
+                (acc, key) => ({ ...acc, [key]: false }),
+                {},
+              );
+              setEventTypes(resetEventTypes);
+
               onFilterChange({});
             }}
             className="text-sm font-medium text-[#15b7b9] hover:underline"

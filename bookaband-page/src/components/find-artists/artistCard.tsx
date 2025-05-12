@@ -1,10 +1,10 @@
 import React from 'react';
 import { MapPin, Music, Star } from 'lucide-react';
-import { Artist } from '@/service/backend/artist/artist.service';
 import { useTranslation } from '@/app/i18n/client';
+import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
 
 interface ArtistCardProps {
-  artist: Artist;
+  artist: OfferDetails;
   language: string;
 }
 
@@ -15,8 +15,8 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
     <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
       <div className="relative aspect-square overflow-hidden">
         <img
-          src={artist.image}
-          alt={artist.name}
+          src={artist.imageUrl}
+          alt={artist.bandName}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {artist.featured && (
@@ -27,7 +27,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
       </div>
       <div className="p-5">
         <h3 className="mb-1 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
-          {artist.name}
+          {artist.bandName}
         </h3>
         <div className="mb-3 flex items-center gap-3">
           <span className="flex items-center gap-1 text-xs text-gray-600">
