@@ -239,27 +239,55 @@ export default function FindArtistsContent({
   };
 
   let allArtists = [...filteredArtists];
+
+  const featuredArtists = allArtists.filter((artist) => artist.featured);
+  const nonFeaturedArtists = allArtists.filter((artist) => !artist.featured);
+
   if (sortOption === 'most-popular') {
-    allArtists.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+    nonFeaturedArtists.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   } else if (sortOption === 'price-asc') {
-    allArtists.sort((a, b) => {
+    nonFeaturedArtists.sort((a, b) => {
       if (a.price === undefined && b.price === undefined) return 0;
       if (a.price === undefined) return 1;
       if (b.price === undefined) return -1;
       return a.price - b.price;
     });
   } else if (sortOption === 'price-desc') {
-    allArtists.sort((a, b) => {
+    nonFeaturedArtists.sort((a, b) => {
       if (a.price === undefined && b.price === undefined) return 0;
       if (a.price === undefined) return 1;
       if (b.price === undefined) return -1;
       return b.price - a.price;
     });
   } else if (sortOption === 'name-asc') {
-    allArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
+    nonFeaturedArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
   } else if (sortOption === 'name-desc') {
-    allArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
+    nonFeaturedArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
   }
+
+  if (sortOption === 'most-popular') {
+    featuredArtists.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  } else if (sortOption === 'price-asc') {
+    featuredArtists.sort((a, b) => {
+      if (a.price === undefined && b.price === undefined) return 0;
+      if (a.price === undefined) return 1;
+      if (b.price === undefined) return -1;
+      return a.price - b.price;
+    });
+  } else if (sortOption === 'price-desc') {
+    featuredArtists.sort((a, b) => {
+      if (a.price === undefined && b.price === undefined) return 0;
+      if (a.price === undefined) return 1;
+      if (b.price === undefined) return -1;
+      return b.price - a.price;
+    });
+  } else if (sortOption === 'name-asc') {
+    featuredArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
+  } else if (sortOption === 'name-desc') {
+    featuredArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
+  }
+
+  allArtists = [...featuredArtists, ...nonFeaturedArtists];
 
   return (
     <div className="container mx-auto px-4 py-8">
