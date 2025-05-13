@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Mic, Music, PartyPopper, Star, X } from 'lucide-react';
+import { Euro, Mic, Music, PartyPopper, Star, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
+import * as Slider from '@radix-ui/react-slider';
+import { useAuth } from '@/providers/authProvider';
 
 interface AdditionalFiltersProps {
   language: string;
@@ -19,6 +21,8 @@ interface AdditionalFiltersProps {
     };
     selectedGenre?: string;
     selectedBandSize?: string;
+    minPrice?: number;
+    maxPrice?: number;
   }) => void;
 }
 
@@ -28,6 +32,7 @@ interface Sections {
   ratings: boolean;
   equipment: boolean;
   eventType: boolean;
+  price: boolean;
 }
 
 interface FilterHeaderProps {
@@ -62,6 +67,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   onFilterChange,
 }) => {
   const { t } = useTranslation(language, 'find-artists');
+  const { user } = useAuth();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -73,12 +79,14 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   });
   const [eventTypes, setEventTypes] = useState<Record<string, boolean>>({});
   const [eventTypeItems, setEventTypeItems] = useState<EventTypeItem[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [expanded, setExpanded] = useState<Sections>({
     genre: true,
     bandSize: false,
     ratings: true,
     equipment: false,
     eventType: false,
+    price: false,
   });
 
   const handleRatingChange = (newRating: number) => {
@@ -109,6 +117,11 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     const newEventTypes = { ...eventTypes, [key]: checked };
     setEventTypes(newEventTypes);
     onFilterChange({ eventTypes: newEventTypes });
+  };
+
+  const handlePriceRangeChange = (values: number[]) => {
+    setPriceRange([values[0], values[1]]);
+    onFilterChange({ minPrice: values[0], maxPrice: values[1] });
   };
 
   const toggleSection = (section: keyof Sections) => {
@@ -355,6 +368,46 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
+      {/* Price Range Filter */}
+      {user && (
+        <div className="space-y-4">
+          <FilterHeader
+            icon={<Euro className="h-5 w-5 text-[#15b7b9]" />}
+            title={t('price-range')}
+            section="price"
+          />
+
+          {expanded.price && (
+            <div className="space-y-4 px-2">
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <span>{priceRange[0]}€</span>
+                <span>{priceRange[1]}€</span>
+              </div>
+              <Slider.Root
+                className="relative flex h-5 w-full touch-none select-none items-center"
+                value={priceRange}
+                onValueChange={handlePriceRangeChange}
+                max={1000}
+                step={10}
+                minStepsBetweenThumbs={1}
+              >
+                <Slider.Track className="relative h-1 grow rounded-full bg-gray-200">
+                  <Slider.Range className="absolute h-full rounded-full bg-[#15b7b9]" />
+                </Slider.Track>
+                <Slider.Thumb
+                  className="block h-4 w-4 rounded-full border-2 border-[#15b7b9] bg-white shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  aria-label="Minimum price"
+                />
+                <Slider.Thumb
+                  className="block h-4 w-4 rounded-full border-2 border-[#15b7b9] bg-white shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  aria-label="Maximum price"
+                />
+              </Slider.Root>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Applied Filters Summary */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
@@ -470,11 +523,33 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
                 ),
             )}
 
+            {(priceRange[0] > 0 || priceRange[1] < 1000) && (
+              <div className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]">
+                <span>
+                  {priceRange[0]}€ — {priceRange[1]}€
+                </span>
+                <button
+                  onClick={() => {
+                    setPriceRange([0, 1000]);
+                    onFilterChange({
+                      minPrice: undefined,
+                      maxPrice: undefined,
+                    });
+                  }}
+                  className="ml-1"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            )}
+
             {!rating &&
               !selectedGenre &&
               !selectedBandSize &&
               !Object.values(equipmentFilters).some(Boolean) &&
-              !Object.values(eventTypes).some(Boolean) && (
+              !Object.values(eventTypes).some(Boolean) &&
+              priceRange[0] === 0 &&
+              priceRange[1] === 1000 && (
                 <div className="text-xs italic text-gray-500">
                   {t('no-filters') || 'No filters applied'}
                 </div>

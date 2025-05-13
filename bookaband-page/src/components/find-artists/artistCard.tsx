@@ -56,8 +56,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
               !artist.price ? 'invisible' : ''
             }`}
           >
-            ${artist.price}
-            <span className="text-xs font-normal text-gray-500">/hour</span>
+            <span className="mr-2 text-xs font-normal text-gray-500">
+              {t('from')}
+            </span>
+            {artist.price} €
           </span>
 
           <button className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20">

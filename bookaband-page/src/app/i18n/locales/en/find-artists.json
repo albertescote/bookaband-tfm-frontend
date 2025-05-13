@@ -64,5 +64,6 @@
   "reset-all": "Reset All",
   "no-filters": "No filters applied",
   "invalid-search-query": "Invalid search query format",
-  "reviews": "reviews"
+  "reviews": "reviews",
+  "from": "from..."
 }

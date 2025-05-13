@@ -187,6 +187,20 @@ export default function FindArtistsContent({
         return selectedEventTypes.every((type) => eventTypeSet.has(type));
       }
 
+      if (
+        updatedFilters.minPrice &&
+        artist.price &&
+        artist.price < updatedFilters.minPrice
+      )
+        return false;
+
+      if (
+        updatedFilters.maxPrice &&
+        artist.price &&
+        artist.price > updatedFilters.maxPrice
+      )
+        return false;
+
       return true;
     });
 
@@ -342,29 +356,6 @@ export default function FindArtistsContent({
                   language={language}
                   onFilterChange={handleAdditionalFiltersChange}
                 />
-
-                {/* Price Range */}
-                {user && (
-                  <div className="mb-6">
-                    <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
-                      <span className="text-[#15b7b9]">$</span>
-                      {t('price-range')}
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="number"
-                        placeholder="Min"
-                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                      />
-                      <span className="text-gray-500">—</span>
-                      <input
-                        type="number"
-                        placeholder="Max"
-                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Mobile Apply Button */}

@@ -64,5 +64,6 @@
   "reset-all": "Restablecer todo",
   "no-filters": "No hay filtros aplicados",
   "invalid-search-query": "Formato de búsqueda inválido",
-  "reviews": "reseñas"
+  "reviews": "reseñas",
+  "from": "a partir de..."
 }

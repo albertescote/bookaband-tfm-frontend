@@ -64,5 +64,6 @@
   "reset-all": "Restablir tot",
   "no-filters": "No hi ha filtres aplicats",
   "invalid-search-query": "Format de cerca invàlid",
-  "reviews": "ressenyes"
+  "reviews": "ressenyes",
+  "from": "a partir de..."
 }
