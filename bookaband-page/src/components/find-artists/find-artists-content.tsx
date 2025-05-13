@@ -163,10 +163,13 @@ export default function FindArtistsContent({
         return false;
 
       if (filters.eventTypes) {
-        const matches = Object.entries(filters.eventTypes).some(
-          ([type, isSelected]) => isSelected && eventTypeSet.has(type),
-        );
-        if (!matches) return false;
+        const selectedEventTypes = Object.entries(filters.eventTypes)
+          .filter(([_, isSelected]) => isSelected)
+          .map(([type]) => type);
+
+        if (selectedEventTypes.length === 0) return true;
+
+        return selectedEventTypes.every((type) => eventTypeSet.has(type));
       }
 
       return true;
