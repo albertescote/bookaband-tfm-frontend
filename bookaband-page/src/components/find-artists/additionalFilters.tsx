@@ -202,7 +202,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         />
 
         {expanded.genre && (
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {genres.map((genre) => (
               <button
                 key={genre.value}
@@ -261,7 +261,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         />
 
         {expanded.bandSize && (
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
             {bandSizes.map((size) => (
               <button
                 key={size.value}
@@ -290,7 +290,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         {expanded.equipment && (
           <div className="space-y-2">
             <p className="text-sm text-gray-500">{t('equipment-note')}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
               {equipmentItems.map((item) => (
                 <label
                   key={item.id}
@@ -328,7 +328,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         {expanded.eventType && (
           <div className="space-y-4">
             <p className="text-sm text-gray-500">{t('event-type-note')}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
               {eventTypeItems.map((item) => (
                 <label
                   key={item.id}
@@ -386,7 +386,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
           </button>
         </div>
 
-        <div className="max-h-16 overflow-y-auto rounded-lg bg-gray-50 p-2">
+        <div className="max-h-32 overflow-y-auto rounded-lg bg-gray-50 p-2 sm:max-h-16">
           <div className="flex flex-wrap gap-2">
             {rating > 0 && (
               <div className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]">

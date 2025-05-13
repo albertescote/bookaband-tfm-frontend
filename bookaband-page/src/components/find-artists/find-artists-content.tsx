@@ -247,7 +247,7 @@ export default function FindArtistsContent({
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
-      <div className="mb-10 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
+      <div className="mb-6 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
         <h1 className="mb-3 text-4xl font-bold">{t('find-artists')}</h1>
         <p className="mb-6 text-lg opacity-90">{t('hero-subtitle')}</p>
 
@@ -290,54 +290,93 @@ export default function FindArtistsContent({
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col gap-8 lg:flex-row">
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
+        {/* Mobile Filter Toggle Button */}
+        {hasSearched && (
+          <button
+            onClick={() => setIsFilterOpen(true)}
+            className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 lg:hidden"
+          >
+            <svg
+              className="h-5 w-5 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+              />
+            </svg>
+            {t('filters')}
+          </button>
+        )}
+
         {/* Filters Sidebar */}
         {hasSearched && (
           <div
-            className={`w-full rounded-xl border border-gray-200 bg-white p-6 shadow-md transition-all lg:sticky lg:top-4 lg:w-80 lg:self-start ${
+            className={`fixed inset-0 z-50 bg-white lg:static lg:sticky lg:top-4 lg:z-auto lg:w-80 lg:self-start lg:rounded-xl lg:border lg:border-gray-200 lg:bg-white lg:shadow-md lg:transition-all ${
               isFilterOpen ? 'block' : 'hidden lg:block'
             }`}
           >
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-[#565d6d]">
-                {t('filters')}
-              </h2>
-              <button
-                onClick={() => setIsFilterOpen(false)}
-                className="text-gray-500 hover:text-gray-700 lg:hidden"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Additional Filters */}
-            <AdditionalFilters
-              language={language}
-              onFilterChange={handleAdditionalFiltersChange}
-            />
-
-            {/* Price Range */}
-            {user && (
-              <div className="mb-6">
-                <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
-                  <span className="text-[#15b7b9]">$</span>
-                  {t('price-range')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                  />
-                  <span className="text-gray-500">—</span>
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                  />
+            <div className="flex h-full flex-col lg:h-auto">
+              <div className="sticky top-0 z-10 border-b border-gray-200 bg-white p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-[#565d6d] sm:text-xl">
+                    {t('filters')}
+                  </h2>
+                  <button
+                    onClick={() => setIsFilterOpen(false)}
+                    className="text-gray-500 hover:text-gray-700 lg:hidden"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
-            )}
+
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+                {/* Additional Filters */}
+                <AdditionalFilters
+                  language={language}
+                  onFilterChange={handleAdditionalFiltersChange}
+                />
+
+                {/* Price Range */}
+                {user && (
+                  <div className="mb-6">
+                    <label className="mb-2 flex items-center gap-2 font-medium text-gray-700">
+                      <span className="text-[#15b7b9]">$</span>
+                      {t('price-range')}
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                      />
+                      <span className="text-gray-500">—</span>
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:border-[#15b7b9] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Apply Button */}
+              <div className="sticky bottom-0 border-t border-gray-200 bg-white p-4 lg:hidden">
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="w-full rounded-lg bg-[#15b7b9] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#1e97a8] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                >
+                  {t('apply-filters') || 'Apply Filters'}
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
