@@ -6,7 +6,7 @@ import { BackendError } from '@/service/backend/shared/domain/backendError';
 
 export async function fetchEventTypes(): Promise<EventType[] | BackendError> {
   return axiosInstance
-    .get('/event-types', {})
+    .get('/event-types')
     .then((res) => res.data)
     .catch((error) => {
       return error.response.data;

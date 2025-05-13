@@ -62,18 +62,18 @@ export const validateSearchQuery = (query: string): boolean => {
  * @returns Object containing any validation errors
  */
 export const validateSearchParams = (
-  params: { location: string; date: string; searchQuery: string },
+  params: { location?: string; date?: string; searchQuery?: string },
   t: (key: string) => string,
 ): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!params.location.trim()) {
+  if (!params.location || !params.location.trim()) {
     errors.location = t('location-required');
   } else if (!validateLocation(params.location)) {
     errors.location = t('invalid-location');
   }
 
-  if (!params.date.trim()) {
+  if (!params.date || !params.date.trim()) {
     errors.date = t('date-required');
   } else if (!validateDate(params.date)) {
     errors.date = t('invalid-date');

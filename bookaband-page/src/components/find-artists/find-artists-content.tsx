@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { fetchFilteredArtists } from '@/service/backend/artist/service/artist.service';
+import {
+  ArtistsDetailsFilteredResponse,
+  fetchFilteredArtists,
+} from '@/service/backend/artist/service/artist.service';
 import SearchBar from './searchBar';
 import ArtistsGrid from './artistsGrid';
 import LoadMoreButton from './loadMoreButton';
@@ -19,106 +22,71 @@ import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
 
 interface FindArtistsContentProps {
   language: string;
+  initialData: ArtistsDetailsFilteredResponse;
+  hasSearchedInitial: boolean;
+  initialFilters: {
+    location: string;
+    date: string;
+    query: string;
+  };
 }
 
 export default function FindArtistsContent({
   language,
+  initialData,
+  hasSearchedInitial,
+  initialFilters,
 }: FindArtistsContentProps) {
   const { t } = useTranslation(language, 'find-artists');
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState(
-    sanitizeText(decodeURIComponent(searchParams.get('q') || '')),
-  );
-  const [location, setLocation] = useState(
-    sanitizeText(decodeURIComponent(searchParams.get('location') || '')),
-  );
-  const [date, setDate] = useState(
-    sanitizeText(decodeURIComponent(searchParams.get('date') || '')),
-  );
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [artists, setArtists] = useState<OfferDetails[]>([]);
-  const [filteredArtists, setFilteredArtists] = useState<OfferDetails[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useAuth();
+
   const pageSize = 6;
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [totalArtists, setTotalArtists] = useState<number>(0);
-  const [sortOption, setSortOption] = useState<string>(
+
+  const [searchQuery, setSearchQuery] = useState(initialFilters.query);
+  const [location, setLocation] = useState(initialFilters.location);
+  const [date, setDate] = useState(initialFilters.date);
+  const [sortOption, setSortOption] = useState(
     sanitizeText(
       decodeURIComponent(searchParams.get('sort') || 'most-popular'),
     ),
   );
-  const [hasSearched, setHasSearched] = useState(
-    !!searchParams.get('location') && !!searchParams.get('date'),
-  );
+  const [hasSearched, setHasSearched] = useState(hasSearchedInitial);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {},
   );
-  const { user } = useAuth();
 
-  useEffect(() => {
-    // Initial load based on URL parameters
-    if (hasSearched) {
-      console.log('load');
-      fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-        ({ offers: newArtists, hasMore, total }) => {
-          setArtists(newArtists);
-          setFilteredArtists(newArtists);
-          setHasMore(hasMore);
-          setCurrentPage(1);
-          setTotalArtists(total);
-        },
-      );
-    } else {
-      fetchFilteredArtists(1, pageSize).then(
-        ({ offers: newArtists, hasMore, total }) => {
-          setArtists(newArtists);
-          setFilteredArtists(newArtists);
-          setHasMore(hasMore);
-          setCurrentPage(1);
-          setTotalArtists(total);
-        },
-      );
-    }
-  }, []);
+  const [artists, setArtists] = useState<OfferDetails[]>(initialData.offers);
+  const [filteredArtists, setFilteredArtists] = useState<OfferDetails[]>(
+    initialData.offers,
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialData.hasMore);
+  const [totalArtists, setTotalArtists] = useState(initialData.total);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const updateUrlParams = (params: Record<string, string>) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
-
-    // Update or remove parameters
     Object.entries(params).forEach(([key, value]) => {
-      if (value) {
-        current.set(key, encodeURIComponent(sanitizeText(value)));
-      } else {
-        current.delete(key);
-      }
+      if (value) current.set(key, encodeURIComponent(sanitizeText(value)));
+      else current.delete(key);
     });
-
-    const search = current.toString();
-    const query = search ? `?${search}` : '';
+    const query = current.toString() ? `?${current.toString()}` : '';
     router.push(`${window.location.pathname}${query}`);
   };
 
   const handleSearch = () => {
-    // Reset validation errors
     setValidationErrors({});
-
-    // Validate inputs
     const errors = validateSearchParams({ location, date, searchQuery }, t);
-
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
       return;
     }
 
-    updateUrlParams({
-      location,
-      date,
-      q: searchQuery,
-      sort: sortOption,
-    });
+    updateUrlParams({ location, date, q: searchQuery, sort: sortOption });
 
     fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
       ({ offers: newArtists, hasMore, total }) => {
@@ -133,32 +101,22 @@ export default function FindArtistsContent({
   };
 
   const handleClearSearch = () => {
-    setHasSearched(false);
     setLocation('');
     setDate('');
     setSearchQuery('');
     setSortOption('most-popular');
+    setHasSearched(false);
+    updateUrlParams({ location: '', date: '', q: '', sort: '' });
 
-    // Clear URL parameters
-    updateUrlParams({
-      location: '',
-      date: '',
-      q: '',
-      sort: '',
+    fetchFilteredArtists(1, pageSize).then(({ offers, hasMore, total }) => {
+      setArtists(offers);
+      setFilteredArtists(offers);
+      setHasMore(hasMore);
+      setCurrentPage(1);
+      setTotalArtists(total);
     });
-
-    fetchFilteredArtists(1, pageSize).then(
-      ({ offers: newArtists, hasMore, total }) => {
-        setArtists(newArtists);
-        setFilteredArtists(newArtists);
-        setHasMore(hasMore);
-        setCurrentPage(1);
-        setTotalArtists(total);
-      },
-    );
   };
 
-  // Update URL when sort option changes
   useEffect(() => {
     if (hasSearched) {
       updateUrlParams({ sort: sortOption });
@@ -169,73 +127,52 @@ export default function FindArtistsContent({
     setIsLoadingMore(true);
     const nextPage = currentPage + 1;
 
-    if (hasSearched) {
-      fetchFilteredArtists(nextPage, pageSize, {
-        location,
-        date,
-        searchQuery,
-      }).then(({ offers: newArtists, hasMore, total }) => {
+    const filterOptions = hasSearched
+      ? { location, date, searchQuery }
+      : undefined;
+
+    fetchFilteredArtists(nextPage, pageSize, filterOptions).then(
+      ({ offers: newArtists, hasMore, total }) => {
         setArtists((prev) => [...prev, ...newArtists]);
         setFilteredArtists((prev) => [...prev, ...newArtists]);
         setCurrentPage(nextPage);
         setHasMore(hasMore);
         setIsLoadingMore(false);
         setTotalArtists(total);
-      });
-    } else {
-      fetchFilteredArtists(nextPage, pageSize).then(
-        ({ offers: newArtists, hasMore, total }) => {
-          setArtists((prev) => [...prev, ...newArtists]);
-          setFilteredArtists((prev) => [...prev, ...newArtists]);
-          setCurrentPage(nextPage);
-          setHasMore(hasMore);
-          setIsLoadingMore(false);
-          setTotalArtists(total);
-        },
-      );
-    }
+      },
+    );
   };
 
   const handleAdditionalFiltersChange = (filters: any) => {
-    const filteredResults = artists.filter((artist) => {
+    const filtered = artists.filter((artist) => {
       const equipmentSet = new Set(artist.equipment);
       const eventTypeSet = new Set(artist.eventTypeIds);
 
-      if (filters.minRating && (artist.rating ?? 0) < filters.minRating) {
+      if (filters.minRating && (artist.rating ?? 0) < filters.minRating)
         return false;
-      }
-      if (filters.hasSoundEquipment && !equipmentSet.has('sound')) {
+      if (filters.hasSoundEquipment && !equipmentSet.has('sound')) return false;
+      if (filters.hasLighting && !equipmentSet.has('lighting')) return false;
+      if (filters.hasMicrophone && !equipmentSet.has('microphone'))
         return false;
-      }
-      if (filters.hasLighting && !equipmentSet.has('lighting')) {
+      if (filters.selectedGenre && artist.genre !== filters.selectedGenre)
         return false;
-      }
-      if (filters.hasMicrophone && !equipmentSet.has('microphone')) {
-        return false;
-      }
-      if (filters.selectedGenre && artist.genre !== filters.selectedGenre) {
-        return false;
-      }
       if (
         filters.selectedBandSize &&
         artist.bandSize !== filters.selectedBandSize
-      ) {
+      )
         return false;
-      }
 
       if (filters.eventTypes) {
-        const hasMatchingEventType = Object.entries(filters.eventTypes).some(
+        const matches = Object.entries(filters.eventTypes).some(
           ([type, isSelected]) => isSelected && eventTypeSet.has(type),
         );
-        if (!hasMatchingEventType) {
-          return false;
-        }
+        if (!matches) return false;
       }
 
       return true;
     });
 
-    setFilteredArtists(filteredResults);
+    setFilteredArtists(filtered);
   };
 
   let allArtists = [...filteredArtists];
