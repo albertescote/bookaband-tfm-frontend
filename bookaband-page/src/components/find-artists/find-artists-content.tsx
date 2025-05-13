@@ -67,6 +67,7 @@ export default function FindArtistsContent({
   const [totalArtists, setTotalArtists] = useState(initialData.total);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<any>({});
 
   const updateUrlParams = (params: Record<string, string>) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -143,27 +144,41 @@ export default function FindArtistsContent({
     );
   };
 
-  const handleAdditionalFiltersChange = (filters: any) => {
+  const handleAdditionalFiltersChange = (newFilters: any) => {
+    const updatedFilters = { ...activeFilters, ...newFilters };
+    setActiveFilters(updatedFilters);
+
     const filtered = artists.filter((artist) => {
       const equipmentSet = new Set(artist.equipment);
       const eventTypeSet = new Set(artist.eventTypeIds);
 
-      if (filters.minRating && (artist.rating ?? 0) < filters.minRating)
-        return false;
-      if (filters.hasSoundEquipment && !equipmentSet.has('sound')) return false;
-      if (filters.hasLighting && !equipmentSet.has('lighting')) return false;
-      if (filters.hasMicrophone && !equipmentSet.has('microphone'))
-        return false;
-      if (filters.selectedGenre && artist.genre !== filters.selectedGenre)
-        return false;
       if (
-        filters.selectedBandSize &&
-        artist.bandSize !== filters.selectedBandSize
+        updatedFilters.minRating &&
+        (artist.rating ?? 0) < updatedFilters.minRating
       )
         return false;
 
-      if (filters.eventTypes) {
-        const selectedEventTypes = Object.entries(filters.eventTypes)
+      if (updatedFilters.hasSoundEquipment && !equipmentSet.has('sound'))
+        return false;
+      if (updatedFilters.hasLighting && !equipmentSet.has('lighting'))
+        return false;
+      if (updatedFilters.hasMicrophone && !equipmentSet.has('microphone'))
+        return false;
+
+      if (
+        updatedFilters.selectedGenre &&
+        artist.genre !== updatedFilters.selectedGenre
+      )
+        return false;
+
+      if (
+        updatedFilters.selectedBandSize &&
+        artist.bandSize !== updatedFilters.selectedBandSize
+      )
+        return false;
+
+      if (updatedFilters.eventTypes) {
+        const selectedEventTypes = Object.entries(updatedFilters.eventTypes)
           .filter(([_, isSelected]) => isSelected)
           .map(([type]) => type);
 
