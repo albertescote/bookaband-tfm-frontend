@@ -1,181 +1,182 @@
-'use client';
-import { useTranslation } from '@/app/i18n/client';
-import { useRouter } from 'next/navigation';
-import { User } from '@/service/backend/user/domain/user';
-import Link from 'next/link';
-import { CheckIcon, TrashIcon, XIcon } from '@heroicons/react/solid';
-import { Role } from '@/service/backend/user/domain/role';
-import React, { useEffect, useState } from 'react';
-import {
-  Invitation,
-  InvitationStatus,
-} from '@/service/backend/invitation/domain/invitation';
-import { getRandomColor } from '@/lib/utils';
-import {
-  deleteBand,
-  getUserBands,
-} from '@/service/backend/band/service/band.service';
-import {
-  acceptInvitation,
-  declineInvitation,
-  getUserInvitations,
-} from '@/service/backend/invitation/service/invitation.service';
-import { UserBand } from '@/service/backend/band/domain/userBand';
+import React from 'react';
 
-export default function ProfileCard({
-  language,
-  user,
-}: {
-  language: string;
-  user: User | null;
-}) {
-  const { t } = useTranslation(language, 'profile');
-  const router = useRouter();
-  const [invitations, setInvitations] = useState<Invitation[] | undefined>([]);
-  const [userBands, setUserBands] = useState<UserBand[] | undefined>(undefined);
+interface EventSummary {
+  id: string;
+  title: string;
+  date: string;
+}
 
-  const loadBands = () => {
-    getUserBands().then((userBandsArray) => {
-      setUserBands(userBandsArray);
-    });
-  };
+interface Musician {
+  id: string;
+  name: string;
+  imageUrl?: string;
+}
 
-  const loadInvitations = () => {
-    getUserInvitations().then((invitations) => {
-      const pendingInvitations = invitations?.filter((invitation) => {
-        return invitation.status === InvitationStatus.PENDING;
-      });
-      setInvitations(pendingInvitations);
-    });
-  };
+interface Rating {
+  id: string;
+  musicianName: string;
+  comment: string;
+  score: number;
+}
 
-  useEffect(() => {
-    loadBands();
-    loadInvitations();
-  }, []);
+interface ClientProfileProps {
+  fullName: string;
+  email?: string;
+  imageUrl?: string;
+  bio?: string;
+  location?: string;
+  joinedDate: string;
 
-  const navigateToCreateBand = () => {
-    router.push(`/${language}/band`);
-  };
+  genres?: string[];
+  eventPreferences?: string[];
+  averageBudget?: number;
+  eventFrequency?: 'occasional' | 'monthly' | 'quarterly';
 
-  const handleDeleteBand = (id: string) => {
-    deleteBand(id).then(() => {
-      loadBands();
-    });
-  };
+  musiciansContacted: number;
+  eventsOrganized: number;
+  upcomingEvents: EventSummary[];
+  favoriteMusicians: Musician[];
+  ratingsGiven: Rating[];
+}
 
-  const handleAcceptInvitation = (id: string) => {
-    acceptInvitation(id).then(() => {
-      loadBands();
-      loadInvitations();
-    });
-  };
-
-  const handleDeclineInvitation = (id: string) => {
-    declineInvitation(id).then(() => {
-      loadInvitations();
-    });
-  };
-
+const ClientProfile: React.FC<ClientProfileProps> = ({
+  fullName,
+  email,
+  imageUrl,
+  bio,
+  location,
+  joinedDate,
+  genres = [],
+  eventPreferences = [],
+  averageBudget,
+  eventFrequency,
+  musiciansContacted,
+  eventsOrganized,
+  upcomingEvents,
+  favoriteMusicians,
+  ratingsGiven,
+}) => {
   return (
-    <div className="flex flex-col items-center">
-      {user?.imageUrl ? (
-        <img
-          src={user.imageUrl}
-          alt={user.firstName}
-          className="h-28 w-28 rounded-full object-cover"
-        />
-      ) : (
-        <div
-          className="flex h-28 w-28 items-center justify-center rounded-full text-4xl font-bold text-white shadow-md transition-all"
-          style={{
-            backgroundColor: getRandomColor(user?.firstName ?? 'dummy'),
-          }}
-        >
-          {user?.firstName ? user.firstName.charAt(0) : '?'}
-        </div>
-      )}
-      <h2 className="mt-4 text-2xl font-semibold text-gray-800">
-        {user?.firstName} {user?.familyName}
-      </h2>
-      <p className="mt-2 text-gray-500">{user?.email}</p>
-      <p className="mt-4 text-sm text-gray-600">
-        {t('role')}: <span className="text-gray-800">{user?.role}</span>
-      </p>
-      {user?.role === Role.Musician && (
-        <div className="mt-8 w-full">
-          <h3 className="text-lg font-semibold text-gray-800">
-            {t('your-bands')}
-          </h3>
-          {userBands && userBands.length > 0 ? (
-            <ul className="mb-2 mt-4 space-y-2">
-              {userBands.map((band) => (
-                <li
-                  key={band.id}
-                  className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"
-                >
-                  <Link href={`/band?id=${band.id}`}>
-                    <span className="font-medium text-blue-600 hover:underline">
-                      {band.name}
-                    </span>
-                  </Link>
-                  <button
-                    onClick={() => handleDeleteBand(band.id)}
-                    className="ml-4 text-red-500 hover:text-red-600"
-                  >
-                    <TrashIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mb-2 mt-4 text-center text-sm text-gray-500">
-              {t('no-bands')}
-            </p>
-          )}
-          <div className="mt-4 flex flex-row justify-center space-x-2">
-            <button
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] px-3 py-1.5 font-bold text-white transition hover:from-[#b4c6ff] hover:to-[#b4e6ff]"
-              onClick={navigateToCreateBand}
-            >
-              {t('create-band-button')}
-            </button>
+    <div className="mx-auto max-w-4xl space-y-6 rounded-3xl bg-white p-6 shadow-xl">
+      {/* Header */}
+      <div className="flex items-center space-x-4">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={fullName}
+            className="h-20 w-20 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-500 text-2xl font-bold text-white">
+            {fullName.charAt(0)}
           </div>
-          <h3 className="mt-4 text-lg font-semibold text-gray-800">
-            {t('your-invitations')}
-          </h3>
-          {invitations && invitations.length > 0 ? (
-            <ul className="mb-2 mt-4 space-y-2">
-              {invitations.map((invitation) => (
-                <li
-                  key={invitation.id}
-                  className="flex items-center justify-between rounded-lg border border-gray-300 p-4 shadow-sm"
-                >
-                  <span>{invitation.bandName}</span>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleAcceptInvitation(invitation.id)}
-                      className="text-green-500 hover:text-green-600"
-                    >
-                      <CheckIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                    <button
-                      onClick={() => handleDeclineInvitation(invitation.id)}
-                      className="text-red-500 hover:text-red-600"
-                    >
-                      <XIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                  </div>
-                </li>
-              ))}
+        )}
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-800">{fullName}</h2>
+          {bio && <p className="text-sm text-gray-600">{bio}</p>}
+          {location && <p className="text-sm text-gray-500">📍 {location}</p>}
+          <p className="text-sm text-gray-400">Joined: {joinedDate}</p>
+        </div>
+      </div>
+
+      {/* Preferences */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded-xl bg-gray-50 p-4">
+          <h3 className="mb-2 font-semibold">Preferences</h3>
+          <p>
+            <strong>Genres:</strong> {genres.join(', ') || '—'}
+          </p>
+          <p>
+            <strong>Event Types:</strong> {eventPreferences.join(', ') || '—'}
+          </p>
+          <p>
+            <strong>Average Budget:</strong>{' '}
+            {averageBudget ? `€${averageBudget}` : '—'}
+          </p>
+          <p>
+            <strong>Event Frequency:</strong> {eventFrequency || '—'}
+          </p>
+        </div>
+
+        {/* Activity Overview */}
+        <div className="rounded-xl bg-gray-50 p-4">
+          <h3 className="mb-2 font-semibold">Activity Overview</h3>
+          <p>
+            <strong>Musicians Contacted:</strong> {musiciansContacted}
+          </p>
+          <p>
+            <strong>Events Organized:</strong> {eventsOrganized}
+          </p>
+          <div>
+            <strong>Upcoming Events:</strong>
+            <ul className="ml-5 list-disc text-sm">
+              {upcomingEvents.length > 0 ? (
+                upcomingEvents.map((event) => (
+                  <li key={event.id}>
+                    {event.title} — {event.date}
+                  </li>
+                ))
+              ) : (
+                <li>No upcoming events</li>
+              )}
             </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Favorite Musicians */}
+      <div>
+        <h3 className="mb-2 text-lg font-semibold">Favorite Musicians</h3>
+        <div className="flex flex-wrap gap-4">
+          {favoriteMusicians.length > 0 ? (
+            favoriteMusicians.map((musician) => (
+              <div
+                key={musician.id}
+                className="flex items-center space-x-2 rounded-lg bg-gray-100 p-2"
+              >
+                {musician.imageUrl ? (
+                  <img
+                    src={musician.imageUrl}
+                    alt={musician.name}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 text-xs text-white">
+                    {musician.name.charAt(0)}
+                  </div>
+                )}
+                <span className="text-sm">{musician.name}</span>
+              </div>
+            ))
           ) : (
-            <p className="mb-2 mt-4 text-center text-sm text-gray-500">
-              {t('no-invitations')}
-            </p>
+            <p className="text-sm text-gray-500">No favorites yet</p>
           )}
         </div>
-      )}
+      </div>
+
+      {/* Ratings Given */}
+      <div>
+        <h3 className="mb-2 text-lg font-semibold">Ratings Given</h3>
+        {ratingsGiven.length > 0 ? (
+          <ul className="space-y-3">
+            {ratingsGiven.map((rating) => (
+              <li
+                key={rating.id}
+                className="rounded-lg border bg-white p-3 shadow-sm"
+              >
+                <p className="font-medium">{rating.musicianName}</p>
+                <p className="text-sm text-gray-600">
+                  ⭐ {rating.score}/5 — {rating.comment}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-gray-500">No ratings given yet</p>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default ClientProfile;

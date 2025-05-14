@@ -28,7 +28,10 @@ export default async function Footer({ language }: { language: string }) {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link href={`/${language}/search`} className="hover:underline">
+                <Link
+                  href={`/${language}/find-artists`}
+                  className="hover:underline"
+                >
                   {t('navigation.search')}
                 </Link>
               </li>
