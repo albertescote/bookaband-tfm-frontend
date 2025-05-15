@@ -17,6 +17,23 @@ interface PaymentMethodsCardProps {
   language: string;
 }
 
+const brandLogo = (brand?: string): JSX.Element | null => {
+  switch ((brand || '').toLowerCase()) {
+    case 'visa':
+      return <img src="/assets/visa-logo.svg" alt="Visa" className="h-10" />;
+    case 'mastercard':
+      return (
+        <img
+          src="/assets/mastercard-logo.svg"
+          alt="Mastercard"
+          className="h-10"
+        />
+      );
+    default:
+      return null;
+  }
+};
+
 export default function PaymentMethodsCard({
   methods,
   setError,
@@ -74,9 +91,12 @@ export default function PaymentMethodsCard({
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-800">
-          {t('paymentMethods')}
-        </h2>
+        <div className="flex items-center gap-2">
+          <CreditCard className="h-5 w-5 text-[#15b7b9]" />
+          <h2 className="text-lg font-semibold text-gray-800">
+            {t('paymentMethods')}
+          </h2>
+        </div>
         <button
           onClick={() => {
             setEditingMethod(null);
@@ -98,14 +118,26 @@ export default function PaymentMethodsCard({
           {paymentMethods.map((method) => (
             <li
               key={method.id}
-              className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 p-4 shadow-sm"
+              className="rounded-xl border border-gray-200 bg-gray-50 p-4 shadow-sm"
             >
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+              <div className="mb-2 flex justify-between">
+                <div className="text-sm font-semibold text-gray-600">
+                  {t(`typeLabels.${method.type}`)}
+                </div>
+                <div>
+                  {method.alias && (
+                    <span className="ml-1 text-sm italic text-gray-500">
+                      {method.alias}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-[#15b7b9]" />
+                  {brandLogo(method.brand)}
                   <span className="text-sm text-gray-700">
-                    {method.brand || t('paymentMethodsCard.card')} ••••{' '}
-                    {method.lastFour}
+                    •••• {method.lastFour}
                   </span>
                   {method.isDefault && (
                     <span className="ml-2 rounded-full bg-[#15b7b9]/10 px-2 py-0.5 text-xs text-[#15b7b9]">
@@ -113,30 +145,23 @@ export default function PaymentMethodsCard({
                     </span>
                   )}
                 </div>
-                {method.alias && (
-                  <span className="ml-7 text-xs italic text-gray-500">
-                    {method.alias}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex items-center gap-3 text-sm text-gray-400">
-                <span>{method.type}</span>
-                <button
-                  onClick={() => {
-                    setEditingMethod(method);
-                    setShowModal(true);
-                  }}
-                  className="text-[#15b7b9] hover:underline"
-                >
-                  {t('paymentMethodsCard.edit')}
-                </button>
-                <button
-                  onClick={() => handleDelete(method.id)}
-                  className="text-red-500 hover:underline"
-                >
-                  {t('paymentMethodsCard.delete')}
-                </button>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <button
+                    onClick={() => {
+                      setEditingMethod(method);
+                      setShowModal(true);
+                    }}
+                    className="text-[#15b7b9] hover:underline"
+                  >
+                    {t('paymentMethodsCard.edit')}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(method.id)}
+                    className="text-red-500 hover:underline"
+                  >
+                    {t('paymentMethodsCard.delete')}
+                  </button>
+                </div>
               </div>
             </li>
           ))}

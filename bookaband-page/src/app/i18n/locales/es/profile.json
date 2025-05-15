@@ -47,5 +47,11 @@
     "title": "Algo salió mal",
     "description": "No pudimos cargar tu información de perfil. Por favor, inténtalo más tarde.",
     "retry": "Reintentar"
+  },
+  "typeLabels": {
+    "credit_card": "Tarjeta de crédito",
+    "debit_card": "Tarjeta de débito",
+    "paypal": "PayPal",
+    "bank_transfer": "Transferencia bancaria"
   }
 }

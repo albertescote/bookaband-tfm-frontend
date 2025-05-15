@@ -20,29 +20,24 @@ export default function UserMenu({ language }: { language: string }) {
       }
     }
 
-    if (menuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [menuOpen]);
+  }, []);
 
   if (!user) return null;
 
   return (
     <div className="relative" ref={menuRef}>
       <button
-        onClick={() => setMenuOpen(!menuOpen)}
-        className="flex items-center gap-3 rounded-full py-2 pl-2 transition-colors duration-200 hover:bg-gray-100"
-        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((prev) => !prev)}
+        className="flex items-center gap-3 rounded-full px-2 py-1 transition hover:bg-gray-100 focus:outline-none"
         aria-haspopup="true"
+        aria-expanded={menuOpen}
       >
-        <div className="flex items-center gap-2 text-[#565d6d]">
-          <span className="hidden text-base font-medium  md:block">
+        <div className="flex items-center gap-2 text-sm text-gray-700">
+          <span className="hidden font-medium md:block">
             {user.firstName} {user.familyName}
           </span>
           <ChevronDown
@@ -57,9 +52,9 @@ export default function UserMenu({ language }: { language: string }) {
       </button>
 
       {menuOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-56 rounded-lg bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute right-0 z-20 mt-3 w-60 origin-top-right rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 transition-all">
           <div className="border-b border-gray-100 px-4 py-3">
-            <p className="text-sm font-medium text-gray-900">
+            <p className="text-sm font-semibold text-gray-900">
               {user.firstName} {user.familyName}
             </p>
             <p className="truncate text-xs text-gray-500">
@@ -67,31 +62,36 @@ export default function UserMenu({ language }: { language: string }) {
             </p>
           </div>
 
-          <div className="py-1">
+          <div className="flex flex-col gap-1 py-2">
             <Link
               href={`/${language}/bookings`}
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
             >
               <CalendarCheck2 size={16} />
-              <span>{t('bookings-tab')}</span>
+              {t('bookings-tab')}
             </Link>
 
             <Link
               href={`/${language}/profile`}
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
             >
               <User size={16} />
-              <span>{t('profile-tab')}</span>
+              {t('profile-tab')}
             </Link>
           </div>
 
-          <div className="border-t border-gray-100 py-1">
+          <div className="border-t border-gray-100 py-2">
             <button
-              onClick={logoutUser}
-              className="flex w-full items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              onClick={() => {
+                logoutUser();
+                setMenuOpen(false);
+              }}
+              className="flex w-full items-center gap-3 px-4 py-2 text-sm text-red-600 transition hover:bg-gray-50"
             >
               <LogOut size={16} />
-              <span>{t('sign-out')}</span>
+              {t('sign-out')}
             </button>
           </div>
         </div>

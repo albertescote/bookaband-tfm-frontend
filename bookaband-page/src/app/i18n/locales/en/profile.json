@@ -47,5 +47,11 @@
     "title": "Something went wrong",
     "description": "We couldn’t load your profile information. Please try again later.",
     "retry": "Retry"
+  },
+  "typeLabels": {
+    "credit_card": "Credit Card",
+    "debit_card": "Debit Card",
+    "paypal": "PayPal",
+    "bank_transfer": "Bank Transfer"
   }
 }

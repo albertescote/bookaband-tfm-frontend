@@ -47,5 +47,11 @@
     "title": "S'ha produït un error",
     "description": "No s'ha pogut carregar la informació del perfil. Torna-ho a provar més tard.",
     "retry": "Torna-ho a provar"
+  },
+  "typeLabels": {
+    "credit_card": "Targeta de crèdit",
+    "debit_card": "Targeta de dèbit",
+    "paypal": "PayPal",
+    "bank_transfer": "Transferència bancària"
   }
 }

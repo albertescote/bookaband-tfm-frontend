@@ -8,6 +8,7 @@ import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { useAuth } from '@/providers/authProvider';
 import { toast } from 'react-hot-toast';
+import { getAvatar } from '@/components/shared/avatar';
 
 export default function MessagesMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -124,9 +125,7 @@ export default function MessagesMenu({ language }: { language: string }) {
                       }}
                       className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 hover:bg-[#15b7b9]/5"
                     >
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9]/20 text-[#15b7b9]">
-                        <MessageSquareText size={16} />
-                      </div>
+                      {getAvatar(45, 45, chat.band.imageUrl, chat.band.name)}
                       <div className="min-w-0 flex-1">
                         <div className="mb-1 flex items-center justify-between">
                           <span className="truncate text-sm font-medium text-gray-900">
