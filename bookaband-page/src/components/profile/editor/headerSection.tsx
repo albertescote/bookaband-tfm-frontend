@@ -5,23 +5,27 @@ import React from 'react';
 import { getAvatar } from '@/components/shared/avatar';
 
 interface HeaderSectionProps {
-  fullName: string;
+  firstName: string;
+  familyName: string;
   imageUrl?: string;
   joinedDate: string;
   bio?: string;
 }
 
 export default function HeaderSection({
-  fullName,
+  firstName,
+  familyName,
   imageUrl,
   joinedDate,
   bio,
 }: HeaderSectionProps) {
   return (
     <div className="flex items-center gap-6 rounded-2xl bg-gradient-to-r from-[#f0faff] to-[#e0f7fa] p-6 shadow-md transition-all">
-      {getAvatar(80, 80, imageUrl, fullName)}
+      {getAvatar(80, 80, imageUrl, firstName)}
       <div className="flex flex-col">
-        <h1 className="text-2xl font-semibold text-gray-800">{fullName}</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">
+          {firstName + ' ' + familyName}
+        </h1>
         {bio && <p className="mt-1 text-sm text-gray-600">{bio}</p>}
         <div className="mt-2 flex flex-col text-sm text-gray-500 sm:flex-row sm:items-center sm:gap-4">
           <div className="flex items-center gap-1">

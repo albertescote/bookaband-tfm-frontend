@@ -1,6 +1,6 @@
-'use client';
-
 import ClientProfileEditor from '@/components/profile/editor/clientProfileEditor';
+import Error from '@/components/shared/error';
+import { getUserProfileDetails } from '@/service/backend/user/service/user.service';
 
 interface PageParams {
   params: {
@@ -8,10 +8,18 @@ interface PageParams {
   };
 }
 
-export default function Page({ params: { lng } }: PageParams) {
+export default async function Page({ params: { lng } }: PageParams) {
+  const userProfileDetails = await getUserProfileDetails();
+  if (!userProfileDetails || 'error' in userProfileDetails) {
+    return <Error></Error>;
+  }
+
   return (
     <div className="min-h-screen bg-white p-6">
-      <ClientProfileEditor />
+      <ClientProfileEditor
+        userProfileDetails={userProfileDetails}
+        language={lng}
+      />
     </div>
   );
 }

@@ -29,6 +29,7 @@ authorizedAxiosInstance.interceptors.request.use(
 authorizedAxiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.log(error.response.data);
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${
         (error as AxiosError).message
