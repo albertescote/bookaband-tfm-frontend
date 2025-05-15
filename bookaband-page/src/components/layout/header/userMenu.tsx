@@ -4,7 +4,13 @@ import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/authProvider';
 import React, { useEffect, useRef, useState } from 'react';
-import { CalendarCheck2, ChevronDown, LogOut, User } from 'lucide-react';
+import {
+  CalendarCheck2,
+  ChevronDown,
+  Folder,
+  LogOut,
+  User,
+} from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
 
 export default function UserMenu({ language }: { language: string }) {
@@ -70,6 +76,15 @@ export default function UserMenu({ language }: { language: string }) {
             >
               <CalendarCheck2 size={16} />
               {t('bookings-tab')}
+            </Link>
+
+            <Link
+              href={`/${language}/documents`}
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
+            >
+              <Folder size={16} />
+              {t('documents-tab')}
             </Link>
 
             <Link

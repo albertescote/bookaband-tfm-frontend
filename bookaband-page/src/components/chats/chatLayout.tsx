@@ -87,7 +87,7 @@ export function ChatLayout({
     } else {
       return (
         <div className="flex h-full items-center justify-center p-4">
-          <div className="max-w-md rounded-xl bg-white p-8 text-center shadow-lg">
+          <div className="max-w-md rounded-xl bg-white p-8 text-center ">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#e3f8f8]">
               <MessageCircle size={40} className="text-[#15b7b9]" />
             </div>

@@ -92,6 +92,7 @@ export default function Header({ language }: { language: string }) {
             height="200"
             width="200"
             className="h-6 w-auto sm:h-8"
+            priority
           />
         </Link>
 

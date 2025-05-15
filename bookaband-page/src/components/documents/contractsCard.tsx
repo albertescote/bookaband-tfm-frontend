@@ -2,16 +2,11 @@
 
 import React from 'react';
 import { CheckCircle2, Clock, FileSignature, XCircle } from 'lucide-react';
+import {
+  Contract,
+  ContractStatus,
+} from '@/service/backend/documents/domain/contract';
 import { useTranslation } from '@/app/i18n/client';
-
-type ContractStatus = 'signed' | 'pending' | 'cancelled';
-
-export interface Contract {
-  id: string;
-  bandName: string;
-  date: string;
-  status: ContractStatus;
-}
 
 interface ContractsCardProps {
   contracts: Contract[];
@@ -22,23 +17,23 @@ export default function ContractsCard({
   contracts,
   language,
 }: ContractsCardProps) {
-  const { t } = useTranslation(language, 'activity');
+  const { t } = useTranslation(language, 'documents');
 
   const statusStyles: Record<
     ContractStatus,
     { label: string; icon: JSX.Element; color: string }
   > = {
-    signed: {
+    SIGNED: {
       label: t('contractStatus.signed'),
       icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
       color: 'text-green-600 bg-green-100',
     },
-    pending: {
+    PENDING: {
       label: t('contractStatus.pending'),
       icon: <Clock className="h-4 w-4 text-yellow-500" />,
       color: 'text-yellow-600 bg-yellow-100',
     },
-    cancelled: {
+    CANCELLED: {
       label: t('contractStatus.cancelled'),
       icon: <XCircle className="h-4 w-4 text-red-500" />,
       color: 'text-red-600 bg-red-100',
@@ -69,7 +64,9 @@ export default function ContractsCard({
                   <p className="font-medium text-gray-700">
                     {contract.bandName}
                   </p>
-                  <p className="text-xs text-gray-400">{contract.date}</p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(contract.date).toLocaleDateString(language)}
+                  </p>
                 </div>
                 <div
                   className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${status.color}`}

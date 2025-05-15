@@ -1,4 +1,5 @@
 {
+  "activityTitle": "Documents",
   "contracts": "Contracts",
   "noContracts": "No contracts available.",
   "contractStatus": {
@@ -12,5 +13,10 @@
     "paid": "Paid",
     "pending": "Pending",
     "failed": "Failed"
+  },
+  "errorScreen": {
+    "title": "Something went wrong",
+    "description": "We couldn’t load your documents. Please try again later.",
+    "retry": "Retry"
   }
 }

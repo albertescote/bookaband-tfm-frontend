@@ -3,15 +3,10 @@
 import React from 'react';
 import { CheckCircle2, Clock, ReceiptText, XCircle } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-
-type InvoiceStatus = 'paid' | 'pending' | 'failed';
-
-export interface Invoice {
-  id: string;
-  date: string;
-  amount: number;
-  status: InvoiceStatus;
-}
+import {
+  Invoice,
+  InvoiceStatus,
+} from '@/service/backend/documents/domain/invoice';
 
 interface InvoicesCardProps {
   invoices: Invoice[];
@@ -22,23 +17,23 @@ export default function InvoicesCard({
   invoices,
   language,
 }: InvoicesCardProps) {
-  const { t } = useTranslation(language, 'activity');
+  const { t } = useTranslation(language, 'documents');
 
   const statusStyles: Record<
     InvoiceStatus,
     { label: string; icon: JSX.Element; color: string }
   > = {
-    paid: {
+    PAID: {
       label: t('invoiceStatus.paid'),
       icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
       color: 'text-green-600 bg-green-100',
     },
-    pending: {
+    PENDING: {
       label: t('invoiceStatus.pending'),
       icon: <Clock className="h-4 w-4 text-yellow-500" />,
       color: 'text-yellow-600 bg-yellow-100',
     },
-    failed: {
+    FAILED: {
       label: t('invoiceStatus.failed'),
       icon: <XCircle className="h-4 w-4 text-red-500" />,
       color: 'text-red-600 bg-red-100',
@@ -65,7 +60,9 @@ export default function InvoicesCard({
               >
                 <div>
                   <p className="font-medium text-gray-700">#{invoice.id}</p>
-                  <p className="text-xs text-gray-400">{invoice.date}</p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(invoice.date).toLocaleDateString(language)}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-semibold text-gray-600">

@@ -1,4 +1,5 @@
 {
+  "activityTitle": "Documentos",
   "contracts": "Contratos",
   "noContracts": "No hay contratos disponibles.",
   "contractStatus": {
@@ -12,5 +13,10 @@
     "paid": "Pagado",
     "pending": "Pendiente",
     "failed": "Fallido"
+  },
+  "errorScreen": {
+    "title": "Algo salió mal",
+    "description": "No pudimos cargar tu documentos. Por favor, inténtalo más tarde.",
+    "retry": "Reintentar"
   }
 }

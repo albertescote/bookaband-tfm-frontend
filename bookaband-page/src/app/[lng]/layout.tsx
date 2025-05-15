@@ -31,7 +31,7 @@ export default async function RootLayout({
     <html lang={lng} dir={dir(lng)}>
       <head>
         <script
-          src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`}
+          src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
           async
           defer
         ></script>

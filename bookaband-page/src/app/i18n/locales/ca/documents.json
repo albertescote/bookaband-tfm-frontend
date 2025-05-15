@@ -1,4 +1,5 @@
 {
+  "activityTitle": "Documents",
   "contracts": "Contractes",
   "noContracts": "No hi ha contractes disponibles.",
   "contractStatus": {
@@ -12,5 +13,10 @@
     "paid": "Pagat",
     "pending": "Pendent",
     "failed": "Erroni"
+  },
+  "errorScreen": {
+    "title": "S'ha produït un error",
+    "description": "No s'han pogut carregar els documents. Torna-ho a provar més tard.",
+    "retry": "Torna-ho a provar"
   }
 }
