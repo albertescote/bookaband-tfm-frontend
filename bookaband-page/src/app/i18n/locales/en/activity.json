@@ -1,0 +1,16 @@
+{
+  "contracts": "Contracts",
+  "noContracts": "No contracts available.",
+  "contractStatus": {
+    "signed": "Signed",
+    "pending": "Pending",
+    "cancelled": "Cancelled"
+  },
+  "invoices": "Invoices",
+  "noInvoices": "No invoices available.",
+  "invoiceStatus": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "failed": "Failed"
+  }
+}

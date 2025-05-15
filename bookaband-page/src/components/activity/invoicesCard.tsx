@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { CheckCircle2, Clock, ReceiptText, XCircle } from 'lucide-react';
+import { useTranslation } from '@/app/i18n/client';
 
 type InvoiceStatus = 'paid' | 'pending' | 'failed';
 
@@ -14,39 +15,45 @@ export interface Invoice {
 
 interface InvoicesCardProps {
   invoices: Invoice[];
+  language: string;
 }
 
-const statusStyles: Record<
-  InvoiceStatus,
-  { label: string; icon: JSX.Element; color: string }
-> = {
-  paid: {
-    label: 'Paid',
-    icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
-    color: 'text-green-600 bg-green-100',
-  },
-  pending: {
-    label: 'Pending',
-    icon: <Clock className="h-4 w-4 text-yellow-500" />,
-    color: 'text-yellow-600 bg-yellow-100',
-  },
-  failed: {
-    label: 'Failed',
-    icon: <XCircle className="h-4 w-4 text-red-500" />,
-    color: 'text-red-600 bg-red-100',
-  },
-};
+export default function InvoicesCard({
+  invoices,
+  language,
+}: InvoicesCardProps) {
+  const { t } = useTranslation(language, 'activity');
 
-export default function InvoicesCard({ invoices }: InvoicesCardProps) {
+  const statusStyles: Record<
+    InvoiceStatus,
+    { label: string; icon: JSX.Element; color: string }
+  > = {
+    paid: {
+      label: t('invoiceStatus.paid'),
+      icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
+      color: 'text-green-600 bg-green-100',
+    },
+    pending: {
+      label: t('invoiceStatus.pending'),
+      icon: <Clock className="h-4 w-4 text-yellow-500" />,
+      color: 'text-yellow-600 bg-yellow-100',
+    },
+    failed: {
+      label: t('invoiceStatus.failed'),
+      icon: <XCircle className="h-4 w-4 text-red-500" />,
+      color: 'text-red-600 bg-red-100',
+    },
+  };
+
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
       <div className="mb-4 flex items-center gap-2">
         <ReceiptText className="h-5 w-5 text-[#15b7b9]" />
-        <h2 className="text-lg font-semibold text-gray-800">Invoices</h2>
+        <h2 className="text-lg font-semibold text-gray-800">{t('invoices')}</h2>
       </div>
 
       {invoices.length === 0 ? (
-        <p className="text-sm text-gray-500">No invoices available.</p>
+        <p className="text-sm text-gray-500">{t('noInvoices')}</p>
       ) : (
         <ul className="divide-y divide-gray-100 text-sm">
           {invoices.map((invoice) => {

@@ -2,25 +2,30 @@
 
 import React from 'react';
 import { CalendarCheck, Users } from 'lucide-react';
+import { useTranslation } from '@/app/i18n/client';
 
 interface ActivitySummaryCardProps {
   musiciansContacted: number;
   eventsOrganized: number;
+  language: string;
 }
 
 export default function ActivitySummaryCard({
   musiciansContacted,
   eventsOrganized,
+  language,
 }: ActivitySummaryCardProps) {
+  const { t } = useTranslation(language, 'profile');
+
   const stats = [
     {
-      label: 'Musicians Contacted',
+      label: t('musiciansContacted'),
       value: musiciansContacted,
       icon: <Users className="h-6 w-6 text-white" />,
       bg: 'bg-[#15b7b9]',
     },
     {
-      label: 'Events Organized',
+      label: t('eventsOrganized'),
       value: eventsOrganized,
       icon: <CalendarCheck className="h-6 w-6 text-white" />,
       bg: 'bg-[#15b7b9]',
@@ -30,7 +35,7 @@ export default function ActivitySummaryCard({
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
       <h2 className="mb-5 text-lg font-semibold text-gray-800">
-        Activity Summary
+        {t('activitySummary')}
       </h2>
       <div className="space-y-4">
         {stats.map((item, idx) => (

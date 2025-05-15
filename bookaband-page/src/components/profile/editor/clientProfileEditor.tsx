@@ -10,6 +10,7 @@ import { UserProfileDetails } from '@/service/backend/user/domain/userProfileDet
 import { updateContactInfo } from '@/service/backend/user/service/user.service';
 import { useRouter } from 'next/navigation';
 import Error from '@/components/shared/error';
+import { useTranslation } from '@/app/i18n/client';
 
 interface ClientProfileEditorProps {
   language: string;
@@ -20,6 +21,7 @@ export default function ClientProfileEditor({
   language,
   userProfileDetails,
 }: ClientProfileEditorProps) {
+  const { t } = useTranslation(language, 'profile');
   const router = useRouter();
   const [error, setError] = useState(false);
 
@@ -45,12 +47,19 @@ export default function ClientProfileEditor({
   };
 
   if (error) {
-    return <Error></Error>;
+    return (
+      <Error
+        title={t('errorScreen.title')}
+        description={t('errorScreen.description')}
+        buttonText={t('errorScreen.retry')}
+      ></Error>
+    );
   }
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 p-6">
       <HeaderSection
+        language={language}
         firstName={userProfileDetails.firstName}
         familyName={userProfileDetails.familyName}
         imageUrl={userProfileDetails.imageUrl}
@@ -63,6 +72,7 @@ export default function ClientProfileEditor({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <EditableInfoCard
+            language={language}
             firstName={userProfileDetails.firstName}
             familyName={userProfileDetails.familyName}
             email={userProfileDetails.email}
@@ -71,11 +81,13 @@ export default function ClientProfileEditor({
           />
 
           <BillingAddressCard
+            language={language}
             initialAddress={userProfileDetails.billingAddress}
             setError={setError}
           />
 
           <PaymentMethodsCard
+            language={language}
             methods={userProfileDetails.paymentMethods}
             setError={setError}
           />
@@ -83,6 +95,7 @@ export default function ClientProfileEditor({
 
         <div className="space-y-6">
           <ActivitySummaryCard
+            language={language}
             musiciansContacted={
               userProfileDetails.activitySummary.musiciansContacted
             }

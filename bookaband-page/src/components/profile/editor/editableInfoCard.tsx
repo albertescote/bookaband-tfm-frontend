@@ -1,5 +1,8 @@
+'use client';
+
 import { Pencil } from 'lucide-react';
 import React, { useState } from 'react';
+import { useTranslation } from '@/app/i18n/client';
 
 interface EditableInfoCardProps {
   firstName: string;
@@ -11,6 +14,7 @@ interface EditableInfoCardProps {
     newFamilyName: string;
     newBio: string;
   }) => void;
+  language: string;
 }
 
 export default function EditableInfoCard({
@@ -19,13 +23,27 @@ export default function EditableInfoCard({
   email,
   bio: initialBio = '',
   onSave,
+  language,
 }: EditableInfoCardProps) {
+  const { t } = useTranslation(language, 'profile');
+
   const [firstName, setFirstName] = useState(initialFirstName);
   const [familyName, setFamilyName] = useState(initialFamilyName);
   const [bio, setBio] = useState(initialBio);
 
+  const hasChanges =
+    firstName !== initialFirstName ||
+    familyName !== initialFamilyName ||
+    bio !== initialBio;
+
   const handleSave = () => {
-    onSave({ newFirstName: firstName, newFamilyName: familyName, newBio: bio });
+    if (hasChanges) {
+      onSave({
+        newFirstName: firstName,
+        newFamilyName: familyName,
+        newBio: bio,
+      });
+    }
   };
 
   return (
@@ -33,67 +51,71 @@ export default function EditableInfoCard({
       <div className="mb-4 flex items-center gap-2">
         <Pencil className="h-5 w-5 text-[#15b7b9]" />
         <h2 className="text-lg font-semibold text-gray-800">
-          Edit Personal Info
+          {t('editPersonalInfo')}
         </h2>
       </div>
 
       <div className="space-y-4">
-        {/* Nombre */}
         <div className="flex items-center space-x-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name
+              {t('name')}
             </label>
             <input
               type="text"
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Surname
+              {t('surname')}
             </label>
             <input
               type="text"
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
               value={familyName}
               onChange={(e) => setFamilyName(e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             />
           </div>
         </div>
 
-        {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Email
+            {t('email')}
           </label>
           <input
             type="email"
-            className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             value={email}
-            disabled={true}
+            disabled
+            className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 p-2 text-sm text-gray-500 shadow-sm"
           />
         </div>
 
-        {/* Bio */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Bio</label>
+          <label className="block text-sm font-medium text-gray-700">
+            {t('bio')}
+          </label>
           <textarea
-            className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             rows={3}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
+            className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
           />
         </div>
 
         <div className="pt-4 text-right">
           <button
             onClick={handleSave}
-            className="rounded-full bg-[#15b7b9] px-5 py-2 text-sm font-semibold text-white transition hover:scale-105 hover:bg-[#13a0a1]"
+            disabled={!hasChanges}
+            className={`rounded-full px-5 py-2 text-sm font-semibold text-white transition ${
+              hasChanges
+                ? 'bg-[#15b7b9] hover:scale-105 hover:bg-[#13a0a1]'
+                : 'bg-gray-300'
+            }`}
           >
-            Save Changes
+            {t('saveChanges')}
           </button>
         </div>
       </div>

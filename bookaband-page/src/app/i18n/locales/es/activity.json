@@ -1,0 +1,16 @@
+{
+  "contracts": "Contratos",
+  "noContracts": "No hay contratos disponibles.",
+  "contractStatus": {
+    "signed": "Firmado",
+    "pending": "Pendiente",
+    "cancelled": "Cancelado"
+  },
+  "invoices": "Facturas",
+  "noInvoices": "No hay facturas disponibles.",
+  "invoiceStatus": {
+    "paid": "Pagado",
+    "pending": "Pendiente",
+    "failed": "Fallido"
+  }
+}

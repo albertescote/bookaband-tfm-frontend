@@ -1,8 +1,51 @@
 {
-  "role": "Rol",
-  "create-band-button": "Crear grupo",
-  "your-bands": "Tus grupos",
-  "no-bands": "Aún no perteneces a ningún grupo!",
-  "your-invitations": "Tus invitaciones",
-  "no-invitations": "No tienes ninguna invitación!"
+  "activitySummary": "Resumen de actividad",
+  "musiciansContacted": "Músicos contactados",
+  "eventsOrganized": "Eventos organizados",
+  "billingAddress": "Dirección de facturación",
+  "noBillingAddress": "No hay dirección de facturación registrada.",
+  "addBillingAddress": "Añadir dirección de facturación",
+  "saveAddress": "Guardar",
+  "delete": "Eliminar",
+  "country": "País",
+  "city": "Ciudad",
+  "postalCode": "Código postal",
+  "addressLine1": "Dirección línea 1",
+  "addressLine2": "Dirección línea 2",
+  "errorMissingFields": "Por favor, completa todos los campos obligatorios.",
+  "successUpdate": "¡Dirección de facturación actualizada!",
+  "successCreate": "¡Dirección de facturación creada!",
+  "successDelete": "¡Dirección de facturación eliminada!",
+  "joinedDate": "Se unió el",
+  "contactInfo": "Información de contacto",
+  "bio": "Biografía",
+  "email": "Correo electrónico",
+  "saveChanges": "Guardar cambios",
+  "paymentMethods": "Métodos de pago",
+  "errorMessage": "Algo salió mal. Por favor, inténtalo de nuevo.",
+  "editPersonalInfo": "Editar información personal",
+  "name": "Nombre",
+  "surname": "Apellido",
+  "joinedLabel": "Se unió el ",
+  "paymentMethodModal": {
+    "titleAdd": "Añadir método de pago",
+    "titleEdit": "Editar método de pago",
+    "aliasPlaceholder": "Alias",
+    "setAsDefault": "Establecer como predeterminado",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "paymentMethodsCard": {
+    "add": "Añadir",
+    "noMethods": "No se han añadido métodos de pago.",
+    "card": "Tarjeta",
+    "default": "Predeterminado",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "errorScreen": {
+    "title": "Algo salió mal",
+    "description": "No pudimos cargar tu información de perfil. Por favor, inténtalo más tarde.",
+    "retry": "Reintentar"
+  }
 }

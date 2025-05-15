@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { CheckCircle2, Clock, FileSignature, XCircle } from 'lucide-react';
+import { useTranslation } from '@/app/i18n/client';
 
 type ContractStatus = 'signed' | 'pending' | 'cancelled';
 
@@ -14,39 +15,47 @@ export interface Contract {
 
 interface ContractsCardProps {
   contracts: Contract[];
+  language: string;
 }
 
-const statusStyles: Record<
-  ContractStatus,
-  { label: string; icon: JSX.Element; color: string }
-> = {
-  signed: {
-    label: 'Signed',
-    icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
-    color: 'text-green-600 bg-green-100',
-  },
-  pending: {
-    label: 'Pending',
-    icon: <Clock className="h-4 w-4 text-yellow-500" />,
-    color: 'text-yellow-600 bg-yellow-100',
-  },
-  cancelled: {
-    label: 'Cancelled',
-    icon: <XCircle className="h-4 w-4 text-red-500" />,
-    color: 'text-red-600 bg-red-100',
-  },
-};
+export default function ContractsCard({
+  contracts,
+  language,
+}: ContractsCardProps) {
+  const { t } = useTranslation(language, 'activity');
 
-export default function ContractsCard({ contracts }: ContractsCardProps) {
+  const statusStyles: Record<
+    ContractStatus,
+    { label: string; icon: JSX.Element; color: string }
+  > = {
+    signed: {
+      label: t('contractStatus.signed'),
+      icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
+      color: 'text-green-600 bg-green-100',
+    },
+    pending: {
+      label: t('contractStatus.pending'),
+      icon: <Clock className="h-4 w-4 text-yellow-500" />,
+      color: 'text-yellow-600 bg-yellow-100',
+    },
+    cancelled: {
+      label: t('contractStatus.cancelled'),
+      icon: <XCircle className="h-4 w-4 text-red-500" />,
+      color: 'text-red-600 bg-red-100',
+    },
+  };
+
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
       <div className="mb-4 flex items-center gap-2">
         <FileSignature className="h-5 w-5 text-[#15b7b9]" />
-        <h2 className="text-lg font-semibold text-gray-800">Contracts</h2>
+        <h2 className="text-lg font-semibold text-gray-800">
+          {t('contracts')}
+        </h2>
       </div>
 
       {contracts.length === 0 ? (
-        <p className="text-sm text-gray-500">No contracts available.</p>
+        <p className="text-sm text-gray-500">{t('noContracts')}</p>
       ) : (
         <ul className="divide-y divide-gray-100 text-sm">
           {contracts.map((contract) => {

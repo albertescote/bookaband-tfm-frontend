@@ -1,8 +1,51 @@
 {
-  "role": "Rol",
-  "create-band-button": "Crear grup",
-  "your-bands": "Els teus grups",
-  "no-bands": "Encara no pertanys a cap grup!",
-  "your-invitations": "Les teves invitacions",
-  "no-invitations": "No tens cap invitació!"
+  "activitySummary": "Resum d’activitat",
+  "musiciansContacted": "Músics contactats",
+  "eventsOrganized": "Esdeveniments organitzats",
+  "billingAddress": "Adreça de facturació",
+  "noBillingAddress": "No hi ha cap adreça de facturació registrada.",
+  "addBillingAddress": "Afegeix adreça de facturació",
+  "saveAddress": "Desa",
+  "delete": "Elimina",
+  "country": "País",
+  "city": "Ciutat",
+  "postalCode": "Codi postal",
+  "addressLine1": "Adreça línia 1",
+  "addressLine2": "Adreça línia 2",
+  "errorMissingFields": "Si us plau, omple tots els camps obligatoris.",
+  "successUpdate": "Adreça de facturació actualitzada!",
+  "successCreate": "Adreça de facturació creada!",
+  "successDelete": "Adreça de facturació eliminada!",
+  "joinedDate": "S’hi va unir el",
+  "contactInfo": "Informació de contacte",
+  "bio": "Biografia",
+  "email": "Correu electrònic",
+  "saveChanges": "Desa els canvis",
+  "paymentMethods": "Mètodes de pagament",
+  "errorMessage": "S'ha produït un error. Torna-ho a intentar.",
+  "editPersonalInfo": "Edita la informació personal",
+  "name": "Nom",
+  "surname": "Cognom",
+  "joinedLabel": "S’hi va unir el ",
+  "paymentMethodModal": {
+    "titleAdd": "Afegeix un mètode de pagament",
+    "titleEdit": "Edita el mètode de pagament",
+    "aliasPlaceholder": "Àlies",
+    "setAsDefault": "Estableix com a predeterminat",
+    "cancel": "Cancel·la",
+    "save": "Desa"
+  },
+  "paymentMethodsCard": {
+    "add": "Afegeix",
+    "noMethods": "Encara no s'han afegit mètodes de pagament.",
+    "card": "Targeta",
+    "default": "Predeterminat",
+    "edit": "Edita",
+    "delete": "Elimina"
+  },
+  "errorScreen": {
+    "title": "S'ha produït un error",
+    "description": "No s'ha pogut carregar la informació del perfil. Torna-ho a provar més tard.",
+    "retry": "Torna-ho a provar"
+  }
 }

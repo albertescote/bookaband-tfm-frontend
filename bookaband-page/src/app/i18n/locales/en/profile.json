@@ -1,8 +1,51 @@
 {
-  "role": "Role",
-  "create-band-button": "Create a band",
-  "your-bands": "Your bands",
-  "no-bands": "You do not belong to any band yet!",
-  "your-invitations": "Your invitations",
-  "no-invitations": "You do not have any invitation!"
+  "activitySummary": "Activity Summary",
+  "musiciansContacted": "Musicians Contacted",
+  "eventsOrganized": "Events Organized",
+  "billingAddress": "Billing Address",
+  "noBillingAddress": "No billing address on file.",
+  "addBillingAddress": "Add Billing Address",
+  "saveAddress": "Save",
+  "delete": "Delete",
+  "country": "Country",
+  "city": "Country",
+  "postalCode": "Postal Code",
+  "addressLine1": "Address Line 1",
+  "addressLine2": "Address Line 2",
+  "errorMissingFields": "Please fill in all required fields.",
+  "successUpdate": "Billing Address info updated!",
+  "successCreate": "Billing Address info created!",
+  "successDelete": "Billing Address info deleted!",
+  "joinedDate": "Joined",
+  "contactInfo": "Contact Information",
+  "bio": "Bio",
+  "email": "Email",
+  "saveChanges": "Save Changes",
+  "paymentMethods": "Payment Methods",
+  "errorMessage": "Something went wrong. Please try again.",
+  "editPersonalInfo": "Edit Personal Info",
+  "name": "Name",
+  "surname": "Surname",
+  "joinedLabel": "Joined: ",
+  "paymentMethodModal": {
+    "titleAdd": "Add Payment Method",
+    "titleEdit": "Edit Payment Method",
+    "aliasPlaceholder": "Alias",
+    "setAsDefault": "Set as default",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "paymentMethodsCard": {
+    "add": "Add",
+    "noMethods": "No payment methods added yet.",
+    "card": "Card",
+    "default": "Default",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "errorScreen": {
+    "title": "Something went wrong",
+    "description": "We couldn’t load your profile information. Please try again later.",
+    "retry": "Retry"
+  }
 }
