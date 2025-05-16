@@ -23,5 +23,9 @@
   "since": "Des de",
   "selectDate": "Selecciona una data",
   "eventsOn": "Esdeveniments el",
-  "eventBooked": "L'artista està reservat"
+  "eventBooked": "L'artista està reservat",
+  "upcomingEvents": "Pròxims esdeveniments",
+  "viewAll": "Veure'ls tots",
+  "showLess": "Mostrar menys",
+  "availability": "Disponibilitat"
 }

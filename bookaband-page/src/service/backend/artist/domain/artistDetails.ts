@@ -8,7 +8,7 @@ export interface ArtistReview {
     name: string;
     imageUrl?: string;
   };
-  date: string; // ISO format
+  date: string;
 }
 
 interface Event {

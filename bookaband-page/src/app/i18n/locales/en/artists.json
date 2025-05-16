@@ -23,5 +23,9 @@
   "since": "Since",
   "selectDate": "Select a date",
   "eventsOn": "Events on",
-  "eventBooked": "Artist is booked"
+  "eventBooked": "Artist is booked",
+  "upcomingEvents": "Upcoming Events",
+  "viewAll": "View All",
+  "showLess": "Show Less",
+  "availability": "Availability"
 }

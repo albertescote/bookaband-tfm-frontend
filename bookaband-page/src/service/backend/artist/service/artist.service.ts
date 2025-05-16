@@ -57,7 +57,7 @@ export async function fetchArtistDetailsById(
   id: string,
 ): Promise<ArtistDetails> {
   const EVENT_TYPE_IDS = {
-    WEDDINGS: '6f64f41b-8135-4bcf-b5e5-3a47169e575f',
+    WEDDINGS: '680e3e8f-8e08-4921-8461-0f60971c8b5f',
     PRIVATE_PARTIES: '7c223ed2-e955-4007-ac8a-f23235127ac5',
     FESTIVALS: 'ec30f141-5914-46e3-a482-39d55a097e9b',
     RESTAURANTS_HOTELS: 'd28c8f50-ef20-4e23-9992-1a6f1e540a09',
@@ -220,15 +220,78 @@ export async function fetchArtistDetailsById(
         id: 'rev1',
         rating: 5,
         comment: 'Amazing performance! Everyone loved it.',
-        reviewer: 'Laura G.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
         date: '2025-05-01T20:00:00Z',
       },
       {
         id: 'rev2',
         rating: 4,
         comment: 'Great setlist and vibes. Would hire again.',
-        reviewer: 'Carlos P.',
+        reviewer: {
+          name: 'Carlos P.',
+          imageUrl:
+            'https://images.pexels.com/photos/12250627/pexels-photo-12250627.jpeg',
+        },
         date: '2025-04-22T19:30:00Z',
+      },
+      {
+        id: 'rev3',
+        rating: 5,
+        comment: 'Amazing performance! Everyone loved it.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
+        date: '2025-05-01T20:00:00Z',
+      },
+      {
+        id: 'rev4',
+        rating: 5,
+        comment: 'Amazing performance! Everyone loved it.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
+        date: '2025-05-01T20:00:00Z',
+      },
+      {
+        id: 'rev5',
+        rating: 5,
+        comment: 'Amazing performance! Everyone loved it.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
+        date: '2025-05-01T20:00:00Z',
+      },
+      {
+        id: 'rev6',
+        rating: 5,
+        comment: 'Amazing performance! Everyone loved it.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
+        date: '2025-05-01T20:00:00Z',
+      },
+      {
+        id: 'rev7',
+        rating: 5,
+        comment: 'Amazing performance! Everyone loved it.',
+        reviewer: {
+          name: 'Laura G.',
+          imageUrl:
+            'https://images.pexels.com/photos/8041144/pexels-photo-8041144.jpeg',
+        },
+        date: '2025-05-01T20:00:00Z',
       },
     ],
 

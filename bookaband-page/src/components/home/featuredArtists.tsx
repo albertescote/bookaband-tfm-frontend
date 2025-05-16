@@ -7,6 +7,7 @@ import {
 } from '@/service/backend/artist/service/artist.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface FeaturedArtistsParams {
   lng: string;
@@ -14,6 +15,7 @@ interface FeaturedArtistsParams {
 
 export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
   const { t } = useTranslation(lng, 'home');
+  const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -245,14 +247,6 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
     }
   };
 
-  // Determine animation class based on direction state
-  let animationClass = '';
-  if (animationDirection === 'left') {
-    animationClass = 'animate-slide-in-left';
-  } else if (animationDirection === 'right') {
-    animationClass = 'animate-slide-in-right';
-  }
-
   return (
     <section className="py-16">
       <h2
@@ -324,7 +318,12 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
                       {artist.description}
                     </p>
                   </div>
-                  <button className="mt-auto w-full rounded-lg border border-[#15b7b9] px-4 py-2 font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2">
+                  <button
+                    onClick={() => {
+                      router.push(`/${lng}/artists/${artist.id}`);
+                    }}
+                    className="mt-auto w-full rounded-lg border border-[#15b7b9] px-4 py-2 font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2"
+                  >
                     {t('view-profile')}
                   </button>
                 </div>
