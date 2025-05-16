@@ -27,5 +27,6 @@
   "upcomingEvents": "Upcoming Events",
   "viewAll": "View All",
   "showLess": "Show Less",
-  "availability": "Availability"
+  "availability": "Availability",
+  "noReviews": "This artist has not received any reviews yet"
 }
