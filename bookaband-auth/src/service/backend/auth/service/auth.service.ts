@@ -1,10 +1,8 @@
 'use server';
 import { AUTH_URL, GOOGLE_CLIENT_ID } from '@/config';
 import { AxiosError } from 'axios';
-import { decodeJwt } from 'jose';
 import { parseCookie, setTokenCookie } from '@/service/utils';
 import { AuthenticationResult } from '@/service/backend/auth/domain/authenticationResult';
-import { AccessTokenPayload } from '@/service/backend/auth/domain/accessTokenPayload';
 import { ParsedCookie } from '@/service/backend/auth/domain/parsedCookie';
 import axiosInstance from '@/service/aixosInstance';
 import { BackendError } from '@/service/backend/shared/domain/backendError';
@@ -38,10 +36,9 @@ export async function authenticate(
         refreshTokenCookie,
         rememberMe ? 60 * 60 * 24 * 30 : undefined,
       );
-      const payload = decodeJwt(accessTokenCookie.value);
       return {
         valid: true,
-        role: (payload as unknown as AccessTokenPayload).role,
+        role: response.data.role,
       };
     }
     return {
@@ -82,10 +79,9 @@ export async function loginWithGoogle(
     if (accessTokenCookie && refreshTokenCookie) {
       setTokenCookie(accessTokenCookie);
       setTokenCookie(refreshTokenCookie);
-      const payload = decodeJwt(accessTokenCookie.value);
       return {
         valid: true,
-        role: (payload as unknown as AccessTokenPayload).role,
+        role: response.data.role,
       };
     }
     return {
@@ -128,10 +124,9 @@ export async function signUpWithGoogle(
     if (accessTokenCookie && refreshTokenCookie) {
       setTokenCookie(accessTokenCookie);
       setTokenCookie(refreshTokenCookie);
-      const payload = decodeJwt(accessTokenCookie.value);
       return {
         valid: true,
-        role: (payload as unknown as AccessTokenPayload).role,
+        role: response.data.role,
       };
     }
     return {

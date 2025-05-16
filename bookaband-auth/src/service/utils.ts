@@ -14,11 +14,6 @@ export function setTokenCookie(
   });
 }
 
-export function getAccessTokenCookie(): string | undefined {
-  const cookieStore = cookies();
-  return cookieStore.get('access_token')?.value;
-}
-
 export function parseCookie(cookie: string): ParsedCookie {
   const [keyValue, ...options] = cookie.split('; ');
   const [name, value] = keyValue.split('=');

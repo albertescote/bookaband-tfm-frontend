@@ -22,5 +22,10 @@
   "band-id-required": "Es requereix ID de banda",
   "failed-to-get-user": "Error en obtenir informació de l'usuari",
   "band-not-found": "Banda no trobada",
-  "chat-or-band-id-required": "Es requereix ID de xat o ID de banda"
+  "chat-or-band-id-required": "Es requereix ID de xat o ID de banda",
+  "errorScreen": {
+    "title": "S'ha produït un error",
+    "description": "No s'han pogut carregar els teus xat xats. Torna-ho a provar més tard.",
+    "retry": "Torna-ho a provar"
+  }
 }

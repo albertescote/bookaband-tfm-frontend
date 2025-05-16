@@ -1,7 +1,8 @@
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { ChatLayout } from '@/components/chats/chatLayout';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
-import { BackendError } from '@/service/backend/shared/domain/backendError';
+import Error from '@/components/shared/error';
+import { getTranslation } from '@/app/i18n';
 
 interface PageParams {
   params: {
@@ -14,6 +15,8 @@ export default async function Page({
   params: { lng },
   searchParams,
 }: PageParams) {
+  const { t } = await getTranslation(lng, 'profile');
+
   const chatId = searchParams?.chat_id;
   const bandId = searchParams?.band_id;
 
@@ -24,8 +27,13 @@ export default async function Page({
   const chats = await getClientChats(user.id);
 
   if ('error' in chats) {
-    const backendError = chats as BackendError;
-    return <div>{backendError.error}</div>;
+    return (
+      <Error
+        title={t('errorScreen.title')}
+        description={t('errorScreen.description')}
+        buttonText={t('errorScreen.retry')}
+      ></Error>
+    );
   }
 
   return (
