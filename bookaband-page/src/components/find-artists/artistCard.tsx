@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Music, Star } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
+import { useRouter } from 'next/navigation';
 
 interface ArtistCardProps {
   artist: OfferDetails;
@@ -14,6 +15,7 @@ const capitalizeFirstLetter = (string: string) => {
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
   const { t } = useTranslation(language, 'find-artists');
+  const router = useRouter();
 
   return (
     <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
@@ -62,7 +64,12 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
             {artist.price} €
           </span>
 
-          <button className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20">
+          <button
+            onClick={() => {
+              router.push(`/${language}/artists/${artist.id}`);
+            }}
+            className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20"
+          >
             {t('view-profile')}
           </button>
         </div>

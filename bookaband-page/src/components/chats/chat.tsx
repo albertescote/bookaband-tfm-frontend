@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
 import {
   MessageSquareOff,
+  MessageSquareWarning,
   Paperclip,
   Phone,
   Send,
@@ -284,14 +285,9 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="rounded-lg bg-white p-8 shadow-lg">
-          <div className="text-center text-red-500">{error}</div>
-          <button
-            onClick={goToChats}
-            className="mt-4 rounded-md bg-[#15b7b9] px-4 py-2 text-white"
-          >
-            {t('back-to-chats')}
-          </button>
+        <div className="flex flex-col items-center gap-4 p-8 text-center">
+          <MessageSquareWarning className="h-12 w-12 text-[#15b7b9]" />
+          <div className="text-gray-400">{error}</div>
         </div>
       </div>
     );
