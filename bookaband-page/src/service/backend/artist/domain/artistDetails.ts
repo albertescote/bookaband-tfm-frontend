@@ -1,5 +1,10 @@
 import { BandSize } from '@/service/backend/artist/domain/bandSize';
 
+export enum MediaType {
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+}
+
 export interface ArtistReview {
   id: string;
   rating: number;
@@ -25,7 +30,7 @@ interface Event {
 interface Media {
   id: string;
   url: string;
-  type: 'image' | 'video';
+  type: MediaType;
 }
 
 interface SocialLinks {
@@ -39,6 +44,7 @@ export interface ArtistDetails {
   bandName: string;
   genre: string;
   bookingDates: string[];
+  membersId: string[];
   description: string;
   location: string;
   featured: boolean;

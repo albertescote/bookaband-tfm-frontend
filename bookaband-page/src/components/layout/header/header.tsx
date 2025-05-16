@@ -83,7 +83,7 @@ export default function Header({ language }: { language: string }) {
   }, [user?.id]);
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-[#f3f4f6] px-4 py-2 sm:px-6">
+    <header className="sticky top-0 z-30 h-20 bg-[#f3f4f6] px-4 py-2 sm:px-6">
       <div className="relative flex h-full items-center justify-between">
         <Link href="/" className="relative z-10">
           <Image

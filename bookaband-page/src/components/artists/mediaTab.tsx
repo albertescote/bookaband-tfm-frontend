@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { ArtistDetails } from '@/service/backend/artist/domain/artist';
 import { Button } from '@/components/shared/button';
+import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 
 const INITIAL_ITEMS = 6;
 const LOAD_MORE_COUNT = 6;
@@ -32,7 +32,7 @@ export function MediaTab({
             key={item.id}
             className="flex h-40 items-center justify-center overflow-hidden rounded-md bg-gray-100"
           >
-            {item.type === 'video' ? (
+            {item.type === 'VIDEO' ? (
               <video
                 src={item.url}
                 controls

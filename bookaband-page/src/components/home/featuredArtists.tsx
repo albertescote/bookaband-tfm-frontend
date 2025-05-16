@@ -288,9 +288,9 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
           ) : (
             visibleArtists.map((artist, index) => (
               <div
-                key={artist.bandName + '-' + index} // Prefer a unique artist.id if available
+                key={artist.bandName + '-' + index}
                 className={`flex h-full flex-col rounded-lg border bg-white p-6 text-left shadow-md ${
-                  itemsPerPage === 1 ? 'w-full max-w-sm sm:max-w-md' : 'w-full' // Width adjustment for single item
+                  itemsPerPage === 1 ? 'w-full max-w-sm sm:max-w-md' : 'w-full'
                 }`}
               >
                 <img
@@ -304,23 +304,19 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
                 />
                 <div className="flex flex-1 flex-col">
                   {' '}
-                  {/* Removed justify-between to rely on content heights */}
                   <div className="flex-grow">
                     {' '}
-                    {/* This div will take up space, pushing button down */}
                     <h3 className="mb-2 text-xl font-semibold leading-tight">
                       {artist.bandName}
                     </h3>
                     <p className="mb-1 text-sm text-gray-500">{`${t('genre')}: ${artist.genre}`}</p>
-                    <p
-                      className="h-description-3-lines mb-4 line-clamp-3 overflow-hidden text-gray-700" // Use custom height from Tailwind config
-                    >
+                    <p className="h-description-3-lines mb-4 line-clamp-3 overflow-hidden text-gray-700">
                       {artist.description}
                     </p>
                   </div>
                   <button
                     onClick={() => {
-                      router.push(`/${lng}/artists/${artist.id}`);
+                      router.push(`/${lng}/artists/${artist.bandId}`);
                     }}
                     className="mt-auto w-full rounded-lg border border-[#15b7b9] px-4 py-2 font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2"
                   >

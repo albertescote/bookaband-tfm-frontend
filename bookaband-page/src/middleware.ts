@@ -20,6 +20,8 @@ const publicRoutes = [
   '/find-artists',
 ];
 
+const publicRoutePrefixes = ['/artists/'];
+
 const createResponse = () => {
   const response = NextResponse.next();
   response.headers.set('Cache-Control', 'no-store, max-age=0');
@@ -73,10 +75,12 @@ export async function middleware(req: NextRequest) {
         ? '/' + normalizedPathParts.join('/')
         : '/';
 
-    const isPublic = publicRoutes.some(
-      (route) =>
-        normalizedPath === route || normalizedPath.startsWith(`${route}/`),
-    );
+    const isPublic =
+      publicRoutes.some(
+        (route) =>
+          normalizedPath === route || normalizedPath.startsWith(`${route}/`),
+      ) ||
+      publicRoutePrefixes.some((prefix) => normalizedPath.startsWith(prefix));
 
     const authCookie = req.cookies.get('access_token')?.value;
 

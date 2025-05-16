@@ -66,7 +66,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
 
           <button
             onClick={() => {
-              router.push(`/${language}/artists/${artist.id}`);
+              router.push(`/${language}/artists/${artist.bandId}`);
             }}
             className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20"
           >

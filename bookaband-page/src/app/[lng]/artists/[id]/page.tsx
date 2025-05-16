@@ -12,7 +12,7 @@ export default async function ArtistProfilePage({
   params: { lng: string; id: string };
 }) {
   const artist = await fetchArtistDetailsById(params.id);
-  if (!artist) return notFound();
+  if (!artist || 'error' in artist) return notFound();
 
   const eventTypes = await fetchEventTypes();
   if (!eventTypes || 'error' in eventTypes) {
