@@ -65,5 +65,10 @@
   "no-filters": "No hi ha filtres aplicats",
   "invalid-search-query": "Format de cerca invàlid",
   "reviews": "ressenyes",
-  "from": "a partir de..."
+  "from": "a partir de...",
+  "errorScreen": {
+    "title": "S'ha produït un error",
+    "description": "No s'ha pogut carregar el catàleg d'artistes. Torna-ho a provar més tard.",
+    "retry": "Torna-ho a provar"
+  }
 }

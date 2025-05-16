@@ -41,7 +41,7 @@ export default function InvoicesCard({
   };
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
+    <div className="min-h-40 rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg">
       <div className="mb-4 flex items-center gap-2">
         <ReceiptText className="h-5 w-5 text-[#15b7b9]" />
         <h2 className="text-lg font-semibold text-gray-800">{t('invoices')}</h2>

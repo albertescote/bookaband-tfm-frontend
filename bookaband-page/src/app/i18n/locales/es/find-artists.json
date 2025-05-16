@@ -65,5 +65,10 @@
   "no-filters": "No hay filtros aplicados",
   "invalid-search-query": "Formato de búsqueda inválido",
   "reviews": "reseñas",
-  "from": "a partir de..."
+  "from": "a partir de...",
+  "errorScreen": {
+    "title": "Algo salió mal",
+    "description": "No pudimos cargar tu el catálogo de artistas. Por favor, inténtalo más tarde.",
+    "retry": "Reintentar"
+  }
 }

@@ -65,5 +65,10 @@
   "no-filters": "No filters applied",
   "invalid-search-query": "Invalid search query format",
   "reviews": "reviews",
-  "from": "from..."
+  "from": "from...",
+  "errorScreen": {
+    "title": "Something went wrong",
+    "description": "We couldn’t load the artists catalog. Please try again later.",
+    "retry": "Retry"
+  }
 }

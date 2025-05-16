@@ -21,7 +21,7 @@ export default function DocumentsPage({
   const { t } = useTranslation(language, 'documents');
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
+    <div className="mx-auto min-h-screen max-w-5xl space-y-6 p-6">
       <h1 className="text-2xl font-semibold text-gray-800">
         {t('activityTitle')}
       </h1>
