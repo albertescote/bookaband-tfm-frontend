@@ -15,7 +15,7 @@ export default async function Page({
   params: { lng },
   searchParams,
 }: PageParams) {
-  const { t } = await getTranslation(lng, 'profile');
+  const { t } = await getTranslation(lng, 'chat');
 
   const chatId = searchParams?.chat_id;
   const bandId = searchParams?.band_id;

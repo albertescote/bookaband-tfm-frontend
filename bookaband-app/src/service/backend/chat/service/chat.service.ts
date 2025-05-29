@@ -21,13 +21,3 @@ export async function getChatById(
       .then((res) => res.data),
   );
 }
-
-export async function createNewChat(
-  bandId: string,
-): Promise<string | undefined> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .post(`/chat`, { bandId })
-      .then((res) => res.data.id),
-  );
-}

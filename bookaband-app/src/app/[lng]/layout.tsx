@@ -5,8 +5,8 @@ import { languages } from '@/app/i18n/settings';
 import { dir } from 'i18next';
 import { Toaster } from 'react-hot-toast';
 import Sidebar from '@/components/layout/sidebar/sidebar';
-import WebAppHeader from '@/components/layout/web-app-header/web-app-header';
 import { AuthProvider } from '@/providers/authProvider';
+import Header from '@/components/layout/header/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,7 +33,7 @@ export default async function RootLayout({
           <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
             <div className="flex flex-1 flex-col">
-              <WebAppHeader />
+              <Header />
               <main className="flex-1 p-6">
                 <Toaster position="top-center" />
                 {children}

@@ -13,14 +13,8 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
-import {
-  createNewChat,
-  getChatById,
-  getClientChats,
-} from '@/service/backend/chat/service/chat.service';
+import { getChatById } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
-import { getUserInfo } from '@/service/backend/user/service/user.service';
-import { getBandViewById } from '@/service/backend/band/service/band.service';
 import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
@@ -31,10 +25,9 @@ interface ChatProps {
   language: string;
   setChats: React.Dispatch<React.SetStateAction<ChatView[]>>;
   chatId?: string;
-  bandId?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
+const Chat: React.FC<ChatProps> = ({ language, setChats, chatId }) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
@@ -52,64 +45,24 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
-  const createEmptyChat = async (
-    bandId: string,
-  ): Promise<ChatHistory | undefined> => {
-    if (!bandId) {
-      setError(t('band-id-required'));
-      return;
-    }
-
-    const [userInfo, band] = await Promise.all([
-      getUserInfo().catch((err: Error) => {
-        throw err;
-      }),
-      getBandViewById(bandId).catch((err: Error) => {
-        throw err;
-      }),
-    ]);
-
-    if (!userInfo) {
-      setError(t('failed-to-get-user'));
-      return;
-    }
-    if (!band) {
-      setError(t('band-not-found'));
-      return;
-    }
-    const now = new Date();
-    return {
-      id: crypto.randomUUID(),
-      createdAt: now,
-      messages: [],
-      user: userInfo,
-      band: band,
-      updatedAt: now,
-    };
-  };
-
   useEffect(() => {
     if (chatId) {
       getChatById(chatId).then((chat: ChatHistory | undefined) => {
         setIsLoading(false);
         setChat(chat);
       });
-    } else if (bandId) {
-      createEmptyChat(bandId).then((chat) => {
-        setChat(chat);
-        setIsLoading(false);
-      });
     } else {
-      setError(t('chat-or-band-id-required'));
+      setError(t('chat-id-required'));
     }
-  }, [chatId, bandId]);
+  }, [chatId]);
 
   useEffect(() => {
     if (chat) {
-      const newSenderId = chat.user.id;
-      const newRecipientId = chat.band.id;
-      const newImageUrl = chat.band?.imageUrl;
-      const newDisplayName = chat.band?.name || t('unknown');
+      const newSenderId = chat.band.id;
+      const newRecipientId = chat.user.id;
+      const newImageUrl = chat.user?.imageUrl;
+      const newDisplayName =
+        chat.user?.firstName + ' ' + chat.user?.familyName || t('unknown');
 
       setSenderId(newSenderId);
       setRecipientId(newRecipientId);
@@ -136,86 +89,40 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      if (allMessages.length === 0) {
-        createNewChat(chat!.band.id).then((id) => {
-          if (id) {
-            chat!.id = id;
+      const newMessage: ChatMessage = {
+        chatId: chat!.id,
+        senderId,
+        recipientId,
+        message,
+        timestamp: new Date(),
+      };
+      setAllMessages((prev) => [...prev, newMessage]);
+
+      setChats((prevChats) => {
+        return prevChats.map((c) => {
+          if (c.id === chat!.id) {
+            return {
+              ...c,
+              messages: [
+                ...c.messages,
+                {
+                  id: crypto.randomUUID(),
+                  content: message,
+                  senderId,
+                  recipientId,
+                  timestamp: new Date(),
+                },
+              ],
+              updatedAt: new Date(),
+            };
           }
-          const newMessage: ChatMessage = {
-            chatId: chat!.id,
-            senderId,
-            recipientId,
-            message,
-            timestamp: new Date(),
-          };
-          setAllMessages((prev) => [...prev, newMessage]);
-
-          setChats((prevChats) => {
-            return prevChats.map((c) => {
-              if (c.id === chat!.id) {
-                return {
-                  ...c,
-                  messages: [
-                    ...c.messages,
-                    {
-                      id: crypto.randomUUID(),
-                      content: message,
-                      senderId,
-                      recipientId,
-                      timestamp: new Date(),
-                    },
-                  ],
-                  updatedAt: new Date(),
-                };
-              }
-              return c;
-            });
-          });
-
-          sendMessage(chat!.id, recipientId, message);
-          getClientChats(senderId).then((chats) => {
-            if ('error' in chats) return;
-            setChats(chats);
-          });
-          setMessage('');
-          setShowEmojis(false);
+          return c;
         });
-      } else {
-        const newMessage: ChatMessage = {
-          chatId: chat!.id,
-          senderId,
-          recipientId,
-          message,
-          timestamp: new Date(),
-        };
-        setAllMessages((prev) => [...prev, newMessage]);
+      });
 
-        setChats((prevChats) => {
-          return prevChats.map((c) => {
-            if (c.id === chat!.id) {
-              return {
-                ...c,
-                messages: [
-                  ...c.messages,
-                  {
-                    id: crypto.randomUUID(),
-                    content: message,
-                    senderId,
-                    recipientId,
-                    timestamp: new Date(),
-                  },
-                ],
-                updatedAt: new Date(),
-              };
-            }
-            return c;
-          });
-        });
-
-        sendMessage(chat!.id, recipientId, message);
-        setMessage('');
-        setShowEmojis(false);
-      }
+      sendMessage(chat!.id, recipientId, message);
+      setMessage('');
+      setShowEmojis(false);
     }
   };
 

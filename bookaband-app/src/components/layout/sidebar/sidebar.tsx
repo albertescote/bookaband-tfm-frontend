@@ -6,6 +6,7 @@ import { getAvatar } from '@/components/shared/avatar';
 import LanguageSwitcher from './language-switcher';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
+import { NavItem } from '@/components/layout/sidebar/navItem';
 
 export default function Sidebar() {
   const { user, logoutUser } = useAuth();
@@ -21,6 +22,7 @@ export default function Sidebar() {
       <nav className="flex-1 space-y-2 px-4">
         <NavItem href="/dashboard" label={t('dashboard')} />
         <NavItem href="/calendar" label={t('calendar')} />
+        <NavItem href="/chats" label={t('chats')} />
         <NavItem href="/bands" label={t('bands')} />
         <NavItem href="/performances" label={t('performances')} />
         <NavItem href="/payments" label={t('payments')} />
@@ -48,16 +50,5 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
-  );
-}
-
-function NavItem({ href, label }: { href: string; label: string }) {
-  return (
-    <a
-      href={href}
-      className="block rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
-    >
-      {label}
-    </a>
   );
 }

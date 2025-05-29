@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { Menu } from 'lucide-react';
 import React from 'react';
-import { BandSwitcher } from '@/components/layout/web-app-header/band-switcher';
+import { BandSwitcher } from '@/components/layout/header/band-switcher';
 
-export default function WebAppHeader() {
+export default function Header() {
   const { user, userBands } = useAuth();
   const params = useParams();
   const language = params.lng as string;

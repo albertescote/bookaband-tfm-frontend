@@ -4,42 +4,36 @@ import React, { useEffect, useState } from 'react';
 import Chat from './chat';
 import { ChatsList } from './chatsList';
 import { Menu, MessageCircle, X } from 'lucide-react';
-import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { useTranslation } from '@/app/i18n/client';
-import Link from 'next/link';
+import { ChatView } from '@/service/backend/chat/domain/chatView';
+import { getBandChats } from '@/service/backend/chat/service/chat.service';
+import { useAuth } from '@/providers/authProvider';
 
 interface ChatClientPageProps {
   language: string;
-  chats: ChatView[];
   chatId?: string;
-  bandId?: string;
 }
 
-export function ChatLayout({
-  language,
-  chats,
-  chatId,
-  bandId,
-}: ChatClientPageProps) {
+export function ChatLayout({ language, chatId }: ChatClientPageProps) {
   const { t } = useTranslation(language, 'chat');
+  const { selectedBand } = useAuth();
   const [activeChatId, setActiveChatId] = useState<string | undefined>();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [chatsState, setChatsState] = useState(chats);
+  const [chatsState, setChatsState] = useState<ChatView[]>([]);
 
   useEffect(() => {
-    if (bandId) {
-      const existingChat = chats.find((chat) => {
-        return chat.band.id === bandId;
-      });
-      if (existingChat) {
-        selectChat(existingChat.id);
+    if (!selectedBand) return;
+    getBandChats(selectedBand?.id).then((chats) => {
+      if (chats) {
+        setChatsState(chats);
+        if (chatId) {
+          selectChat(chatId);
+        } else if (chats.length > 0) {
+          selectChat(chats[0].id);
+        }
       }
-    } else if (chatId) {
-      selectChat(chatId);
-    } else if (chats.length > 0) {
-      selectChat(chats[0].id);
-    }
+    });
   }, []);
 
   useEffect(() => {
@@ -59,10 +53,10 @@ export function ChatLayout({
   }, []);
 
   useEffect(() => {
-    if (isMobile && (activeChatId || bandId)) {
+    if (isMobile && activeChatId) {
       setSidebarOpen(false);
     }
-  }, [activeChatId, bandId, isMobile]);
+  }, [activeChatId, isMobile]);
 
   const selectChat = (selectedChatId: string) => {
     setChatsState((prev) => {
@@ -75,12 +69,11 @@ export function ChatLayout({
   };
 
   const renderMainContent = () => {
-    if (activeChatId || bandId) {
+    if (activeChatId) {
       return (
         <Chat
           language={language}
           setChats={setChatsState}
-          bandId={bandId}
           chatId={activeChatId}
         />
       );
@@ -98,14 +91,7 @@ export function ChatLayout({
 
             <p className="mb-6 text-gray-600">{t('no-chats-start-new')}</p>
 
-            <div className="flex flex-col space-y-3">
-              <Link
-                href={`/${language}/find-artists`}
-                className="w-full rounded-full bg-[#15b7b9] px-6 py-3 font-medium text-white transition-colors hover:bg-[#109a9c]"
-              >
-                {t('browse-bands')}
-              </Link>
-            </div>
+            <div className="flex flex-col space-y-3"></div>
           </div>
         </div>
       );
