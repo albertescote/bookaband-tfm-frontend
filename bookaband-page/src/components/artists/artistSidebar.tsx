@@ -14,12 +14,12 @@ import {
   Youtube,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { ArtistDetails } from '@/service/backend/artist/domain/artist';
 import { Button } from '@/components/shared/button';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/authProvider';
 import { useState } from 'react';
 import { formatNumberShort } from '@/lib/format';
+import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 
 export function ArtistSidebar({
   artist,
@@ -85,7 +85,14 @@ export function ArtistSidebar({
 
         {/* CTA Buttons with improved styling */}
         <div className="w-full space-y-2">
-          <Button className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90">
+          <Button
+            className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90"
+            onClick={() => {
+              router.push(
+                `/${language}/bookings?band_id=${encodeURIComponent(artist.bandId)}`,
+              );
+            }}
+          >
             {t('hire')}
           </Button>
           <Button

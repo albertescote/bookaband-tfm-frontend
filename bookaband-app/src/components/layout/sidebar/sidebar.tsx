@@ -11,7 +11,7 @@ export default function Sidebar() {
   const { user, logoutUser } = useAuth();
   const params = useParams();
   const language = params.lng as string;
-  const { t } = useTranslation(language, 'web-app');
+  const { t } = useTranslation(language, 'home');
 
   return (
     <aside className="hidden w-64 flex-col border-r bg-white shadow-md md:flex">

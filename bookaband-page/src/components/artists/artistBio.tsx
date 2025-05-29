@@ -2,7 +2,7 @@
 
 import { MapPin } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { ArtistDetails } from '@/service/backend/artist/domain/artist';
+import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 
 export function ArtistBio({
   artist,

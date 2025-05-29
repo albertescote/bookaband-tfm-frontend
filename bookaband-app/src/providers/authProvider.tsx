@@ -7,9 +7,14 @@ import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Role } from '@/service/backend/user/domain/role';
 import { User } from '@/service/backend/user/domain/user';
 import { AUTH_URL, PAGE_URL } from '@/publicConfig';
+import { getUserBands } from '@/service/backend/band/service/band.service';
+import { UserBand } from '@/service/backend/band/domain/userBand';
 
 type AuthContextType = {
   user: User | null;
+  userBands: UserBand[];
+  selectedBand: UserBand | null;
+  setSelectedBand: React.Dispatch<React.SetStateAction<UserBand | null>>;
   loading: boolean;
   logoutUser: () => void;
 };
@@ -18,6 +23,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [userBands, setUserBands] = useState<UserBand[]>([]);
+  const [selectedBand, setSelectedBand] = useState<UserBand | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
@@ -31,18 +38,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             window.location.href = AUTH_URL + `/${language}/login`;
           } else {
             setUser(user);
+            getUserBands().then((bands) => {
+              if (bands) {
+                setUserBands(bands);
+                setSelectedBand(bands[0]);
+              }
+            });
           }
         } else {
           setUser(null);
         }
       })
-      .catch(() => setUser(null))
+      .catch(() => {
+        setUser(null);
+        setUserBands([]);
+        setSelectedBand(null);
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const logoutUser = async () => {
     await logout();
     setUser(null);
+    setUserBands([]);
+    setSelectedBand(null);
     window.location.href = PAGE_URL + `/${language}/`;
   };
 
@@ -67,7 +86,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, logoutUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        userBands,
+        selectedBand,
+        setSelectedBand,
+        loading,
+        logoutUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
