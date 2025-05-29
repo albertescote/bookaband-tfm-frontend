@@ -9,6 +9,20 @@ export async function getUserInvitations(): Promise<Invitation[] | undefined> {
   );
 }
 
+export async function sendInvitation(
+  bandId: string,
+  userEmail: string,
+): Promise<void> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .post('/invitations/send', {
+        bandId,
+        userEmail,
+      })
+      .then((res) => res.data),
+  );
+}
+
 export async function acceptInvitation(id: string): Promise<void> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance

@@ -23,15 +23,38 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const SELECTED_BAND_KEY = 'selectedBand';
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userBands, setUserBands] = useState<UserBand[]>([]);
-  const [selectedBand, setSelectedBand] = useState<UserBand | null>(null);
+  const [selectedBand, setSelectedBandState] = useState<UserBand | null>(() => {
+    if (typeof window !== 'undefined') {
+      const savedBand = localStorage.getItem(SELECTED_BAND_KEY);
+      return savedBand ? JSON.parse(savedBand) : null;
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const language = pathname?.split('/')[1];
+
+  // Custom setter for selectedBand that also updates localStorage
+  const setSelectedBand = (value: React.SetStateAction<UserBand | null>) => {
+    setSelectedBandState((prevValue) => {
+      const newValue = typeof value === 'function' ? value(prevValue) : value;
+      if (typeof window !== 'undefined') {
+        if (newValue) {
+          localStorage.setItem(SELECTED_BAND_KEY, JSON.stringify(newValue));
+        } else {
+          localStorage.removeItem(SELECTED_BAND_KEY);
+        }
+      }
+      return newValue;
+    });
+  };
 
   useEffect(() => {
     getUserInfo()
@@ -44,7 +67,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             getUserBands().then((bands) => {
               if (bands) {
                 setUserBands(bands);
-                setSelectedBand(bands[0]);
+                // Only set the first band as selected if there's no selected band in localStorage
+                // or if the selected band is not in the user's bands
+                if (
+                  !selectedBand ||
+                  !bands.some((band) => band.id === selectedBand.id)
+                ) {
+                  setSelectedBand(bands[0]);
+                }
               }
             });
           }

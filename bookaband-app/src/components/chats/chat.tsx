@@ -19,6 +19,7 @@ import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { useAuth } from '@/providers/authProvider';
 
 interface ChatProps {
   language: string;
@@ -29,6 +30,7 @@ interface ChatProps {
 const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
+  const { selectedBand } = useAuth();
   const [message, setMessage] = useState<string>('');
   const [allMessages, setAllMessages] = useState<ChatMessage[]>([]);
   const [chat, setChat] = useState<ChatHistory | undefined>(initialChat);
@@ -59,6 +61,28 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   }, [chatId, initialChat]);
 
   useEffect(() => {
+    if (chatId && selectedBand) {
+      setIsLoading(true);
+      setAllMessages([]);
+      getChatById(chatId)
+        .then((chat: ChatHistory | undefined) => {
+          if (chat && chat.band.id === selectedBand.id) {
+            setChat(chat);
+          } else {
+            setChat(undefined);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching chat:', error);
+          setChat(undefined);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [chatId, selectedBand]);
+
+  useEffect(() => {
     if (chat) {
       const newSenderId = chat.band.id;
       const newRecipientId = chat.user.id;
@@ -80,6 +104,12 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           timestamp: msg.timestamp,
         })),
       );
+    } else {
+      setSenderId('');
+      setRecipientId('');
+      setImageUrl('');
+      setDisplayName('');
+      setAllMessages([]);
     }
   }, [chat, t]);
 

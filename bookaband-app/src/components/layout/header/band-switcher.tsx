@@ -16,7 +16,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
   return (
     <Listbox value={selectedBand} onChange={setSelectedBand}>
       <div className="relative">
-        <Listbox.Button className="flex w-full items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]">
+        <Listbox.Button className="flex w-full min-w-[200px] items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]">
           <div className="flex flex-1 items-center space-x-4">
             <span className="flex-1 truncate text-left">
               {selectedBand?.name}
@@ -35,7 +35,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
           enterFrom="opacity-0 -translate-y-2"
           enterTo="opacity-100 translate-y-0"
         >
-          <Listbox.Options className="absolute left-0 top-full mt-2 w-full overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Listbox.Options className="absolute left-0 top-full mt-2 w-full min-w-[200px] overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             {bands.map((band) => (
               <Listbox.Option
                 key={band.id}

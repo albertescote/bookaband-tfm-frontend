@@ -30,11 +30,11 @@ export default async function RootLayout({
     <html lang={lng} dir={dir(lng)}>
       <body className={`${inter.className}`}>
         <AuthProvider>
-          <div className="flex min-h-screen bg-gray-50">
+          <div className="flex h-screen bg-gray-50 overflow-hidden">
             <Sidebar />
-            <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col overflow-hidden">
               <Header />
-              <main className="flex-1 p-6">
+              <main className="flex-1 p-6 overflow-y-auto">
                 <Toaster position="top-center" />
                 {children}
               </main>

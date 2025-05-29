@@ -14,20 +14,6 @@ export async function createBand(request: {
   );
 }
 
-export async function joinBand(
-  bandId: string,
-  userEmail: string,
-): Promise<void> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .post('/invitations/send', {
-        bandId,
-        userEmail,
-      })
-      .then((res) => res.data),
-  );
-}
-
 export async function deleteBand(id: string): Promise<void> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance.delete(`/bands/${id}`).then((res) => res.data),
@@ -51,5 +37,11 @@ export async function getBandViewById(id: string): Promise<Band | undefined> {
 export async function getUserBands(): Promise<UserBand[] | undefined> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance.get('/bands').then((res) => res.data),
+  );
+}
+
+export async function removeMember(bandId: string, memberId: string): Promise<void> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.delete(`/bands/${bandId}/members/${memberId}`).then((res) => res.data),
   );
 }

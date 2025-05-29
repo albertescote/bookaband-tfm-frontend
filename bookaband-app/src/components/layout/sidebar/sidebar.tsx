@@ -61,18 +61,18 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       {/* Main Navigation Sidebar */}
       <aside
         className={`hidden border-r bg-white shadow-md transition-all duration-300 md:flex ${
           isMainSidebarCollapsed ? 'w-0' : 'w-64'
         }`}
       >
-        <div className="flex w-64 flex-col">
+        <div className="flex w-64 flex-col h-full">
           <div className="p-6 text-2xl font-extrabold text-[#15b7b9]">
             BookaBand
           </div>
-          <nav className="flex-1 space-y-2 px-4">
+          <nav className="flex-1 space-y-2 px-4 overflow-y-auto">
             <NavItem href="/dashboard" label={t('dashboard')} />
             <NavItem href="/calendar" label={t('calendar')} />
             <NavItem
@@ -113,7 +113,7 @@ export default function Sidebar() {
 
       {/* Chat List Sidebar (only visible on chats page) */}
       {isChatsPage && (
-        <aside className="hidden w-64 flex-col border-r bg-white shadow-md md:flex">
+        <aside className="hidden w-64 flex-col border-r bg-white shadow-md md:flex h-screen">
           <div className="flex items-center justify-between border-b bg-gradient-to-r from-[#15b7b9] to-[#1fc8ca] px-4 pb-5 pt-4">
             <h2 className="text-lg font-semibold text-white">{t('chats')}</h2>
             <button
@@ -127,12 +127,14 @@ export default function Sidebar() {
               )}
             </button>
           </div>
-          <ChatsList
-            language={language}
-            chats={chats}
-            activeChatId={currentChatId || undefined}
-            onSelectChat={handleChatSelect}
-          />
+          <div className="flex-1 overflow-y-auto">
+            <ChatsList
+              language={language}
+              chats={chats}
+              activeChatId={currentChatId || undefined}
+              onSelectChat={handleChatSelect}
+            />
+          </div>
         </aside>
       )}
     </div>
