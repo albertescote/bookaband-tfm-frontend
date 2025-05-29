@@ -17,6 +17,8 @@ type AuthContextType = {
   setSelectedBand: React.Dispatch<React.SetStateAction<UserBand | null>>;
   loading: boolean;
   logoutUser: () => void;
+  unreadMessages: number;
+  setUnreadMessages: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userBands, setUserBands] = useState<UserBand[]>([]);
   const [selectedBand, setSelectedBand] = useState<UserBand | null>(null);
   const [loading, setLoading] = useState(true);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const language = pathname?.split('/')[1];
@@ -94,6 +97,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSelectedBand,
         loading,
         logoutUser,
+        unreadMessages,
+        setUnreadMessages,
       }}
     >
       {children}

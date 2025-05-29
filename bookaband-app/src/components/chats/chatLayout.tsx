@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Chat from './chat';
-import { ChatsList } from './chatsList';
 import { Menu, MessageCircle, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
@@ -62,7 +61,7 @@ export function ChatLayout({ language, chatId }: ChatClientPageProps) {
     setChatsState((prev) => {
       if (!prev) return prev;
       return prev.map((chat) =>
-        chat.id === chatId ? { ...chat, unreadMessagesCount: 0 } : chat,
+        chat.id === selectedChatId ? { ...chat, unreadMessagesCount: 0 } : chat,
       );
     });
     setActiveChatId(selectedChatId);
@@ -70,11 +69,12 @@ export function ChatLayout({ language, chatId }: ChatClientPageProps) {
 
   const renderMainContent = () => {
     if (activeChatId) {
+      const selectedChat = chatsState.find((chat) => chat.id === activeChatId);
       return (
         <Chat
           language={language}
-          setChats={setChatsState}
           chatId={activeChatId}
+          initialChat={selectedChat}
         />
       );
     } else {
@@ -126,23 +126,6 @@ export function ChatLayout({ language, chatId }: ChatClientPageProps) {
                 <Menu size={20} className="hidden md:block" />
               )}
             </button>
-          </div>
-
-          <div
-            className={`flex-1 overflow-y-auto transition-all duration-300 ${
-              sidebarOpen ? 'opacity-100' : 'opacity-0 md:hidden'
-            }`}
-          >
-            {sidebarOpen && (
-              <div className="h-full">
-                <ChatsList
-                  language={language}
-                  chats={chatsState}
-                  activeChatId={activeChatId}
-                  onSelectChat={selectChat}
-                />
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -22,5 +22,8 @@
   "band-id-required": "Band ID is required",
   "failed-to-get-user": "Failed to get user information",
   "band-not-found": "Band not found",
-  "chat-or-band-id-required": "Chat ID or Band ID is required"
+  "chat-or-band-id-required": "Chat ID or Band ID is required",
+  "no-chats-yet": "No chats yet",
+  "start-conversation": "Start a new conversation to begin chatting",
+  "chat-not-found-description": "The chat you're looking for doesn't exist or you don't have access to it"
 }

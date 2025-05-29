@@ -11,7 +11,7 @@
   "view-all-messages": "Veure tots els missatges",
   "new": "nou",
   "chats": "Xats",
-  "start-chatting": "Comença a xatejar",
+  "start-chatting": "Començar a xatejar",
   "no-chats-start-new": "No tens xats actius. Inicia una nova conversa amb un client!",
   "browse-bands": "Explorar bandes",
   "back-to-chats": "Tornar a xats",
@@ -22,5 +22,8 @@
   "band-id-required": "Es requereix ID de banda",
   "failed-to-get-user": "Error en obtenir informació de l'usuari",
   "band-not-found": "Banda no trobada",
-  "chat-or-band-id-required": "Es requereix ID de xat o ID de banda"
+  "chat-or-band-id-required": "Es requereix ID de xat o ID de banda",
+  "no-chats-yet": "Encara no hi ha xats",
+  "start-conversation": "Inicia una nova conversa per començar a xatejar",
+  "chat-not-found-description": "El xat que busques no existeix o no tens accés a ell"
 }

@@ -19,21 +19,20 @@ import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { ChatView } from '@/service/backend/chat/domain/chatView';
 
 interface ChatProps {
   language: string;
-  setChats: React.Dispatch<React.SetStateAction<ChatView[]>>;
   chatId?: string;
+  initialChat?: ChatHistory;
 }
 
-const Chat: React.FC<ChatProps> = ({ language, setChats, chatId }) => {
+const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
   const [allMessages, setAllMessages] = useState<ChatMessage[]>([]);
-  const [chat, setChat] = useState<ChatHistory | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [chat, setChat] = useState<ChatHistory | undefined>(initialChat);
+  const [isLoading, setIsLoading] = useState<boolean>(!initialChat);
   const [senderId, setSenderId] = useState<string>('');
   const [recipientId, setRecipientId] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string | undefined>('');
@@ -46,15 +45,18 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId }) => {
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chatId) {
+    if (chatId && !initialChat) {
       getChatById(chatId).then((chat: ChatHistory | undefined) => {
         setIsLoading(false);
         setChat(chat);
       });
+    } else if (initialChat) {
+      setIsLoading(false);
+      setChat(initialChat);
     } else {
-      setError(t('chat-id-required'));
+      setIsLoading(false);
     }
-  }, [chatId]);
+  }, [chatId, initialChat]);
 
   useEffect(() => {
     if (chat) {
@@ -97,29 +99,6 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId }) => {
         timestamp: new Date(),
       };
       setAllMessages((prev) => [...prev, newMessage]);
-
-      setChats((prevChats) => {
-        return prevChats.map((c) => {
-          if (c.id === chat!.id) {
-            return {
-              ...c,
-              messages: [
-                ...c.messages,
-                {
-                  id: crypto.randomUUID(),
-                  content: message,
-                  senderId,
-                  recipientId,
-                  timestamp: new Date(),
-                },
-              ],
-              updatedAt: new Date(),
-            };
-          }
-          return c;
-        });
-      });
-
       sendMessage(chat!.id, recipientId, message);
       setMessage('');
       setShowEmojis(false);
@@ -213,26 +192,37 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId }) => {
         </div>
       ) : (
         <div className="flex h-full flex-col">
-          {!chat ? (
+          {!chatId ? (
             <div className="flex h-full items-center justify-center">
               <div className="text-center">
+                <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[#e3f8f8]">
+                  <MessageSquareOff className="h-12 w-12 text-[#15b7b9]" />
+                </div>
+                <h1 className="text-xl font-semibold text-gray-700">
+                  {t('no-chats-yet')}
+                </h1>
+                <p className="mt-2 text-gray-500">{t('start-conversation')}</p>
+              </div>
+            </div>
+          ) : !chat ? (
+            <div className="flex h-full items-center justify-center">
+              <div className="text-center">
+                <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[#e3f8f8]">
+                  <MessageSquareWarning className="h-12 w-12 text-[#15b7b9]" />
+                </div>
                 <h1 className="text-xl font-semibold text-gray-700">
                   {t('chat-not-found')}
                 </h1>
-                <button
-                  onClick={goToChats}
-                  className="mt-4 rounded-md bg-[#15b7b9] px-4 py-2 text-white"
-                >
-                  {t('back-to-chats')}
-                </button>
+                <p className="mt-2 text-gray-500">
+                  {t('chat-not-found-description')}
+                </p>
               </div>
             </div>
           ) : (
             <div className="flex h-full flex-col">
               {/* Chat Header */}
-              <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between border-b bg-white px-4 py-3 shadow-sm">
                 <div className="flex items-center gap-3">
-                  {/* Back button removed as we're using the unified layout */}
                   {getAvatar(48, 48, imageUrl, displayName)}
                   <div>
                     <h2 className="font-medium">{displayName}</h2>
