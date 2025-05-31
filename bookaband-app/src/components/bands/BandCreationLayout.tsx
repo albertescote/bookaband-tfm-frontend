@@ -6,8 +6,7 @@ import { Progress } from '@/components/ui/progress';
 
 interface Step {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
 }
 
 interface BandCreationLayoutProps {
@@ -16,39 +15,35 @@ interface BandCreationLayoutProps {
   totalSteps: number;
   onNext: () => void;
   onBack: () => void;
+  onStepClick: (step: number) => void;
+  onCancel: () => void;
   isSubmitting?: boolean;
 }
 
 const STEPS: Step[] = [
   {
     id: 'basic-info',
-    title: 'Basic Information',
-    description: 'Band details and description',
+    titleKey: 'progress.steps.basicInfo.title',
   },
   {
     id: 'technical-rider',
-    title: 'Technical Rider',
-    description: 'Equipment and technical requirements',
+    titleKey: 'progress.steps.technicalRider.title',
   },
   {
     id: 'hospitality-rider',
-    title: 'Hospitality Rider',
-    description: 'Accommodation and catering needs',
+    titleKey: 'progress.steps.hospitalityRider.title',
   },
   {
     id: 'performance-area',
-    title: 'Performance Area',
-    description: 'Regions and travel preferences',
+    titleKey: 'progress.steps.performanceArea.title',
   },
   {
     id: 'availability',
-    title: 'Availability',
-    description: 'Available dates and rates',
+    titleKey: 'progress.steps.availability.title',
   },
   {
     id: 'multimedia',
-    title: 'Multimedia',
-    description: 'Images, videos and social media',
+    titleKey: 'progress.steps.multimedia.title',
   },
 ];
 
@@ -58,6 +53,8 @@ export default function BandCreationLayout({
   totalSteps,
   onNext,
   onBack,
+  onStepClick,
+  onCancel,
   isSubmitting = false,
 }: BandCreationLayoutProps) {
   const router = useRouter();
@@ -71,22 +68,23 @@ export default function BandCreationLayout({
     if (currentStep > 1) {
       onBack();
     } else {
+      onCancel();
       router.push('/bands');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Progress Bar */}
       <div className="bg-transparent">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="space-y-4">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+          <div className="space-y-6">
             <div className="flex items-center">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={handleBack}
-                className="flex items-center gap-2 -ml-2"
+                className="-ml-2 flex items-center gap-2 text-gray-600 hover:text-gray-900"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -110,27 +108,29 @@ export default function BandCreationLayout({
               {STEPS.map((step, index) => (
                 <div
                   key={step.id}
-                  className={`flex flex-col items-center ${
+                  onClick={() => index + 1 <= currentStep && onStepClick(index + 1)}
+                  className={`flex flex-col items-center transition-colors duration-200 ${
                     index + 1 === currentStep
                       ? 'text-[#15b7b9]'
                       : index + 1 < currentStep
-                      ? 'text-gray-500'
+                      ? 'text-gray-500 cursor-pointer hover:text-[#15b7b9]'
                       : 'text-gray-400'
                   }`}
                 >
                   <div
-                    className={`mb-2 flex h-8 w-8 items-center justify-center rounded-full border-2 ${
+                    className={`mb-1.5 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all duration-200 ${
                       index + 1 === currentStep
-                        ? 'border-[#15b7b9] bg-[#15b7b9] text-white'
+                        ? 'border-[#15b7b9] bg-[#15b7b9] text-white shadow-md'
                         : index + 1 < currentStep
-                        ? 'border-gray-500 bg-gray-500 text-white'
+                        ? 'border-gray-500 bg-gray-500 text-white cursor-pointer hover:border-[#15b7b9] hover:bg-[#15b7b9]'
                         : 'border-gray-300 bg-white'
                     }`}
                   >
                     {index + 1}
                   </div>
-                  <span className="text-sm font-medium">{step.title}</span>
-                  <span className="text-xs">{step.description}</span>
+                  <span className="text-sm font-medium">
+                    {t(step.titleKey)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -139,37 +139,47 @@ export default function BandCreationLayout({
       </div>
 
       {/* Form Content */}
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="bg-white p-6 shadow-sm rounded-lg">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
           {children}
         </div>
       </div>
 
-      {/* Navigation Buttons */}
+      {/* Navigation Footer */}
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="bg-white border-t rounded-b-lg">
-          <div className="px-6 py-4">
-            <div className="flex justify-between">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleBack}
-                disabled={isSubmitting}
-              >
-                {currentStep === 1 ? t('cancel') : t('previous')}
-              </Button>
-              <Button
-                type="button"
-                onClick={onNext}
-                disabled={isSubmitting}
-                className="bg-[#15b7b9] hover:bg-[#15b7b9]/90"
-              >
-                {currentStep === totalSteps ? t('create') : t('next')}
-              </Button>
+        <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            {/* Left: Back/Cancel Button */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={currentStep === 1 ? () => {
+                onCancel();
+                router.push('/bands');
+              } : handleBack}
+              disabled={isSubmitting}
+              className="border-gray-200 hover:bg-gray-50"
+            >
+              {currentStep === 1 ? t('common.cancel') : t('common.previous')}
+            </Button>
+
+            {/* Center: Step Summary */}
+            <div className="text-sm text-gray-500">
+              {currentStep} / {totalSteps}
             </div>
+
+            {/* Right: Next/Create Button */}
+            <Button
+              type="button"
+              onClick={onNext}
+              disabled={isSubmitting}
+              className="bg-[#15b7b9] text-white shadow-sm hover:bg-[#15b7b9]/90"
+            >
+              {currentStep === totalSteps ? t('create') : t('common.next')}
+            </Button>
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

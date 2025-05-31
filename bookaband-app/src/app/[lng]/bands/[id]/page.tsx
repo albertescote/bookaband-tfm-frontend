@@ -200,13 +200,13 @@ export default function ManageBandPage() {
           </div>
           <div className="flex gap-4">
             {isAdmin && (
-              <button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="flex items-center gap-2 text-red-600 hover:text-red-700"
-              >
-                <Trash2 size={20} />
-                {t('deleteBand')}
-              </button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="flex items-center gap-2 text-red-600 hover:text-red-700"
+          >
+            <Trash2 size={20} />
+            {t('deleteBand')}
+          </button>
             )}
             {!isAdmin && (
               <button
@@ -238,13 +238,13 @@ export default function ManageBandPage() {
               {t('members')}
             </h2>
             {isAdmin && (
-              <button
-                onClick={() => setShowInviteModal(true)}
+            <button
+              onClick={() => setShowInviteModal(true)}
                 className="flex items-center gap-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-white transition-colors hover:bg-[#15b7b9]/90"
-              >
-                <UserPlus size={20} />
-                {t('inviteMember')}
-              </button>
+            >
+              <UserPlus size={20} />
+              {t('inviteMember')}
+            </button>
             )}
           </div>
 
@@ -279,13 +279,13 @@ export default function ManageBandPage() {
                     {t(member.role.toLowerCase())}
                   </span>
                   {isAdmin && member.id !== user?.id && (
-                    <button
-                      onClick={() => setShowRemoveConfirm(member.id)}
-                      disabled={isRemoving === member.id}
+                <button
+                  onClick={() => setShowRemoveConfirm(member.id)}
+                  disabled={isRemoving === member.id}
                       className="text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <UserMinus size={20} />
-                    </button>
+                >
+                  <UserMinus size={20} />
+                </button>
                   )}
                 </div>
               </div>
@@ -300,27 +300,27 @@ export default function ManageBandPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
             <div className="w-full max-w-md rounded-lg bg-white p-6">
               <h3 className="mb-4 text-lg font-semibold text-gray-900">
-                {t('confirmDelete')}
-              </h3>
+              {t('confirmDelete')}
+            </h3>
               <p className="mb-6 text-gray-600">{t('deleteWarning')}</p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                  disabled={isDeleting}
-                >
-                  {t('cancel')}
-                </button>
-                <button
-                  onClick={handleDeleteBand}
-                  disabled={isDeleting}
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                disabled={isDeleting}
+              >
+                {t('cancel')}
+              </button>
+              <button
+                onClick={handleDeleteBand}
+                disabled={isDeleting}
                   className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isDeleting ? t('deleting') : t('delete')}
-                </button>
-              </div>
+              >
+                {isDeleting ? t('deleting') : t('delete')}
+              </button>
             </div>
-          </div>,
+          </div>
+        </div>,
           document.body,
         )}
 
@@ -354,7 +354,7 @@ export default function ManageBandPage() {
             </div>
           </div>,
           document.body,
-        )}
+      )}
 
       {/* Invite Member Modal */}
       {showInviteModal &&
@@ -362,58 +362,58 @@ export default function ManageBandPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
             <div className="w-full max-w-md rounded-lg bg-white p-6">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {t('inviteMember')}
-                </h3>
-                <button
-                  onClick={() => setShowInviteModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <X size={20} />
-                </button>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t('inviteMember')}
+              </h3>
+              <button
+                onClick={() => setShowInviteModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
               <p className="mb-6 text-gray-600">
                 {t('inviteMemberDescription')}
               </p>
-              <form onSubmit={handleInviteMember}>
-                <div className="mb-4">
-                  <label
-                    htmlFor="email"
+            <form onSubmit={handleInviteMember}>
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
                     className="mb-2 block text-sm font-medium text-gray-700"
-                  >
-                    {t('memberEmail')}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={inviteEmail}
-                    onChange={(e) => setInviteEmail(e.target.value)}
+                >
+                  {t('memberEmail')}
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder={t('emailPlaceholder')}
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#15b7b9]"
-                    required
-                  />
-                </div>
-                <div className="flex justify-end gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowInviteModal(false)}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                  >
-                    {t('cancel')}
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isInviting}
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => setShowInviteModal(false)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                >
+                  {t('cancel')}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isInviting}
                     className="rounded-lg bg-[#15b7b9] px-4 py-2 text-white hover:bg-[#15b7b9]/90 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {isInviting ? t('inviting') : t('invite')}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>,
+                >
+                  {isInviting ? t('inviting') : t('invite')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>,
           document.body,
-        )}
+      )}
 
       {/* Remove Member Confirmation Modal */}
       {showRemoveConfirm &&
@@ -421,31 +421,31 @@ export default function ManageBandPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
             <div className="w-full max-w-md rounded-lg bg-white p-6">
               <h3 className="mb-4 text-lg font-semibold text-gray-900">
-                {t('confirmRemoveMember')}
-              </h3>
+              {t('confirmRemoveMember')}
+            </h3>
               <p className="mb-6 text-gray-600">{t('removeMemberWarning')}</p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setShowRemoveConfirm(null)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                  disabled={isRemoving === showRemoveConfirm}
-                >
-                  {t('cancel')}
-                </button>
-                <button
-                  onClick={() => handleRemoveMember(showRemoveConfirm)}
-                  disabled={isRemoving === showRemoveConfirm}
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowRemoveConfirm(null)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                disabled={isRemoving === showRemoveConfirm}
+              >
+                {t('cancel')}
+              </button>
+              <button
+                onClick={() => handleRemoveMember(showRemoveConfirm)}
+                disabled={isRemoving === showRemoveConfirm}
                   className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
+              >
                   {isRemoving === showRemoveConfirm
                     ? t('removing')
                     : t('remove')}
-                </button>
-              </div>
+              </button>
             </div>
-          </div>,
+          </div>
+        </div>,
           document.body,
-        )}
+      )}
     </div>
   );
-}
+} 

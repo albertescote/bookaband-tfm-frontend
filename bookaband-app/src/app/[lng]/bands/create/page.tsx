@@ -1,8 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
-import { useParams } from 'next/navigation';
 import BandProfileForm from '@/components/bands/BandProfileForm';
 import { BandProfile } from '@/service/backend/band/domain/bandProfile';
 import { createBand } from '@/service/backend/band/service/band.service';
@@ -25,8 +24,8 @@ export default function CreateBandPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold">{t('createBand')}</h1>
+    <div className="container mx-auto px-4 py-2">
+      <h1 className="mb-2 text-3xl font-bold">{t('createBand')}</h1>
       <BandProfileForm onSubmit={handleSubmit} />
     </div>
   );

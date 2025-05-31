@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from './button';
+import { useTranslation } from 'react-i18next';
 
 interface FileUploadProps {
   onUpload: (files: File[]) => void;
@@ -17,6 +18,7 @@ export function FileUpload({
 }: FileUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation('bands');
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -62,9 +64,9 @@ export function FileUpload({
       <div className="space-y-2">
         <div className="text-sm text-gray-500">
           {isDragging ? (
-            <p>Drop files here...</p>
+            <p>{t('form.multimedia.dragAndDrop')}</p>
           ) : (
-            <p>Drag and drop files here, or click to select files</p>
+            <p>{t('form.multimedia.dragAndDrop')}</p>
           )}
         </div>
         <Button
@@ -72,7 +74,7 @@ export function FileUpload({
           variant="outline"
           onClick={() => fileInputRef.current?.click()}
         >
-          Select Files
+          {t('form.multimedia.selectFiles')}
         </Button>
       </div>
     </div>

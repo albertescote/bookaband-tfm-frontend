@@ -41,15 +41,28 @@
   "invitedBy": "Invited by",
   "acceptInvitation": "Accept",
   "declineInvitation": "Decline",
-  "invitationAccepted": "Invitation accepted successfully",
-  "invitationDeclined": "Invitation declined successfully",
+  "invitationAccepted": "Invitatiion accepted successfully",
+  "invitationDeclined": "Invitatiion declined successfully",
   "errorAcceptingInvitation": "Error accepting invitation",
   "errorDecliningInvitation": "Error declining invitation",
   "name": "Band Name",
   "namePlaceholder": "Enter your band name",
   "genre": "Music Genre",
+  "genrePlaceholder": "Select a genre",
   "description": "Description",
   "descriptionPlaceholder": "Tell us about your band",
+  "location": "Location",
+  "locationPlaceholder": "Enter your band's location",
+  "musicalStyles": "Musical Styles",
+  "musicalStylesPlaceholder": "Select musical styles",
+  "artisticName": "Artistic Name",
+  "artisticNamePlaceholder": "Enter artistic name",
+  "instrument": "Instrument",
+  "instrumentPlaceholder": "Enter instrument",
+  "experience": "Experience",
+  "experiencePlaceholder": "Describe your experience",
+  "profileLink": "Profile Link",
+  "profileLinkPlaceholder": "Enter profile link",
   "bandImage": "Band Image",
   "manage": "Manage Band",
   "createBand": "Create Band",
@@ -63,7 +76,7 @@
   "confirmRemoveMember": "Remove Member",
   "removeMemberWarning": "Are you sure you want to remove this member from the band?",
   "bandDeleted": "Band deleted successfully",
-  "invitationSent": "Invitation sent successfully",
+  "invitationSent": "Invitatiion sent successfully",
   "memberRemoved": "Member removed successfully",
   "back": "Back to Bands",
   "cancel": "Cancel",
@@ -87,7 +100,9 @@
     "errorDeleting": "Error deleting band",
     "errorInviting": "Error sending invitation",
     "errorRemoving": "Error removing member",
-    "backToBands": "Back to Bands"
+    "backToBands": "Back to Bands",
+    "next": "Next",
+    "previous": "Previous"
   },
   "createBandDescription": "Create a new band to start collaborating with other musicians",
   "email": "Email",
@@ -114,7 +129,7 @@
   "errorRemoving": "Error removing member",
   "errorLeaving": "Error leaving band",
   "errorDeleting": "Error deleting band",
-  "successInviting": "Invitation sent successfully",
+  "successInviting": "Invitatiion sent successfully",
   "successRemoving": "Member removed successfully",
   "successLeaving": "You have left the band",
   "successDeleting": "Band deleted successfully",
@@ -133,79 +148,173 @@
     "description": "We couldn't load the band details. Please try again later.",
     "backToBands": "Back to Bands"
   },
-  "basicInfo": "Basic Information",
-  "location": "Location",
-  "locationPlaceholder": "Enter your band's location",
-  "musicalStyles": "Musical Styles",
-  "selectMusicalStyles": "Select musical styles",
-  "artisticName": "Artistic Name",
-  "artisticNamePlaceholder": "Enter artistic name",
-  "instrument": "Instrument",
-  "instrumentPlaceholder": "Enter instrument",
-  "experience": "Experience",
-  "experiencePlaceholder": "Describe your experience",
-  "profileLink": "Profile Link",
-  "profileLinkPlaceholder": "Enter profile link",
-  "technicalRider": "Technical Rider",
-  "soundSystem": "Sound System",
-  "soundSystemPlaceholder": "Describe your sound system requirements",
-  "microphones": "Microphones",
-  "microphonesPlaceholder": "List your microphone requirements",
-  "backline": "Backline",
-  "backlinePlaceholder": "List your backline requirements",
-  "lighting": "Lighting",
-  "lightingPlaceholder": "Describe your lighting requirements",
-  "otherRequirements": "Other Requirements",
-  "otherRequirementsPlaceholder": "List any other technical requirements",
-  "hospitalityRider": "Hospitality Rider",
-  "accommodation": "Accommodation",
-  "accommodationPlaceholder": "Describe your accommodation requirements",
-  "catering": "Catering",
-  "cateringPlaceholder": "List your catering requirements",
-  "beverages": "Beverages",
-  "beveragesPlaceholder": "List your beverage requirements",
-  "specialRequirements": "Special Requirements",
-  "specialRequirementsPlaceholder": "List any special requirements",
-  "performanceArea": "Performance Area",
-  "regions": "Regions",
-  "regionsPlaceholder": "List the regions where you perform",
-  "travelPreferences": "Travel Preferences",
-  "travelPreferencesPlaceholder": "Describe your travel preferences",
-  "restrictions": "Restrictions",
-  "restrictionsPlaceholder": "List any performance restrictions",
-  "rates": "Rates",
-  "addRate": "Add Rate",
-  "eventType": "Event Type",
-  "eventTypePlaceholder": "Enter event type",
-  "amount": "Amount",
-  "amountPlaceholder": "Enter amount",
-  "currency": "Currency",
-  "conditions": "Conditions",
-  "conditionsPlaceholder": "Enter conditions",
-  "multimediaContent": "Multimedia Content",
-  "images": "Images",
-  "videos": "Videos",
-  "spotifyLink": "Spotify Link",
-  "spotifyLinkPlaceholder": "Enter Spotify link",
-  "youtubeLink": "YouTube Link",
-  "youtubeLinkPlaceholder": "Enter YouTube link",
-  "socialMedia": "Social Media",
-  "instagram": "Instagram",
-  "instagramPlaceholder": "Enter your Instagram handle",
-  "facebook": "Facebook",
-  "facebookPlaceholder": "Enter your Facebook page URL",
-  "tiktok": "TikTok",
-  "tiktokPlaceholder": "Enter your TikTok handle",
-  "website": "Website",
-  "websitePlaceholder": "Enter your website URL",
-  "legalDocuments": "Legal Documents",
-  "contracts": "Contracts",
-  "insurance": "Insurance",
-  "taxDocuments": "Tax Documents",
-  "previous": "Previous",
-  "next": "Next",
-  "submit": "Submit",
-  "submitting": "Submitting...",
-  "successCreating": "Band profile created successfully",
-  "errorCreating": "Error creating band profile"
+  "form": {
+    "bandImage": "Band Image",
+    "availability": {
+      "title": "Weekly Availability",
+      "description": "Select the days of the week when your band is available to perform",
+      "error": "Please select at least one day of availability",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "multimedia": {
+      "title": "Multimedia & Social Media",
+      "description": "Share your social media profiles and upload media content to showcase your band",
+      "socialMedia": "Social Media Links",
+      "mediaUpload": "Media Upload",
+      "instagramPlaceholder": "Enter your Instagram profile URL",
+      "facebookPlaceholder": "Enter your Facebook page URL",
+      "websitePlaceholder": "Enter your website URL",
+      "twitterPlaceholder": "Enter your Twitter profile URL",
+      "tiktokPlaceholder": "Enter your TikTok profile URL",
+      "spotifyPlaceholder": "Enter your Spotify artist profile URL",
+      "youtubePlaceholder": "Enter your YouTube channel URL",
+      "uploadDescription": "Upload images and videos of your performances. Maximum file size: 10MB",
+      "uploadedFiles": "Uploaded Files",
+      "error": "Please provide at least one social media link",
+      "dragAndDrop": "Drag and drop files here, or click to select files",
+      "selectFiles": "Select Files"
+    },
+    "basicInfo": {
+      "title": "Basic Information",
+      "subtitle": "Tell us about your band",
+      "bandName": "Band Name",
+      "bandNamePlaceholder": "Enter your band name",
+      "genre": "Music Genre",
+      "genrePlaceholder": "Select a genre",
+      "description": "Description",
+      "descriptionPlaceholder": "Tell us about your band",
+      "location": "Location",
+      "locationPlaceholder": "Enter your band's location",
+      "musicalStyles": "Musical Styles",
+      "musicalStylesPlaceholder": "Select musical styles",
+      "artisticName": "Artistic Name",
+      "artisticNamePlaceholder": "Enter artistic name",
+      "instrument": "Instrument",
+      "instrumentPlaceholder": "Enter instrument",
+      "experience": "Experience",
+      "experiencePlaceholder": "Describe your experience",
+      "profileLink": "Profile Link",
+      "profileLinkPlaceholder": "Enter profile link"
+    },
+    "technicalRider": {
+      "title": "Technical Rider",
+      "subtitle": "Specify your technical requirements",
+      "soundSystem": {
+        "label": "Sound System",
+        "placeholder": "Describe your sound system requirements"
+      },
+      "microphones": {
+        "label": "Microphones",
+        "placeholder": "List your microphone requirements"
+      },
+      "backline": {
+        "label": "Backline",
+        "placeholder": "List your backline requirements"
+      },
+      "lighting": {
+        "label": "Lighting",
+        "placeholder": "Describe your lighting requirements"
+      },
+      "otherRequirements": {
+        "label": "Other Requirements",
+        "placeholder": "List any other technical requirements"
+      }
+    },
+    "hospitalityRider": {
+      "title": "Hospitality Rider",
+      "subtitle": "Define your hospitality needs",
+      "accommodation": {
+        "label": "Accommodation",
+        "placeholder": "Describe your accommodation requirements"
+      },
+      "catering": {
+        "label": "Catering",
+        "placeholder": "List your catering requirements"
+      },
+      "beverages": {
+        "label": "Beverages",
+        "placeholder": "List your beverage requirements"
+      },
+      "specialRequirements": {
+        "label": "Special Requirements",
+        "placeholder": "List any special requirements"
+      }
+    },
+    "performanceArea": {
+      "title": "Performance Area",
+      "subtitle": "Set your performance preferences",
+      "regions": {
+        "label": "Regions",
+        "placeholder": "List the regions where you perform"
+      },
+      "travelPreferences": {
+        "label": "Travel Preferences",
+        "placeholder": "Describe your travel preferences"
+      },
+      "restrictions": {
+        "label": "Restrictions",
+        "placeholder": "List any performance restrictions"
+      }
+    }
+  },
+  "progress": {
+    "steps": {
+      "basicInfo": {
+        "title": "Basic Information"
+      },
+      "technicalRider": {
+        "title": "Technical Rider"
+      },
+      "hospitalityRider": {
+        "title": "Hospitality Rider"
+      },
+      "performanceArea": {
+        "title": "Performance Area"
+      },
+      "availability": {
+        "title": "Availability"
+      },
+      "multimedia": {
+        "title": "Multimedia"
+      }
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be at most {{max}} characters",
+    "url": "Please enter a valid URL",
+    "email": "Please enter a valid email address",
+    "imageSize": "Image must be less than 10MB",
+    "imageType": "Only PNG, JPG, and GIF files are allowed",
+    "atLeastOneStyle": "Please select at least one musical style",
+    "atLeastOneDate": "Please select at least one available date",
+    "requiredFields": "Please fill in all required fields",
+    "soundSystem": "Please specify your sound system requirements",
+    "microphones": "Please specify your microphone requirements",
+    "backline": "Please specify your backline requirements",
+    "lighting": "Please specify your lighting requirements",
+    "accommodation": "Please specify your accommodation requirements",
+    "catering": "Please specify your catering requirements",
+    "beverages": "Please specify your beverage requirements",
+    "regions": "Please specify the regions where you perform",
+    "travelPreferences": "Please specify your travel preferences",
+    "bandName": "Please enter a band name",
+    "genre": "Please select a genre",
+    "description": "Please provide a description",
+    "location": "Please enter a location",
+    "musicalStyles": "Please select at least one musical style",
+    "artisticName": "Please enter an artistic name",
+    "instrument": "Please enter an instrument",
+    "experience": "Please describe your experience",
+    "profileLink": "Please enter a valid profile link"
+  }
 }

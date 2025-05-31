@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
 
 interface MultiSelectProps {
   options: string[];
@@ -46,7 +47,7 @@ export function MultiSelect({
         className="border-input bg-background ring-offset-background focus-within:ring-ring flex min-h-[40px] w-full items-center rounded-md border px-3 py-2 text-sm focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-1 flex-wrap gap-1">
           {value.length > 0 ? (
             value.map((v) => (
               <span
@@ -70,16 +71,20 @@ export function MultiSelect({
             <span className="text-muted-foreground">{placeholder}</span>
           )}
         </div>
+        <ChevronDown className={cn(
+          "h-4 w-4 text-gray-500 transition-transform duration-200",
+          isOpen && "transform rotate-180"
+        )} />
       </div>
 
       {isOpen && (
-        <div className="bg-popover text-popover-foreground absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border shadow-md">
+        <div className="bg-white text-popover-foreground absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border shadow-md">
           {options.map((option) => (
             <div
               key={option}
               className={cn(
-                'hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-2 text-sm',
-                value.includes(option) && 'bg-accent text-accent-foreground',
+                'hover:bg-gray-100 cursor-pointer px-3 py-2 text-sm',
+                value.includes(option) && 'bg-gray-50 text-gray-900',
               )}
               onClick={() => toggleOption(option)}
             >

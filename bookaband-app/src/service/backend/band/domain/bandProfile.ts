@@ -26,12 +26,6 @@ export interface PerformanceArea {
   restrictions: string[];
 }
 
-export interface AvailabilitySlot {
-  startDate: Date;
-  endDate: Date;
-  isBooked: boolean;
-}
-
 export interface Rate {
   eventType: string;
   amount: number;
@@ -44,14 +38,15 @@ export interface MultimediaContent {
   videos: string[];
   spotifyLink?: string;
   youtubeLink?: string;
+  multimediaFiles?: File[];
 }
 
 export interface SocialMedia {
   instagram?: string;
   facebook?: string;
-  tiktok?: string;
-  twitter?: string;
   website?: string;
+  twitter?: string;
+  tiktok?: string;
 }
 
 export interface LegalDocument {
@@ -71,11 +66,19 @@ export interface BandProfile {
   technicalRider: TechnicalRider;
   hospitalityRider: HospitalityRider;
   performanceArea: PerformanceArea;
-  availability: AvailabilitySlot[];
+  weeklyAvailability: {
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
+  };
   rates: Rate[];
   multimediaContent: MultimediaContent;
   socialMedia: SocialMedia;
   legalDocuments: LegalDocument[];
   createdAt: Date;
   updatedAt: Date;
-} 
+}
