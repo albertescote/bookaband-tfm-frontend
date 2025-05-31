@@ -1,21 +1,20 @@
 {
   "bands": "Bandas",
-  "total-bands": "Total Bandas",
-  "upcoming-performances": "Próximas Actuaciones",
-  "total-revenue": "Ingresos Totales",
-  "all-bands": "Todas las Bandas",
-  "add-member": "Añadir Miembro",
-  "add-performance": "Añadir Actuación",
-  "add-transaction": "Añadir Transacción",
-  "overview": "Vista General",
+  "upcoming-performances": "Próximas actuaciones",
+  "total-revenue": "Ingresos totales",
+  "all-bands": "Todas las bandas",
+  "add-member": "Añadir miembro",
+  "add-performance": "Añadir actuación",
+  "add-transaction": "Añadir transacción",
+  "overview": "Vista general",
   "members": "Miembros",
   "financials": "Finanzas",
-  "contact-info": "Información de Contacto",
-  "quick-stats": "Estadísticas Rápidas",
-  "total-members": "Total Miembros",
-  "monthly-revenue": "Ingresos Mensuales",
+  "contact-info": "Información de contacto",
+  "quick-stats": "Estadísticas rápidas",
+  "total-members": "Total miembros",
+  "monthly-revenue": "Ingresos mensuales",
   "role": "Rol",
-  "join-date": "Fecha de Ingreso",
+  "join-date": "Fecha de ingreso",
   "venue": "Lugar",
   "revenue": "Ingresos",
   "attendance": "Asistencia",
@@ -23,7 +22,7 @@
   "category": "Categoría",
   "status-active": "Activo",
   "status-inactive": "Inactivo",
-  "status-on_break": "En Pausa",
+  "status-on_break": "En pausa",
   "status-completed": "Completado",
   "status-upcoming": "Próximo",
   "status-cancelled": "Cancelado",
@@ -31,10 +30,10 @@
   "status-pending": "Pendiente",
   "status-overdue": "Vencido",
   "title": "Bandas",
-  "createNew": "Crear Nueva Banda",
-  "createFirstBand": "Crea Tu Primera Banda",
+  "createNew": "Crear nueva banda",
+  "createFirstBand": "Crea tu primera banda",
   "noBands": "Aún no has creado ninguna banda",
-  "yourBands": "Tus Bandas",
+  "yourBands": "Tus bandas",
   "invitations": "Invitaciones",
   "noInvitations": "No hay invitaciones pendientes",
   "invitationReceived": "Recibida el {{date}}",
@@ -45,40 +44,40 @@
   "invitationDeclined": "Invitación rechazada con éxito",
   "errorAcceptingInvitation": "Error al aceptar la invitación",
   "errorDecliningInvitation": "Error al rechazar la invitación",
-  "name": "Nombre de la Banda",
+  "name": "Nombre de la banda",
   "namePlaceholder": "Introduce el nombre de tu banda",
-  "genre": "Género Musical",
+  "genre": "Género musical",
   "genrePlaceholder": "Selecciona un género",
   "description": "Descripción",
   "descriptionPlaceholder": "Cuéntanos sobre tu banda",
   "location": "Ubicación",
   "locationPlaceholder": "Introduce la ubicación de tu banda",
-  "musicalStyles": "Estilos Musicales",
+  "musicalStyles": "Estilos musicales",
   "musicalStylesPlaceholder": "Selecciona estilos musicales",
-  "artisticName": "Nombre Artístico",
+  "artisticName": "Nombre artístico",
   "artisticNamePlaceholder": "Introduce nombre artístico",
   "instrument": "Instrumento",
   "instrumentPlaceholder": "Introduce instrumento",
   "experience": "Experiencia",
   "experiencePlaceholder": "Describe tu experiencia",
-  "profileLink": "Enlace de Perfil",
+  "profileLink": "Enlace de perfil",
   "profileLinkPlaceholder": "Introduce enlace de perfil",
-  "bandImage": "Imagen de la Banda",
-  "manage": "Gestionar Banda",
-  "createBand": "Crear Banda",
-  "manageBand": "Gestionar Banda",
-  "deleteBand": "Eliminar Banda",
-  "confirmDelete": "Eliminar Banda",
+  "bandImage": "Imagen de la banda",
+  "manage": "Gestionar banda",
+  "createBand": "Crear banda",
+  "manageBand": "Gestionar banda",
+  "deleteBand": "Eliminar banda",
+  "confirmDelete": "Eliminar banda",
   "deleteWarning": "¿Estás seguro de que quieres eliminar esta banda? Esta acción no se puede deshacer.",
-  "inviteMember": "Invitar Miembro",
+  "inviteMember": "Invitar miembro",
   "inviteMemberDescription": "Invita a un nuevo miembro a unirse a tu banda",
-  "memberEmail": "Email del Miembro",
-  "confirmRemoveMember": "Eliminar Miembro",
+  "memberEmail": "Email del miembro",
+  "confirmRemoveMember": "Eliminar miembro",
   "removeMemberWarning": "¿Estás seguro de que quieres eliminar a este miembro de la banda?",
   "bandDeleted": "Banda eliminada con éxito",
   "invitationSent": "Invitación enviada con éxito",
   "memberRemoved": "Miembro eliminado con éxito",
-  "back": "Volver a Bandas",
+  "back": "Volver a bandas",
   "cancel": "Cancelar",
   "invite": "Invitar",
   "inviting": "Enviando invitación...",
@@ -100,16 +99,16 @@
     "errorDeleting": "Error al eliminar la banda",
     "errorInviting": "Error al enviar la invitación",
     "errorRemoving": "Error al eliminar el miembro",
-    "backToBands": "Volver a Bandas",
+    "backToBands": "Volver a bandas",
     "next": "Siguiente",
     "previous": "Anterior"
   },
   "createBandDescription": "Crea una nueva banda para empezar a colaborar con otros músicos",
   "email": "Email",
   "emailPlaceholder": "Introduce el email del miembro",
-  "sendInvite": "Enviar Invitación",
+  "sendInvite": "Enviar invitación",
   "sending": "Enviando...",
-  "removeMember": "Eliminar Miembro",
+  "removeMember": "Eliminar miembro",
   "removeMemberConfirmation": "¿Estás seguro de que quieres eliminar a este miembro?",
   "removeMemberConfirmationDescription": "Este miembro ya no tendrá acceso a la banda.",
   "noMembers": "No se encontraron miembros",
@@ -120,7 +119,7 @@
   "pending": "Pendiente",
   "active": "Activo",
   "invited": "Invitado",
-  "leaveBand": "Abandonar Banda",
+  "leaveBand": "Abandonar banda",
   "leaveBandConfirmation": "¿Estás seguro de que quieres abandonar esta banda?",
   "leaveBandConfirmationDescription": "Ya no tendrás acceso a esta banda. Podrás volver a unirte si te invitan de nuevo.",
   "leave": "Abandonar",
@@ -134,24 +133,24 @@
   "successLeaving": "Has abandonado la banda",
   "successDeleting": "Banda eliminada con éxito",
   "successCreating": "Banda creada con éxito",
-  "uploadImage": "Subir Imagen",
+  "uploadImage": "Subir imagen",
   "orDragAndDrop": "o arrastra y suelta",
   "imageRequirements": "PNG, JPG, GIF hasta 10MB",
   "create": "Crear",
   "creating": "Creando...",
   "selectGenre": "Selecciona un género",
-  "createNewBand": "Crear Nueva Banda",
-  "manageBands": "Gestionar Bandas",
+  "createNewBand": "Crear nueva banda",
+  "manageBands": "Gestionar bandas",
   "admin": "Administrador",
   "errorScreen": {
     "title": "¡Ups! Algo salió mal",
     "description": "No pudimos cargar los detalles de la banda. Por favor, inténtalo de nuevo más tarde.",
-    "backToBands": "Volver a Bandas"
+    "backToBands": "Volver a bandas"
   },
   "form": {
-    "bandImage": "Imagen de la Banda",
+    "bandImage": "Imagen de la banda",
     "availability": {
-      "title": "Disponibilidad Semanal",
+      "title": "Disponibilidad semanal",
       "description": "Selecciona los días de la semana en los que tu banda está disponible para actuar",
       "error": "Por favor, selecciona al menos un día de disponibilidad",
       "days": {
@@ -165,10 +164,10 @@
       }
     },
     "multimedia": {
-      "title": "Multimedia y Redes Sociales",
+      "title": "Multimedia y redes sociales",
       "description": "Comparte tus perfiles en redes sociales y sube contenido multimedia para mostrar tu banda",
-      "socialMedia": "Enlaces a Redes Sociales",
-      "mediaUpload": "Subida de Medios",
+      "socialMedia": "Enlaces a redes sociales",
+      "mediaUpload": "Subida de medios",
       "instagramPlaceholder": "Introduce la URL de tu perfil de Instagram",
       "facebookPlaceholder": "Introduce la URL de tu página de Facebook",
       "websitePlaceholder": "Introduce la URL de tu sitio web",
@@ -177,38 +176,38 @@
       "spotifyPlaceholder": "Introduce la URL de tu perfil de artista en Spotify",
       "youtubePlaceholder": "Introduce la URL de tu canal de YouTube",
       "uploadDescription": "Sube imágenes y videos de tus actuaciones. Tamaño máximo de archivo: 10MB",
-      "uploadedFiles": "Archivos Subidos",
+      "uploadedFiles": "Archivos subidos",
       "error": "Por favor, proporciona al menos un enlace a redes sociales",
       "dragAndDrop": "Arrastra y suelta archivos aquí, o haz clic para seleccionar archivos",
-      "selectFiles": "Seleccionar Archivos"
+      "selectFiles": "Seleccionar archivos"
     },
     "basicInfo": {
-      "title": "Información Básica",
+      "title": "Información básica",
       "subtitle": "Cuéntanos sobre tu banda",
-      "bandName": "Nombre de la Banda",
+      "bandName": "Nombre de la banda",
       "bandNamePlaceholder": "Introduce el nombre de tu banda",
-      "genre": "Género Musical",
+      "genre": "Género musical",
       "genrePlaceholder": "Selecciona un género",
       "description": "Descripción",
       "descriptionPlaceholder": "Cuéntanos sobre tu banda",
       "location": "Ubicación",
       "locationPlaceholder": "Introduce la ubicación de tu banda",
-      "musicalStyles": "Estilos Musicales",
+      "musicalStyles": "Estilos musicales",
       "musicalStylesPlaceholder": "Selecciona estilos musicales",
-      "artisticName": "Nombre Artístico",
+      "artisticName": "Nombre artístico",
       "artisticNamePlaceholder": "Introduce nombre artístico",
       "instrument": "Instrumento",
       "instrumentPlaceholder": "Introduce instrumento",
       "experience": "Experiencia",
       "experiencePlaceholder": "Describe tu experiencia",
-      "profileLink": "Enlace de Perfil",
+      "profileLink": "Enlace de perfil",
       "profileLinkPlaceholder": "Introduce enlace de perfil"
     },
     "technicalRider": {
-      "title": "Rider Técnico",
+      "title": "Rider técnico",
       "subtitle": "Especifica tus requisitos técnicos",
       "soundSystem": {
-        "label": "Sistema de Sonido",
+        "label": "Sistema de sonido",
         "placeholder": "Describe tus requisitos de sistema de sonido"
       },
       "microphones": {
@@ -224,12 +223,12 @@
         "placeholder": "Describe tus requisitos de iluminación"
       },
       "otherRequirements": {
-        "label": "Otros Requisitos",
+        "label": "Otros requisitos",
         "placeholder": "Lista cualquier otro requisito técnico"
       }
     },
     "hospitalityRider": {
-      "title": "Rider de Hospitalidad",
+      "title": "Rider de hospitalidad",
       "subtitle": "Define tus necesidades de hospitalidad",
       "accommodation": {
         "label": "Alojamiento",
@@ -244,19 +243,19 @@
         "placeholder": "Lista tus requisitos de bebidas"
       },
       "specialRequirements": {
-        "label": "Requisitos Especiales",
+        "label": "Requisitos especiales",
         "placeholder": "Lista cualquier requisito especial"
       }
     },
     "performanceArea": {
-      "title": "Área de Actuación",
+      "title": "Área de actuación",
       "subtitle": "Establece tus preferencias de actuación",
       "regions": {
         "label": "Regiones",
         "placeholder": "Lista las regiones donde actúas"
       },
       "travelPreferences": {
-        "label": "Preferencias de Viaje",
+        "label": "Preferencias de viaje",
         "placeholder": "Describe tus preferencias de viaje"
       },
       "restrictions": {
@@ -268,16 +267,16 @@
   "progress": {
     "steps": {
       "basicInfo": {
-        "title": "Información Básica"
+        "title": "Información básica"
       },
       "technicalRider": {
-        "title": "Rider Técnico"
+        "title": "Rider técnico"
       },
       "hospitalityRider": {
-        "title": "Rider de Hospitalidad"
+        "title": "Rider de hospitalidad"
       },
       "performanceArea": {
-        "title": "Área de Actuación"
+        "title": "Área de actuación"
       },
       "availability": {
         "title": "Disponibilidad"

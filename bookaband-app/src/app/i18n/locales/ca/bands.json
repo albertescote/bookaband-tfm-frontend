@@ -1,21 +1,20 @@
 {
   "bands": "Bandes",
-  "total-bands": "Total Bandes",
-  "upcoming-performances": "Properes Actuacions",
-  "total-revenue": "Ingressos Totals",
-  "all-bands": "Totes les Bandes",
-  "add-member": "Afegir Membre",
-  "add-performance": "Afegir Actuació",
-  "add-transaction": "Afegir Transacció",
-  "overview": "Vista General",
+  "upcoming-performances": "Properes actuacions",
+  "total-revenue": "Ingressos totals",
+  "all-bands": "Totes les bandes",
+  "add-member": "Afegir membre",
+  "add-performance": "Afegir actuació",
+  "add-transaction": "Afegir transacció",
+  "overview": "Vista general",
   "members": "Membres",
   "financials": "Finances",
-  "contact-info": "Informació de Contacte",
-  "quick-stats": "Estadístiques Ràpides",
-  "total-members": "Total Membres",
-  "monthly-revenue": "Ingressos Mensuals",
+  "contact-info": "Informació de contacte",
+  "quick-stats": "Estadístiques ràpides",
+  "total-members": "Total membres",
+  "monthly-revenue": "Ingressos mensuals",
   "role": "Rol",
-  "join-date": "Data d'Ingrés",
+  "join-date": "Data d'ingrés",
   "venue": "Lloc",
   "revenue": "Ingressos",
   "attendance": "Assistència",
@@ -23,7 +22,7 @@
   "category": "Categoria",
   "status-active": "Actiu",
   "status-inactive": "Inactiu",
-  "status-on_break": "En Pausa",
+  "status-on_break": "En pausa",
   "status-completed": "Completat",
   "status-upcoming": "Proper",
   "status-cancelled": "Cancel·lat",
@@ -31,10 +30,10 @@
   "status-pending": "Pendent",
   "status-overdue": "Vençut",
   "title": "Bandes",
-  "createNew": "Crear Nova Banda",
-  "createFirstBand": "Crea la Teva Primera Banda",
+  "createNew": "Crear nova banda",
+  "createFirstBand": "Crea la teva primera banda",
   "noBands": "Encara no has creat cap banda",
-  "yourBands": "Les Teves Bandes",
+  "yourBands": "Les teves bandes",
   "invitations": "Invitacions",
   "noInvitations": "No hi ha invitacions pendents",
   "invitationReceived": "Rebuda el {{date}}",
@@ -45,40 +44,40 @@
   "invitationDeclined": "Invitació rebutjada amb èxit",
   "errorAcceptingInvitation": "Error en acceptar la invitació",
   "errorDecliningInvitation": "Error en rebutjar la invitació",
-  "name": "Nom de la Banda",
+  "name": "Nom de la banda",
   "namePlaceholder": "Introdueix el nom de la teva banda",
-  "genre": "Gènere Musical",
+  "genre": "Gènere musical",
   "genrePlaceholder": "Selecciona un gènere",
   "description": "Descripció",
   "descriptionPlaceholder": "Explica'ns sobre la teva banda",
   "location": "Ubicació",
   "locationPlaceholder": "Introdueix la ubicació de la teva banda",
-  "musicalStyles": "Estils Musicals",
+  "musicalStyles": "Estils musicals",
   "musicalStylesPlaceholder": "Selecciona estils musicals",
-  "artisticName": "Nom Artístic",
+  "artisticName": "Nom artístic",
   "artisticNamePlaceholder": "Introdueix nom artístic",
   "instrument": "Instrument",
   "instrumentPlaceholder": "Introdueix instrument",
   "experience": "Experiència",
   "experiencePlaceholder": "Descriu la teva experiència",
-  "profileLink": "Enllaç de Perfil",
+  "profileLink": "Enllaç de perfil",
   "profileLinkPlaceholder": "Introdueix enllaç de perfil",
-  "bandImage": "Imatge de la Banda",
-  "manage": "Gestionar Banda",
-  "createBand": "Crear Banda",
-  "manageBand": "Gestionar Banda",
-  "deleteBand": "Eliminar Banda",
-  "confirmDelete": "Eliminar Banda",
+  "bandImage": "Imatge de la banda",
+  "manage": "Gestionar banda",
+  "createBand": "Crear banda",
+  "manageBand": "Gestionar banda",
+  "deleteBand": "Eliminar banda",
+  "confirmDelete": "Eliminar banda",
   "deleteWarning": "Estàs segur que vols eliminar aquesta banda? Aquesta acció no es pot desfer.",
-  "inviteMember": "Convidar Membre",
+  "inviteMember": "Convidar membre",
   "inviteMemberDescription": "Convida un nou membre a unir-se a la teva banda",
-  "memberEmail": "Email del Membre",
-  "confirmRemoveMember": "Eliminar Membre",
+  "memberEmail": "Email del membre",
+  "confirmRemoveMember": "Eliminar membre",
   "removeMemberWarning": "Estàs segur que vols eliminar aquest membre de la banda?",
   "bandDeleted": "Banda eliminada amb èxit",
   "invitationSent": "Invitació enviada amb èxit",
   "memberRemoved": "Membre eliminat amb èxit",
-  "back": "Tornar a Bandes",
+  "back": "Tornar a bandes",
   "cancel": "Cancel·lar",
   "invite": "Convidar",
   "inviting": "Enviant invitació...",
@@ -100,16 +99,16 @@
     "errorDeleting": "Error en eliminar la banda",
     "errorInviting": "Error en enviar la invitació",
     "errorRemoving": "Error en eliminar el membre",
-    "backToBands": "Tornar a Bandes",
+    "backToBands": "Tornar a bandes",
     "next": "Següent",
     "previous": "Anterior"
   },
   "createBandDescription": "Crea una nova banda per començar a col·laborar amb altres músics",
   "email": "Email",
   "emailPlaceholder": "Introdueix l'email del membre",
-  "sendInvite": "Enviar Invitació",
+  "sendInvite": "Enviar invitació",
   "sending": "Enviant...",
-  "removeMember": "Eliminar Membre",
+  "removeMember": "Eliminar membre",
   "removeMemberConfirmation": "Estàs segur que vols eliminar aquest membre?",
   "removeMemberConfirmationDescription": "Aquest membre ja no tindrà accés a la banda.",
   "noMembers": "No s'han trobat membres",
@@ -120,7 +119,7 @@
   "pending": "Pendent",
   "active": "Actiu",
   "invited": "Convidat",
-  "leaveBand": "Abandonar Banda",
+  "leaveBand": "Abandonar banda",
   "leaveBandConfirmation": "Estàs segur que vols abandonar aquesta banda?",
   "leaveBandConfirmationDescription": "Ja no tindràs accés a aquesta banda. Podràs tornar a unir-te si et conviden de nou.",
   "leave": "Abandonar",
@@ -134,24 +133,24 @@
   "successLeaving": "Has abandonat la banda",
   "successDeleting": "Banda eliminada amb èxit",
   "successCreating": "Banda creada amb èxit",
-  "uploadImage": "Pujar Imatge",
+  "uploadImage": "Pujar imatge",
   "orDragAndDrop": "o arrossega i deixa anar",
   "imageRequirements": "PNG, JPG, GIF fins a 10MB",
   "create": "Crear",
   "creating": "Creant...",
   "selectGenre": "Selecciona un gènere",
-  "createNewBand": "Crear Nova Banda",
-  "manageBands": "Gestionar Bandes",
+  "createNewBand": "Crear nova banda",
+  "manageBands": "Gestionar bandes",
   "admin": "Administrador",
   "errorScreen": {
     "title": "Ups! Alguna cosa ha anat malament",
     "description": "No hem pogut carregar els detalls de la banda. Si us plau, torna-ho a provar més tard.",
-    "backToBands": "Tornar a Bandes"
+    "backToBands": "Tornar a bandes"
   },
   "form": {
-    "bandImage": "Imatge de la Banda",
+    "bandImage": "Imatge de la banda",
     "availability": {
-      "title": "Disponibilitat Setmanal",
+      "title": "Disponibilitat setmanal",
       "description": "Selecciona els dies de la setmana en què la teva banda està disponible per actuar",
       "error": "Si us plau, selecciona almenys un dia de disponibilitat",
       "days": {
@@ -165,10 +164,10 @@
       }
     },
     "multimedia": {
-      "title": "Multimèdia i Xarxes Socials",
+      "title": "Multimèdia i xarxes socials",
       "description": "Comparteix els teus perfils a xarxes socials i puja contingut multimèdia per mostrar la teva banda",
-      "socialMedia": "Enllaços a Xarxes Socials",
-      "mediaUpload": "Pujada de Mitjans",
+      "socialMedia": "Enllaços a xarxes socials",
+      "mediaUpload": "Pujada de mitjans",
       "instagramPlaceholder": "Introdueix la URL del teu perfil d'Instagram",
       "facebookPlaceholder": "Introdueix la URL de la teva pàgina de Facebook",
       "websitePlaceholder": "Introdueix la URL del teu lloc web",
@@ -177,38 +176,38 @@
       "spotifyPlaceholder": "Introdueix la URL del teu perfil d'artista a Spotify",
       "youtubePlaceholder": "Introdueix la URL del teu canal de YouTube",
       "uploadDescription": "Puja imatges i vídeos de les teves actuacions. Mida màxima d'arxiu: 10MB",
-      "uploadedFiles": "Arxius Pujats",
+      "uploadedFiles": "Arxius pujats",
       "error": "Si us plau, proporciona almenys un enllaç a xarxes socials",
       "dragAndDrop": "Arrossega i deixa anar arxius aquí, o fes clic per seleccionar arxius",
-      "selectFiles": "Seleccionar Arxius"
+      "selectFiles": "Seleccionar arxius"
     },
     "basicInfo": {
-      "title": "Informació Bàsica",
+      "title": "Informació bàsica",
       "subtitle": "Explica'ns sobre la teva banda",
-      "bandName": "Nom de la Banda",
+      "bandName": "Nom de la banda",
       "bandNamePlaceholder": "Introdueix el nom de la teva banda",
-      "genre": "Gènere Musical",
+      "genre": "Gènere musical",
       "genrePlaceholder": "Selecciona un gènere",
       "description": "Descripció",
       "descriptionPlaceholder": "Explica'ns sobre la teva banda",
       "location": "Ubicació",
       "locationPlaceholder": "Introdueix la ubicació de la teva banda",
-      "musicalStyles": "Estils Musicals",
+      "musicalStyles": "Estils musicals",
       "musicalStylesPlaceholder": "Selecciona estils musicals",
-      "artisticName": "Nom Artístic",
+      "artisticName": "Nom artístic",
       "artisticNamePlaceholder": "Introdueix nom artístic",
       "instrument": "Instrument",
       "instrumentPlaceholder": "Introdueix instrument",
       "experience": "Experiència",
       "experiencePlaceholder": "Descriu la teva experiència",
-      "profileLink": "Enllaç de Perfil",
+      "profileLink": "Enllaç de perfil",
       "profileLinkPlaceholder": "Introdueix enllaç de perfil"
     },
     "technicalRider": {
-      "title": "Rider Tècnic",
+      "title": "Rider tècnic",
       "subtitle": "Especifica els teus requisits tècnics",
       "soundSystem": {
-        "label": "Sistema de So",
+        "label": "Sistema de so",
         "placeholder": "Descriu els teus requisits de sistema de so"
       },
       "microphones": {
@@ -224,12 +223,12 @@
         "placeholder": "Descriu els teus requisits d'il·luminació"
       },
       "otherRequirements": {
-        "label": "Altres Requisits",
+        "label": "Altres requisits",
         "placeholder": "Llista qualsevol altre requisit tècnic"
       }
     },
     "hospitalityRider": {
-      "title": "Rider d'Hospitalitat",
+      "title": "Rider d'hospitalitat",
       "subtitle": "Defineix les teves necessitats d'hospitalitat",
       "accommodation": {
         "label": "Allotjament",
@@ -244,19 +243,19 @@
         "placeholder": "Llista els teus requisits de begudes"
       },
       "specialRequirements": {
-        "label": "Requisits Especials",
+        "label": "Requisits especials",
         "placeholder": "Llista qualsevol requisit especial"
       }
     },
     "performanceArea": {
-      "title": "Àrea d'Actuació",
+      "title": "Àrea d'actuació",
       "subtitle": "Estableix les teves preferències d'actuació",
       "regions": {
         "label": "Regions",
         "placeholder": "Llista les regions on actues"
       },
       "travelPreferences": {
-        "label": "Preferències de Viatge",
+        "label": "Preferències de viatge",
         "placeholder": "Descriu les teves preferències de viatge"
       },
       "restrictions": {
@@ -268,16 +267,16 @@
   "progress": {
     "steps": {
       "basicInfo": {
-        "title": "Informació Bàsica"
+        "title": "Informació bàsica"
       },
       "technicalRider": {
-        "title": "Rider Tècnic"
+        "title": "Rider tècnic"
       },
       "hospitalityRider": {
-        "title": "Rider d'Hospitalitat"
+        "title": "Rider d'hospitalitat"
       },
       "performanceArea": {
-        "title": "Àrea d'Actuació"
+        "title": "Àrea d'actuació"
       },
       "availability": {
         "title": "Disponibilitat"
