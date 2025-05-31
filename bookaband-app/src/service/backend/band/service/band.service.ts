@@ -40,8 +40,21 @@ export async function getUserBands(): Promise<UserBand[] | undefined> {
   );
 }
 
-export async function removeMember(bandId: string, memberId: string): Promise<void> {
+export async function removeMember(
+  bandId: string,
+  memberId: string,
+): Promise<void> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.delete(`/bands/${bandId}/members/${memberId}`).then((res) => res.data),
+    authorizedAxiosInstance
+      .delete(`/bands/${bandId}/members/${memberId}`)
+      .then((res) => res.data),
+  );
+}
+
+export async function leaveBand(bandId: string): Promise<void> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .post(`/bands/${bandId}/leave`)
+      .then((res) => res.data),
   );
 }

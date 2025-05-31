@@ -35,11 +35,16 @@
   "createFirstBand": "Crea Tu Primera Banda",
   "noBands": "Aún no has creado ninguna banda",
   "yourBands": "Tus Bandas",
-  "invitations": "Invitaciones a Bandas",
+  "invitations": "Invitaciones",
+  "noInvitations": "No hay invitaciones pendientes",
   "invitationReceived": "Recibida el {{date}}",
-  "invitedBy": "Invitado por {{sender}}",
+  "invitedBy": "Invitado por",
   "acceptInvitation": "Aceptar",
   "declineInvitation": "Rechazar",
+  "invitationAccepted": "Invitación aceptada con éxito",
+  "invitationDeclined": "Invitación rechazada con éxito",
+  "errorAcceptingInvitation": "Error al aceptar la invitación",
+  "errorDecliningInvitation": "Error al rechazar la invitación",
   "name": "Nombre de la Banda",
   "genre": "Género Musical",
   "description": "Descripción",
@@ -118,5 +123,13 @@
   "imageRequirements": "PNG, JPG, GIF hasta 10MB",
   "create": "Crear",
   "creating": "Creando...",
-  "selectGenre": "Seleccionar género"
+  "selectGenre": "Seleccionar género",
+  "createNewBand": "Crear Nueva Banda",
+  "manageBands": "Gestionar Bandas",
+  "admin": "Administrador",
+  "errorScreen": {
+    "title": "¡Ups! Algo salió mal",
+    "description": "No pudimos cargar los detalles de la banda. Por favor, inténtalo de nuevo más tarde.",
+    "backToBands": "Volver a Bandas"
+  }
 }

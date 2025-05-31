@@ -62,6 +62,7 @@ export default function CreateBandPage() {
 
       if (response) {
         router.push('/bands');
+        window.location.reload();
       } else {
         setError(t('errorCreating'));
       }
@@ -236,7 +237,6 @@ export default function CreateBandPage() {
                 id="description"
                 name="description"
                 rows={4}
-                required
                 value={formData.description}
                 onChange={handleInputChange}
                 className="block w-full resize-none rounded-lg border-gray-300 pl-10 shadow-sm transition-colors focus:border-[#15b7b9] focus:ring-[#15b7b9]"

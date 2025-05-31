@@ -35,11 +35,16 @@
   "createFirstBand": "Create Your First Band",
   "noBands": "You haven't created any bands yet",
   "yourBands": "Your Bands",
-  "invitations": "Band Invitations",
+  "invitations": "Invitations",
+  "noInvitations": "No pending invitations",
   "invitationReceived": "Received on {{date}}",
-  "invitedBy": "Invited by {{sender}}",
+  "invitedBy": "Invited by",
   "acceptInvitation": "Accept",
   "declineInvitation": "Decline",
+  "invitationAccepted": "Invitation accepted successfully",
+  "invitationDeclined": "Invitation declined successfully",
+  "errorAcceptingInvitation": "Error accepting invitation",
+  "errorDecliningInvitation": "Error declining invitation",
   "name": "Band Name",
   "namePlaceholder": "Enter your band name",
   "genre": "Music Genre",
@@ -119,5 +124,13 @@
   "imageRequirements": "PNG, JPG, GIF up to 10MB",
   "create": "Create",
   "creating": "Creating...",
-  "selectGenre": "Select a genre"
+  "selectGenre": "Select a genre",
+  "createNewBand": "Create New Band",
+  "manageBands": "Manage Bands",
+  "admin": "Admin",
+  "errorScreen": {
+    "title": "Oops! Something went wrong",
+    "description": "We couldn't load the band details. Please try again later.",
+    "backToBands": "Back to Bands"
+  }
 }

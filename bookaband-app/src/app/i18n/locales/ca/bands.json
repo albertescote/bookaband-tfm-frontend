@@ -35,11 +35,16 @@
   "createFirstBand": "Crea el Teu Primer Grup",
   "noBands": "Encara no has creat cap grup",
   "yourBands": "Els Teus Grups",
-  "invitations": "Invitacions a Grups",
+  "invitations": "Invitacions",
+  "noInvitations": "No hi ha invitacions pendents",
   "invitationReceived": "Rebuda el {{date}}",
-  "invitedBy": "Invitació de {{sender}}",
+  "invitedBy": "Invitació de",
   "acceptInvitation": "Acceptar",
   "declineInvitation": "Rebutjar",
+  "invitationAccepted": "Invitació acceptada amb èxit",
+  "invitationDeclined": "Invitació rebutjada amb èxit",
+  "errorAcceptingInvitation": "Error en acceptar la invitació",
+  "errorDecliningInvitation": "Error en rebutjar la invitació",
   "name": "Nom del Grup",
   "namePlaceholder": "Introdueix el nom del teu grup",
   "genre": "Gènere Musical",
@@ -119,5 +124,13 @@
   "imageRequirements": "PNG, JPG, GIF fins a 10MB",
   "create": "Crear",
   "creating": "Creant...",
-  "selectGenre": "Seleccionar gènere"
+  "selectGenre": "Seleccionar gènere",
+  "createNewBand": "Crear Nou Grup",
+  "manageBands": "Gestionar Grups",
+  "admin": "Administrador",
+  "errorScreen": {
+    "title": "Ups! Alguna cosa ha anat malament",
+    "description": "No hem pogut carregar els detalls del grup. Si us plau, torna-ho a provar més tard.",
+    "backToBands": "Tornar a Grups"
+  }
 }
