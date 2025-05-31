@@ -11,8 +11,6 @@ import HospitalityRiderStep from './steps/HospitalityRiderStep';
 import PerformanceAreaStep from './steps/PerformanceAreaStep';
 import MultimediaStep from './steps/MultimediaStep';
 import { AvailabilityStep } from '@/components/bands/steps/AvailabilityStep';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 
 interface BandProfileFormProps {
   onSubmit: (data: BandProfile) => Promise<void>;
@@ -100,7 +98,10 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     }
   };
 
-  const validateStep = (step: number, formData: Partial<BandProfile>): boolean => {
+  const validateStep = (
+    step: number,
+    formData: Partial<BandProfile>,
+  ): boolean => {
     switch (step) {
       case 1: // Basic Info
         return !!(
@@ -110,26 +111,26 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           (formData.musicalStyles?.length ?? 0) > 0
         );
       case 2: // Technical Rider
-        return !!(
+        return (
           (formData.technicalRider?.soundSystem?.length ?? 0) > 0 &&
           (formData.technicalRider?.microphones?.length ?? 0) > 0 &&
           (formData.technicalRider?.backline?.length ?? 0) > 0 &&
           (formData.technicalRider?.lighting?.length ?? 0) > 0
         );
       case 3: // Hospitality Rider
-        return !!(
+        return (
           (formData.hospitalityRider?.accommodation?.length ?? 0) > 0 &&
           (formData.hospitalityRider?.catering?.length ?? 0) > 0 &&
           (formData.hospitalityRider?.beverages?.length ?? 0) > 0
         );
       case 4: // Performance Area
-        return !!(
+        return (
           (formData.performanceArea?.regions?.length ?? 0) > 0 &&
           (formData.performanceArea?.travelPreferences?.length ?? 0) > 0
         );
       case 5: // Availability
         return Object.values(formData.weeklyAvailability || {}).some(
-          (value) => value === true,
+          (value) => value,
         );
       case 6: // Multimedia
         return true; // No validation required for multimedia step

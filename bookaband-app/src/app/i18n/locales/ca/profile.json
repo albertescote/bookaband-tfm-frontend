@@ -4,5 +4,17 @@
   "your-bands": "Els teus grups",
   "no-bands": "Encara no pertanys a cap grup!",
   "your-invitations": "Les teves invitacions",
-  "no-invitations": "No tens cap invitació!"
+  "no-invitations": "No tens cap invitació!",
+  "profile-title": "Perfil",
+  "edit": "Editar Perfil",
+  "cancel": "Cancel·lar",
+  "save": "Desar Canvis",
+  "saving": "Desant...",
+  "first-name": "Nom",
+  "family-name": "Cognom",
+  "email": "Correu Electrònic",
+  "profile-updated": "Perfil actualitzat amb èxit",
+  "error-updating": "Error en actualitzar el perfil",
+  "image-updated": "Imatge de perfil actualitzada amb èxit",
+  "error-uploading-image": "Error en pujar la imatge"
 }

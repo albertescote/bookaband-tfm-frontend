@@ -4,5 +4,17 @@
   "your-bands": "Your bands",
   "no-bands": "You do not belong to any band yet!",
   "your-invitations": "Your invitations",
-  "no-invitations": "You do not have any invitation!"
+  "no-invitations": "You do not have any invitation!",
+  "profile-title": "Profile",
+  "edit": "Edit Profile",
+  "cancel": "Cancel",
+  "save": "Save Changes",
+  "saving": "Saving...",
+  "first-name": "First Name",
+  "family-name": "Family Name",
+  "email": "Email",
+  "profile-updated": "Profile updated successfully",
+  "error-updating": "Error updating profile",
+  "image-updated": "Profile image updated successfully",
+  "error-uploading-image": "Error uploading image"
 }

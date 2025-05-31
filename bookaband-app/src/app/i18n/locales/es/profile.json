@@ -4,5 +4,17 @@
   "your-bands": "Tus grupos",
   "no-bands": "Aún no perteneces a ningún grupo!",
   "your-invitations": "Tus invitaciones",
-  "no-invitations": "No tienes ninguna invitación!"
+  "no-invitations": "No tienes ninguna invitación!",
+  "profile-title": "Perfil",
+  "edit": "Editar Perfil",
+  "cancel": "Cancelar",
+  "save": "Guardar Cambios",
+  "saving": "Guardando...",
+  "first-name": "Nombre",
+  "family-name": "Apellido",
+  "email": "Correo Electrónico",
+  "profile-updated": "Perfil actualizado con éxito",
+  "error-updating": "Error al actualizar el perfil",
+  "image-updated": "Imagen de perfil actualizada con éxito",
+  "error-uploading-image": "Error al subir la imagen"
 }

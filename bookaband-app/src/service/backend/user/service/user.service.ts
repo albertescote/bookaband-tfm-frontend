@@ -9,3 +9,26 @@ export async function getUserInfo(): Promise<User | null> {
     authorizedAxiosInstance.get(`/user`).then((res) => res.data),
   );
 }
+
+export const updateProfile = async (userData: Partial<User>): Promise<User> => {
+  const response = await authorizedAxiosInstance.patch('/users/me', userData);
+  return response.data;
+};
+
+export const uploadProfileImage = async (
+  file: File,
+): Promise<{ imageUrl: string }> => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await authorizedAxiosInstance.post(
+    '/users/me/image',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  return response.data;
+};

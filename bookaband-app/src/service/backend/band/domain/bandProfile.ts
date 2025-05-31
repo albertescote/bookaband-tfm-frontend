@@ -82,3 +82,4 @@ export interface BandProfile {
   createdAt: Date;
   updatedAt: Date;
 }
+ 
