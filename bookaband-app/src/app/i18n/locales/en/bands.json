@@ -334,7 +334,12 @@
     "instrument": "Please enter an instrument",
     "experience": "Please describe your experience",
     "profileLink": "Please enter a valid profile link",
-    "minValue": "Must be at least {{min}}"
+    "minValue": "Must be at least {{min}}",
+    "incomplete": {
+      "hospitalityRider": "Please fill in all hospitality rider fields",
+      "technicalRider": "Please fill in all technical rider fields",
+      "performanceArea": "Please fill in all performance area fields"
+    }
   },
   "roles": {
     "admin": "Admin",

@@ -33,7 +33,12 @@ import {
   updateBand,
 } from '@/service/backend/band/service/band.service';
 import { sendInvitation } from '@/service/backend/invitation/service/invitation.service';
-import { BandProfile } from '@/service/backend/band/domain/bandProfile';
+import {
+  BandProfile,
+  HospitalityRider,
+  PerformanceArea,
+  TechnicalRider,
+} from '@/service/backend/band/domain/bandProfile';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/providers/authProvider';
 import { FileUpload } from '@/components/common/FileUpload';
@@ -74,6 +79,9 @@ type EditedBandProfile = Omit<Partial<BandProfile>, 'media' | 'bandSize'> & {
   media?: (Media | PendingMedia)[];
   bandSize?: BandSize;
   imageFile?: File;
+  hospitalityRider?: HospitalityRider;
+  technicalRider?: TechnicalRider;
+  performanceArea?: PerformanceArea;
 };
 
 interface BandDetailsProps {
@@ -230,6 +238,9 @@ export default function BandDetails({
       weeklyAvailability: { ...bandProfile.weeklyAvailability },
       musicalStyleIds: bandProfile.musicalStyleIds,
       bandSize: bandProfile.bandSize,
+      hospitalityRider: bandProfile.hospitalityRider,
+      technicalRider: bandProfile.technicalRider,
+      performanceArea: bandProfile.performanceArea,
     });
     setIsEditing(true);
   };
@@ -239,7 +250,10 @@ export default function BandDetails({
     setIsEditing(false);
   };
 
-  const handleFileUpload = async (files: File[], isProfileImage: boolean = false) => {
+  const handleFileUpload = async (
+    files: File[],
+    isProfileImage: boolean = false,
+  ) => {
     if (!files.length) return;
 
     // If we're uploading a profile image
@@ -283,6 +297,43 @@ export default function BandDetails({
   const handleSaveEdit = async () => {
     if (!bandId || !hasChanges()) return;
 
+    // Validate required fields within sections
+    if (editedValues.hospitalityRider) {
+      if (
+        !editedValues.hospitalityRider.accommodation ||
+        !editedValues.hospitalityRider.catering ||
+        !editedValues.hospitalityRider.beverages ||
+        !editedValues.hospitalityRider.specialRequirements
+      ) {
+        toast.error(t('validation.incomplete.hospitalityRider'));
+        return;
+      }
+    }
+
+    if (editedValues.technicalRider) {
+      if (
+        !editedValues.technicalRider.soundSystem ||
+        !editedValues.technicalRider.microphones ||
+        !editedValues.technicalRider.backline ||
+        !editedValues.technicalRider.lighting ||
+        !editedValues.technicalRider.otherRequirements
+      ) {
+        toast.error(t('validation.incomplete.technicalRider'));
+        return;
+      }
+    }
+
+    if (editedValues.performanceArea) {
+      if (
+        !editedValues.performanceArea.regions?.length ||
+        !editedValues.performanceArea.travelPreferences ||
+        !editedValues.performanceArea.restrictions
+      ) {
+        toast.error(t('validation.incomplete.performanceArea'));
+        return;
+      }
+    }
+
     setIsUpdating(true);
     try {
       // Create FormData for file upload
@@ -318,6 +369,12 @@ export default function BandDetails({
         })),
         socialLinks: editedValues.socialLinks || bandProfile.socialLinks || [],
         imageUrl: editedValues.imageUrl || bandProfile.imageUrl,
+        hospitalityRider:
+          editedValues.hospitalityRider || bandProfile.hospitalityRider,
+        technicalRider:
+          editedValues.technicalRider || bandProfile.technicalRider,
+        performanceArea:
+          editedValues.performanceArea || bandProfile.performanceArea,
       };
 
       formData.append('data', JSON.stringify(bandData));
@@ -875,57 +932,693 @@ export default function BandDetails({
               )}
             </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {(editedValues.media || bandProfile.media || []).map((media, index) => (
-                <motion.div
-                  key={'id' in media ? media.id : `pending-${index}`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative aspect-square overflow-hidden rounded-lg"
-                >
-                  {media.type === 'image' ? (
-                    <motion.img
-                      src={media.url}
-                      alt=""
-                      className="h-full w-full cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
-                      onClick={() => setSelectedMedia(media as Media)}
-                    />
-                  ) : (
-                    <motion.div
-                      className="relative h-full w-full cursor-pointer"
-                      onClick={() => setSelectedMedia(media as Media)}
-                    >
-                      <video
+              {(editedValues.media || bandProfile.media || []).map(
+                (media, index) => (
+                  <motion.div
+                    key={'id' in media ? media.id : `pending-${index}`}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group relative aspect-square overflow-hidden rounded-lg"
+                  >
+                    {media.type === 'image' ? (
+                      <motion.img
                         src={media.url}
-                        className="h-full w-full object-cover"
-                        controls
-                        onClick={(e) => e.stopPropagation()}
+                        alt=""
+                        className="h-full w-full cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
+                        onClick={() => setSelectedMedia(media as Media)}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <Maximize2 className="h-8 w-8 text-white" />
-                      </div>
-                    </motion.div>
-                  )}
-                  {isAdmin && isEditing && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      className="absolute inset-0 flex items-center justify-center bg-black/50"
-                    >
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => 'id' in media && handleDeleteMedia(media.id)}
-                        className="rounded-full border-2 border-red-600 p-0.5 text-red-600 transition-colors hover:bg-red-600 hover:text-white"
+                    ) : (
+                      <motion.div
+                        className="relative h-full w-full cursor-pointer"
+                        onClick={() => setSelectedMedia(media as Media)}
                       >
-                        <X size={16} />
-                      </motion.button>
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
+                        <video
+                          src={media.url}
+                          className="h-full w-full object-cover"
+                          controls
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                          <Maximize2 className="h-8 w-8 text-white" />
+                        </div>
+                      </motion.div>
+                    )}
+                    {isAdmin && isEditing && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        className="absolute inset-0 flex items-center justify-center bg-black/50"
+                      >
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() =>
+                            'id' in media && handleDeleteMedia(media.id)
+                          }
+                          className="rounded-full border-2 border-red-600 p-0.5 text-red-600 transition-colors hover:bg-red-600 hover:text-white"
+                        >
+                          <X size={16} />
+                        </motion.button>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                ),
+              )}
             </div>
           </CollapsibleSection>
+
+          {/* Hospitality Rider */}
+          {(!isEditing || editedValues.hospitalityRider !== undefined) && (
+            <CollapsibleSection
+              title={
+                <div className="flex items-center justify-between">
+                  <span>{t('form.hospitalityRider.title')}</span>
+                  {isEditing && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        setEditedValues((prev) => ({
+                          ...prev,
+                          hospitalityRider: {
+                            accommodation: '',
+                            catering: '',
+                            beverages: '',
+                            specialRequirements: '',
+                          },
+                        }));
+                      }}
+                      className="ml-2 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-red-600"
+                    >
+                      <X size={16} />
+                    </motion.button>
+                  )}
+                </div>
+              }
+              defaultOpen={false}
+            >
+              <div className="space-y-6">
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.hospitalityRider.accommodation.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={
+                          editedValues.hospitalityRider?.accommodation || ''
+                        }
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            hospitalityRider: {
+                              ...prev.hospitalityRider,
+                              accommodation: e.target.value,
+                              catering: prev.hospitalityRider?.catering || '',
+                              beverages: prev.hospitalityRider?.beverages || '',
+                              specialRequirements:
+                                prev.hospitalityRider?.specialRequirements ||
+                                '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.hospitalityRider.accommodation.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.hospitalityRider?.accommodation ||
+                          t('form.hospitalityRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.hospitalityRider.catering.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.hospitalityRider?.catering || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            hospitalityRider: {
+                              ...prev.hospitalityRider,
+                              accommodation:
+                                prev.hospitalityRider?.accommodation || '',
+                              catering: e.target.value,
+                              beverages: prev.hospitalityRider?.beverages || '',
+                              specialRequirements:
+                                prev.hospitalityRider?.specialRequirements ||
+                                '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.hospitalityRider.catering.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.hospitalityRider?.catering ||
+                          t('form.hospitalityRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.hospitalityRider.beverages.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.hospitalityRider?.beverages || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            hospitalityRider: {
+                              ...prev.hospitalityRider,
+                              accommodation:
+                                prev.hospitalityRider?.accommodation || '',
+                              catering: prev.hospitalityRider?.catering || '',
+                              beverages: e.target.value,
+                              specialRequirements:
+                                prev.hospitalityRider?.specialRequirements ||
+                                '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.hospitalityRider.beverages.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.hospitalityRider?.beverages ||
+                          t('form.hospitalityRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.hospitalityRider.specialRequirements.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={
+                          editedValues.hospitalityRider?.specialRequirements ||
+                          ''
+                        }
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            hospitalityRider: {
+                              ...prev.hospitalityRider,
+                              accommodation:
+                                prev.hospitalityRider?.accommodation || '',
+                              catering: prev.hospitalityRider?.catering || '',
+                              beverages: prev.hospitalityRider?.beverages || '',
+                              specialRequirements: e.target.value,
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.hospitalityRider.specialRequirements.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.hospitalityRider?.specialRequirements ||
+                          t('form.hospitalityRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </CollapsibleSection>
+          )}
+
+          {/* Technical Rider */}
+          {(!isEditing || editedValues.technicalRider !== undefined) && (
+            <CollapsibleSection
+              title={
+                <div className="flex items-center justify-between">
+                  <span>{t('form.technicalRider.title')}</span>
+                  {isEditing && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        setEditedValues((prev) => ({
+                          ...prev,
+                          technicalRider: {
+                            soundSystem: '',
+                            microphones: '',
+                            backline: '',
+                            lighting: '',
+                            otherRequirements: '',
+                          },
+                        }));
+                      }}
+                      className="ml-2 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-red-600"
+                    >
+                      <X size={16} />
+                    </motion.button>
+                  )}
+                </div>
+              }
+              defaultOpen={false}
+            >
+              <div className="space-y-6">
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.technicalRider.soundSystem.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.technicalRider?.soundSystem || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            technicalRider: {
+                              ...prev.technicalRider,
+                              soundSystem: e.target.value,
+                              microphones:
+                                prev.technicalRider?.microphones || '',
+                              backline: prev.technicalRider?.backline || '',
+                              lighting: prev.technicalRider?.lighting || '',
+                              otherRequirements:
+                                prev.technicalRider?.otherRequirements || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.technicalRider.soundSystem.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.technicalRider?.soundSystem ||
+                          t('form.technicalRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.technicalRider.microphones.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.technicalRider?.microphones || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            technicalRider: {
+                              ...prev.technicalRider,
+                              soundSystem:
+                                prev.technicalRider?.soundSystem || '',
+                              microphones: e.target.value,
+                              backline: prev.technicalRider?.backline || '',
+                              lighting: prev.technicalRider?.lighting || '',
+                              otherRequirements:
+                                prev.technicalRider?.otherRequirements || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.technicalRider.microphones.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.technicalRider?.microphones ||
+                          t('form.technicalRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.technicalRider.backline.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.technicalRider?.backline || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            technicalRider: {
+                              ...prev.technicalRider,
+                              soundSystem:
+                                prev.technicalRider?.soundSystem || '',
+                              microphones:
+                                prev.technicalRider?.microphones || '',
+                              backline: e.target.value,
+                              lighting: prev.technicalRider?.lighting || '',
+                              otherRequirements:
+                                prev.technicalRider?.otherRequirements || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.technicalRider.backline.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.technicalRider?.backline ||
+                          t('form.technicalRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.technicalRider.lighting.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.technicalRider?.lighting || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            technicalRider: {
+                              ...prev.technicalRider,
+                              soundSystem:
+                                prev.technicalRider?.soundSystem || '',
+                              microphones:
+                                prev.technicalRider?.microphones || '',
+                              backline: prev.technicalRider?.backline || '',
+                              lighting: e.target.value,
+                              otherRequirements:
+                                prev.technicalRider?.otherRequirements || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.technicalRider.lighting.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.technicalRider?.lighting ||
+                          t('form.technicalRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.technicalRider.otherRequirements.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={
+                          editedValues.technicalRider?.otherRequirements || ''
+                        }
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            technicalRider: {
+                              ...prev.technicalRider,
+                              soundSystem:
+                                prev.technicalRider?.soundSystem || '',
+                              microphones:
+                                prev.technicalRider?.microphones || '',
+                              backline: prev.technicalRider?.backline || '',
+                              lighting: prev.technicalRider?.lighting || '',
+                              otherRequirements: e.target.value,
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.technicalRider.otherRequirements.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.technicalRider?.otherRequirements ||
+                          t('form.technicalRider.empty')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </CollapsibleSection>
+          )}
+
+          {/* Performance Area */}
+          {(!isEditing || editedValues.performanceArea !== undefined) && (
+            <CollapsibleSection
+              title={
+                <div className="flex items-center justify-between">
+                  <span>{t('form.performanceArea.title')}</span>
+                  {isEditing && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        setEditedValues((prev) => ({
+                          ...prev,
+                          performanceArea: {
+                            regions: [],
+                            travelPreferences: '',
+                            restrictions: '',
+                          },
+                        }));
+                      }}
+                      className="ml-2 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-red-600"
+                    >
+                      <X size={16} />
+                    </motion.button>
+                  )}
+                </div>
+              }
+              defaultOpen={false}
+            >
+              <div className="space-y-6">
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.performanceArea.regions.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={
+                          editedValues.performanceArea?.regions?.join(', ') ||
+                          ''
+                        }
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            performanceArea: {
+                              ...prev.performanceArea,
+                              regions: e.target.value
+                                .split(',')
+                                .map((region) => region.trim()),
+                              travelPreferences:
+                                prev.performanceArea?.travelPreferences || '',
+                              restrictions:
+                                prev.performanceArea?.restrictions || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.performanceArea.regions.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.performanceArea?.regions?.join(', ') || ''}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.performanceArea.travelPreferences.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={
+                          editedValues.performanceArea?.travelPreferences || ''
+                        }
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            performanceArea: {
+                              ...prev.performanceArea,
+                              regions: prev.performanceArea?.regions || [],
+                              travelPreferences: e.target.value,
+                              restrictions:
+                                prev.performanceArea?.restrictions || '',
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.performanceArea.travelPreferences.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.performanceArea?.travelPreferences || ''}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('form.performanceArea.restrictions.label')}
+                  </label>
+                  {isEditing ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="relative"
+                    >
+                      <textarea
+                        value={editedValues.performanceArea?.restrictions || ''}
+                        onChange={(e) =>
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            performanceArea: {
+                              ...prev.performanceArea,
+                              regions: prev.performanceArea?.regions || [],
+                              travelPreferences:
+                                prev.performanceArea?.travelPreferences || '',
+                              restrictions: e.target.value,
+                            },
+                          }))
+                        }
+                        rows={2}
+                        className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                        placeholder={t(
+                          'form.performanceArea.restrictions.placeholder',
+                        )}
+                      />
+                    </motion.div>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                      <p className="whitespace-pre-wrap text-gray-900">
+                        {bandProfile.performanceArea?.restrictions || ''}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </CollapsibleSection>
+          )}
 
           {/* Members Section with Animation */}
           <CollapsibleSection title={t('members')} defaultOpen={true}>
@@ -1230,7 +1923,7 @@ function CollapsibleSection({
   children,
   defaultOpen = false,
 }: {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
   defaultOpen?: boolean;
 }) {

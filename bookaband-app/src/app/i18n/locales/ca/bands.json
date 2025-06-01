@@ -303,16 +303,14 @@
     "socialMedia": "Si us plau, proporciona almenys un enllaç a xarxes socials",
     "mediaUpload": "Si us plau, puja almenys un arxiu multimèdia",
     "availability": "Si us plau, selecciona almenys un dia disponible",
-    "bandName": "Si us plau, introdueix un nom de banda",
+    "bandName": "Si us plau, introdueix un nom per a la banda",
     "genre": "Si us plau, selecciona un gènere",
-    "biography": "Si us plau, proporciona una biografia",
-    "location": "Si us plau, introdueix una ubicació",
-    "musicalStyles": "Si us plau, selecciona almenys un estil musical",
-    "artisticName": "Si us plau, introdueix un nom artístic",
-    "instrument": "Si us plau, introdueix un instrument",
-    "experience": "Si us plau, descriu la teva experiència",
-    "profileLink": "Si us plau, introdueix un enllaç de perfil vàlid",
-    "minValue": "Ha de ser almenys {{min}}"
+    "description": "Si us plau, proporciona una descripció",
+    "incomplete": {
+      "hospitalityRider": "Si us plau, omple tots els camps del rider d'hospitalitat",
+      "technicalRider": "Si us plau, omple tots els camps del rider tècnic",
+      "performanceArea": "Si us plau, omple tots els camps de l'àrea d'actuació"
+    }
   },
   "roles": {
     "admin": "Administrador",

@@ -325,7 +325,7 @@
     "socialMedia": "Por favor, proporciona al menos un enlace a redes sociales",
     "mediaUpload": "Por favor, sube al menos un archivo multimedia",
     "availability": "Por favor, selecciona al menos un día disponible",
-    "bandName": "Por favor, introduce un nombre de banda",
+    "bandName": "Por favor, introduce un nombre para la banda",
     "genre": "Por favor, selecciona un género",
     "description": "Por favor, proporciona una descripción",
     "location": "Por favor, introduce una ubicación",
@@ -334,7 +334,12 @@
     "instrument": "Por favor, introduce un instrumento",
     "experience": "Por favor, describe tu experiencia",
     "profileLink": "Por favor, introduce un enlace de perfil válido",
-    "minValue": "Debe ser al menos {{min}}"
+    "minValue": "Debe ser al menos {{min}}",
+    "incomplete": {
+      "hospitalityRider": "Por favor, rellena todos los campos del rider de hospitalidad",
+      "technicalRider": "Por favor, rellena todos los campos del rider técnico",
+      "performanceArea": "Por favor, rellena todos los campos del área de actuación"
+    }
   },
   "roles": {
     "admin": "Administrador",
