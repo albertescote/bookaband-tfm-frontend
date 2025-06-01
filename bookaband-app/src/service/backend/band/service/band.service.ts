@@ -2,6 +2,7 @@
 import { Band } from '@/service/backend/band/domain/band';
 import { UserBand } from '@/service/backend/band/domain/userBand';
 import {
+  BandProfile,
   HospitalityRider,
   PerformanceArea,
   TechnicalRider,
@@ -34,6 +35,14 @@ export async function getBandById(id: string): Promise<Band | undefined> {
   );
 }
 
+export async function getBandProfileById(
+  id: string,
+): Promise<BandProfile | undefined> {
+  return withTokenRefreshRetry<BandProfile>(() =>
+    authorizedAxiosInstance.get(`/bands/${id}/profile`).then((res) => res.data),
+  );
+}
+
 export async function createBand(data: UpsertBandRequest): Promise<void> {
   return withTokenRefreshRetry<void>(() =>
     authorizedAxiosInstance.post('/bands', data).then((res) => res.data),
@@ -44,8 +53,15 @@ export async function updateBand(
   id: string,
   data: UpsertBandRequest,
 ): Promise<void> {
+  console.log(data);
   return withTokenRefreshRetry<void>(() =>
-    authorizedAxiosInstance.put(`/bands/${id}`, data).then((res) => res.data),
+    authorizedAxiosInstance
+      .put(`/bands/${id}`, data)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.log(error.response.data);
+        throw error;
+      }),
   );
 }
 

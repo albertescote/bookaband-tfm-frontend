@@ -164,10 +164,11 @@
       }
     },
     "multimedia": {
-      "title": "Multimèdia i xarxes socials",
-      "description": "Comparteix els teus perfils a xarxes socials i puja contingut multimèdia per mostrar la teva banda",
-      "socialMedia": "Enllaços a xarxes socials",
-      "mediaUpload": "Pujada de mitjans",
+      "title": "Multimèdia",
+      "content": "Contingut multimèdia",
+      "mediaUpload": "Contingut multimèdia",
+      "socialMedia": "Xarxes socials",
+      "addSocialLink": "Afegir xarxa social",
       "instagramPlaceholder": "Introdueix la URL del teu perfil d'Instagram",
       "facebookPlaceholder": "Introdueix la URL de la teva pàgina de Facebook",
       "websitePlaceholder": "Introdueix la URL del teu lloc web",
@@ -183,32 +184,11 @@
     },
     "basicInfo": {
       "title": "Informació bàsica",
-      "subtitle": "Explica'ns sobre la teva banda",
-      "bandName": "Nom de la banda",
-      "bandNamePlaceholder": "Introdueix el nom de la teva banda",
-      "genre": "Gènere musical",
-      "genrePlaceholder": "Selecciona un gènere",
-      "biography": "Biografia",
-      "biographyPlaceholder": "Explica'ns la història i experiència de la teva banda",
+      "name": "Nom de la banda",
       "location": "Ubicació",
-      "locationPlaceholder": "Introdueix la ubicació de la teva banda",
       "musicalStyles": "Estils musicals",
-      "musicalStylesPlaceholder": "Selecciona estils musicals",
-      "artisticName": "Nom artístic",
-      "artisticNamePlaceholder": "Introdueix nom artístic",
-      "instrument": "Instrument",
-      "instrumentPlaceholder": "Introdueix instrument",
-      "experience": "Experiència",
-      "experiencePlaceholder": "Descriu la teva experiència",
-      "profileLink": "Enllaç de perfil",
-      "profileLinkPlaceholder": "Introdueix enllaç de perfil",
-      "price": "Preu per actuació",
-      "pricePlaceholder": "Introdueix el teu preu per actuació",
       "bandSize": "Mida de la banda",
-      "bandSizePlaceholder": "Selecciona la mida de la banda",
-      "bandImage": "Imatge de la banda",
-      "bandImagePlaceholder": "Puja la imatge de la teva banda",
-      "bandImageDescription": "Puja una imatge d'alta qualitat de la teva banda. Mida màxima d'arxiu: 10MB",
+      "bio": "Biografia",
       "bandSizes": {
         "SOLO": "Artista solista",
         "DUO": "Dúo",
@@ -333,5 +313,16 @@
     "experience": "Si us plau, descriu la teva experiència",
     "profileLink": "Si us plau, introdueix un enllaç de perfil vàlid",
     "minValue": "Ha de ser almenys {{min}}"
-  }
+  },
+  "roles": {
+    "admin": "Administrador",
+    "member": "Membre"
+  },
+  "changeImage": "Canviar imatge",
+  "uploadMedia": "Pujar mitjans",
+  "successUpdating": "Perfil actualitzat amb èxit",
+  "errorUpdating": "Error en actualitzar el perfil",
+  "reviews": "Ressenyes",
+  "bookingDates": "Dates de reserva",
+  "bandSize": "Mida de la banda"
 }

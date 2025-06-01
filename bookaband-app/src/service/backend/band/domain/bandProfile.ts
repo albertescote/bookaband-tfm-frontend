@@ -1,4 +1,5 @@
 import { BandSize } from './bandSize';
+import { BandRole } from '@/service/backend/band/domain/bandRole';
 
 export interface ArtistReview {
   id: string;
@@ -67,10 +68,8 @@ export interface WeeklyAvailability {
 
 export interface BandProfile {
   id: string;
-  bandId: string;
-  bandName: string;
+  name: string;
   musicalStyleIds: string[];
-  membersId: string[];
   bookingDates: string[];
   location: string;
   featured: boolean;
@@ -78,6 +77,7 @@ export interface BandProfile {
   eventTypeIds: string[];
   reviewCount: number;
   createdDate: Date;
+  members?: { id: string; role: BandRole; name: string; imageUrl?: string }[];
   price?: number;
   imageUrl?: string;
   rating?: number;

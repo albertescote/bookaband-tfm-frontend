@@ -335,5 +335,16 @@
     "experience": "Por favor, describe tu experiencia",
     "profileLink": "Por favor, introduce un enlace de perfil válido",
     "minValue": "Debe ser al menos {{min}}"
-  }
+  },
+  "roles": {
+    "admin": "Administrador",
+    "member": "Miembro"
+  },
+  "changeImage": "Cambiar imagen",
+  "uploadMedia": "Subir medios",
+  "successUpdating": "Perfil actualizado con éxito",
+  "errorUpdating": "Error al actualizar el perfil",
+  "reviews": "Reseñas",
+  "bookingDates": "Fechas de reserva",
+  "bandSize": "Tamaño de la banda"
 }

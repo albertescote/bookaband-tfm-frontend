@@ -1,4 +1,4 @@
-import { getBandById } from '@/service/backend/band/service/band.service';
+import { getBandProfileById } from '@/service/backend/band/service/band.service';
 import BandDetails from '@/components/bands/BandDetails';
 import BandErrorScreen from '@/components/bands/BandErrorScreen';
 
@@ -11,14 +11,20 @@ interface PageParams {
 
 export default async function Page({ params: { lng, id } }: PageParams) {
   try {
-    const band = await getBandById(id);
-    if (!band) {
+    const bandProfile = await getBandProfileById(id);
+    if (!bandProfile) {
       return <BandErrorScreen language={lng} />;
     }
 
-    return <BandDetails language={lng} bandId={id} initialBand={band} />;
+    return (
+      <BandDetails
+        language={lng}
+        bandId={id}
+        initialBandProfile={bandProfile}
+      />
+    );
   } catch (error) {
-    console.error('Error fetching band:', error);
+    console.error('Error fetching band profile:', error);
     return <BandErrorScreen language={lng} />;
   }
 }

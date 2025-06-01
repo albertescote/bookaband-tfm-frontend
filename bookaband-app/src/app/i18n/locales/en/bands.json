@@ -101,7 +101,10 @@
     "errorRemoving": "Error removing member",
     "backToBands": "Back to bands",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "edit": "Edit",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "createBandDescription": "Create a new band to start collaborating with other musicians",
   "email": "Email",
@@ -332,5 +335,16 @@
     "experience": "Please describe your experience",
     "profileLink": "Please enter a valid profile link",
     "minValue": "Must be at least {{min}}"
-  }
+  },
+  "roles": {
+    "admin": "Admin",
+    "member": "Member"
+  },
+  "changeImage": "Change image",
+  "uploadMedia": "Upload media",
+  "successUpdating": "Profile updated successfully",
+  "errorUpdating": "Error updating profile",
+  "reviews": "Reviews",
+  "bookingDates": "Booking dates",
+  "bandSize": "Band size"
 }
