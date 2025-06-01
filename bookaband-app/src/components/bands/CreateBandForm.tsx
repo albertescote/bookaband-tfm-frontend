@@ -22,7 +22,7 @@ export default function CreateBandForm({ language }: CreateBandFormProps) {
     try {
       await createBand(data);
       toast.success(t('successCreating'));
-      router.push('/bands');
+      router.push(`/${language}/bands`);
     } catch (err) {
       console.error('Error creating band:', err);
       toast.error(t('errorCreating'));

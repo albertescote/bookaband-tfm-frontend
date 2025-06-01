@@ -69,7 +69,7 @@ export default function BandCreationLayout({
       onBack();
     } else {
       onCancel();
-      router.push('/bands');
+      router.push(`/${language}/bands`);
     }
   };
 
@@ -108,13 +108,15 @@ export default function BandCreationLayout({
               {STEPS.map((step, index) => (
                 <div
                   key={step.id}
-                  onClick={() => index + 1 <= currentStep && onStepClick(index + 1)}
+                  onClick={() =>
+                    index + 1 <= currentStep && onStepClick(index + 1)
+                  }
                   className={`flex flex-col items-center transition-colors duration-200 ${
                     index + 1 === currentStep
                       ? 'text-[#15b7b9]'
                       : index + 1 < currentStep
-                      ? 'text-gray-500 cursor-pointer hover:text-[#15b7b9]'
-                      : 'text-gray-400'
+                        ? 'cursor-pointer text-gray-500 hover:text-[#15b7b9]'
+                        : 'text-gray-400'
                   }`}
                 >
                   <div
@@ -122,8 +124,8 @@ export default function BandCreationLayout({
                       index + 1 === currentStep
                         ? 'border-[#15b7b9] bg-[#15b7b9] text-white shadow-md'
                         : index + 1 < currentStep
-                        ? 'border-gray-500 bg-gray-500 text-white cursor-pointer hover:border-[#15b7b9] hover:bg-[#15b7b9]'
-                        : 'border-gray-300 bg-white'
+                          ? 'cursor-pointer border-gray-500 bg-gray-500 text-white hover:border-[#15b7b9] hover:bg-[#15b7b9]'
+                          : 'border-gray-300 bg-white'
                     }`}
                   >
                     {index + 1}
@@ -153,10 +155,14 @@ export default function BandCreationLayout({
             <Button
               type="button"
               variant="outline"
-              onClick={currentStep === 1 ? () => {
-                onCancel();
-                router.push('/bands');
-              } : handleBack}
+              onClick={
+                currentStep === 1
+                  ? () => {
+                      onCancel();
+                      router.push(`/${language}/bands`);
+                    }
+                  : handleBack
+              }
               disabled={isSubmitting}
               className="border-gray-200 hover:bg-gray-50"
             >

@@ -8,10 +8,7 @@ import {
   WeeklyAvailability,
 } from '../domain/bandProfile';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
-import {
-  refreshAccessToken,
-  withTokenRefreshRetry,
-} from '@/service/backend/auth/service/auth.service';
+import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 
 export interface UpsertBandRequest {
   name: string;
@@ -38,19 +35,9 @@ export async function getBandById(id: string): Promise<Band | undefined> {
 }
 
 export async function createBand(data: UpsertBandRequest): Promise<void> {
-  try {
-    await authorizedAxiosInstance.post('/bands', data);
-  } catch (error: any) {
-    if (error.response?.status === 401) {
-      const accessToken = await refreshAccessToken();
-      if (!accessToken) {
-        throw new Error('Authentication failed');
-      }
-      await authorizedAxiosInstance.post('/bands', data);
-    } else {
-      throw error;
-    }
-  }
+  return withTokenRefreshRetry<void>(() =>
+    authorizedAxiosInstance.post('/bands', data).then((res) => res.data),
+  );
 }
 
 export async function updateBand(
