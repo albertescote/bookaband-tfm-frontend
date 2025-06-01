@@ -17,7 +17,8 @@ export default async function Page({ params: { lng } }: PageParams) {
   ]);
 
   const bands: UserBand[] = userBands || [];
-  const invitations: Invitation[] = userInvitations || [];
+  const invitations: Invitation[] =
+    userInvitations?.filter((inv) => inv.status === 'PENDING') || [];
 
   return (
     <BandsList

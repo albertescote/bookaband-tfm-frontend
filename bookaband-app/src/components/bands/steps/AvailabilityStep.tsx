@@ -85,7 +85,7 @@ export function AvailabilityStep({
         animate="show"
         className="flex flex-col items-center space-y-6"
       >
-        <div className="grid w-full max-w-7xl grid-cols-7 gap-4">
+        <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
           {days.map((day) => (
             <motion.div
               key={day}
@@ -96,15 +96,18 @@ export function AvailabilityStep({
                 type="button"
                 onClick={() => handleDayToggle(day)}
                 className={cn(
-                  'h-24 w-32 rounded-xl border-2 transition-all duration-200',
-                  'flex items-center justify-center text-lg font-medium',
+                  'h-20 w-full rounded-xl border-2 transition-all duration-200',
+                  'flex items-center justify-center text-base font-medium',
                   'hover:scale-105 hover:shadow-md active:scale-95',
+                  'sm:h-24 md:h-28 lg:h-32',
                   formData.weeklyAvailability?.[day]
                     ? 'border-[#15b7b9] bg-[#15b7b9] text-white shadow-md'
                     : 'bg-white hover:border-[#15b7b9]/50',
                 )}
               >
-                {t(`form.availability.days.${day}`)}
+                <span className="text-center">
+                  {t(`form.availability.days.${day}`)}
+                </span>
               </button>
             </motion.div>
           ))}

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { PerformanceArea } from '@/service/backend/band/domain/bandProfile';
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 
 interface PerformanceAreaStepProps {
   formData: Partial<UpsertBandRequest>;
@@ -93,54 +93,61 @@ export default function PerformanceAreaStep({
         <label htmlFor="regions" className="text-sm font-medium text-gray-700">
           {t('form.performanceArea.regions.label')} *
         </label>
-        <div className="space-y-2">
-          <div className="flex gap-2">
-            <Input
-              id="regions"
-              value={newRegion}
-              onChange={(e) => setNewRegion(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={t('form.performanceArea.regions.placeholder')}
-              className={
-                hasError &&
-                (!formData.performanceArea?.regions ||
-                  formData.performanceArea.regions.length === 0)
-                  ? 'border-red-500'
-                  : ''
-              }
-            />
-            <button
-              type="button"
-              onClick={handleAddRegion}
-              className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium text-white"
-            >
-              {t('form.performanceArea.regions.add')}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {formData.performanceArea?.regions?.map((region, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm"
-              >
-                <span>{region}</span>
+        <div className="mt-2">
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Input
+                  id="regions"
+                  value={newRegion}
+                  onChange={(e) => setNewRegion(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={t('form.performanceArea.regions.placeholder')}
+                  className={
+                    hasError &&
+                    (!formData.performanceArea?.regions ||
+                      formData.performanceArea.regions.length === 0)
+                      ? 'border-red-500 pr-10'
+                      : 'pr-10'
+                  }
+                  aria-label={t('form.performanceArea.regions.label')}
+                />
                 <button
                   type="button"
-                  onClick={() => handleRemoveRegion(index)}
-                  className="text-gray-500 hover:text-gray-700"
+                  onClick={handleAddRegion}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  aria-label={t('form.performanceArea.regions.add')}
                 >
-                  <X className="h-4 w-4" />
+                  <Plus className="h-5 w-5" />
                 </button>
               </div>
-            ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.performanceArea?.regions?.map((region, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm"
+                >
+                  <span>{region}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveRegion(index)}
+                    className="text-gray-500 hover:text-gray-700"
+                    aria-label={`Remove ${region}`}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            {hasError &&
+              (!formData.performanceArea?.regions ||
+                formData.performanceArea.regions.length === 0) && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
           </div>
-          {hasError &&
-            (!formData.performanceArea?.regions ||
-              formData.performanceArea.regions.length === 0) && (
-              <p className="mt-1 text-sm text-red-500">
-                {t('validation.required')}
-              </p>
-            )}
         </div>
       </div>
 
@@ -151,23 +158,25 @@ export default function PerformanceAreaStep({
         >
           {t('form.performanceArea.travelPreferences.label')} *
         </label>
-        <Textarea
-          id="travelPreferences"
-          name="travelPreferences"
-          value={formData.performanceArea?.travelPreferences || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.performanceArea.travelPreferences.placeholder')}
-          className={
-            hasError && !formData.performanceArea?.travelPreferences
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.performanceArea?.travelPreferences && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="travelPreferences"
+            name="travelPreferences"
+            value={formData.performanceArea?.travelPreferences || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.performanceArea.travelPreferences.placeholder')}
+            className={
+              hasError && !formData.performanceArea?.travelPreferences
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.performanceArea?.travelPreferences && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -177,13 +186,15 @@ export default function PerformanceAreaStep({
         >
           {t('form.performanceArea.restrictions.label')}
         </label>
-        <Textarea
-          id="restrictions"
-          name="restrictions"
-          value={formData.performanceArea?.restrictions || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.performanceArea.restrictions.placeholder')}
-        />
+        <div className="mt-2">
+          <Textarea
+            id="restrictions"
+            name="restrictions"
+            value={formData.performanceArea?.restrictions || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.performanceArea.restrictions.placeholder')}
+          />
+        </div>
       </div>
     </div>
   );

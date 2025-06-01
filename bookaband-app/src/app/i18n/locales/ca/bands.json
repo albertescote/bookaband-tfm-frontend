@@ -48,8 +48,8 @@
   "namePlaceholder": "Introdueix el nom de la teva banda",
   "genre": "Gènere musical",
   "genrePlaceholder": "Selecciona un gènere",
-  "description": "Descripció",
-  "descriptionPlaceholder": "Explica'ns sobre la teva banda",
+  "biography": "Biografia",
+  "biographyPlaceholder": "Explica'ns la història i experiència de la teva banda",
   "location": "Ubicació",
   "locationPlaceholder": "Introdueix la ubicació de la teva banda",
   "musicalStyles": "Estils musicals",
@@ -151,7 +151,7 @@
     "bandImage": "Imatge de la banda",
     "availability": {
       "title": "Disponibilitat setmanal",
-      "subtitle": "Selecciona quan estàs disponible per actuar",
+      "description": "Selecciona els dies en què estàs disponible per actuar",
       "error": "Si us plau, selecciona almenys un dia de disponibilitat",
       "days": {
         "monday": "Dilluns",
@@ -188,8 +188,8 @@
       "bandNamePlaceholder": "Introdueix el nom de la teva banda",
       "genre": "Gènere musical",
       "genrePlaceholder": "Selecciona un gènere",
-      "description": "Descripció",
-      "descriptionPlaceholder": "Explica'ns sobre la teva banda",
+      "biography": "Biografia",
+      "biographyPlaceholder": "Explica'ns la història i experiència de la teva banda",
       "location": "Ubicació",
       "locationPlaceholder": "Introdueix la ubicació de la teva banda",
       "musicalStyles": "Estils musicals",
@@ -325,12 +325,13 @@
     "availability": "Si us plau, selecciona almenys un dia disponible",
     "bandName": "Si us plau, introdueix un nom de banda",
     "genre": "Si us plau, selecciona un gènere",
-    "description": "Si us plau, proporciona una descripció",
+    "biography": "Si us plau, proporciona una biografia",
     "location": "Si us plau, introdueix una ubicació",
     "musicalStyles": "Si us plau, selecciona almenys un estil musical",
     "artisticName": "Si us plau, introdueix un nom artístic",
     "instrument": "Si us plau, introdueix un instrument",
     "experience": "Si us plau, descriu la teva experiència",
-    "profileLink": "Si us plau, introdueix un enllaç de perfil vàlid"
+    "profileLink": "Si us plau, introdueix un enllaç de perfil vàlid",
+    "minValue": "Ha de ser almenys {{min}}"
   }
 }

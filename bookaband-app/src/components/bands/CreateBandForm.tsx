@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { ArrowLeft } from 'lucide-react';
-import { createBand } from '@/service/backend/band/service/band.service';
+import {
+  createBand,
+  UpsertBandRequest,
+} from '@/service/backend/band/service/band.service';
 import { toast } from 'react-hot-toast';
 import BandProfileForm from './BandProfileForm';
-import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 
 interface CreateBandFormProps {
   language: string;
@@ -48,4 +49,4 @@ export default function CreateBandForm({ language }: CreateBandFormProps) {
       </div>
     </div>
   );
-} 
+}

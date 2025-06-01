@@ -151,7 +151,7 @@
     "bandImage": "Band image",
     "availability": {
       "title": "Weekly availability",
-      "subtitle": "Select when you're available to perform",
+      "description": "Select the days when you're available to perform",
       "days": {
         "monday": "Monday",
         "tuesday": "Tuesday",
@@ -187,8 +187,8 @@
       "bandNamePlaceholder": "Enter your band name",
       "genre": "Music genre",
       "genrePlaceholder": "Select a genre",
-      "description": "Description",
-      "descriptionPlaceholder": "Tell us about your band",
+      "biography": "Biography",
+      "biographyPlaceholder": "Tell us about your band's story and experience",
       "location": "Location",
       "locationPlaceholder": "Enter your band's location",
       "musicalStyles": "Musical styles",
@@ -330,6 +330,7 @@
     "artisticName": "Please enter an artistic name",
     "instrument": "Please enter an instrument",
     "experience": "Please describe your experience",
-    "profileLink": "Please enter a valid profile link"
+    "profileLink": "Please enter a valid profile link",
+    "minValue": "Must be at least {{min}}"
   }
 }

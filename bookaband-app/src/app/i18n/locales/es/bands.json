@@ -48,6 +48,8 @@
   "namePlaceholder": "Introduce el nombre de tu banda",
   "genre": "Género musical",
   "genrePlaceholder": "Selecciona un género",
+  "biography": "Biografía",
+  "biographyPlaceholder": "Cuéntanos la historia y experiencia de tu banda",
   "description": "Descripción",
   "descriptionPlaceholder": "Cuéntanos sobre tu banda",
   "location": "Ubicación",
@@ -151,7 +153,7 @@
     "bandImage": "Imagen de la banda",
     "availability": {
       "title": "Disponibilidad semanal",
-      "subtitle": "Selecciona cuándo estás disponible para actuar",
+      "description": "Selecciona los días en los que estás disponible para actuar",
       "error": "Por favor, selecciona al menos un día de disponibilidad",
       "days": {
         "monday": "Lunes",
@@ -188,8 +190,8 @@
       "bandNamePlaceholder": "Introduce el nombre de tu banda",
       "genre": "Género musical",
       "genrePlaceholder": "Selecciona un género",
-      "description": "Descripción",
-      "descriptionPlaceholder": "Cuéntanos sobre tu banda",
+      "biography": "Biografía",
+      "biographyPlaceholder": "Cuéntanos la historia y experiencia de tu banda",
       "location": "Ubicación",
       "locationPlaceholder": "Introduce la ubicación de tu banda",
       "musicalStyles": "Estilos musicales",
@@ -331,6 +333,7 @@
     "artisticName": "Por favor, introduce un nombre artístico",
     "instrument": "Por favor, introduce un instrumento",
     "experience": "Por favor, describe tu experiencia",
-    "profileLink": "Por favor, introduce un enlace de perfil válido"
+    "profileLink": "Por favor, introduce un enlace de perfil válido",
+    "minValue": "Debe ser al menos {{min}}"
   }
 }

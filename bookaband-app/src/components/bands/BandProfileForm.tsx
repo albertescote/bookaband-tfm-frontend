@@ -39,7 +39,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        // Initialize weeklyAvailability if it doesn't exist
         if (!parsedData.weeklyAvailability) {
           parsedData.weeklyAvailability = {
             monday: false,
@@ -108,7 +107,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         return !!(
           formData.name?.trim() &&
           formData.location?.trim() &&
-          formData.bio?.trim() &&
           (formData.musicalStyleIds?.length ?? 0) > 0 &&
           formData.price !== undefined &&
           formData.bandSize &&

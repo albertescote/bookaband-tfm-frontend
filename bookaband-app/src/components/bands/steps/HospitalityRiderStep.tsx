@@ -61,46 +61,50 @@ export default function HospitalityRiderStep({
         >
           {t('form.hospitalityRider.accommodation.label')} *
         </label>
-        <Textarea
-          id="accommodation"
-          name="accommodation"
-          value={formData.hospitalityRider?.accommodation || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.hospitalityRider.accommodation.placeholder')}
-          className={
-            hasError && !formData.hospitalityRider?.accommodation
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.hospitalityRider?.accommodation && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="accommodation"
+            name="accommodation"
+            value={formData.hospitalityRider?.accommodation || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.hospitalityRider.accommodation.placeholder')}
+            className={
+              hasError && !formData.hospitalityRider?.accommodation
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.hospitalityRider?.accommodation && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
         <label htmlFor="catering" className="text-sm font-medium text-gray-700">
           {t('form.hospitalityRider.catering.label')} *
         </label>
-        <Textarea
-          id="catering"
-          name="catering"
-          value={formData.hospitalityRider?.catering || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.hospitalityRider.catering.placeholder')}
-          className={
-            hasError && !formData.hospitalityRider?.catering
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.hospitalityRider?.catering && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="catering"
+            name="catering"
+            value={formData.hospitalityRider?.catering || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.hospitalityRider.catering.placeholder')}
+            className={
+              hasError && !formData.hospitalityRider?.catering
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.hospitalityRider?.catering && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -110,23 +114,25 @@ export default function HospitalityRiderStep({
         >
           {t('form.hospitalityRider.beverages.label')} *
         </label>
-        <Textarea
-          id="beverages"
-          name="beverages"
-          value={formData.hospitalityRider?.beverages || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.hospitalityRider.beverages.placeholder')}
-          className={
-            hasError && !formData.hospitalityRider?.beverages
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.hospitalityRider?.beverages && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="beverages"
+            name="beverages"
+            value={formData.hospitalityRider?.beverages || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.hospitalityRider.beverages.placeholder')}
+            className={
+              hasError && !formData.hospitalityRider?.beverages
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.hospitalityRider?.beverages && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -136,15 +142,17 @@ export default function HospitalityRiderStep({
         >
           {t('form.hospitalityRider.specialRequirements.label')}
         </label>
-        <Textarea
-          id="specialRequirements"
-          name="specialRequirements"
-          value={formData.hospitalityRider?.specialRequirements || ''}
-          onChange={handleInputChange}
-          placeholder={t(
-            'form.hospitalityRider.specialRequirements.placeholder',
-          )}
-        />
+        <div className="mt-2">
+          <Textarea
+            id="specialRequirements"
+            name="specialRequirements"
+            value={formData.hospitalityRider?.specialRequirements || ''}
+            onChange={handleInputChange}
+            placeholder={t(
+              'form.hospitalityRider.specialRequirements.placeholder',
+            )}
+          />
+        </div>
       </div>
     </div>
   );

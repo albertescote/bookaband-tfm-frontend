@@ -63,23 +63,25 @@ export default function TechnicalRiderStep({
         >
           {t('form.technicalRider.soundSystem.label')} *
         </label>
-        <Textarea
-          id="soundSystem"
-          name="soundSystem"
-          value={formData.technicalRider?.soundSystem || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.technicalRider.soundSystem.placeholder')}
-          className={
-            hasError && !formData.technicalRider?.soundSystem
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.technicalRider?.soundSystem && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="soundSystem"
+            name="soundSystem"
+            value={formData.technicalRider?.soundSystem || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.technicalRider.soundSystem.placeholder')}
+            className={
+              hasError && !formData.technicalRider?.soundSystem
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.technicalRider?.soundSystem && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -89,69 +91,75 @@ export default function TechnicalRiderStep({
         >
           {t('form.technicalRider.microphones.label')} *
         </label>
-        <Textarea
-          id="microphones"
-          name="microphones"
-          value={formData.technicalRider?.microphones || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.technicalRider.microphones.placeholder')}
-          className={
-            hasError && !formData.technicalRider?.microphones
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.technicalRider?.microphones && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="microphones"
+            name="microphones"
+            value={formData.technicalRider?.microphones || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.technicalRider.microphones.placeholder')}
+            className={
+              hasError && !formData.technicalRider?.microphones
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.technicalRider?.microphones && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
         <label htmlFor="backline" className="text-sm font-medium text-gray-700">
           {t('form.technicalRider.backline.label')} *
         </label>
-        <Textarea
-          id="backline"
-          name="backline"
-          value={formData.technicalRider?.backline || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.technicalRider.backline.placeholder')}
-          className={
-            hasError && !formData.technicalRider?.backline
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.technicalRider?.backline && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="backline"
+            name="backline"
+            value={formData.technicalRider?.backline || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.technicalRider.backline.placeholder')}
+            className={
+              hasError && !formData.technicalRider?.backline
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.technicalRider?.backline && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
         <label htmlFor="lighting" className="text-sm font-medium text-gray-700">
           {t('form.technicalRider.lighting.label')} *
         </label>
-        <Textarea
-          id="lighting"
-          name="lighting"
-          value={formData.technicalRider?.lighting || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.technicalRider.lighting.placeholder')}
-          className={
-            hasError && !formData.technicalRider?.lighting
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError && !formData.technicalRider?.lighting && (
-          <p className="mt-1 text-sm text-red-500">
-            {t('validation.required')}
-          </p>
-        )}
+        <div className="mt-2">
+          <Textarea
+            id="lighting"
+            name="lighting"
+            value={formData.technicalRider?.lighting || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.technicalRider.lighting.placeholder')}
+            className={
+              hasError && !formData.technicalRider?.lighting
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError && !formData.technicalRider?.lighting && (
+            <p className="mt-1 text-sm text-red-500">
+              {t('validation.required')}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -161,13 +169,15 @@ export default function TechnicalRiderStep({
         >
           {t('form.technicalRider.otherRequirements.label')}
         </label>
-        <Textarea
-          id="otherRequirements"
-          name="otherRequirements"
-          value={formData.technicalRider?.otherRequirements || ''}
-          onChange={handleInputChange}
-          placeholder={t('form.technicalRider.otherRequirements.placeholder')}
-        />
+        <div className="mt-2">
+          <Textarea
+            id="otherRequirements"
+            name="otherRequirements"
+            value={formData.technicalRider?.otherRequirements || ''}
+            onChange={handleInputChange}
+            placeholder={t('form.technicalRider.otherRequirements.placeholder')}
+          />
+        </div>
       </div>
     </div>
   );
