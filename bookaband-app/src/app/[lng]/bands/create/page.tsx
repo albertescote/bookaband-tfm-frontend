@@ -3,8 +3,10 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import BandProfileForm from '@/components/bands/BandProfileForm';
-import { BandProfile } from '@/service/backend/band/domain/bandProfile';
-import { createBand } from '@/service/backend/band/service/band.service';
+import {
+  createBand,
+  UpsertBandRequest,
+} from '@/service/backend/band/service/band.service';
 
 export default function CreateBandPage() {
   const router = useRouter();
@@ -12,11 +14,10 @@ export default function CreateBandPage() {
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
 
-  const handleSubmit = async (data: BandProfile) => {
+  const handleSubmit = async (data: UpsertBandRequest) => {
     try {
       await createBand(data);
-      router.push('/bands');
-      window.location.reload();
+      router.push(`/${language}/bands`);
     } catch (error) {
       console.error('Error creating band:', error);
       throw error;

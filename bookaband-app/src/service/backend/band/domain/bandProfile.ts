@@ -1,85 +1,95 @@
-export interface BandMember {
-  artisticName: string;
-  instrument: string;
-  experience: string;
-  profileLink?: string;
+import { BandSize } from './bandSize';
+
+export interface ArtistReview {
+  id: string;
+  rating: number;
+  comment: string;
+  reviewer: {
+    name: string;
+    imageUrl?: string;
+  };
+  date: string;
 }
 
-export interface TechnicalRider {
-  soundSystem: string[];
-  microphones: string[];
-  backline: string[];
-  lighting: string[];
-  otherRequirements: string[];
+export interface Event {
+  id: string;
+  name: string;
+  date: string;
+  eventTypeId: string;
+  city?: string;
+  country?: string;
+  venue?: string;
+  isPublic?: boolean;
+}
+
+export interface Media {
+  id: string;
+  url: string;
+  type: string;
+}
+
+export interface SocialLinks {
+  id: string;
+  platform: string;
+  url: string;
 }
 
 export interface HospitalityRider {
-  accommodation: string[];
-  catering: string[];
-  beverages: string[];
-  specialRequirements: string[];
+  accommodation: string;
+  catering: string;
+  beverages: string;
+  specialRequirements: string;
+}
+
+export interface TechnicalRider {
+  soundSystem: string;
+  microphones: string;
+  backline: string;
+  lighting: string;
+  otherRequirements: string;
 }
 
 export interface PerformanceArea {
   regions: string[];
-  travelPreferences: string[];
-  restrictions: string[];
+  travelPreferences: string;
+  restrictions: string;
 }
 
-export interface Rate {
-  eventType: string;
-  amount: number;
-  currency: string;
-  conditions: string;
-}
-
-export interface MultimediaContent {
-  images: string[];
-  videos: string[];
-  spotifyLink?: string;
-  youtubeLink?: string;
-  multimediaFiles?: File[];
-}
-
-export interface SocialMedia {
-  instagram?: string;
-  facebook?: string;
-  website?: string;
-  twitter?: string;
-  tiktok?: string;
-}
-
-export interface LegalDocument {
-  type: 'CONTRACT' | 'INSURANCE' | 'TAX';
-  fileUrl: string;
-  fileName: string;
-  uploadDate: Date;
+export interface WeeklyAvailability {
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 }
 
 export interface BandProfile {
   id: string;
-  name: string;
+  bandId: string;
+  bandName: string;
+  musicalStyleIds: string[];
+  membersId: string[];
+  bookingDates: string[];
   location: string;
-  description: string;
-  musicalStyles: string[];
-  members: BandMember[];
-  technicalRider: TechnicalRider;
-  hospitalityRider: HospitalityRider;
-  performanceArea: PerformanceArea;
-  weeklyAvailability: {
-    monday: boolean;
-    tuesday: boolean;
-    wednesday: boolean;
-    thursday: boolean;
-    friday: boolean;
-    saturday: boolean;
-    sunday: boolean;
-  };
-  rates: Rate[];
-  multimediaContent: MultimediaContent;
-  socialMedia: SocialMedia;
-  legalDocuments: LegalDocument[];
-  createdAt: Date;
-  updatedAt: Date;
+  featured: boolean;
+  bandSize: BandSize;
+  eventTypeIds: string[];
+  reviewCount: number;
+  createdDate: Date;
+  price?: number;
+  imageUrl?: string;
+  rating?: number;
+  bio?: string;
+  followers?: number;
+  following?: number;
+  weeklyAvailability: WeeklyAvailability;
+  hospitalityRider?: HospitalityRider;
+  technicalRider?: TechnicalRider;
+  performanceArea?: PerformanceArea;
+  reviews?: ArtistReview[];
+  media?: Media[];
+  events?: Event[];
+  socialLinks?: SocialLinks[];
 }
- 

@@ -151,7 +151,7 @@
     "bandImage": "Imagen de la banda",
     "availability": {
       "title": "Disponibilidad semanal",
-      "description": "Selecciona los días de la semana en los que tu banda está disponible para actuar",
+      "subtitle": "Selecciona cuándo estás disponible para actuar",
       "error": "Por favor, selecciona al menos un día de disponibilidad",
       "days": {
         "monday": "Lunes",
@@ -201,7 +201,20 @@
       "experience": "Experiencia",
       "experiencePlaceholder": "Describe tu experiencia",
       "profileLink": "Enlace de perfil",
-      "profileLinkPlaceholder": "Introduce enlace de perfil"
+      "profileLinkPlaceholder": "Introduce enlace de perfil",
+      "price": "Precio por actuación",
+      "pricePlaceholder": "Introduce tu precio por actuación",
+      "bandSize": "Tamaño de la banda",
+      "bandSizePlaceholder": "Selecciona el tamaño de la banda",
+      "bandImage": "Imagen de la banda",
+      "bandImagePlaceholder": "Sube la imagen de tu banda",
+      "bandImageDescription": "Sube una imagen de alta calidad de tu banda. Tamaño máximo de archivo: 10MB",
+      "bandSizes": {
+        "SOLO": "Artista solista",
+        "DUO": "Dúo",
+        "TRIO": "Trío",
+        "BAND": "Banda"
+      }
     },
     "technicalRider": {
       "title": "Rider técnico",
@@ -229,14 +242,14 @@
     },
     "hospitalityRider": {
       "title": "Rider de hospitalidad",
-      "subtitle": "Define tus necesidades de hospitalidad",
+      "subtitle": "Especifica tus requisitos de hospitalidad",
       "accommodation": {
         "label": "Alojamiento",
         "placeholder": "Describe tus requisitos de alojamiento"
       },
       "catering": {
         "label": "Catering",
-        "placeholder": "Lista tus requisitos de catering"
+        "placeholder": "Describe tus requisitos de catering"
       },
       "beverages": {
         "label": "Bebidas",
@@ -249,10 +262,10 @@
     },
     "performanceArea": {
       "title": "Área de actuación",
-      "subtitle": "Establece tus preferencias de actuación",
+      "subtitle": "Especifica dónde puedes actuar",
       "regions": {
         "label": "Regiones",
-        "placeholder": "Lista las regiones donde actúas"
+        "placeholder": "Lista las regiones donde puedes actuar"
       },
       "travelPreferences": {
         "label": "Preferencias de viaje",
@@ -260,7 +273,7 @@
       },
       "restrictions": {
         "label": "Restricciones",
-        "placeholder": "Lista cualquier restricción de actuación"
+        "placeholder": "Lista cualquier restricción de viaje o actuación"
       }
     }
   },
@@ -306,6 +319,10 @@
     "beverages": "Por favor, especifica tus requisitos de bebidas",
     "regions": "Por favor, especifica las regiones donde actúas",
     "travelPreferences": "Por favor, especifica tus preferencias de viaje",
+    "restrictions": "Por favor, especifica cualquier restricción",
+    "socialMedia": "Por favor, proporciona al menos un enlace a redes sociales",
+    "mediaUpload": "Por favor, sube al menos un archivo multimedia",
+    "availability": "Por favor, selecciona al menos un día disponible",
     "bandName": "Por favor, introduce un nombre de banda",
     "genre": "Por favor, selecciona un género",
     "description": "Por favor, proporciona una descripción",

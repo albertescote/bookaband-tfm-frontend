@@ -25,7 +25,7 @@ export default async function Page({
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)] -m-6">
+    <div className="-m-6 h-[calc(100vh-4rem)]">
       <Chat language={lng} chatId={chatId} initialChat={initialChat} />
     </div>
   );

@@ -151,7 +151,7 @@
     "bandImage": "Imatge de la banda",
     "availability": {
       "title": "Disponibilitat setmanal",
-      "description": "Selecciona els dies de la setmana en què la teva banda està disponible per actuar",
+      "subtitle": "Selecciona quan estàs disponible per actuar",
       "error": "Si us plau, selecciona almenys un dia de disponibilitat",
       "days": {
         "monday": "Dilluns",
@@ -201,7 +201,20 @@
       "experience": "Experiència",
       "experiencePlaceholder": "Descriu la teva experiència",
       "profileLink": "Enllaç de perfil",
-      "profileLinkPlaceholder": "Introdueix enllaç de perfil"
+      "profileLinkPlaceholder": "Introdueix enllaç de perfil",
+      "price": "Preu per actuació",
+      "pricePlaceholder": "Introdueix el teu preu per actuació",
+      "bandSize": "Mida de la banda",
+      "bandSizePlaceholder": "Selecciona la mida de la banda",
+      "bandImage": "Imatge de la banda",
+      "bandImagePlaceholder": "Puja la imatge de la teva banda",
+      "bandImageDescription": "Puja una imatge d'alta qualitat de la teva banda. Mida màxima d'arxiu: 10MB",
+      "bandSizes": {
+        "SOLO": "Artista solista",
+        "DUO": "Dúo",
+        "TRIO": "Trío",
+        "BAND": "Banda"
+      }
     },
     "technicalRider": {
       "title": "Rider tècnic",
@@ -229,14 +242,14 @@
     },
     "hospitalityRider": {
       "title": "Rider d'hospitalitat",
-      "subtitle": "Defineix les teves necessitats d'hospitalitat",
+      "subtitle": "Especifica els teus requisits d'hospitalitat",
       "accommodation": {
         "label": "Allotjament",
         "placeholder": "Descriu els teus requisits d'allotjament"
       },
       "catering": {
         "label": "Catering",
-        "placeholder": "Llista els teus requisits de catering"
+        "placeholder": "Descriu els teus requisits de catering"
       },
       "beverages": {
         "label": "Begudes",
@@ -249,10 +262,10 @@
     },
     "performanceArea": {
       "title": "Àrea d'actuació",
-      "subtitle": "Estableix les teves preferències d'actuació",
+      "subtitle": "Especifica on pots actuar",
       "regions": {
         "label": "Regions",
-        "placeholder": "Llista les regions on actues"
+        "placeholder": "Llista les regions on pots actuar"
       },
       "travelPreferences": {
         "label": "Preferències de viatge",
@@ -260,7 +273,7 @@
       },
       "restrictions": {
         "label": "Restriccions",
-        "placeholder": "Llista qualsevol restricció d'actuació"
+        "placeholder": "Llista qualsevol restricció de viatge o actuació"
       }
     }
   },
@@ -306,6 +319,10 @@
     "beverages": "Si us plau, especifica els teus requisits de begudes",
     "regions": "Si us plau, especifica les regions on actues",
     "travelPreferences": "Si us plau, especifica les teves preferències de viatge",
+    "restrictions": "Si us plau, especifica qualsevol restricció",
+    "socialMedia": "Si us plau, proporciona almenys un enllaç a xarxes socials",
+    "mediaUpload": "Si us plau, puja almenys un arxiu multimèdia",
+    "availability": "Si us plau, selecciona almenys un dia disponible",
     "bandName": "Si us plau, introdueix un nom de banda",
     "genre": "Si us plau, selecciona un gènere",
     "description": "Si us plau, proporciona una descripció",

@@ -1,15 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { BandProfile } from '@/service/backend/band/domain/bandProfile';
 import { Input } from '@/components/ui/input';
 import { FileUpload } from '@/components/ui/file-upload';
 import { motion } from 'framer-motion';
 import { Facebook, Globe, Instagram, Twitter, Youtube } from 'lucide-react';
 import { AiOutlineSpotify, AiOutlineTikTok } from 'react-icons/ai';
+import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 
 interface MultimediaStepProps {
-  formData: Partial<BandProfile>;
-  onFormDataChange: (data: Partial<BandProfile>) => void;
+  formData: Partial<UpsertBandRequest>;
+  onFormDataChange: (data: Partial<UpsertBandRequest>) => void;
 }
 
 export default function MultimediaStep({
@@ -22,26 +22,25 @@ export default function MultimediaStep({
     const { name, value } = e.target;
     onFormDataChange({
       ...formData,
-      socialMedia: {
-        ...formData.socialMedia,
-        [name]: value,
-      },
+      socialLinks: [
+        ...(formData.socialLinks || []).filter(
+          (link) => link.platform !== name,
+        ),
+        { platform: name, url: value },
+      ],
     });
   };
 
   const handleMultimediaUpload = (files: File[]) => {
     onFormDataChange({
       ...formData,
-      multimediaContent: {
-        images: formData.multimediaContent?.images || [],
-        videos: formData.multimediaContent?.videos || [],
-        spotifyLink: formData.multimediaContent?.spotifyLink,
-        youtubeLink: formData.multimediaContent?.youtubeLink,
-        multimediaFiles: [
-          ...(formData.multimediaContent?.multimediaFiles || []),
-          ...files,
-        ],
-      },
+      media: [
+        ...(formData.media || []),
+        ...files.map((file) => ({
+          url: URL.createObjectURL(file),
+          type: file.type.startsWith('image/') ? 'image' : 'video',
+        })),
+      ],
     });
   };
 
@@ -88,7 +87,11 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="instagram"
-                value={formData.socialMedia?.instagram || ''}
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'instagram',
+                  )?.url || ''
+                }
                 onChange={handleInputChange}
                 placeholder={t('form.multimedia.instagramPlaceholder')}
                 className="pl-10"
@@ -101,7 +104,11 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="facebook"
-                value={formData.socialMedia?.facebook || ''}
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'facebook',
+                  )?.url || ''
+                }
                 onChange={handleInputChange}
                 placeholder={t('form.multimedia.facebookPlaceholder')}
                 className="pl-10"
@@ -114,7 +121,11 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="twitter"
-                value={formData.socialMedia?.twitter || ''}
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'twitter',
+                  )?.url || ''
+                }
                 onChange={handleInputChange}
                 placeholder={t('form.multimedia.twitterPlaceholder')}
                 className="pl-10"
@@ -127,7 +138,11 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="tiktok"
-                value={formData.socialMedia?.tiktok || ''}
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'tiktok',
+                  )?.url || ''
+                }
                 onChange={handleInputChange}
                 placeholder={t('form.multimedia.tiktokPlaceholder')}
                 className="pl-10"
@@ -140,7 +155,11 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="website"
-                value={formData.socialMedia?.website || ''}
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'website',
+                  )?.url || ''
+                }
                 onChange={handleInputChange}
                 placeholder={t('form.multimedia.websitePlaceholder')}
                 className="pl-10"
@@ -153,20 +172,12 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="spotify"
-                value={formData.multimediaContent?.spotifyLink || ''}
-                onChange={(e) =>
-                  onFormDataChange({
-                    ...formData,
-                    multimediaContent: {
-                      images: formData.multimediaContent?.images || [],
-                      videos: formData.multimediaContent?.videos || [],
-                      spotifyLink: e.target.value,
-                      youtubeLink: formData.multimediaContent?.youtubeLink,
-                      multimediaFiles:
-                        formData.multimediaContent?.multimediaFiles || [],
-                    },
-                  })
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'spotify',
+                  )?.url || ''
                 }
+                onChange={handleInputChange}
                 placeholder={t('form.multimedia.spotifyPlaceholder')}
                 className="pl-10"
               />
@@ -178,20 +189,12 @@ export default function MultimediaStep({
               </div>
               <Input
                 name="youtube"
-                value={formData.multimediaContent?.youtubeLink || ''}
-                onChange={(e) =>
-                  onFormDataChange({
-                    ...formData,
-                    multimediaContent: {
-                      images: formData.multimediaContent?.images || [],
-                      videos: formData.multimediaContent?.videos || [],
-                      spotifyLink: formData.multimediaContent?.spotifyLink,
-                      youtubeLink: e.target.value,
-                      multimediaFiles:
-                        formData.multimediaContent?.multimediaFiles || [],
-                    },
-                  })
+                value={
+                  formData.socialLinks?.find(
+                    (link) => link.platform === 'youtube',
+                  )?.url || ''
                 }
+                onChange={handleInputChange}
                 placeholder={t('form.multimedia.youtubePlaceholder')}
                 className="pl-10"
               />
@@ -214,26 +217,23 @@ export default function MultimediaStep({
             </p>
           </div>
 
-          {formData.multimediaContent?.multimediaFiles &&
-            formData.multimediaContent.multimediaFiles.length > 0 && (
-              <div className="mt-4">
-                <h4 className="mb-2 text-sm font-medium">
-                  {t('form.multimedia.uploadedFiles')}
-                </h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {formData.multimediaContent.multimediaFiles.map(
-                    (file, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center space-x-2 rounded-lg bg-gray-50 p-2"
-                      >
-                        <span className="truncate text-sm">{file.name}</span>
-                      </div>
-                    ),
-                  )}
-                </div>
+          {formData.media && formData.media.length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-2 text-sm font-medium">
+                {t('form.multimedia.uploadedFiles')}
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {formData.media.map((media, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-2 rounded-lg bg-gray-50 p-2"
+                  >
+                    <span className="truncate text-sm">{media.url}</span>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.div>

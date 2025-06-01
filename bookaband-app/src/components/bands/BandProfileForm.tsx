@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useParams } from 'next/navigation';
-import { BandProfile } from '@/service/backend/band/domain/bandProfile';
 import BandCreationLayout from './BandCreationLayout';
 import BasicInfoStep from './steps/BasicInfoStep';
 import TechnicalRiderStep from './steps/TechnicalRiderStep';
@@ -11,9 +10,11 @@ import HospitalityRiderStep from './steps/HospitalityRiderStep';
 import PerformanceAreaStep from './steps/PerformanceAreaStep';
 import MultimediaStep from './steps/MultimediaStep';
 import { AvailabilityStep } from '@/components/bands/steps/AvailabilityStep';
+import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
+import { BandSize } from '@/service/backend/band/domain/bandSize';
 
 interface BandProfileFormProps {
-  onSubmit: (data: BandProfile) => Promise<void>;
+  onSubmit: (data: UpsertBandRequest) => Promise<void>;
 }
 
 const TOTAL_STEPS = 6;
@@ -33,7 +34,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<BandProfile>>(() => {
+  const [formData, setFormData] = useState<Partial<UpsertBandRequest>>(() => {
     if (typeof window !== 'undefined') {
       const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
@@ -100,33 +101,36 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
 
   const validateStep = (
     step: number,
-    formData: Partial<BandProfile>,
+    formData: Partial<UpsertBandRequest>,
   ): boolean => {
     switch (step) {
       case 1: // Basic Info
         return !!(
           formData.name?.trim() &&
           formData.location?.trim() &&
-          formData.description?.trim() &&
-          (formData.musicalStyles?.length ?? 0) > 0
+          formData.bio?.trim() &&
+          (formData.musicalStyleIds?.length ?? 0) > 0 &&
+          formData.price !== undefined &&
+          formData.bandSize &&
+          Object.values(BandSize).includes(formData.bandSize as BandSize)
         );
       case 2: // Technical Rider
-        return (
-          (formData.technicalRider?.soundSystem?.length ?? 0) > 0 &&
-          (formData.technicalRider?.microphones?.length ?? 0) > 0 &&
-          (formData.technicalRider?.backline?.length ?? 0) > 0 &&
-          (formData.technicalRider?.lighting?.length ?? 0) > 0
+        return !!(
+          formData.technicalRider?.soundSystem?.trim() &&
+          formData.technicalRider?.microphones?.trim() &&
+          formData.technicalRider?.backline?.trim() &&
+          formData.technicalRider?.lighting?.trim()
         );
       case 3: // Hospitality Rider
-        return (
-          (formData.hospitalityRider?.accommodation?.length ?? 0) > 0 &&
-          (formData.hospitalityRider?.catering?.length ?? 0) > 0 &&
-          (formData.hospitalityRider?.beverages?.length ?? 0) > 0
+        return !!(
+          formData.hospitalityRider?.accommodation?.trim() &&
+          formData.hospitalityRider?.catering?.trim() &&
+          formData.hospitalityRider?.beverages?.trim()
         );
       case 4: // Performance Area
         return (
           (formData.performanceArea?.regions?.length ?? 0) > 0 &&
-          (formData.performanceArea?.travelPreferences?.length ?? 0) > 0
+          !!formData.performanceArea?.travelPreferences?.trim()
         );
       case 5: // Availability
         return Object.values(formData.weeklyAvailability || {}).some(
@@ -152,31 +156,16 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       setError(null);
 
       try {
-        const data: BandProfile = {
-          id: '', // Will be set by the backend
+        const data: UpsertBandRequest = {
           name: formData.name || '',
+          musicalStyleIds: formData.musicalStyleIds || [],
+          price: formData.price || 0,
           location: formData.location || '',
-          description: formData.description || '',
-          musicalStyles: formData.musicalStyles || [],
-          members: [], // TODO: Implement member management
-          technicalRider: formData.technicalRider || {
-            soundSystem: [],
-            microphones: [],
-            backline: [],
-            lighting: [],
-            otherRequirements: [],
-          },
-          hospitalityRider: formData.hospitalityRider || {
-            accommodation: [],
-            catering: [],
-            beverages: [],
-            specialRequirements: [],
-          },
-          performanceArea: formData.performanceArea || {
-            regions: [],
-            travelPreferences: [],
-            restrictions: [],
-          },
+          bandSize: (formData.bandSize as BandSize) || BandSize.BAND,
+          eventTypeIds: formData.eventTypeIds || [],
+          bio: formData.bio || '',
+          imageUrl: formData.imageUrl,
+          visible: formData.visible ?? true,
           weeklyAvailability: formData.weeklyAvailability || {
             monday: false,
             tuesday: false,
@@ -186,24 +175,26 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
             saturday: false,
             sunday: false,
           },
-          rates: [], // TODO: Implement rates management
-          multimediaContent: formData.multimediaContent || {
-            images: [],
-            videos: [],
-            spotifyLink: '',
-            youtubeLink: '',
-            multimediaFiles: [],
+          hospitalityRider: formData.hospitalityRider || {
+            accommodation: '',
+            catering: '',
+            beverages: '',
+            specialRequirements: '',
           },
-          socialMedia: formData.socialMedia || {
-            instagram: '',
-            facebook: '',
-            twitter: '',
-            tiktok: '',
-            website: '',
+          technicalRider: formData.technicalRider || {
+            soundSystem: '',
+            microphones: '',
+            backline: '',
+            lighting: '',
+            otherRequirements: '',
           },
-          legalDocuments: [], // TODO: Implement document management
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          performanceArea: formData.performanceArea || {
+            regions: [],
+            travelPreferences: '',
+            restrictions: '',
+          },
+          media: formData.media || [],
+          socialLinks: formData.socialLinks || [],
         };
 
         await onSubmit(data);
@@ -227,7 +218,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     }
   };
 
-  const handleFormDataChange = (data: Partial<BandProfile>) => {
+  const handleFormDataChange = (data: Partial<UpsertBandRequest>) => {
     setFormData((prev) => ({ ...prev, ...data }));
     // Clear step error when data changes
     setStepErrors((prev) => ({ ...prev, [currentStep]: false }));
@@ -303,17 +294,16 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       onNext={handleNext}
       onBack={handleBack}
       onStepClick={handleStepClick}
-      isSubmitting={isSubmitting}
       onCancel={clearFormState}
+      isSubmitting={isSubmitting}
     >
       {error && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-          {error}
-        </div>
-      )}
-      {stepErrors[currentStep] && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-          {t('validation.requiredFields')}
+        <div className="mb-4 rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">{error}</h3>
+            </div>
+          </div>
         </div>
       )}
       {renderStep()}

@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { BandProfile } from '@/service/backend/band/domain/bandProfile';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 
 interface AvailabilityStepProps {
-  formData: Partial<BandProfile>;
-  onUpdate: (data: Partial<BandProfile>) => void;
+  formData: Partial<UpsertBandRequest>;
+  onUpdate: (data: Partial<UpsertBandRequest>) => void;
   onError: (error: boolean) => void;
 }
 

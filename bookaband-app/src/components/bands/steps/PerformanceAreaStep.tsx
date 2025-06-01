@@ -1,14 +1,15 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useParams } from 'next/navigation';
-import {
-  BandProfile,
-  PerformanceArea,
-} from '@/service/backend/band/domain/bandProfile';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
+import { PerformanceArea } from '@/service/backend/band/domain/bandProfile';
+import { useState } from 'react';
+import { X } from 'lucide-react';
 
 interface PerformanceAreaStepProps {
-  formData: Partial<BandProfile>;
-  onFormDataChange: (data: Partial<BandProfile>) => void;
+  formData: Partial<UpsertBandRequest>;
+  onFormDataChange: (data: Partial<UpsertBandRequest>) => void;
   hasError: boolean;
 }
 
@@ -20,25 +21,61 @@ export default function PerformanceAreaStep({
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
+  const [newRegion, setNewRegion] = useState('');
 
-  const handleInputChange = (field: keyof PerformanceArea, value: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    const performanceArea: PerformanceArea = {
+      regions: formData.performanceArea?.regions || [],
+      travelPreferences:
+        name === 'travelPreferences'
+          ? value
+          : formData.performanceArea?.travelPreferences || '',
+      restrictions:
+        name === 'restrictions'
+          ? value
+          : formData.performanceArea?.restrictions || '',
+    };
     onFormDataChange({
       ...formData,
-      performanceArea: {
-        regions:
-          field === 'regions'
-            ? value.split('\n').filter(Boolean)
-            : formData.performanceArea?.regions || [],
-        travelPreferences:
-          field === 'travelPreferences'
-            ? value.split('\n').filter(Boolean)
-            : formData.performanceArea?.travelPreferences || [],
-        restrictions:
-          field === 'restrictions'
-            ? value.split('\n').filter(Boolean)
-            : formData.performanceArea?.restrictions || [],
-      },
+      performanceArea,
     });
+  };
+
+  const handleAddRegion = () => {
+    if (newRegion.trim()) {
+      const currentRegions = formData.performanceArea?.regions || [];
+      const performanceArea: PerformanceArea = {
+        regions: [...currentRegions, newRegion.trim()],
+        travelPreferences: formData.performanceArea?.travelPreferences || '',
+        restrictions: formData.performanceArea?.restrictions || '',
+      };
+      onFormDataChange({
+        ...formData,
+        performanceArea,
+      });
+      setNewRegion('');
+    }
+  };
+
+  const handleRemoveRegion = (index: number) => {
+    const currentRegions = formData.performanceArea?.regions || [];
+    const performanceArea: PerformanceArea = {
+      regions: currentRegions.filter((_, i) => i !== index),
+      travelPreferences: formData.performanceArea?.travelPreferences || '',
+      restrictions: formData.performanceArea?.restrictions || '',
+    };
+    onFormDataChange({
+      ...formData,
+      performanceArea,
+    });
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddRegion();
+    }
   };
 
   return (
@@ -51,30 +88,60 @@ export default function PerformanceAreaStep({
           {t('form.performanceArea.subtitle')}
         </p>
       </div>
+
       <div>
         <label htmlFor="regions" className="text-sm font-medium text-gray-700">
           {t('form.performanceArea.regions.label')} *
         </label>
-        <Textarea
-          id="regions"
-          value={formData.performanceArea?.regions?.join('\n') || ''}
-          onChange={(e) => handleInputChange('regions', e.target.value)}
-          placeholder={t('form.performanceArea.regions.placeholder')}
-          className={
-            hasError &&
+        <div className="space-y-2">
+          <div className="flex gap-2">
+            <Input
+              id="regions"
+              value={newRegion}
+              onChange={(e) => setNewRegion(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={t('form.performanceArea.regions.placeholder')}
+              className={
+                hasError &&
+                (!formData.performanceArea?.regions ||
+                  formData.performanceArea.regions.length === 0)
+                  ? 'border-red-500'
+                  : ''
+              }
+            />
+            <button
+              type="button"
+              onClick={handleAddRegion}
+              className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium text-white"
+            >
+              {t('form.performanceArea.regions.add')}
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {formData.performanceArea?.regions?.map((region, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm"
+              >
+                <span>{region}</span>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveRegion(index)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          {hasError &&
             (!formData.performanceArea?.regions ||
-              formData.performanceArea.regions.length === 0)
-              ? 'border-red-500'
-              : ''
-          }
-        />
-        {hasError &&
-          (!formData.performanceArea?.regions ||
-            formData.performanceArea.regions.length === 0) && (
-            <p className="mt-1 text-sm text-red-500">
-              {t('validation.required')}
-            </p>
-          )}
+              formData.performanceArea.regions.length === 0) && (
+              <p className="mt-1 text-sm text-red-500">
+                {t('validation.required')}
+              </p>
+            )}
+        </div>
       </div>
 
       <div>
@@ -86,26 +153,21 @@ export default function PerformanceAreaStep({
         </label>
         <Textarea
           id="travelPreferences"
-          value={formData.performanceArea?.travelPreferences?.join('\n') || ''}
-          onChange={(e) =>
-            handleInputChange('travelPreferences', e.target.value)
-          }
+          name="travelPreferences"
+          value={formData.performanceArea?.travelPreferences || ''}
+          onChange={handleInputChange}
           placeholder={t('form.performanceArea.travelPreferences.placeholder')}
           className={
-            hasError &&
-            (!formData.performanceArea?.travelPreferences ||
-              formData.performanceArea.travelPreferences.length === 0)
+            hasError && !formData.performanceArea?.travelPreferences
               ? 'border-red-500'
               : ''
           }
         />
-        {hasError &&
-          (!formData.performanceArea?.travelPreferences ||
-            formData.performanceArea.travelPreferences.length === 0) && (
-            <p className="mt-1 text-sm text-red-500">
-              {t('validation.required')}
-            </p>
-          )}
+        {hasError && !formData.performanceArea?.travelPreferences && (
+          <p className="mt-1 text-sm text-red-500">
+            {t('validation.required')}
+          </p>
+        )}
       </div>
 
       <div>
@@ -117,8 +179,9 @@ export default function PerformanceAreaStep({
         </label>
         <Textarea
           id="restrictions"
-          value={formData.performanceArea?.restrictions?.join('\n') || ''}
-          onChange={(e) => handleInputChange('restrictions', e.target.value)}
+          name="restrictions"
+          value={formData.performanceArea?.restrictions || ''}
+          onChange={handleInputChange}
           placeholder={t('form.performanceArea.restrictions.placeholder')}
         />
       </div>

@@ -1,14 +1,12 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useParams } from 'next/navigation';
-import {
-  BandProfile,
-  HospitalityRider,
-} from '@/service/backend/band/domain/bandProfile';
 import { Textarea } from '@/components/ui/textarea';
+import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
+import { HospitalityRider } from '@/service/backend/band/domain/bandProfile';
 
 interface HospitalityRiderStepProps {
-  formData: Partial<BandProfile>;
-  onFormDataChange: (data: Partial<BandProfile>) => void;
+  formData: Partial<UpsertBandRequest>;
+  onFormDataChange: (data: Partial<UpsertBandRequest>) => void;
   hasError: boolean;
 }
 
@@ -21,27 +19,27 @@ export default function HospitalityRiderStep({
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
 
-  const handleInputChange = (field: keyof HospitalityRider, value: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    const hospitalityRider: HospitalityRider = {
+      accommodation:
+        name === 'accommodation'
+          ? value
+          : formData.hospitalityRider?.accommodation || '',
+      catering:
+        name === 'catering' ? value : formData.hospitalityRider?.catering || '',
+      beverages:
+        name === 'beverages'
+          ? value
+          : formData.hospitalityRider?.beverages || '',
+      specialRequirements:
+        name === 'specialRequirements'
+          ? value
+          : formData.hospitalityRider?.specialRequirements || '',
+    };
     onFormDataChange({
       ...formData,
-      hospitalityRider: {
-        accommodation:
-          field === 'accommodation'
-            ? value.split('\n').filter(Boolean)
-            : formData.hospitalityRider?.accommodation || [],
-        catering:
-          field === 'catering'
-            ? value.split('\n').filter(Boolean)
-            : formData.hospitalityRider?.catering || [],
-        beverages:
-          field === 'beverages'
-            ? value.split('\n').filter(Boolean)
-            : formData.hospitalityRider?.beverages || [],
-        specialRequirements:
-          field === 'specialRequirements'
-            ? value.split('\n').filter(Boolean)
-            : formData.hospitalityRider?.specialRequirements || [],
-      },
+      hospitalityRider,
     });
   };
 
@@ -55,6 +53,7 @@ export default function HospitalityRiderStep({
           {t('form.hospitalityRider.subtitle')}
         </p>
       </div>
+
       <div>
         <label
           htmlFor="accommodation"
@@ -64,24 +63,21 @@ export default function HospitalityRiderStep({
         </label>
         <Textarea
           id="accommodation"
-          value={formData.hospitalityRider?.accommodation?.join('\n') || ''}
-          onChange={(e) => handleInputChange('accommodation', e.target.value)}
+          name="accommodation"
+          value={formData.hospitalityRider?.accommodation || ''}
+          onChange={handleInputChange}
           placeholder={t('form.hospitalityRider.accommodation.placeholder')}
           className={
-            hasError &&
-            (!formData.hospitalityRider?.accommodation ||
-              formData.hospitalityRider.accommodation.length === 0)
+            hasError && !formData.hospitalityRider?.accommodation
               ? 'border-red-500'
               : ''
           }
         />
-        {hasError &&
-          (!formData.hospitalityRider?.accommodation ||
-            formData.hospitalityRider.accommodation.length === 0) && (
-            <p className="mt-1 text-sm text-red-500">
-              {t('validation.required')}
-            </p>
-          )}
+        {hasError && !formData.hospitalityRider?.accommodation && (
+          <p className="mt-1 text-sm text-red-500">
+            {t('validation.required')}
+          </p>
+        )}
       </div>
 
       <div>
@@ -90,24 +86,21 @@ export default function HospitalityRiderStep({
         </label>
         <Textarea
           id="catering"
-          value={formData.hospitalityRider?.catering?.join('\n') || ''}
-          onChange={(e) => handleInputChange('catering', e.target.value)}
+          name="catering"
+          value={formData.hospitalityRider?.catering || ''}
+          onChange={handleInputChange}
           placeholder={t('form.hospitalityRider.catering.placeholder')}
           className={
-            hasError &&
-            (!formData.hospitalityRider?.catering ||
-              formData.hospitalityRider.catering.length === 0)
+            hasError && !formData.hospitalityRider?.catering
               ? 'border-red-500'
               : ''
           }
         />
-        {hasError &&
-          (!formData.hospitalityRider?.catering ||
-            formData.hospitalityRider.catering.length === 0) && (
-            <p className="mt-1 text-sm text-red-500">
-              {t('validation.required')}
-            </p>
-          )}
+        {hasError && !formData.hospitalityRider?.catering && (
+          <p className="mt-1 text-sm text-red-500">
+            {t('validation.required')}
+          </p>
+        )}
       </div>
 
       <div>
@@ -119,24 +112,21 @@ export default function HospitalityRiderStep({
         </label>
         <Textarea
           id="beverages"
-          value={formData.hospitalityRider?.beverages?.join('\n') || ''}
-          onChange={(e) => handleInputChange('beverages', e.target.value)}
+          name="beverages"
+          value={formData.hospitalityRider?.beverages || ''}
+          onChange={handleInputChange}
           placeholder={t('form.hospitalityRider.beverages.placeholder')}
           className={
-            hasError &&
-            (!formData.hospitalityRider?.beverages ||
-              formData.hospitalityRider.beverages.length === 0)
+            hasError && !formData.hospitalityRider?.beverages
               ? 'border-red-500'
               : ''
           }
         />
-        {hasError &&
-          (!formData.hospitalityRider?.beverages ||
-            formData.hospitalityRider.beverages.length === 0) && (
-            <p className="mt-1 text-sm text-red-500">
-              {t('validation.required')}
-            </p>
-          )}
+        {hasError && !formData.hospitalityRider?.beverages && (
+          <p className="mt-1 text-sm text-red-500">
+            {t('validation.required')}
+          </p>
+        )}
       </div>
 
       <div>
@@ -148,12 +138,9 @@ export default function HospitalityRiderStep({
         </label>
         <Textarea
           id="specialRequirements"
-          value={
-            formData.hospitalityRider?.specialRequirements?.join('\n') || ''
-          }
-          onChange={(e) =>
-            handleInputChange('specialRequirements', e.target.value)
-          }
+          name="specialRequirements"
+          value={formData.hospitalityRider?.specialRequirements || ''}
+          onChange={handleInputChange}
           placeholder={t(
             'form.hospitalityRider.specialRequirements.placeholder',
           )}
