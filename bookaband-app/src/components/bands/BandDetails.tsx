@@ -51,19 +51,21 @@ export default function BandDetails({
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
-  const handleDeleteBand = async () => {
-    setIsDeleting(true);
+  const handleDelete = async () => {
     try {
+      setIsDeleting(true);
       await deleteBand(bandId);
-      toast.success(t('bandDeleted'));
-      router.push('/bands');
-      window.location.reload();
-    } catch (err) {
-      console.error('Error deleting band:', err);
-      toast.error(t('common:errorDeleting'));
-      setShowDeleteConfirm(false);
+      toast.success(t('successDeleting'));
+      router.refresh();
+      setTimeout(() => {
+        router.push(`/${language}/bands`);
+      }, 100);
+    } catch (error) {
+      console.error('Error deleting band:', error);
+      toast.error(t('errorDeleting'));
     } finally {
       setIsDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -72,7 +74,7 @@ export default function BandDetails({
     try {
       await leaveBand(bandId);
       toast.success(t('successLeaving'));
-      router.push('/bands');
+      router.push(`/${language}/bands`);
       setTimeout(() => {
         window.location.reload();
       }, 100);
@@ -250,7 +252,7 @@ export default function BandDetails({
                   {t('cancel')}
                 </button>
                 <button
-                  onClick={handleDeleteBand}
+                  onClick={handleDelete}
                   disabled={isDeleting}
                   className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >

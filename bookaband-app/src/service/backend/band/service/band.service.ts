@@ -58,13 +58,13 @@ export async function updateBand(
   data: UpsertBandRequest,
 ): Promise<void> {
   return withTokenRefreshRetry<void>(() =>
-    authorizedAxiosInstance.put(`/bands/${id}`, data),
+    authorizedAxiosInstance.put(`/bands/${id}`, data).then((res) => res.data),
   );
 }
 
 export async function deleteBand(id: string): Promise<void> {
   return withTokenRefreshRetry<void>(() =>
-    authorizedAxiosInstance.delete(`/bands/${id}`),
+    authorizedAxiosInstance.delete(`/bands/${id}`).then((res) => res.data),
   );
 }
 
