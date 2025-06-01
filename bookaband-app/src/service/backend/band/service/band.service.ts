@@ -33,7 +33,7 @@ export interface UpsertBandRequest {
 
 export async function getBandById(id: string): Promise<Band | undefined> {
   return withTokenRefreshRetry<Band>(() =>
-    authorizedAxiosInstance.get(`/bands/${id}`),
+    authorizedAxiosInstance.get(`/bands/${id}`).then((res) => res.data),
   );
 }
 
