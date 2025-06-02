@@ -68,11 +68,11 @@ export default function Sidebar() {
           isMainSidebarCollapsed ? 'w-0' : 'w-64'
         }`}
       >
-        <div className="flex w-64 flex-col h-full">
+        <div className="flex h-full w-64 flex-col">
           <div className="p-6 text-2xl font-extrabold text-[#15b7b9]">
             BookaBand
           </div>
-          <nav className="flex-1 space-y-2 px-4 overflow-y-auto">
+          <nav className="flex-1 space-y-2 overflow-y-auto px-4">
             <NavItem href="/dashboard" label={t('dashboard')} />
             <NavItem href="/calendar" label={t('calendar')} />
             <NavItem
@@ -112,7 +112,7 @@ export default function Sidebar() {
 
       {/* Chat List Sidebar (only visible on chats page) */}
       {isChatsPage && (
-        <aside className="hidden w-64 flex-col border-r bg-white shadow-md md:flex h-screen">
+        <aside className="hidden h-screen w-64 flex-col border-r bg-white shadow-md md:flex">
           <div className="flex items-center justify-between border-b bg-gradient-to-r from-[#15b7b9] to-[#1fc8ca] px-4 pb-5 pt-4">
             <h2 className="text-lg font-semibold text-white">{t('chats')}</h2>
             <button

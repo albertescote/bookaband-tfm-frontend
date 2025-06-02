@@ -13,6 +13,8 @@
   "first-name": "First Name",
   "family-name": "Family Name",
   "email": "Email",
+  "bio": "Bio",
+  "bio-placeholder": "Tell us about yourself...",
   "profile-updated": "Profile updated successfully",
   "error-updating": "Error updating profile",
   "image-updated": "Profile image updated successfully",

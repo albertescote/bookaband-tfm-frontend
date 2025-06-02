@@ -32,7 +32,6 @@ export default function BasicInfoStep({
   const { t } = useTranslation(language, 'bands');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
-  const [isLoadingStyles, setIsLoadingStyles] = useState(true);
 
   useEffect(() => {
     const loadMusicalStyles = async () => {
@@ -43,12 +42,10 @@ export default function BasicInfoStep({
         }
       } catch (error) {
         console.error('Error loading musical styles:', error);
-      } finally {
-        setIsLoadingStyles(false);
       }
     };
 
-    loadMusicalStyles();
+    loadMusicalStyles().then();
   }, []);
 
   const validateField = (name: string, value: any) => {
@@ -279,7 +276,8 @@ export default function BasicInfoStep({
             placeholder={t('form.basicInfo.musicalStylesPlaceholder')}
             className={
               hasError &&
-              (!formData.musicalStyleIds || formData.musicalStyleIds.length === 0)
+              (!formData.musicalStyleIds ||
+                formData.musicalStyleIds.length === 0)
                 ? 'border-red-500'
                 : ''
             }

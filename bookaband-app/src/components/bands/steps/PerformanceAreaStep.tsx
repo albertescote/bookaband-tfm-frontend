@@ -164,7 +164,9 @@ export default function PerformanceAreaStep({
             name="travelPreferences"
             value={formData.performanceArea?.travelPreferences || ''}
             onChange={handleInputChange}
-            placeholder={t('form.performanceArea.travelPreferences.placeholder')}
+            placeholder={t(
+              'form.performanceArea.travelPreferences.placeholder',
+            )}
             className={
               hasError && !formData.performanceArea?.travelPreferences
                 ? 'border-red-500'

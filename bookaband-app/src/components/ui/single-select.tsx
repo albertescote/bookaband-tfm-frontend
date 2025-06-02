@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Check, ChevronsUpDown, X } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -62,7 +62,7 @@ export function SingleSelect({
             <div
               key={option.value}
               className={cn(
-                'relative flex cursor-pointer select-none items-center px-4 py-2 hover:bg-accent hover:text-accent-foreground',
+                'hover:bg-accent hover:text-accent-foreground relative flex cursor-pointer select-none items-center px-4 py-2',
                 value === option.value && 'bg-accent text-accent-foreground',
               )}
               onClick={() => {
@@ -74,9 +74,7 @@ export function SingleSelect({
                 {option.icon}
                 {option.label}
               </div>
-              {value === option.value && (
-                <Check className="ml-auto h-4 w-4" />
-              )}
+              {value === option.value && <Check className="ml-auto h-4 w-4" />}
             </div>
           ))}
         </div>

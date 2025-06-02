@@ -7,4 +7,5 @@ export interface User {
   emailVerified: boolean;
   bands?: string[];
   imageUrl?: string;
+  bio?: string;
 }

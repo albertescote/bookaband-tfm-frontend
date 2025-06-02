@@ -39,7 +39,7 @@ export function BasicInfoSection({
         <div className="relative">
           <label className="mb-2 block text-sm font-medium text-gray-700">
             {t('form.basicInfo.location')}
-            {isEditing && <span className="text-red-500 ml-1">*</span>}
+            {isEditing && <span className="ml-1 text-red-500">*</span>}
           </label>
           {isEditing ? (
             <motion.div
@@ -67,7 +67,7 @@ export function BasicInfoSection({
         <div className="relative">
           <label className="mb-2 block text-sm font-medium text-gray-700">
             {t('form.basicInfo.musicalStyles')}
-            {isEditing && <span className="text-red-500 ml-1">*</span>}
+            {isEditing && <span className="ml-1 text-red-500">*</span>}
           </label>
           {isEditing ? (
             <motion.div
@@ -110,7 +110,7 @@ export function BasicInfoSection({
         <div className="relative">
           <label className="mb-2 block text-sm font-medium text-gray-700">
             {t('form.basicInfo.bandSize')}
-            {isEditing && <span className="text-red-500 ml-1">*</span>}
+            {isEditing && <span className="ml-1 text-red-500">*</span>}
           </label>
           {isEditing ? (
             <motion.div

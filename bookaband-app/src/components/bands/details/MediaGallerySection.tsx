@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Maximize2, X, Upload } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Maximize2, Upload, X } from 'lucide-react';
 import { FileUpload } from '@/components/common/FileUpload';
-import { CollapsibleSection } from './CollapsibleSection';
 import { useState } from 'react';
+import { CollapsibleSection } from '@/components/bands/details/CollapsibleSection';
 
 interface Media {
   id: string;
@@ -23,7 +23,6 @@ interface MediaGallerySectionProps {
   isAdmin: boolean;
   onMediaUpload: (files: File[]) => void;
   onMediaDelete: (mediaId: string | undefined) => void;
-  onMediaSelect: (media: Media) => void;
   t: (key: string) => string;
 }
 
@@ -33,7 +32,6 @@ export function MediaGallerySection({
   isAdmin,
   onMediaUpload,
   onMediaDelete,
-  onMediaSelect,
   t,
 }: MediaGallerySectionProps) {
   const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
@@ -41,7 +39,6 @@ export function MediaGallerySection({
   const handleMediaClick = (mediaItem: Media | PendingMedia) => {
     if ('id' in mediaItem) {
       setSelectedMedia(mediaItem as Media);
-      onMediaSelect(mediaItem as Media);
     }
   };
 

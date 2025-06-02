@@ -13,6 +13,8 @@
   "first-name": "Nom",
   "family-name": "Cognom",
   "email": "Correu Electrònic",
+  "bio": "Biografia",
+  "bio-placeholder": "Explica'ns sobre tu...",
   "profile-updated": "Perfil actualitzat amb èxit",
   "error-updating": "Error en actualitzar el perfil",
   "image-updated": "Imatge de perfil actualitzada amb èxit",

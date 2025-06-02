@@ -13,6 +13,8 @@
   "first-name": "Nombre",
   "family-name": "Apellido",
   "email": "Correo Electrónico",
+  "bio": "Biografía",
+  "bio-placeholder": "Cuéntanos sobre ti...",
   "profile-updated": "Perfil actualizado con éxito",
   "error-updating": "Error al actualizar el perfil",
   "image-updated": "Imagen de perfil actualizada con éxito",

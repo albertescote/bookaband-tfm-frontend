@@ -32,7 +32,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
     return (
       <button
         onClick={handleCreateBand}
-        className="flex items-center gap-2 bg-[#15b7b9] text-white px-4 py-2 rounded-lg hover:bg-[#15b7b9]/90 transition-colors"
+        className="flex items-center gap-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-white transition-colors hover:bg-[#15b7b9]/90"
       >
         <PlusCircle size={20} />
         {t('createBand')}
@@ -85,7 +85,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
                 )}
               </Listbox.Option>
             ))}
-            <div className="border-t border-gray-200 my-1" />
+            <div className="my-1 border-t border-gray-200" />
             <button
               onClick={handleManageBands}
               className="flex w-full items-center gap-2 px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"

@@ -1,9 +1,9 @@
-export function NavItem({ 
-  href, 
-  label, 
-  onClick 
-}: { 
-  href: string; 
+export function NavItem({
+  href,
+  label,
+  onClick,
+}: {
+  href: string;
   label: string;
   onClick?: () => void;
 }) {

@@ -50,7 +50,9 @@ export function MultiSelect({
   };
 
   const getOptionLabel = (optionValue: string) => {
-    return options.find((opt) => opt.value === optionValue)?.label || optionValue;
+    return (
+      options.find((opt) => opt.value === optionValue)?.label || optionValue
+    );
   };
 
   const getOptionIcon = (optionValue: string) => {
