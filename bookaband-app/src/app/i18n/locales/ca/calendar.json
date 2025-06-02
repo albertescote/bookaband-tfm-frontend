@@ -1,0 +1,30 @@
+{
+  "title": "Calendari",
+  "add-event": "Afegir Esdeveniment",
+  "loading": "Carregant calendari...",
+  "no-band-selected": "Si us plau, selecciona una banda per veure els esdeveniments",
+  "days": {
+    "sun": "Diumenge",
+    "mon": "Dilluns",
+    "tue": "Dimarts",
+    "wed": "Dimecres",
+    "thu": "Dijous",
+    "fri": "Divendres",
+    "sat": "Dissabte"
+  },
+  "upcomingEvents": "Properes Esdeveniments",
+  "availability": "Disponibilitat",
+  "showLess": "Mostrar Menys",
+  "viewAll": "Veure Tots",
+  "events": "esdeveniments",
+  "noUpcomingEvents": "No hi ha esdeveniments propers",
+  "eventTypes": {
+    "performance": "Actuació",
+    "rehearsal": "Assaig",
+    "meeting": "Reunió"
+  },
+  "errors": {
+    "fetchEventTypes": "Error en carregar els tipus d'esdeveniments",
+    "fetchEvents": "Error en carregar els esdeveniments"
+  }
+} 

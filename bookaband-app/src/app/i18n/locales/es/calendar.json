@@ -1,0 +1,30 @@
+{
+  "title": "Calendario",
+  "add-event": "Añadir Evento",
+  "loading": "Cargando calendario...",
+  "no-band-selected": "Por favor, selecciona una banda para ver los eventos",
+  "days": {
+    "sun": "Domingo",
+    "mon": "Lunes",
+    "tue": "Martes",
+    "wed": "Miércoles",
+    "thu": "Jueves",
+    "fri": "Viernes",
+    "sat": "Sábado"
+  },
+  "upcomingEvents": "Próximos Eventos",
+  "availability": "Disponibilidad",
+  "showLess": "Mostrar Menos",
+  "viewAll": "Ver Todos",
+  "events": "eventos",
+  "noUpcomingEvents": "No hay eventos próximos",
+  "eventTypes": {
+    "performance": "Actuación",
+    "rehearsal": "Ensayo",
+    "meeting": "Reunión"
+  },
+  "errors": {
+    "fetchEventTypes": "Error al cargar los tipos de eventos",
+    "fetchEvents": "Error al cargar los eventos"
+  }
+} 

@@ -1,0 +1,30 @@
+{
+  "title": "Calendar",
+  "add-event": "Add Event",
+  "loading": "Loading calendar...",
+  "no-band-selected": "Please select a band to view events",
+  "days": {
+    "sun": "Sunday",
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday"
+  },
+  "upcomingEvents": "Upcoming Events",
+  "availability": "Availability",
+  "showLess": "Show Less",
+  "viewAll": "View All",
+  "events": "events",
+  "noUpcomingEvents": "No upcoming events",
+  "eventTypes": {
+    "performance": "Performance",
+    "rehearsal": "Rehearsal",
+    "meeting": "Meeting"
+  },
+  "errors": {
+    "fetchEventTypes": "Failed to fetch event types",
+    "fetchEvents": "Failed to fetch events"
+  }
+} 

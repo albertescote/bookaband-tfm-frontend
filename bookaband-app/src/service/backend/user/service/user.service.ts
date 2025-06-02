@@ -20,6 +20,7 @@ export async function getUserInfo(): Promise<User | null> {
 export const updateProfile = async (
   userData: UpdateUserRequest,
 ): Promise<User> => {
-  const response = await authorizedAxiosInstance.put('/user', userData);
-  return response.data;
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.put(`/user`, userData).then((res) => res.data),
+  );
 };
