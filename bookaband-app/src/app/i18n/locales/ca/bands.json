@@ -126,6 +126,7 @@
   "leaveBandConfirmation": "Estàs segur que vols abandonar aquesta banda?",
   "leaveBandConfirmationDescription": "Ja no tindràs accés a aquesta banda. Podràs tornar a unir-te si et conviden de nou.",
   "leave": "Abandonar",
+  "leaving": "Abandonant...",
   "errorCreating": "Error en crear la banda",
   "errorInviting": "Error en convidar el membre",
   "errorRemoving": "Error en eliminar el membre",

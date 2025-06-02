@@ -128,6 +128,7 @@
   "leaveBandConfirmation": "¿Estás seguro de que quieres abandonar esta banda?",
   "leaveBandConfirmationDescription": "Ya no tendrás acceso a esta banda. Podrás volver a unirte si te invitan de nuevo.",
   "leave": "Abandonar",
+  "leaving": "Abandonando...",
   "errorCreating": "Error al crear la banda",
   "errorInviting": "Error al invitar al miembro",
   "errorRemoving": "Error al eliminar el miembro",

@@ -90,6 +90,6 @@ export async function removeMember(
 
 export async function leaveBand(id: string): Promise<void> {
   return withTokenRefreshRetry<void>(() =>
-    authorizedAxiosInstance.post(`/bands/${id}/leave`),
+    authorizedAxiosInstance.post(`/bands/${id}/leave`).then((res) => res.data),
   );
 }

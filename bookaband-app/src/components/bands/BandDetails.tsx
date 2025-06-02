@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
-import { ArrowLeft, Trash2 } from 'lucide-react';
+import { ArrowLeft, Trash2, LogOut } from 'lucide-react';
 import {
   deleteBand,
   getBandProfileById,
@@ -32,9 +32,11 @@ import { MediaGallerySection } from './details/MediaGallerySection';
 import { MembersSection } from './details/MembersSection';
 import { DeleteBandModal } from './details/modals/DeleteBandModal';
 import { InviteMemberModal } from './details/modals/InviteMemberModal';
+import { RemoveMemberModal } from './details/modals/RemoveMemberModal';
 import { TechnicalRiderSection } from './details/TechnicalRiderSection';
 import { HospitalityRiderSection } from './details/HospitalityRiderSection';
 import { PerformanceAreaSection } from './details/PerformanceAreaSection';
+import { LeaveBandModal } from './details/modals/LeaveBandModal';
 
 interface Media {
   id: string;
@@ -394,8 +396,8 @@ export default function BandDetails({
           editedValues.weeklyAvailability || bandProfile.weeklyAvailability,
         media:
           editedValues.media?.map((media) => ({
-            url: media.url,
-            type: media.type,
+          url: media.url,
+          type: media.type,
           })) || [],
         socialLinks: editedValues.socialLinks || bandProfile.socialLinks || [],
         imageUrl:
@@ -553,8 +555,8 @@ export default function BandDetails({
           isEditing={isEditing}
           onImageUpload={(files) => handleFileUpload(files, true)}
           onImageRemove={() => {
-            setEditedValues((prev) => ({
-              ...prev,
+                        setEditedValues((prev) => ({
+                          ...prev,
               imageUrl: '',
               imageFile: undefined,
             }));
@@ -585,8 +587,8 @@ export default function BandDetails({
               setEditedValues((prev) => ({ ...prev, musicalStyleIds: value }))
             }
             onBandSizeChange={(value) =>
-              setEditedValues((prev) => ({
-                ...prev,
+                        setEditedValues((prev) => ({
+                          ...prev,
                 bandSize: value as BandSize,
               }))
             }
@@ -619,36 +621,36 @@ export default function BandDetails({
                 platform: 'website',
                 url: '',
               });
-              setEditedValues((prev) => ({
-                ...prev,
+                        setEditedValues((prev) => ({
+                          ...prev,
                 socialLinks: newLinks,
               }));
             }}
             onUpdateLink={(index, url) => {
-              const newLinks = [
+                          const newLinks = [
                 ...(editedValues.socialLinks || bandProfile.socialLinks || []),
-              ];
-              newLinks[index] = {
+                          ];
+                          newLinks[index] = {
                 ...newLinks[index],
                 url,
                 platform: detectPlatformFromUrl(url),
-              };
-              setEditedValues((prev) => ({
-                ...prev,
-                socialLinks: newLinks,
-              }));
-            }}
+                          };
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            socialLinks: newLinks,
+                          }));
+                        }}
             onRemoveLink={(index) => {
-              const newLinks = (
-                editedValues.socialLinks ||
-                bandProfile.socialLinks ||
-                []
-              ).filter((_, i) => i !== index);
-              setEditedValues((prev) => ({
-                ...prev,
-                socialLinks: newLinks,
-              }));
-            }}
+                          const newLinks = (
+                            editedValues.socialLinks ||
+                            bandProfile.socialLinks ||
+                            []
+                          ).filter((_, i) => i !== index);
+                          setEditedValues((prev) => ({
+                            ...prev,
+                            socialLinks: newLinks,
+                          }));
+                        }}
             t={t}
           />
 
@@ -666,11 +668,11 @@ export default function BandDetails({
             technicalRider={
               editedValues.technicalRider ||
               bandProfile.technicalRider || {
-                soundSystem: '',
-                microphones: '',
-                backline: '',
-                lighting: '',
-                otherRequirements: '',
+                            soundSystem: '',
+                            microphones: '',
+                            backline: '',
+                            lighting: '',
+                            otherRequirements: '',
               }
             }
             isEditing={isEditing}
@@ -701,9 +703,9 @@ export default function BandDetails({
             performanceArea={
               editedValues.performanceArea ||
               bandProfile.performanceArea || {
-                regions: [],
-                travelPreferences: '',
-                restrictions: '',
+                            regions: [],
+                            travelPreferences: '',
+                            restrictions: '',
               }
             }
             isEditing={isEditing}
@@ -721,7 +723,7 @@ export default function BandDetails({
             onRemoveMember={(memberId) => setShowRemoveConfirm(memberId)}
             t={t}
           />
-        </div>
+                </div>
 
         {isAdmin && !isEditing && (
           <motion.div
@@ -740,7 +742,25 @@ export default function BandDetails({
             </motion.button>
           </motion.div>
         )}
-      </div>
+
+        {!isAdmin && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-8 flex justify-end"
+          >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+              onClick={() => setShowLeaveConfirm(true)}
+              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+                >
+              <LogOut size={20} />
+              {t('leaveBand')}
+                </motion.button>
+          </motion.div>
+        )}
+              </div>
 
       <DeleteBandModal
         isOpen={showDeleteConfirm}
@@ -757,6 +777,22 @@ export default function BandDetails({
         onClose={() => setShowInviteModal(false)}
         onEmailChange={setInviteEmail}
         onSubmit={handleInviteMember}
+        t={t}
+      />
+
+      <RemoveMemberModal
+        isOpen={!!showRemoveConfirm}
+        isRemoving={!!isRemoving}
+        onClose={() => setShowRemoveConfirm(null)}
+        onConfirm={() => handleRemoveMember(showRemoveConfirm!)}
+        t={t}
+      />
+
+      <LeaveBandModal
+        isOpen={showLeaveConfirm}
+        isLeaving={isLeaving}
+        onClose={() => setShowLeaveConfirm(false)}
+        onConfirm={handleLeaveBand}
         t={t}
       />
     </motion.div>

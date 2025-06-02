@@ -126,6 +126,7 @@
   "leaveBandConfirmation": "Are you sure you want to leave this band?",
   "leaveBandConfirmationDescription": "You will no longer have access to this band. You can rejoin if invited again.",
   "leave": "Leave",
+  "leaving": "Leaving...",
   "errorCreating": "Error creating band",
   "errorInviting": "Error inviting member",
   "errorRemoving": "Error removing member",
