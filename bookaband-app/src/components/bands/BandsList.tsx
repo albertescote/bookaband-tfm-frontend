@@ -146,13 +146,21 @@ export default function BandsList({
                 onClick={() => router.push(`/${language}/bands/${band.id}`)}
                 className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg"
               >
-                {band.imageUrl && (
-                  <img
-                    src={band.imageUrl}
-                    alt={band.name}
-                    className="mb-4 h-48 w-full rounded-lg object-cover"
-                  />
-                )}
+                <div className="mb-4 h-48 w-full rounded-lg bg-gray-100">
+                  {band.imageUrl ? (
+                    <img
+                      src={band.imageUrl}
+                      alt={band.name}
+                      className="h-full w-full rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <p className="text-lg text-gray-500">
+                        {t('form.noImageAvailable')}
+                      </p>
+                    </div>
+                  )}
+                </div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900">
                   {band.name}
                 </h3>

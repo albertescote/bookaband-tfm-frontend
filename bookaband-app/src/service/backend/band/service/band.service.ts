@@ -18,15 +18,15 @@ export interface UpsertBandRequest {
   location: string;
   bandSize: string;
   eventTypeIds: string[];
+  weeklyAvailability: WeeklyAvailability;
+  hospitalityRider: HospitalityRider;
+  technicalRider: TechnicalRider;
+  performanceArea: PerformanceArea;
+  media: { url: string; type: string }[];
+  socialLinks: { platform: string; url: string }[];
   bio?: string;
   imageUrl?: string;
   visible?: boolean;
-  weeklyAvailability?: WeeklyAvailability;
-  hospitalityRider?: HospitalityRider;
-  technicalRider?: TechnicalRider;
-  performanceArea?: PerformanceArea;
-  media?: { url: string; type: string }[];
-  socialLinks?: { platform: string; url: string }[];
 }
 
 export async function getBandById(id: string): Promise<Band | undefined> {

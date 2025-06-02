@@ -336,9 +336,9 @@
     "profileLink": "Please enter a valid profile link",
     "minValue": "Must be at least {{min}}",
     "incomplete": {
-      "hospitalityRider": "Please fill in all hospitality rider fields",
-      "technicalRider": "Please fill in all technical rider fields",
-      "performanceArea": "Please fill in all performance area fields"
+      "hospitalityRider": "Please fill in all required hospitality rider fields",
+      "technicalRider": "Please fill in all required technical rider fields",
+      "performanceArea": "Please fill in all required performance area fields"
     }
   },
   "roles": {
