@@ -2,6 +2,8 @@ import { fetchFilteredArtists } from '@/service/backend/artist/service/artist.se
 import FindArtistsContent from '@/components/find-artists/find-artists-content';
 import Error from '@/components/shared/error';
 import { getTranslation } from '@/app/i18n';
+import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
+import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 
 interface PageParams {
   params: {
@@ -21,13 +23,24 @@ export default async function Page({
   const query = searchParams?.q ?? '';
 
   const hasSearched = !!searchParams?.location && !!searchParams?.date;
-  const data = await fetchFilteredArtists(
-    1,
-    6,
-    hasSearched ? { location, date, searchQuery: query } : {},
-  );
+  const [data, musicalStyles, eventTypes] = await Promise.all([
+    fetchFilteredArtists(
+      1,
+      6,
+      hasSearched ? { location, date, searchQuery: query } : {},
+    ),
+    fetchMusicalStyles(),
+    fetchEventTypes(),
+  ]);
 
-  if (!data || 'error' in data) {
+  if (
+    !musicalStyles ||
+    !eventTypes ||
+    !data ||
+    'error' in data ||
+    'error' in musicalStyles ||
+    'error' in eventTypes
+  ) {
     return (
       <Error
         title={t('errorScreen.title')}
@@ -42,6 +55,8 @@ export default async function Page({
       <FindArtistsContent
         language={lng}
         initialData={data}
+        musicalStyles={musicalStyles}
+        eventTypes={eventTypes}
         hasSearchedInitial={hasSearched}
         initialFilters={{ location, date, query }}
       />

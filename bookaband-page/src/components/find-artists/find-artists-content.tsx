@@ -19,10 +19,14 @@ import {
   ValidationErrors,
 } from '@/lib/validators/searchValidators';
 import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/filters/domain/eventType';
 
 interface FindArtistsContentProps {
   language: string;
   initialData: ArtistsDetailsFilteredResponse;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
   hasSearchedInitial: boolean;
   initialFilters: {
     location: string;
@@ -34,6 +38,8 @@ interface FindArtistsContentProps {
 export default function FindArtistsContent({
   language,
   initialData,
+  musicalStyles,
+  eventTypes,
   hasSearchedInitial,
   initialFilters,
 }: FindArtistsContentProps) {
@@ -153,7 +159,7 @@ export default function FindArtistsContent({
     setActiveFilters(updatedFilters);
 
     const filtered = artists.filter((artist) => {
-      const equipmentSet = new Set(artist.equipment);
+      const musicalStyleSet = new Set(artist.musicalStyleIds);
       const eventTypeSet = new Set(artist.eventTypeIds);
 
       if (
@@ -162,16 +168,22 @@ export default function FindArtistsContent({
       )
         return false;
 
-      if (updatedFilters.hasSoundEquipment && !equipmentSet.has('sound'))
+      if (
+        updatedFilters.hasSoundEquipment &&
+        !artist.technicalRider.soundSystem
+      )
         return false;
-      if (updatedFilters.hasLighting && !equipmentSet.has('lighting'))
+      if (updatedFilters.hasLighting && !artist.technicalRider.lighting)
         return false;
-      if (updatedFilters.hasMicrophone && !equipmentSet.has('microphone'))
+      if (updatedFilters.hasMicrophone && !artist.technicalRider.microphones)
         return false;
 
       if (
-        updatedFilters.selectedGenre &&
-        artist.genre !== updatedFilters.selectedGenre
+        updatedFilters.selectedGenres &&
+        updatedFilters.selectedGenres.length > 0 &&
+        !updatedFilters.selectedGenres.some((genreId: string) =>
+          musicalStyleSet.has(genreId),
+        )
       )
         return false;
 
@@ -188,7 +200,7 @@ export default function FindArtistsContent({
 
         if (selectedEventTypes.length === 0) return true;
 
-        return selectedEventTypes.every((type) => eventTypeSet.has(type));
+        return selectedEventTypes.some((type) => eventTypeSet.has(type));
       }
 
       if (
@@ -233,9 +245,9 @@ export default function FindArtistsContent({
       return b.price - a.price;
     });
   } else if (sortOption === 'name-asc') {
-    nonFeaturedArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
+    nonFeaturedArtists.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortOption === 'name-desc') {
-    nonFeaturedArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
+    nonFeaturedArtists.sort((a, b) => b.name.localeCompare(a.name));
   }
 
   if (sortOption === 'most-popular') {
@@ -255,9 +267,9 @@ export default function FindArtistsContent({
       return b.price - a.price;
     });
   } else if (sortOption === 'name-asc') {
-    featuredArtists.sort((a, b) => a.bandName.localeCompare(b.bandName));
+    featuredArtists.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortOption === 'name-desc') {
-    featuredArtists.sort((a, b) => b.bandName.localeCompare(a.bandName));
+    featuredArtists.sort((a, b) => b.name.localeCompare(a.name));
   }
 
   allArtists = [...featuredArtists, ...nonFeaturedArtists];
@@ -359,6 +371,8 @@ export default function FindArtistsContent({
                 <AdditionalFilters
                   language={language}
                   onFilterChange={handleAdditionalFiltersChange}
+                  musicalStyles={musicalStyles}
+                  initialEventTypes={eventTypes}
                 />
               </div>
 
@@ -405,6 +419,8 @@ export default function FindArtistsContent({
           {/* Artists Grid */}
           <ArtistsGrid
             artists={allArtists}
+            musicalStyles={musicalStyles}
+            eventTypes={eventTypes}
             language={language}
             hasSearched={hasSearched}
           />

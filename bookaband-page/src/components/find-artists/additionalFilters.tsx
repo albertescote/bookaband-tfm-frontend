@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Euro, Mic, Music, PartyPopper, Star, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
+import { BandSize } from '@/service/backend/artist/domain/bandSize';
 import * as Slider from '@radix-ui/react-slider';
 import { useAuth } from '@/providers/authProvider';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/filters/domain/eventType';
 
 interface AdditionalFiltersProps {
   language: string;
@@ -19,11 +21,13 @@ interface AdditionalFiltersProps {
       restaurantsHotels?: boolean;
       businesses?: boolean;
     };
-    selectedGenre?: string;
-    selectedBandSize?: string;
+    selectedGenres?: string[];
+    selectedBandSize?: BandSize;
     minPrice?: number;
     maxPrice?: number;
   }) => void;
+  musicalStyles: MusicalStyle[];
+  initialEventTypes: EventType[];
 }
 
 interface Sections {
@@ -65,13 +69,15 @@ interface EquipmentTypeItem {
 const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   language,
   onFilterChange,
+  musicalStyles,
+  initialEventTypes,
 }) => {
   const { t } = useTranslation(language, 'find-artists');
   const { user } = useAuth();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [selectedBandSize, setSelectedBandSize] = useState('');
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedBandSize, setSelectedBandSize] = useState<BandSize | ''>('');
   const [equipmentFilters, setEquipmentFilters] = useState({
     hasSoundEquipment: false,
     hasLighting: false,
@@ -95,13 +101,15 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     onFilterChange({ minRating: finalRating });
   };
 
-  const handleGenreChange = (genre: string) => {
-    const newGenre = selectedGenre === genre ? '' : genre; // Toggle off if already selected
-    setSelectedGenre(newGenre);
-    onFilterChange({ selectedGenre: newGenre });
+  const handleGenreChange = (genreId: string) => {
+    const newGenres = selectedGenres.includes(genreId)
+      ? selectedGenres.filter((id) => id !== genreId)
+      : [...selectedGenres, genreId];
+    setSelectedGenres(newGenres);
+    onFilterChange({ selectedGenres: newGenres });
   };
 
-  const handleBandSizeChange = (size: string) => {
+  const handleBandSizeChange = (size: BandSize) => {
     const newSize = selectedBandSize === size ? '' : size; // Toggle off if already selected
     setSelectedBandSize(newSize);
     onFilterChange({ selectedBandSize: newSize });
@@ -128,19 +136,11 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     setExpanded((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const genres = [
-    { value: 'rock', label: 'Rock', emoji: '🎸' },
-    { value: 'pop', label: 'Pop', emoji: '🎤' },
-    { value: 'jazz', label: 'Jazz', emoji: '🎷' },
-    { value: 'classical', label: 'Classical', emoji: '🎻' },
-    { value: 'electronic', label: 'Electronic', emoji: '🎧' },
-  ];
-
   const bandSizes = [
-    { value: 'solo', label: 'Solo', count: 1 },
-    { value: 'duo', label: 'Duo', count: 2 },
-    { value: 'trio', label: 'Trio', count: 3 },
-    { value: 'band', label: 'Band (4+)', count: 4 },
+    { value: BandSize.SOLO, label: 'Solo', count: 1 },
+    { value: BandSize.DUO, label: 'Duo', count: 2 },
+    { value: BandSize.TRIO, label: 'Trio', count: 3 },
+    { value: BandSize.BAND, label: 'Band (4+)', count: 4 },
   ];
 
   const equipmentItems: EquipmentTypeItem[] = [
@@ -150,23 +150,19 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   ];
 
   useEffect(() => {
-    fetchEventTypes().then((data) => {
-      if ('error' in data) return;
+    const mappedItems: EventTypeItem[] = initialEventTypes.map((item: any) => ({
+      id: item.id,
+      label: item.label[language] || item.label['en'],
+      icon: item.icon,
+    }));
 
-      const mappedItems: EventTypeItem[] = data.map((item: any) => ({
-        id: item.id,
-        label: item.label[language] || item.label['en'],
-        icon: item.icon,
-      }));
+    setEventTypeItems(mappedItems);
 
-      setEventTypeItems(mappedItems);
-
-      const initialStates = mappedItems.reduce(
-        (acc, item) => ({ ...acc, [item.id]: false }),
-        {},
-      );
-      setEventTypes(initialStates);
-    });
+    const initialStates = mappedItems.reduce(
+      (acc, item) => ({ ...acc, [item.id]: false }),
+      {},
+    );
+    setEventTypes(initialStates);
   }, [language]);
 
   const FilterHeader: React.FC<FilterHeaderProps> = ({
@@ -216,18 +212,18 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
 
         {expanded.genre && (
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {genres.map((genre) => (
+            {musicalStyles.map((style) => (
               <button
-                key={genre.value}
-                onClick={() => handleGenreChange(genre.value)}
+                key={style.id}
+                onClick={() => handleGenreChange(style.id)}
                 className={`flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                  selectedGenre === genre.value
+                  selectedGenres.includes(style.id)
                     ? 'bg-[#15b7b9] text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <span>{genre.emoji}</span>
-                <span>{genre.label}</span>
+                <span>{style.icon}</span>
+                <span>{style.label[language] || style.label['en']}</span>
               </button>
             ))}
           </div>
@@ -408,7 +404,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         </div>
       )}
 
-      {/* Applied Filters Summary */}
+      {/* Active Filters */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
@@ -417,7 +413,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
           <button
             onClick={() => {
               setRating(0);
-              setSelectedGenre('');
+              setSelectedGenres([]);
               setSelectedBandSize('');
               setEquipmentFilters({
                 hasSoundEquipment: false,
@@ -452,20 +448,25 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
               </div>
             )}
 
-            {selectedGenre && (
-              <div className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]">
-                <span>
-                  {genres.find((g) => g.value === selectedGenre)?.emoji}{' '}
-                  {genres.find((g) => g.value === selectedGenre)?.label}
-                </span>
-                <button
-                  onClick={() => handleGenreChange(selectedGenre)}
-                  className="ml-1"
+            {selectedGenres.map((genreId) => {
+              const style = musicalStyles.find((s) => s.id === genreId);
+              return style ? (
+                <div
+                  key={genreId}
+                  className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]"
                 >
-                  <X size={12} />
-                </button>
-              </div>
-            )}
+                  <span>
+                    {style.icon} {style.label[language] || style.label['en']}
+                  </span>
+                  <button
+                    onClick={() => handleGenreChange(genreId)}
+                    className="ml-1"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ) : null;
+            })}
 
             {selectedBandSize && (
               <div className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]">
@@ -544,7 +545,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
             )}
 
             {!rating &&
-              !selectedGenre &&
+              !selectedGenres.length &&
               !selectedBandSize &&
               !Object.values(equipmentFilters).some(Boolean) &&
               !Object.values(eventTypes).some(Boolean) &&

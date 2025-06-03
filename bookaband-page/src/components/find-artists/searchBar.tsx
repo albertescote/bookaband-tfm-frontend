@@ -126,7 +126,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleDateChange = (newDate: Date | null) => {
     if (newDate) {
-      setDate(newDate.toISOString().split('T')[0]);
+      // Format the date directly without timezone conversion
+      const year = newDate.getFullYear();
+      const month = String(newDate.getMonth() + 1).padStart(2, '0');
+      const day = String(newDate.getDate()).padStart(2, '0');
+      setDate(`${year}-${month}-${day}`);
     } else {
       setDate('');
     }
@@ -241,7 +245,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {isDatePickerOpen && (
                 <div className="fixed left-0 right-0 top-1/2 z-50 mx-auto w-[90%] -translate-y-1/2 sm:absolute sm:left-1/3 sm:top-full sm:mt-6 sm:w-auto sm:-translate-x-1/2 sm:translate-y-0">
                   <DatePicker
-                    selected={date ? new Date(date) : null}
+                    selected={date ? new Date(date + 'T00:00:00') : null}
                     onChange={handleDateChange}
                     inline
                     minDate={new Date()}
@@ -250,6 +254,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     calendarClassName="custom-calendar"
                     locale={getLocale()}
                     dateFormat="P"
+                    adjustDateOnChange={false}
                   />
                 </div>
               )}

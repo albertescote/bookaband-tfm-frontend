@@ -13,11 +13,11 @@
   "view-profile": "View Profile",
   "featured-artist": "Featured Artist",
   "load-more-artists": "Load More Artists",
-  "search-style-or-artist": "What style or artist are you looking for?",
+  "search-style-or-artist": "Artist name",
   "where": "Where?",
   "when": "When?",
   "add-dates": "Add Date(s)",
-  "type-style-or-artist": "Type a style or artist name",
+  "type-style-or-artist": "Type artist name",
   "loading": "Loading...",
   "artists-found": "artists found",
   "sort-most-popular": "Most Popular",
@@ -68,7 +68,7 @@
   "from": "from...",
   "errorScreen": {
     "title": "Something went wrong",
-    "description": "We couldn’t load the artists catalog. Please try again later.",
+    "description": "We couldn't load the artists catalog. Please try again later.",
     "retry": "Retry"
   }
 }

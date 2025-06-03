@@ -1,28 +1,69 @@
 import React from 'react';
-import { MapPin, Music, Star } from 'lucide-react';
+import { MapPin, Music, Star, Users } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 import { useRouter } from 'next/navigation';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/filters/domain/eventType';
+import { BandSize } from '@/service/backend/artist/domain/bandSize';
 
 interface ArtistCardProps {
   artist: BandCatalogItem;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
   language: string;
 }
 
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
+const ArtistCard: React.FC<ArtistCardProps> = ({
+  artist,
+  musicalStyles,
+  eventTypes,
+  language,
+}) => {
   const { t } = useTranslation(language, 'find-artists');
   const router = useRouter();
+
+  const getMusicalStyleLabel = (styleId: string) => {
+    const style = musicalStyles.find((s) => s.id === styleId);
+    return style ? style.label[language] || style.label['en'] : styleId;
+  };
+
+  const getMusicalStyleIcon = (styleId: string) => {
+    const style = musicalStyles.find((s) => s.id === styleId);
+    return style ? style.icon : '🎵';
+  };
+
+  const getEventTypeIcon = (eventTypeId: string) => {
+    const eventType = eventTypes.find((s) => s.id === eventTypeId);
+    return eventType ? eventType.icon : '📍';
+  };
+
+  const getEventTypeLabel = (typeId: string) => {
+    const type = eventTypes.find((t) => t.id === typeId);
+    return type ? type.label[language] || type.label['en'] : typeId;
+  };
+
+  const getBandSizeLabel = (size: BandSize) => {
+    switch (size) {
+      case BandSize.SOLO:
+        return 'Solo';
+      case BandSize.DUO:
+        return 'Duo';
+      case BandSize.TRIO:
+        return 'Trio';
+      case BandSize.BAND:
+        return 'Band (4+)';
+      default:
+        return size;
+    }
+  };
 
   return (
     <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
       <div className="relative aspect-square overflow-hidden">
         <img
           src={artist.imageUrl}
-          alt={artist.bandName}
+          alt={artist.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {artist.featured && (
@@ -32,19 +73,62 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
         )}
       </div>
       <div className="p-5">
-        <h3 className="mb-1 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
-          {artist.bandName}
+        <h3 className="mb-2 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
+          {artist.name}
         </h3>
-        <div className="mb-3 flex items-center gap-3">
-          <span className="flex items-center gap-1 text-xs text-gray-600">
-            <Music className="h-3 w-3" />
-            {capitalizeFirstLetter(artist.genre)}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-gray-600">
-            <MapPin className="h-3 w-3" />
-            {artist.location}
-          </span>
+
+        {/* Musical Styles Tags */}
+        <div className="mb-3 flex flex-wrap gap-2">
+          {artist.musicalStyleIds.length > 0 ? (
+            artist.musicalStyleIds.map((styleId) => (
+              <span
+                key={styleId}
+                className="inline-flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs font-medium text-[#15b7b9]"
+              >
+                <span>{getMusicalStyleIcon(styleId)}</span>
+                <span>{getMusicalStyleLabel(styleId)}</span>
+              </span>
+            ))
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+              <Music className="h-3 w-3" />
+              {t('no-genre')}
+            </span>
+          )}
         </div>
+
+        {/* Band Size */}
+        <div className="mb-3 flex items-center gap-1 text-xs text-gray-600">
+          <Users className="h-3 w-3" />
+          {getBandSizeLabel(artist.bandSize)}
+        </div>
+
+        {/* Event Types */}
+        <div className="mb-3 flex flex-wrap gap-2">
+          {artist.eventTypeIds.length > 0 ? (
+            artist.eventTypeIds.map((typeId) => (
+              <span
+                key={typeId}
+                className="inline-flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs font-medium text-[#15b7b9]"
+              >
+                <span>{getEventTypeIcon(typeId)}</span>
+                <span>{getEventTypeLabel(typeId)}</span>
+              </span>
+            ))
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+              {t('no-event-types')}
+            </span>
+          )}
+        </div>
+
+        {/* Location */}
+        <div className="mb-3 flex items-center gap-1 text-xs text-gray-600">
+          <MapPin className="h-3 w-3" />
+          {artist.location}
+        </div>
+
+        {/* Rating */}
         <div className="mb-3 flex items-center gap-1 text-sm">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           <span className="font-medium text-gray-800">{artist.rating}</span>
@@ -52,6 +136,8 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
             ({artist.reviewCount} {t('reviews')})
           </span>
         </div>
+
+        {/* Price and View Profile */}
         <div className="flex items-center justify-between">
           <span
             className={`text-lg font-semibold text-[#15b7b9] ${
@@ -66,7 +152,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, language }) => {
 
           <button
             onClick={() => {
-              router.push(`/${language}/artists/${artist.bandId}`);
+              router.push(`/${language}/artists/${artist.id}`);
             }}
             className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20"
           >

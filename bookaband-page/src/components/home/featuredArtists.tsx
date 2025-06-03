@@ -8,14 +8,17 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 
 interface FeaturedArtistsParams {
   lng: string;
+  musicalStyles: MusicalStyle[];
 }
 
-export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
+export default function FeaturedArtists({
+  lng,
+  musicalStyles,
+}: FeaturedArtistsParams) {
   const { t } = useTranslation(lng, 'home');
   const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = useState(3);
@@ -25,7 +28,6 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
   const [animationDirection, setAnimationDirection] = useState<
     'left' | 'right' | null
   >(null);
-  const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
 
   const cachedData = useRef<
     Record<string, ArtistsFeaturedResponse['featuredBands']>
@@ -48,16 +50,6 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const loadMusicalStyles = async () => {
-      const styles = await fetchMusicalStyles();
-      if (!('error' in styles)) {
-        setMusicalStyles(styles);
-      }
-    };
-    loadMusicalStyles();
   }, []);
 
   const getBatchMetadataForFrontendPage = useCallback(
