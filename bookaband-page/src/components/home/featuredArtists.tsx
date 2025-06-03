@@ -8,6 +8,8 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 
 interface FeaturedArtistsParams {
   lng: string;
@@ -23,15 +25,16 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
   const [animationDirection, setAnimationDirection] = useState<
     'left' | 'right' | null
   >(null);
+  const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
 
-  const cachedData = useRef<Record<string, ArtistsFeaturedResponse['offers']>>(
-    {},
-  );
+  const cachedData = useRef<
+    Record<string, ArtistsFeaturedResponse['featuredBands']>
+  >({});
   const totalCount = useRef<number | undefined>();
   const fetchedBatchApiPages = useRef<Set<number>>(new Set());
   const BATCH_SIZE = 3;
   const [visibleArtists, setVisibleArtists] = useState<
-    ArtistsFeaturedResponse['offers']
+    ArtistsFeaturedResponse['featuredBands']
   >([]);
 
   useEffect(() => {
@@ -45,6 +48,16 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const loadMusicalStyles = async () => {
+      const styles = await fetchMusicalStyles();
+      if (!('error' in styles)) {
+        setMusicalStyles(styles);
+      }
+    };
+    loadMusicalStyles();
   }, []);
 
   const getBatchMetadataForFrontendPage = useCallback(
@@ -82,7 +95,7 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
           apiPageForBatch,
           itemsToRequestFromApi,
         );
-        if (!result || !Array.isArray(result.offers)) {
+        if (!result || !Array.isArray(result.featuredBands)) {
           console.error('Invalid response format');
           fetchedBatchApiPages.current.delete(apiPageForBatch);
           return false;
@@ -99,8 +112,8 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
 
         for (let i = 0; i < BATCH_SIZE; i++) {
           const currentFrontendPageInLoop = firstFrontendPageInBatch + i;
-          const startIdxInBatchOffers = i * itemsPerPage;
-          if (startIdxInBatchOffers >= result.offers.length) {
+          const startIdxInBatchBands = i * itemsPerPage;
+          if (startIdxInBatchBands >= result.featuredBands.length) {
             if (
               totalCount.current === undefined ||
               currentFrontendPageInLoop <=
@@ -110,10 +123,10 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
             }
             break;
           }
-          const endIdxInBatchOffers = startIdxInBatchOffers + itemsPerPage;
-          const pageArtists = result.offers.slice(
-            startIdxInBatchOffers,
-            endIdxInBatchOffers,
+          const endIdxInBatchBands = startIdxInBatchBands + itemsPerPage;
+          const pageArtists = result.featuredBands.slice(
+            startIdxInBatchBands,
+            endIdxInBatchBands,
           );
           cachedData.current[`page-${currentFrontendPageInLoop}`] = pageArtists;
           if (pageArtists.length < itemsPerPage) break;
@@ -288,14 +301,14 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
           ) : (
             visibleArtists.map((artist, index) => (
               <div
-                key={artist.bandName + '-' + index}
+                key={artist.name + '-' + index}
                 className={`flex h-full flex-col rounded-lg border bg-white p-6 text-left shadow-md ${
                   itemsPerPage === 1 ? 'w-full max-w-sm sm:max-w-md' : 'w-full'
                 }`}
               >
                 <img
                   src={artist.imageUrl || '/placeholder-artist.jpg'}
-                  alt={artist.bandName}
+                  alt={artist.name}
                   className="mb-6 h-80 w-full rounded-lg object-cover"
                   loading={index < itemsPerPage ? 'eager' : 'lazy'}
                   onError={(e) =>
@@ -303,20 +316,33 @@ export default function FeaturedArtists({ lng }: FeaturedArtistsParams) {
                   }
                 />
                 <div className="flex flex-1 flex-col">
-                  {' '}
                   <div className="flex-grow">
-                    {' '}
                     <h3 className="mb-2 text-xl font-semibold leading-tight">
-                      {artist.bandName}
+                      {artist.name}
                     </h3>
-                    <p className="mb-1 text-sm text-gray-500">{`${t('genre')}: ${artist.genre}`}</p>
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {artist.musicalStyleIds.map((styleId) => {
+                        const style = musicalStyles.find(
+                          (s) => s.id === styleId,
+                        );
+                        return style ? (
+                          <span
+                            key={styleId}
+                            className="flex items-center gap-1 rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-[#15b7b9]"
+                          >
+                            <span>{style.icon}</span>
+                            <span>{style.label[lng] || style.label['en']}</span>
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
                     <p className="h-description-3-lines mb-4 line-clamp-3 overflow-hidden text-gray-700">
-                      {artist.description}
+                      {artist.bio}
                     </p>
                   </div>
                   <button
                     onClick={() => {
-                      router.push(`/${lng}/artists/${artist.bandId}`);
+                      router.push(`/${lng}/artists/${artist.id}`);
                     }}
                     className="mt-auto w-full rounded-lg border border-[#15b7b9] px-4 py-2 font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2"
                   >
