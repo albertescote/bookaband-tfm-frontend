@@ -15,6 +15,8 @@ import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.
 import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 
+const MAIN_COLOR = '#15b7b9';
+
 interface CalendarViewProps {
   language: string;
 }
@@ -163,6 +165,15 @@ export default function CalendarView({ language }: CalendarViewProps) {
     return monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
   };
 
+  const isCurrentDay = (day: number) => {
+    const today = new Date();
+    return (
+      day === today.getDate() &&
+      currentDate.getMonth() === today.getMonth() &&
+      currentDate.getFullYear() === today.getFullYear()
+    );
+  };
+
   if (loading) {
     return <div className="p-4">{t('loading')}</div>;
   }
@@ -185,10 +196,20 @@ export default function CalendarView({ language }: CalendarViewProps) {
               {formatMonthYear(currentDate)}
             </h2>
             <div className="flex space-x-2">
-              <Button variant="outline" size="icon" onClick={prevMonth}>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={prevMonth}
+                className="hover:bg-[#15b7b9] hover:text-white transition-colors"
+              >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" onClick={nextMonth}>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={nextMonth}
+                className="hover:bg-[#15b7b9] hover:text-white transition-colors"
+              >
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -198,7 +219,7 @@ export default function CalendarView({ language }: CalendarViewProps) {
             {['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map((day) => (
               <div
                 key={day}
-                className="py-2 text-center text-sm font-medium text-gray-500"
+                className="py-2 text-center text-sm font-medium text-[#15b7b9]"
               >
                 {t(`days.${day}`)}
               </div>
@@ -210,20 +231,27 @@ export default function CalendarView({ language }: CalendarViewProps) {
               const day = index + 1;
               const dayEvents = getEventsForDay(day);
               const available = isDayAvailable(day);
+              const isToday = isCurrentDay(day);
               return (
                 <div
                   key={day}
                   className={cn(
-                    'min-h-24 border border-gray-200 p-1 transition-colors',
-                    available ? 'hover:bg-gray-50' : 'bg-gray-50 opacity-50',
+                    'min-h-24 rounded-lg border p-1 transition-colors',
+                    available 
+                      ? 'hover:bg-gray-50 border-gray-200' 
+                      : 'bg-gray-50 opacity-50 border-gray-200',
+                    isToday && 'border-[#15b7b9] border-2 bg-[#15b7b9]/5'
                   )}
                 >
-                  <div className="mb-1 text-sm font-medium">{day}</div>
+                  <div className={cn(
+                    "mb-1 text-sm font-medium",
+                    isToday && "text-[#15b7b9] font-bold"
+                  )}>{day}</div>
                   <div className="space-y-1">
                     {dayEvents.map((event) => (
                       <div
                         key={event.id}
-                        className="flex items-center gap-1 truncate rounded bg-blue-100 p-1 text-xs text-blue-800"
+                        className="flex items-center gap-1 truncate rounded bg-[#15b7b9]/10 p-1 text-xs text-[#15b7b9]"
                       >
                         <span>{getEventType(event.eventTypeId)?.icon}</span>
                         {event.name}
@@ -239,7 +267,7 @@ export default function CalendarView({ language }: CalendarViewProps) {
         {/* Upcoming Events Section */}
         <div className="space-y-6">
           <div className="rounded-lg bg-white p-4 shadow">
-            <h2 className="mb-4 text-lg font-semibold">
+            <h2 className="mb-4 text-lg font-semibold text-[#15b7b9]">
               {t('upcomingEvents')}
             </h2>
             {upcomingEvents.length > 0 ? (
@@ -247,7 +275,7 @@ export default function CalendarView({ language }: CalendarViewProps) {
                 {upcomingEvents.map((event) => (
                   <div key={event.id} className="border-b pb-4 last:border-0">
                     <div className="flex items-start gap-3">
-                      <div className="rounded-full bg-blue-100 p-2 text-blue-800">
+                      <div className="rounded-full bg-[#15b7b9]/10 p-2 text-[#15b7b9]">
                         <span>{getEventType(event.eventTypeId)?.icon}</span>
                       </div>
                       <div className="flex-1">
@@ -277,7 +305,7 @@ export default function CalendarView({ language }: CalendarViewProps) {
                 {events.length > 3 && (
                   <Button
                     variant="ghost"
-                    className="w-full"
+                    className="w-full text-[#15b7b9] hover:bg-[#15b7b9]/10"
                     onClick={() => setShowAllEvents(!showAllEvents)}
                   >
                     {showAllEvents ? t('showLess') : t('viewAll')}

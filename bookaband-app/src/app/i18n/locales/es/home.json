@@ -1,14 +1,43 @@
 {
   "welcome": "Bienvenido",
-  "dashboard": "Panel de control",
+  "dashboard": "Panel de Control",
   "calendar": "Calendario",
-  "bands": "Grupos",
+  "bands": "Bandas",
   "chats": "Chats",
   "performances": "Actuaciones",
   "payments": "Pagos",
   "profile-tab": "Perfil",
-  "logout": "Cerrar sesión",
+  "logout": "Cerrar Sesión",
   "english": "Inglés",
   "catalan": "Catalán",
-  "spanish": "Español"
+  "spanish": "Español",
+  "totalPerformances": "Total de Actuaciones",
+  "totalIncome": "Ingresos Totales",
+  "activeBands": "Grupos Activos",
+  "upcomingEvents": "Próximos Eventos",
+  "monthlyRevenue": "Ingresos Mensuales",
+  "recentActivities": "Actividades Recientes",
+  "activeChats": "Chats Activos",
+  "bookingStats": "Estadísticas de Reservas",
+  "bookings": "Reservas",
+  "members": "Miembros",
+  "followers": "Seguidores",
+  "rating": "Valoración",
+  "status": {
+    "completed": "Completadas",
+    "pending": "Pendientes",
+    "cancelled": "Canceladas"
+  },
+  "days": {
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mié",
+    "thu": "Jue",
+    "fri": "Vie",
+    "sat": "Sáb",
+    "sun": "Dom"
+  },
+  "errors": {
+    "fetchData": "Error al cargar los datos"
+  }
 }

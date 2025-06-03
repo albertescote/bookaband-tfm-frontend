@@ -1,14 +1,43 @@
 {
   "welcome": "Benvingut",
-  "dashboard": "Tauler de control",
+  "dashboard": "Tauler de Control",
   "calendar": "Calendari",
-  "bands": "Grups",
+  "bands": "Bandes",
   "chats": "Xats",
   "performances": "Actuacions",
   "payments": "Pagaments",
   "profile-tab": "Perfil",
-  "logout": "Tancar sessió",
+  "logout": "Tancar Sessió",
   "english": "Anglès",
   "catalan": "Català",
-  "spanish": "Espanyol"
+  "spanish": "Espanyol",
+  "totalPerformances": "Total d'Actuacions",
+  "totalIncome": "Ingressos Totals",
+  "activeBands": "Grups Actius",
+  "upcomingEvents": "Properes Actuacions",
+  "monthlyRevenue": "Ingressos Mensuals",
+  "recentActivities": "Activitats Recents",
+  "activeChats": "Xats Actius",
+  "bookingStats": "Estadístiques de Reserves",
+  "bookings": "Reserves",
+  "members": "Membres",
+  "followers": "Seguidors",
+  "rating": "Valoració",
+  "status": {
+    "completed": "Completades",
+    "pending": "Pendents",
+    "cancelled": "Cancel·lades"
+  },
+  "days": {
+    "mon": "Dl",
+    "tue": "Dt",
+    "wed": "Dc",
+    "thu": "Dj",
+    "fri": "Dv",
+    "sat": "Ds",
+    "sun": "Dg"
+  },
+  "errors": {
+    "fetchData": "Error en carregar les dades"
+  }
 }

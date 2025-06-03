@@ -10,5 +10,34 @@
   "logout": "Logout",
   "english": "English",
   "catalan": "Catalan",
-  "spanish": "Spanish"
+  "spanish": "Spanish",
+  "totalPerformances": "Total Performances",
+  "totalIncome": "Total Income",
+  "activeBands": "Active Bands",
+  "upcomingEvents": "Upcoming Events",
+  "monthlyRevenue": "Monthly Revenue",
+  "recentActivities": "Recent Activities",
+  "activeChats": "Active Chats",
+  "bookingStats": "Booking Statistics",
+  "bookings": "Bookings",
+  "members": "Members",
+  "followers": "Followers",
+  "rating": "Rating",
+  "status": {
+    "completed": "Completed",
+    "pending": "Pending",
+    "cancelled": "Cancelled"
+  },
+  "days": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "errors": {
+    "fetchData": "Error fetching data"
+  }
 }
