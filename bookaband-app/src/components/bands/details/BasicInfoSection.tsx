@@ -147,7 +147,7 @@ export function BasicInfoSection({
 
         <div className="relative">
           <label className="mb-2 block text-sm font-medium text-gray-700">
-            {t('form.basicInfo.bio')}
+            {t('form.basicInfo.biography')}
           </label>
           {isEditing ? (
             <motion.div
@@ -160,7 +160,7 @@ export function BasicInfoSection({
                 onChange={(e) => onBioChange(e.target.value)}
                 rows={4}
                 className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                placeholder={t('form.basicInfo.bio')}
+                placeholder={t('form.basicInfo.biographyPlaceholder')}
               />
             </motion.div>
           ) : (
