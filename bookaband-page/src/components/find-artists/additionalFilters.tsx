@@ -22,7 +22,7 @@ interface AdditionalFiltersProps {
       businesses?: boolean;
     };
     selectedGenres?: string[];
-    selectedBandSize?: BandSize;
+    selectedBandSize?: BandSize | string;
     minPrice?: number;
     maxPrice?: number;
   }) => void;
@@ -96,7 +96,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   };
 
   const handleBandSizeChange = (size: BandSize) => {
-    const newSize = selectedBandSize === size ? '' : size; // Toggle off if already selected
+    const newSize = selectedBandSize === size ? '' : size;
     setSelectedBandSize(newSize);
     onFilterChange({ selectedBandSize: newSize });
   };
@@ -351,6 +351,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
               setRating(0);
               setSelectedGenres([]);
               setSelectedBandSize('');
+              setPriceRange([0, 10000]);
 
               const resetEventTypes = Object.keys(eventTypes).reduce(
                 (acc, key) => ({ ...acc, [key]: false }),
@@ -358,7 +359,14 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
               );
               setEventTypes(resetEventTypes);
 
-              onFilterChange({});
+              onFilterChange({
+                minRating: undefined,
+                selectedGenres: undefined,
+                selectedBandSize: undefined,
+                eventTypes: undefined,
+                minPrice: undefined,
+                maxPrice: undefined,
+              });
             }}
             className="text-sm font-medium text-[#15b7b9] hover:underline"
           >
