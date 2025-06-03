@@ -2,13 +2,13 @@
 
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
-import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
+import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 import { FeaturedBand } from '@/service/backend/artist/domain/featuredBand';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { BackendError } from '@/service/backend/shared/domain/backendError';
 
 export interface ArtistsDetailsFilteredResponse {
-  offers: OfferDetails[];
+  bandCatalogItems: BandCatalogItem[];
   hasMore: boolean;
   total: number;
 }

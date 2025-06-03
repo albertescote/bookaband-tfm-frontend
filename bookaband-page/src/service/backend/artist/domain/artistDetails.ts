@@ -1,11 +1,23 @@
 import { BandSize } from '@/service/backend/artist/domain/bandSize';
+import {
+  HospitalityRider,
+  PerformanceArea,
+  TechnicalRider,
+  WeeklyAvailability,
+} from '@/service/backend/artist/domain/bandCatalogItem';
 
 export enum MediaType {
   IMAGE = 'IMAGE',
   VIDEO = 'VIDEO',
 }
 
-export interface ArtistReview {
+interface Media {
+  id: string;
+  url: string;
+  type: MediaType;
+}
+
+interface ArtistReview {
   id: string;
   rating: number;
   comment: string;
@@ -27,45 +39,35 @@ interface Event {
   isPublic?: boolean;
 }
 
-interface Media {
-  id: string;
-  url: string;
-  type: MediaType;
-}
-
 interface SocialLinks {
+  id: string;
   platform: string;
   url: string;
 }
 
 export interface ArtistDetails {
   id: string;
-  bandId: string;
-  bandName: string;
-  genre: string;
+  name: string;
+  musicalStyleIds: string[];
   bookingDates: string[];
-  membersId: string[];
-  description: string;
   location: string;
   featured: boolean;
   bandSize: BandSize;
-  equipment: string[];
   eventTypeIds: string[];
   reviewCount: number;
-  createdDate: string;
+  createdDate: Date;
+  weeklyAvailability: WeeklyAvailability;
+  hospitalityRider: HospitalityRider;
+  technicalRider: TechnicalRider;
+  performanceArea: PerformanceArea;
+  media: Media[];
+  socialLinks: SocialLinks[];
+  followers: number;
+  following: number;
+  reviews: ArtistReview[];
+  events: Event[];
   price?: number;
   imageUrl?: string;
   rating?: number;
-
   bio?: string;
-  followers?: number;
-  following?: number;
-
-  reviews?: ArtistReview[];
-
-  media?: Media[];
-
-  events?: Event[];
-
-  socialLinks?: SocialLinks[];
 }

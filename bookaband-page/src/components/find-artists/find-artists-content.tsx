@@ -18,7 +18,7 @@ import {
   validateSearchParams,
   ValidationErrors,
 } from '@/lib/validators/searchValidators';
-import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
+import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 
 interface FindArtistsContentProps {
   language: string;
@@ -58,9 +58,11 @@ export default function FindArtistsContent({
     {},
   );
 
-  const [artists, setArtists] = useState<OfferDetails[]>(initialData.offers);
-  const [filteredArtists, setFilteredArtists] = useState<OfferDetails[]>(
-    initialData.offers,
+  const [artists, setArtists] = useState<BandCatalogItem[]>(
+    initialData.bandCatalogItems,
+  );
+  const [filteredArtists, setFilteredArtists] = useState<BandCatalogItem[]>(
+    initialData.bandCatalogItems,
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialData.hasMore);
@@ -90,7 +92,7 @@ export default function FindArtistsContent({
     updateUrlParams({ location, date, q: searchQuery, sort: sortOption });
 
     fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-      ({ offers: newArtists, hasMore, total }) => {
+      ({ bandCatalogItems: newArtists, hasMore, total }) => {
         setArtists(newArtists);
         setFilteredArtists(newArtists);
         setHasMore(hasMore);
@@ -109,13 +111,15 @@ export default function FindArtistsContent({
     setHasSearched(false);
     updateUrlParams({ location: '', date: '', q: '', sort: '' });
 
-    fetchFilteredArtists(1, pageSize).then(({ offers, hasMore, total }) => {
-      setArtists(offers);
-      setFilteredArtists(offers);
-      setHasMore(hasMore);
-      setCurrentPage(1);
-      setTotalArtists(total);
-    });
+    fetchFilteredArtists(1, pageSize).then(
+      ({ bandCatalogItems, hasMore, total }) => {
+        setArtists(bandCatalogItems);
+        setFilteredArtists(bandCatalogItems);
+        setHasMore(hasMore);
+        setCurrentPage(1);
+        setTotalArtists(total);
+      },
+    );
   };
 
   useEffect(() => {
@@ -133,7 +137,7 @@ export default function FindArtistsContent({
       : undefined;
 
     fetchFilteredArtists(nextPage, pageSize, filterOptions).then(
-      ({ offers: newArtists, hasMore, total }) => {
+      ({ bandCatalogItems: newArtists, hasMore, total }) => {
         setArtists((prev) => [...prev, ...newArtists]);
         setFilteredArtists((prev) => [...prev, ...newArtists]);
         setCurrentPage(nextPage);

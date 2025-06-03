@@ -1,10 +1,10 @@
 import React from 'react';
 import ArtistCard from './artistCard';
 import NoResults from './noResults';
-import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
+import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 
 interface ArtistsGridProps {
-  artists: OfferDetails[];
+  artists: BandCatalogItem[];
   language: string;
   hasSearched?: boolean;
 }

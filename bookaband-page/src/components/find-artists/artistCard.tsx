@@ -1,11 +1,11 @@
 import React from 'react';
 import { MapPin, Music, Star } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { OfferDetails } from '@/service/backend/artist/domain/offerDetails';
+import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 import { useRouter } from 'next/navigation';
 
 interface ArtistCardProps {
-  artist: OfferDetails;
+  artist: BandCatalogItem;
   language: string;
 }
 
