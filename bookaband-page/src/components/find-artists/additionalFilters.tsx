@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Euro, Mic, Music, PartyPopper, Star, X } from 'lucide-react';
+import { Euro, Music, PartyPopper, Star, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { BandSize } from '@/service/backend/artist/domain/bandSize';
 import * as Slider from '@radix-ui/react-slider';
@@ -34,7 +34,6 @@ interface Sections {
   genre: boolean;
   bandSize: boolean;
   ratings: boolean;
-  equipment: boolean;
   eventType: boolean;
   price: boolean;
 }
@@ -58,14 +57,6 @@ interface EventTypeItem {
   icon: React.ReactNode;
 }
 
-type EquipmentTypeKey = 'hasSoundEquipment' | 'hasLighting' | 'hasMicrophone';
-
-interface EquipmentTypeItem {
-  id: EquipmentTypeKey;
-  label: string;
-  icon: React.ReactNode;
-}
-
 const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   language,
   onFilterChange,
@@ -78,19 +69,14 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   const [hoveredRating, setHoveredRating] = useState(0);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedBandSize, setSelectedBandSize] = useState<BandSize | ''>('');
-  const [equipmentFilters, setEquipmentFilters] = useState({
-    hasSoundEquipment: false,
-    hasLighting: false,
-    hasMicrophone: false,
-  });
+
   const [eventTypes, setEventTypes] = useState<Record<string, boolean>>({});
   const [eventTypeItems, setEventTypeItems] = useState<EventTypeItem[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [expanded, setExpanded] = useState<Sections>({
     genre: true,
     bandSize: false,
     ratings: true,
-    equipment: false,
     eventType: false,
     price: false,
   });
@@ -115,12 +101,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     onFilterChange({ selectedBandSize: newSize });
   };
 
-  const handleEquipmentChange = (key: string, checked: boolean) => {
-    const newEquipmentFilters = { ...equipmentFilters, [key]: checked };
-    setEquipmentFilters(newEquipmentFilters);
-    onFilterChange(newEquipmentFilters);
-  };
-
   const handleEventTypeChange = (key: string, checked: boolean) => {
     const newEventTypes = { ...eventTypes, [key]: checked };
     setEventTypes(newEventTypes);
@@ -141,12 +121,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
     { value: BandSize.DUO, label: 'Duo', count: 2 },
     { value: BandSize.TRIO, label: 'Trio', count: 3 },
     { value: BandSize.BAND, label: 'Band (4+)', count: 4 },
-  ];
-
-  const equipmentItems: EquipmentTypeItem[] = [
-    { id: 'hasSoundEquipment', label: t('sound-equipment'), icon: '🔊' },
-    { id: 'hasLighting', label: t('lighting'), icon: '💡' },
-    { id: 'hasMicrophone', label: t('microphone'), icon: '🎤' },
   ];
 
   useEffect(() => {
@@ -288,44 +262,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
-      {/* Available Equipment */}
-      <div className="space-y-4">
-        <FilterHeader
-          icon={<Mic className="h-5 w-5 text-[#15b7b9]" />}
-          title={t('available-equipment')}
-          section="equipment"
-        />
-
-        {expanded.equipment && (
-          <div className="space-y-2">
-            <p className="text-sm text-gray-500">{t('equipment-note')}</p>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
-              {equipmentItems.map((item) => (
-                <label
-                  key={item.id}
-                  className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                    equipmentFilters[item.id]
-                      ? 'bg-[#15b7b9] text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={equipmentFilters[item.id] || false}
-                    onChange={(e) =>
-                      handleEquipmentChange(item.id, e.target.checked)
-                    }
-                  />
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
       {/* Type of Event */}
       <div className="space-y-4">
         <FilterHeader
@@ -383,7 +319,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
                 className="relative flex h-5 w-full touch-none select-none items-center"
                 value={priceRange}
                 onValueChange={handlePriceRangeChange}
-                max={1000}
+                max={10000}
                 step={10}
                 minStepsBetweenThumbs={1}
               >
@@ -415,11 +351,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
               setRating(0);
               setSelectedGenres([]);
               setSelectedBandSize('');
-              setEquipmentFilters({
-                hasSoundEquipment: false,
-                hasLighting: false,
-                hasMicrophone: false,
-              });
 
               const resetEventTypes = Object.keys(eventTypes).reduce(
                 (acc, key) => ({ ...acc, [key]: false }),
@@ -482,27 +413,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
               </div>
             )}
 
-            {Object.entries(equipmentFilters).map(
-              ([key, value]) =>
-                value && (
-                  <div
-                    key={key}
-                    className="flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs text-[#15b7b9]"
-                  >
-                    <span>
-                      {equipmentItems.find((item) => item.id === key)?.icon}{' '}
-                      {equipmentItems.find((item) => item.id === key)?.label}
-                    </span>
-                    <button
-                      onClick={() => handleEquipmentChange(key, false)}
-                      className="ml-1"
-                    >
-                      <X size={12} />
-                    </button>
-                  </div>
-                ),
-            )}
-
             {Object.entries(eventTypes).map(
               ([key, value]) =>
                 value && (
@@ -547,7 +457,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
             {!rating &&
               !selectedGenres.length &&
               !selectedBandSize &&
-              !Object.values(equipmentFilters).some(Boolean) &&
               !Object.values(eventTypes).some(Boolean) &&
               priceRange[0] === 0 &&
               priceRange[1] === 1000 && (

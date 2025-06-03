@@ -169,16 +169,6 @@ export default function FindArtistsContent({
         return false;
 
       if (
-        updatedFilters.hasSoundEquipment &&
-        !artist.technicalRider.soundSystem
-      )
-        return false;
-      if (updatedFilters.hasLighting && !artist.technicalRider.lighting)
-        return false;
-      if (updatedFilters.hasMicrophone && !artist.technicalRider.microphones)
-        return false;
-
-      if (
         updatedFilters.selectedGenres &&
         updatedFilters.selectedGenres.length > 0 &&
         !updatedFilters.selectedGenres.some((genreId: string) =>
