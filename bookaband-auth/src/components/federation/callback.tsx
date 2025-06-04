@@ -5,7 +5,7 @@ import {
   loginWithGoogle,
   signUpWithGoogle,
 } from '@/service/backend/auth/service/auth.service';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Role } from '@/service/backend/user/domain/role';
 import { APP_URL, PAGE_URL } from '@/publicConfig';
 
@@ -16,9 +16,12 @@ export default function Callback({
   code: string;
   role?: string;
 }) {
+  const hasHandled = useRef(false);
   const router = useRouter();
 
   useEffect(() => {
+    if (hasHandled.current) return;
+    hasHandled.current = true;
     if (role) {
       signUpWithGoogle(code, role).then((authenticationResult) => {
         if (authenticationResult.valid) {
