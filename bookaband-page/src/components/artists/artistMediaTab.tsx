@@ -49,7 +49,7 @@ export function ArtistMediaTabs({
         />
       </TabsContent>
       <TabsContent value="reviews">
-        <ReviewsTab t={t} reviews={artist.reviews} />
+        <ReviewsTab t={t} reviews={artist.reviews} language={language} />
       </TabsContent>
     </Tabs>
   );

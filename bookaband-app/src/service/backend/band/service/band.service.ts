@@ -53,13 +53,11 @@ export async function updateBand(
   id: string,
   data: UpsertBandRequest,
 ): Promise<void> {
-  console.log(data);
   return withTokenRefreshRetry<void>(() =>
     authorizedAxiosInstance
       .put(`/bands/${id}`, data)
       .then((res) => res.data)
       .catch((error) => {
-        console.log(error.response.data);
         throw error;
       }),
   );

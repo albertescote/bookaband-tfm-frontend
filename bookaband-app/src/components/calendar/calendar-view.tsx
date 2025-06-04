@@ -69,7 +69,6 @@ export default function CalendarView({ language }: CalendarViewProps) {
       try {
         const bandProfile = await getBandProfileById(selectedBand.id);
         if (bandProfile) {
-          console.log('Fetched band profile:', bandProfile.events);
           setEvents(bandProfile.events || []);
           setWeeklyAvailability(
             bandProfile.weeklyAvailability || {
@@ -196,19 +195,19 @@ export default function CalendarView({ language }: CalendarViewProps) {
               {formatMonthYear(currentDate)}
             </h2>
             <div className="flex space-x-2">
-              <Button 
-                variant="outline" 
-                size="icon" 
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={prevMonth}
-                className="hover:bg-[#15b7b9] hover:text-white transition-colors"
+                className="transition-colors hover:bg-[#15b7b9] hover:text-white"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button 
-                variant="outline" 
-                size="icon" 
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={nextMonth}
-                className="hover:bg-[#15b7b9] hover:text-white transition-colors"
+                className="transition-colors hover:bg-[#15b7b9] hover:text-white"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -237,16 +236,20 @@ export default function CalendarView({ language }: CalendarViewProps) {
                   key={day}
                   className={cn(
                     'min-h-24 rounded-lg border p-1 transition-colors',
-                    available 
-                      ? 'hover:bg-gray-50 border-gray-200' 
-                      : 'bg-gray-50 opacity-50 border-gray-200',
-                    isToday && 'border-[#15b7b9] border-2 bg-[#15b7b9]/5'
+                    available
+                      ? 'border-gray-200 hover:bg-gray-50'
+                      : 'border-gray-200 bg-gray-50 opacity-50',
+                    isToday && 'border-2 border-[#15b7b9] bg-[#15b7b9]/5',
                   )}
                 >
-                  <div className={cn(
-                    "mb-1 text-sm font-medium",
-                    isToday && "text-[#15b7b9] font-bold"
-                  )}>{day}</div>
+                  <div
+                    className={cn(
+                      'mb-1 text-sm font-medium',
+                      isToday && 'font-bold text-[#15b7b9]',
+                    )}
+                  >
+                    {day}
+                  </div>
                   <div className="space-y-1">
                     {dayEvents.map((event) => (
                       <div

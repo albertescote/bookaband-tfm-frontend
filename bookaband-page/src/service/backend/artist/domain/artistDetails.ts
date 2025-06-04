@@ -17,7 +17,7 @@ interface Media {
   type: MediaType;
 }
 
-interface ArtistReview {
+export interface ArtistReview {
   id: string;
   rating: number;
   comment: string;

@@ -59,7 +59,16 @@ export default function EventsTab({
     [artist.events],
   );
 
-  const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const getLocalizedWeekdays = () => {
+    const baseDate = new Date(2024, 0, 1); // Monday
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(baseDate);
+      date.setDate(date.getDate() + i);
+      return date.toLocaleDateString(language, { weekday: 'narrow' });
+    });
+  };
+
+  const weekdays = getLocalizedWeekdays();
 
   useEffect(() => {
     if (!eventPopup.visible) return;
@@ -368,7 +377,6 @@ export default function EventsTab({
                           <h4 className="font-semibold text-gray-900">
                             {event.name}
                           </h4>
-                          <div className="font-medium">{event.name}</div>
                         </div>
                         {event.venue && (
                           <div className="text-xs text-gray-500">

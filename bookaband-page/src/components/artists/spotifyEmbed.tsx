@@ -8,6 +8,7 @@ export function SpotifyEmbed({ embedUrl }: { embedUrl: string }) {
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy"
       className="rounded-md shadow-sm"
+      name="spotify-embed"
     ></iframe>
   );
 }

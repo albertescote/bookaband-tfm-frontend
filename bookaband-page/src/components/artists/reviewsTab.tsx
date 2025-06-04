@@ -7,11 +7,11 @@ import { ArtistReview } from '@/service/backend/artist/domain/artistDetails';
 export function ReviewsTab({
   reviews = [],
   t,
-  language = 'en',
+  language,
 }: {
   reviews?: ArtistReview[];
   t: (key: string) => string;
-  language?: string;
+  language: string;
 }) {
   const [showAll, setShowAll] = useState(false);
   const DISPLAY_LIMIT = 3;
