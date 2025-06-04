@@ -29,5 +29,11 @@
   "viewAll": "Ver todos",
   "showLess": "Mostrar menos",
   "availability": "Disponibilidad",
-  "noReviews": "Este artista aún no ha recibido reseñas"
+  "noReviews": "Este artista aún no ha recibido reseñas",
+  "eventTypes": "Tipos de eventos",
+  "errorScreen": {
+    "title": "Algo salió mal",
+    "description": "No pudimos cargar el perfil del artista. Por favor, inténtalo más tarde.",
+    "retry": "Reintentar"
+  }
 }

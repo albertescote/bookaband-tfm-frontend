@@ -28,5 +28,11 @@
   "viewAll": "Veure'ls tots",
   "showLess": "Mostrar menys",
   "availability": "Disponibilitat",
-  "noReviews": "Aquest artista encara no ha rebut cap ressenya"
+  "noReviews": "Aquest artista encara no ha rebut cap ressenya",
+  "eventTypes": "Tipus d'esdeveniments",
+  "errorScreen": {
+    "title": "S'ha produït un error",
+    "description": "No s'ha pogut carregar el perfil de l'artista. Torna-ho a provar més tard.",
+    "retry": "Torna-ho a provar"
+  }
 }

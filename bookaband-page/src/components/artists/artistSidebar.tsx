@@ -20,13 +20,19 @@ import { useAuth } from '@/providers/authProvider';
 import { useState } from 'react';
 import { formatNumberShort } from '@/lib/format';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/filters/domain/eventType';
 
 export function ArtistSidebar({
   artist,
   language,
+  musicalStyles,
+  eventTypes,
 }: {
   artist: ArtistDetails;
   language: string;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
 }) {
   const { t } = useTranslation(language, 'artists');
   const { user } = useAuth();
@@ -36,12 +42,27 @@ export function ArtistSidebar({
   const followers = artist.followers || Math.floor(Math.random() * 2000 + 100);
   const following = artist.following || Math.floor(Math.random() * 100 + 10);
 
-  const handle = artist.bandName.toLowerCase().replace(/\s/g, '');
+  const handle = artist.name.toLowerCase().replace(/\s/g, '');
 
-  const genres = artist.genre
-    .split(',')
-    .slice(0, 4)
-    .map((g) => g.trim());
+  const getMusicalStyleLabel = (styleId: string) => {
+    const style = musicalStyles.find((s) => s.id === styleId);
+    return style ? style.label[language] || style.label['en'] : styleId;
+  };
+
+  const getMusicalStyleIcon = (styleId: string) => {
+    const style = musicalStyles.find((s) => s.id === styleId);
+    return style ? style.icon : '🎵';
+  };
+
+  const getEventTypeLabel = (typeId: string) => {
+    const type = eventTypes.find((t) => t.id === typeId);
+    return type ? type.label[language] || type.label['en'] : typeId;
+  };
+
+  const getEventTypeIcon = (typeId: string) => {
+    const type = eventTypes.find((t) => t.id === typeId);
+    return type ? type.icon : '📍';
+  };
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
@@ -56,7 +77,7 @@ export function ArtistSidebar({
           {artist.imageUrl ? (
             <img
               src={artist.imageUrl}
-              alt={artist.bandName}
+              alt={artist.name}
               className={`h-full w-full object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : ''}`}
             />
           ) : (
@@ -67,7 +88,7 @@ export function ArtistSidebar({
         </div>
 
         {/* Name & Handle with improved typography */}
-        <h2 className="text-2xl font-bold text-gray-800">{artist.bandName}</h2>
+        <h2 className="text-2xl font-bold text-gray-800">{artist.name}</h2>
         <p className="mb-3 flex items-center text-sm text-gray-500">
           @{handle}
         </p>
@@ -89,7 +110,7 @@ export function ArtistSidebar({
             className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90"
             onClick={() => {
               router.push(
-                `/${language}/bookings?band_id=${encodeURIComponent(artist.bandId)}`,
+                `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}`,
               );
             }}
           >
@@ -100,7 +121,7 @@ export function ArtistSidebar({
             className="w-full border-gray-300 py-2 font-medium text-gray-700 hover:bg-gray-50"
             onClick={() => {
               router.push(
-                `/${language}/chats?band_id=${encodeURIComponent(artist.bandId)}`,
+                `/${language}/chats?band_id=${encodeURIComponent(artist.id)}`,
               );
             }}
           >
@@ -135,7 +156,9 @@ export function ArtistSidebar({
           {/* Rating */}
           <div className="px-2">
             <div className="flex items-center justify-center">
-              <span className="text-lg font-bold text-gray-800">4.8</span>
+              <span className="text-lg font-bold text-gray-800">
+                {artist.rating || '4.8'}
+              </span>
               <Star className="ml-1 h-3 w-3 text-yellow-500" fill="#f59e0b" />
             </div>
             <span className="block break-words text-xs leading-snug text-gray-500">
@@ -149,12 +172,31 @@ export function ArtistSidebar({
       <div className="mt-5">
         <p className="mb-2 text-sm font-medium text-gray-700">{t('style')}</p>
         <div className="flex flex-wrap gap-2">
-          {genres.map((style) => (
+          {artist.musicalStyleIds.map((styleId) => (
             <span
-              key={style}
-              className="rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-[#15b7b9] transition-colors hover:bg-teal-100"
+              key={styleId}
+              className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-[#15b7b9]"
             >
-              {style}
+              <span>{getMusicalStyleIcon(styleId)}</span>
+              <span>{getMusicalStyleLabel(styleId)}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Event Type Tags */}
+      <div className="mt-5">
+        <p className="mb-2 text-sm font-medium text-gray-700">
+          {t('eventTypes')}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {artist.eventTypeIds.map((typeId) => (
+            <span
+              key={typeId}
+              className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-[#15b7b9]"
+            >
+              <span>{getEventTypeIcon(typeId)}</span>
+              <span>{getEventTypeLabel(typeId)}</span>
             </span>
           ))}
         </div>

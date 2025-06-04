@@ -28,5 +28,11 @@
   "viewAll": "View All",
   "showLess": "Show Less",
   "availability": "Availability",
-  "noReviews": "This artist has not received any reviews yet"
+  "noReviews": "This artist has not received any reviews yet",
+  "eventTypes": "Event Types",
+  "errorScreen": {
+    "title": "Something went wrong",
+    "description": "We couldn't load the artist profile. Please try again later.",
+    "retry": "Retry"
+  }
 }

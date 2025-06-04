@@ -1,6 +1,6 @@
 'use client';
 
-import { ArtistDetails } from '@/service/backend/artist/domain/artist';
+import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { getSpotifyEmbedUrl } from '@/lib/social/getSpotifyEmbedUrl';
 import { SpotifyEmbed } from '@/components/artists/spotifyEmbed';
 
