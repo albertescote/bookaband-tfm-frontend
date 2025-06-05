@@ -1,7 +1,14 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
 import { getStatusColor } from '@/lib/utils';
-import { ArrowLeft, Calendar, Clock, MapPin, Music } from 'lucide-react';
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
+  MessageSquare,
+  Music,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
   cancelBooking,
@@ -40,6 +47,10 @@ export default function BookingDetails({
     } finally {
       setCancelling(false);
     }
+  };
+
+  const handleMessage = () => {
+    router.push(`/${language}/chats?band_id=${booking.bandId}`);
   };
 
   const eventType = booking.eventTypeId
@@ -81,14 +92,23 @@ export default function BookingDetails({
             {t('bandInfo')}
           </h2>
           <div className="flex items-center gap-4">
-            <div className="h-24 w-24 overflow-hidden rounded-full border border-gray-200 shadow-sm">
-              {getAvatar(96, 96, booking.bandImageUrl, booking.bandName)}
+            <div className="overflow-hidden rounded-full border border-gray-200 shadow-sm">
+              {getAvatar(20, booking.bandImageUrl, booking.bandName)}
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {booking.bandName}
-              </h3>
-              <p className="text-sm text-gray-500">{t('performer')}</p>
+            <div className="flex flex-col gap-2">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {booking.bandName}
+                </h3>
+              </div>
+              <Button
+                variant="outline"
+                onClick={handleMessage}
+                className="flex items-center gap-2 text-[#15b7b9] hover:bg-[#15b7b9] hover:text-white"
+              >
+                <MessageSquare className="h-4 w-4" />
+                {t('messageBand')}
+              </Button>
             </div>
           </div>
         </div>
@@ -159,7 +179,7 @@ export default function BookingDetails({
               <div>
                 <p className="text-sm font-medium text-gray-500">{t('date')}</p>
                 <p className="text-gray-900">
-                  {new Date(booking.date).toLocaleDateString(language, {
+                  {new Date(booking.initDate).toLocaleDateString(language, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -172,7 +192,12 @@ export default function BookingDetails({
               <div>
                 <p className="text-sm font-medium text-gray-500">{t('time')}</p>
                 <p className="text-gray-900">
-                  {new Date(booking.date).toLocaleTimeString(language, {
+                  {new Date(booking.initDate).toLocaleTimeString(language, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}{' '}
+                  -{' '}
+                  {new Date(booking.endDate).toLocaleTimeString(language, {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}

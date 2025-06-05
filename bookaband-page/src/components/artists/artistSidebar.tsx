@@ -34,7 +34,7 @@ export function ArtistSidebar({
   language: string;
   musicalStyles: MusicalStyle[];
   eventTypes: EventType[];
-  searchParams?: { location?: string; date?: string };
+  searchParams?: { location: string; date: string };
 }) {
   const { t } = useTranslation(language, 'artists');
   const { user } = useAuth();

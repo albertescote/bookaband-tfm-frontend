@@ -10,7 +10,10 @@ interface BookingsListProps {
   bookings: BookingSummary[];
 }
 
-export default function BookingsList({ language, bookings }: BookingsListProps) {
+export default function BookingsList({
+  language,
+  bookings,
+}: BookingsListProps) {
   const { t } = useTranslation(language, 'bookings');
 
   if (!bookings || bookings.length === 0) {
@@ -49,7 +52,7 @@ export default function BookingsList({ language, bookings }: BookingsListProps) 
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>
-                      {new Date(booking.date).toLocaleDateString(language, {
+                      {new Date(booking.initDate).toLocaleDateString(language, {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -59,7 +62,12 @@ export default function BookingsList({ language, bookings }: BookingsListProps) 
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
                     <span>
-                      {new Date(booking.date).toLocaleTimeString(language, {
+                      {new Date(booking.initDate).toLocaleTimeString(language, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}{' '}
+                      -{' '}
+                      {new Date(booking.endDate).toLocaleTimeString(language, {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
@@ -79,4 +87,4 @@ export default function BookingsList({ language, bookings }: BookingsListProps) 
       </div>
     </div>
   );
-} 
+}

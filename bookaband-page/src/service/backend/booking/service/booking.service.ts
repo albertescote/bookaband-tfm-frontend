@@ -6,7 +6,8 @@ import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.servi
 
 export interface CreateBookingRequest {
   bandId: string;
-  date: string;
+  initDate: string;
+  endDate: string;
   name: string;
   country: string;
   city: string;

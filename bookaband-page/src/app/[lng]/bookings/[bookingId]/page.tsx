@@ -44,7 +44,7 @@ export default async function BookingPage({
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto h-[calc(100vh-4rem)] max-w-4xl px-4 py-8">
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <BookingDetails
           language={lng}

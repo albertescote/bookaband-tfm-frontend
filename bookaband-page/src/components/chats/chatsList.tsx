@@ -82,8 +82,7 @@ export function ChatsList({
                 <div className="flex cursor-pointer items-center p-4">
                   <div className="relative">
                     {getAvatar(
-                      48,
-                      48,
+                      12,
                       chat.band?.imageUrl,
                       chat.band?.name || t('unknown'),
                     )}

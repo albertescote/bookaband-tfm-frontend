@@ -24,6 +24,7 @@
   "descriptionPlaceholder": "Tell us more about your event...",
   "cancel": "Cancel",
   "creating": "Creating...",
+  "messageBand": "Send a message to the artist",
   "errorScreen": {
     "title": "Something went wrong",
     "description": "We couldn't create your booking. Please try again later.",
@@ -50,5 +51,19 @@
   "error-loading": "Error loading booking",
   "created-at": "Created at",
   "your-bookings": "Your bookings",
-  "no-bookings": "You don't have any booking yet"
+  "no-bookings": "You don't have any booking yet",
+  "initDate": "Start Date",
+  "endDate": "End Date",
+  "initTime": "Start Time",
+  "endTime": "End Time",
+  "validation": {
+    "required": "This field is required",
+    "endDateAfterStart": "End date must be after start date",
+    "minDuration": "Performance must be at least 5 minutes long",
+    "futureDate": "Cannot book dates in the past"
+  },
+  "hour": "Hour",
+  "minute": "Minute",
+  "selected": "Selected",
+  "done": "Done"
 }

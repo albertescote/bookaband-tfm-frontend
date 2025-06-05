@@ -26,7 +26,7 @@ export default function HeaderSection({
 
   return (
     <div className="flex items-center gap-6 rounded-2xl bg-gradient-to-r from-[#f0faff] to-[#e0f7fa] p-6 shadow-md transition-all">
-      {getAvatar(80, 80, imageUrl, firstName)}
+      {getAvatar(12, imageUrl, firstName)}
       <div className="flex flex-col">
         <h1 className="text-2xl font-semibold text-gray-800">
           {firstName + ' ' + familyName}

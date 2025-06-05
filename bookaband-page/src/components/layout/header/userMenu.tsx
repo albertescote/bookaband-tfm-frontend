@@ -43,7 +43,7 @@ export default function UserMenu({ language }: { language: string }) {
         aria-expanded={menuOpen}
       >
         <div className="flex items-center gap-2 text-sm text-gray-700">
-          <span className="hidden font-medium md:block">
+          <span className="hidden font-semibold md:block">
             {user.firstName} {user.familyName}
           </span>
           <ChevronDown
@@ -52,7 +52,7 @@ export default function UserMenu({ language }: { language: string }) {
           />
         </div>
         <div className="relative">
-          {getAvatar(42, 42, user.imageUrl, user.firstName)}
+          {getAvatar(12, user.imageUrl, user.firstName)}
           <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-green-500"></div>
         </div>
       </button>

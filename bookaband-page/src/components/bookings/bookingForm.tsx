@@ -6,8 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/shared/button';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
-import { useAuth } from '@/providers/authProvider';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, ChevronDown, MapPin } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
@@ -15,11 +14,21 @@ import { es } from 'date-fns/locale/es';
 import { enUS as en } from 'date-fns/locale/en-US';
 import { ca } from 'date-fns/locale/ca';
 import { EventType } from '@/service/backend/filters/domain/eventType';
+import { TimePicker } from '@/components/shared/timePicker';
 
 interface BookingFormProps {
   artist: ArtistDetails;
   language: string;
   eventTypes: EventType[];
+}
+
+interface FormErrors {
+  date?: string;
+  name?: string;
+  country?: string;
+  city?: string;
+  postalCode?: string;
+  addressLine1?: string;
 }
 
 export function BookingForm({
@@ -30,12 +39,15 @@ export function BookingForm({
   const { t } = useTranslation(language, 'bookings');
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [isStartDateOpen, setIsStartDateOpen] = useState(false);
+  const [isEndDateOpen, setIsEndDateOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    date: new Date(),
+    initDate: new Date(new Date().setHours(0, 0, 0, 0)),
+    endDate: new Date(new Date().setHours(0, 0, 0, 0)),
     name: '',
     country: '',
     city: '',
@@ -54,7 +66,11 @@ export function BookingForm({
     if (date) {
       const parsedDate = new Date(date);
       if (!isNaN(parsedDate.getTime())) {
-        setFormData((prev) => ({ ...prev, date: parsedDate }));
+        setFormData((prev) => ({
+          ...prev,
+          initDate: new Date(parsedDate.setHours(0, 0, 0, 0)),
+          endDate: new Date(parsedDate.setHours(0, 0, 0, 0)),
+        }));
       }
     }
 
@@ -70,20 +86,90 @@ export function BookingForm({
     registerLocale('ca', ca);
   }, []);
 
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+    let isValid = true;
+
+    // Validate dates and times
+    if (!formData.initDate) {
+      errors.date = t('validation.required');
+      isValid = false;
+    }
+    if (!formData.endDate) {
+      errors.date = t('validation.required');
+      isValid = false;
+    }
+
+    // Check if end date is after start date
+    if (formData.initDate && formData.endDate) {
+      if (formData.endDate < formData.initDate) {
+        errors.date = t('validation.endDateAfterStart');
+        isValid = false;
+      }
+
+      // Check if performance duration is at least 5 minutes
+      const durationInMinutes =
+        (formData.endDate.getTime() - formData.initDate.getTime()) /
+        (1000 * 60);
+      if (durationInMinutes < 5) {
+        errors.date = t('validation.minDuration');
+        isValid = false;
+      }
+
+      // Check if dates are not in the past
+      const now = new Date();
+      if (formData.initDate < now) {
+        errors.date = t('validation.futureDate');
+        isValid = false;
+      }
+    }
+
+    // Validate other fields
+    if (!formData.name.trim()) {
+      errors.name = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.country.trim()) {
+      errors.country = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.city.trim()) {
+      errors.city = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.postalCode.trim()) {
+      errors.postalCode = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.addressLine1.trim()) {
+      errors.addressLine1 = t('validation.required');
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      router.push(`/${language}/login`);
+    setError(null);
+    setFormErrors({});
+
+    if (!validateForm()) {
       return;
     }
 
     setIsLoading(true);
-    setError(null);
 
     try {
       const booking = await createBooking({
         bandId: artist.id,
-        date: formData.date.toISOString(),
+        initDate: formData.initDate.toISOString(),
+        endDate: formData.endDate.toISOString(),
         name: formData.name,
         country: formData.country,
         city: formData.city,
@@ -109,6 +195,28 @@ export function BookingForm({
     }
   };
 
+  const handleStartDateChange = (date: Date | null) => {
+    if (!date) return;
+    setFormData((prev) => {
+      // If end date is before new start date, set it to start date
+      const newEndDate = prev.endDate < date ? date : prev.endDate;
+      return { ...prev, initDate: date, endDate: newEndDate };
+    });
+  };
+
+  const handleEndDateChange = (date: Date | null) => {
+    if (!date) return;
+    setFormData((prev) => ({ ...prev, endDate: date }));
+  };
+
+  const handleStartTimeChange = (date: Date) => {
+    setFormData((prev) => ({ ...prev, initDate: date }));
+  };
+
+  const handleEndTimeChange = (date: Date) => {
+    setFormData((prev) => ({ ...prev, endDate: date }));
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -122,19 +230,19 @@ export function BookingForm({
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Date */}
+          {/* Start Date */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('date')}
+              {t('initDate')} *
             </label>
             <div className="relative">
               <DatePicker
-                selected={formData.date}
-                onChange={(date: Date | null) =>
-                  date && setFormData({ ...formData, date })
-                }
+                selected={formData.initDate}
+                onChange={handleStartDateChange}
                 minDate={new Date()}
-                className="w-full rounded-lg border border-gray-300 p-2.5 pl-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                className={`w-full rounded-lg border ${
+                  formErrors.date ? 'border-red-500' : 'border-gray-300'
+                } cursor-pointer p-2.5 pl-10 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]`}
                 dateFormat="dd/MM/yyyy"
                 calendarClassName="custom-calendar"
                 popperClassName="custom-popper"
@@ -142,15 +250,82 @@ export function BookingForm({
                 locale={language === 'es' ? es : language === 'ca' ? ca : en}
                 showPopperArrow={false}
                 wrapperClassName="w-full"
+                onCalendarOpen={() => setIsStartDateOpen(true)}
+                onCalendarClose={() => setIsStartDateOpen(false)}
               />
               <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <ChevronDown
+                className={`absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
+                  isStartDateOpen ? 'rotate-180' : ''
+                }`}
+              />
             </div>
+            {formErrors.date && (
+              <p className="mt-1 text-sm text-red-500">{formErrors.date}</p>
+            )}
+          </div>
+
+          {/* Start Time */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              {t('initTime')} *
+            </label>
+            <TimePicker
+              value={formData.initDate}
+              onChange={handleStartTimeChange}
+              t={t}
+            />
+          </div>
+
+          {/* End Date */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              {t('endDate')} *
+            </label>
+            <div className="relative">
+              <DatePicker
+                selected={formData.endDate}
+                onChange={handleEndDateChange}
+                minDate={formData.initDate}
+                className={`w-full rounded-lg border ${
+                  formErrors.date ? 'border-red-500' : 'border-gray-300'
+                } cursor-pointer p-2.5 pl-10 pr-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]`}
+                dateFormat="dd/MM/yyyy"
+                calendarClassName="custom-calendar"
+                popperClassName="custom-popper"
+                popperPlacement="bottom-start"
+                locale={language === 'es' ? es : language === 'ca' ? ca : en}
+                showPopperArrow={false}
+                wrapperClassName="w-full"
+                onCalendarOpen={() => setIsEndDateOpen(true)}
+                onCalendarClose={() => setIsEndDateOpen(false)}
+              />
+              <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <ChevronDown
+                className={`absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
+                  isEndDateOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* End Time */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              {t('endTime')} *
+            </label>
+            <TimePicker
+              value={formData.endDate}
+              onChange={handleEndTimeChange}
+              t={t}
+              disabled={!formData.initDate}
+            />
           </div>
 
           {/* Event Name */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('eventName')}
+              {t('eventName')} *
             </label>
             <input
               type="text"
@@ -159,15 +334,20 @@ export function BookingForm({
                 setFormData({ ...formData, name: e.target.value })
               }
               placeholder={t('eventNamePlaceholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className={`w-full rounded-lg border ${
+                formErrors.name ? 'border-red-500' : 'border-gray-300'
+              } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
               required
             />
+            {formErrors.name && (
+              <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
+            )}
           </div>
 
           {/* Country */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('country')}
+              {t('country')} *
             </label>
             <input
               type="text"
@@ -176,15 +356,20 @@ export function BookingForm({
                 setFormData({ ...formData, country: e.target.value })
               }
               placeholder={t('countryPlaceholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className={`w-full rounded-lg border ${
+                formErrors.country ? 'border-red-500' : 'border-gray-300'
+              } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
               required
             />
+            {formErrors.country && (
+              <p className="mt-1 text-sm text-red-500">{formErrors.country}</p>
+            )}
           </div>
 
           {/* City */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('city')}
+              {t('city')} *
             </label>
             <input
               type="text"
@@ -193,9 +378,14 @@ export function BookingForm({
                 setFormData({ ...formData, city: e.target.value })
               }
               placeholder={t('cityPlaceholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className={`w-full rounded-lg border ${
+                formErrors.city ? 'border-red-500' : 'border-gray-300'
+              } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
               required
             />
+            {formErrors.city && (
+              <p className="mt-1 text-sm text-red-500">{formErrors.city}</p>
+            )}
           </div>
 
           {/* Venue */}
@@ -210,15 +400,14 @@ export function BookingForm({
                 setFormData({ ...formData, venue: e.target.value })
               }
               placeholder={t('venuePlaceholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-              required
+              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             />
           </div>
 
           {/* Postal Code */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('postalCode')}
+              {t('postalCode')} *
             </label>
             <input
               type="text"
@@ -227,15 +416,22 @@ export function BookingForm({
                 setFormData({ ...formData, postalCode: e.target.value })
               }
               placeholder={t('postalCodePlaceholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className={`w-full rounded-lg border ${
+                formErrors.postalCode ? 'border-red-500' : 'border-gray-300'
+              } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
               required
             />
+            {formErrors.postalCode && (
+              <p className="mt-1 text-sm text-red-500">
+                {formErrors.postalCode}
+              </p>
+            )}
           </div>
 
           {/* Address Line 1 */}
           <div className="md:col-span-2">
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              {t('addressLine1')}
+              {t('addressLine1')} *
             </label>
             <div className="relative">
               <input
@@ -245,11 +441,18 @@ export function BookingForm({
                   setFormData({ ...formData, addressLine1: e.target.value })
                 }
                 placeholder={t('addressLine1Placeholder')}
-                className="w-full rounded-lg border border-gray-300 p-2.5 pl-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                className={`w-full rounded-lg border ${
+                  formErrors.addressLine1 ? 'border-red-500' : 'border-gray-300'
+                } p-2.5 pl-10 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
                 required
               />
               <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             </div>
+            {formErrors.addressLine1 && (
+              <p className="mt-1 text-sm text-red-500">
+                {formErrors.addressLine1}
+              </p>
+            )}
           </div>
 
           {/* Address Line 2 */}
@@ -264,7 +467,7 @@ export function BookingForm({
                 setFormData({ ...formData, addressLine2: e.target.value })
               }
               placeholder={t('addressLine2Placeholder')}
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             />
           </div>
 
@@ -278,22 +481,22 @@ export function BookingForm({
               onChange={(e) =>
                 setFormData({ ...formData, eventTypeId: e.target.value })
               }
-              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+              className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             >
               <option value="">{t('selectEventType')}</option>
-              {artist.eventTypeIds.map((typeId) => (
-                <option
-                  key={typeId}
-                  value={typeId}
-                  className="flex items-center gap-2"
-                >
-                  {eventTypes.find((eventType) => eventType.id === typeId).icon}{' '}
-                  {
-                    eventTypes.find((eventType) => eventType.id === typeId)
-                      .label[language]
-                  }
-                </option>
-              ))}
+              {artist.eventTypeIds.map((typeId) => {
+                const eventType = eventTypes.find((et) => et.id === typeId);
+                if (!eventType) return null;
+                return (
+                  <option
+                    key={typeId}
+                    value={typeId}
+                    className="flex items-center gap-2"
+                  >
+                    {eventType.icon} {eventType.label[language]}
+                  </option>
+                );
+              })}
             </select>
           </div>
 

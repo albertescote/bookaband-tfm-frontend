@@ -9,7 +9,8 @@ export interface Booking {
   bandId: string;
   userId: string;
   status: BookingStatus;
-  date: Date;
+  initDate: Date;
+  endDate: Date;
   name: string;
   country: string;
   city: string;

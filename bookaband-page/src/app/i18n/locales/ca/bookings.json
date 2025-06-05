@@ -1,7 +1,7 @@
 {
   "createBooking": "Crear Reserva",
   "bookingDetails": "Detalls de la Reserva",
-  "bookingDetailsDesc": "Si us plau, completa els detalls de la teva sol·licitud de reserva",
+  "bookingDetailsDesc": "Si us plau, completa els detalls de la teva reserva",
   "date": "Data",
   "eventName": "Nom de l'Esdeveniment",
   "eventNamePlaceholder": "Introdueix el nom de l'esdeveniment",
@@ -13,15 +13,18 @@
   "venuePlaceholder": "Introdueix el nom del lloc",
   "postalCode": "Codi Postal",
   "postalCodePlaceholder": "Introdueix el codi postal",
-  "addressLine1": "Adreça Línia 1",
+  "addressLine1": "Adreça",
   "addressLine1Placeholder": "Introdueix l'adreça",
-  "addressLine2": "Adreça Línia 2 (Opcional)",
+  "addressLine2": "Adreça (línia 2, opcional)",
   "addressLine2Placeholder": "Introdueix detalls addicionals de l'adreça",
   "eventType": "Tipus d'Esdeveniment",
   "selectEventType": "Selecciona el tipus d'esdeveniment",
   "publicEvent": "Aquest és un esdeveniment públic",
+  "description": "Descripció",
+  "descriptionPlaceholder": "Explica'ns més sobre el teu esdeveniment...",
   "cancel": "Cancel·lar",
   "creating": "Creant...",
+  "messageBand": "Enviar missatge a l'artista",
   "errorScreen": {
     "title": "Alguna cosa ha anat malament",
     "description": "No hem pogut crear la teva reserva. Si us plau, torna-ho a provar més tard.",
@@ -48,5 +51,19 @@
   "error-loading": "Error en carregar la reserva",
   "created-at": "Creada el",
   "your-bookings": "Les teves reserves",
-  "no-bookings": "Encara no tens cap reserva"
+  "no-bookings": "Encara no tens cap reserva",
+  "initDate": "Data d'inici",
+  "endDate": "Data de fi",
+  "initTime": "Hora d'inici",
+  "endTime": "Hora de fi",
+  "validation": {
+    "required": "Aquest camp és obligatori",
+    "endDateAfterStart": "La data de finalització ha de ser posterior a la data d'inici",
+    "minDuration": "L'actuació ha de durar almenys 5 minuts",
+    "futureDate": "No es poden reservar dates passades"
+  },
+  "hour": "Hora",
+  "minute": "Minut",
+  "selected": "Seleccionat",
+  "done": "Fet"
 }

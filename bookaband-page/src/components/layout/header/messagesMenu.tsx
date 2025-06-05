@@ -125,7 +125,7 @@ export default function MessagesMenu({ language }: { language: string }) {
                       }}
                       className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 hover:bg-[#15b7b9]/5"
                     >
-                      {getAvatar(45, 45, chat.band.imageUrl, chat.band.name)}
+                      {getAvatar(12, chat.band.imageUrl, chat.band.name)}
                       <div className="min-w-0 flex-1">
                         <div className="mb-1 flex items-center justify-between">
                           <span className="truncate text-sm font-medium text-gray-900">

@@ -20,12 +20,12 @@ import {
 } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
-import { getBandViewById } from '@/service/backend/band/service/band.service';
 import { Spinner } from '@/components/shared/spinner';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
+import { fetchArtistById } from '@/service/backend/artist/service/artist.service';
 
 interface ChatProps {
   language: string;
@@ -64,7 +64,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
       getUserInfo().catch((err: Error) => {
         throw err;
       }),
-      getBandViewById(bandId).catch((err: Error) => {
+      fetchArtistById(bandId).catch((err: Error) => {
         throw err;
       }),
     ]);
@@ -73,7 +73,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
       setError(t('failed-to-get-user'));
       return;
     }
-    if (!band) {
+    if (!band || 'error' in band) {
       setError(t('band-not-found'));
       return;
     }
@@ -326,7 +326,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
               <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                   {/* Back button removed as we're using the unified layout */}
-                  {getAvatar(48, 48, imageUrl, displayName)}
+                  {getAvatar(12, imageUrl, displayName)}
                   <div>
                     <h2 className="font-medium">{displayName}</h2>
                   </div>
@@ -409,7 +409,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
 
                             {!isSender && showAvatar && (
                               <div className="order-0 mr-2">
-                                {getAvatar(32, 32, imageUrl, displayName)}
+                                {getAvatar(12, imageUrl, displayName)}
                               </div>
                             )}
                           </div>

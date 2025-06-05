@@ -1,7 +1,7 @@
 {
   "createBooking": "Crear Reserva",
   "bookingDetails": "Detalles de la Reserva",
-  "bookingDetailsDesc": "Por favor, completa los detalles para tu reserva de evento",
+  "bookingDetailsDesc": "Por favor, completa los detalles de tu reserva",
   "date": "Fecha",
   "eventName": "Nombre del Evento",
   "eventNamePlaceholder": "Introduce el nombre del evento",
@@ -13,18 +13,21 @@
   "venuePlaceholder": "Introduce el nombre del lugar",
   "postalCode": "Código Postal",
   "postalCodePlaceholder": "Introduce el código postal",
-  "addressLine1": "Dirección Línea 1",
+  "addressLine1": "Dirección",
   "addressLine1Placeholder": "Introduce la dirección",
-  "addressLine2": "Dirección Línea 2 (Opcional)",
+  "addressLine2": "Dirección (línea 2, opcional)",
   "addressLine2Placeholder": "Introduce detalles adicionales de la dirección",
   "eventType": "Tipo de Evento",
   "selectEventType": "Selecciona el tipo de evento",
   "publicEvent": "Este es un evento público",
+  "description": "Descripción",
+  "descriptionPlaceholder": "Cuéntanos más sobre tu evento...",
   "cancel": "Cancelar",
   "creating": "Creando...",
+  "messageBand": "Enviar mensaje al artista",
   "errorScreen": {
     "title": "Algo salió mal",
-    "description": "No pudimos crear tu reserva. Por favor, inténtalo más tarde.",
+    "description": "No pudimos crear tu reserva. Por favor, inténtalo de nuevo más tarde.",
     "retry": "Reintentar",
     "noArtist": "Artista no encontrado"
   },
@@ -48,5 +51,19 @@
   "error-loading": "Error al cargar la reserva",
   "created-at": "Creada el",
   "your-bookings": "Tus reservas",
-  "no-bookings": "Aún no tienes ninguna reserva"
+  "no-bookings": "Aún no tienes ninguna reserva",
+  "initDate": "Fecha de inicio",
+  "endDate": "Fecha de fin",
+  "initTime": "Hora de inicio",
+  "endTime": "Hora de fin",
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "endDateAfterStart": "La fecha de fin debe ser posterior a la fecha de inicio",
+    "minDuration": "La actuación debe durar al menos 5 minutos",
+    "futureDate": "No se pueden reservar fechas pasadas"
+  },
+  "hour": "Hora",
+  "minute": "Minuto",
+  "selected": "Seleccionado",
+  "done": "Hecho"
 }

@@ -14,7 +14,7 @@ export default async function ArtistProfilePage({
   searchParams,
 }: {
   params: { lng: string; id: string };
-  searchParams?: { location?: string; date?: string };
+  searchParams?: { location: string; date: string };
 }) {
   const { t } = await getTranslation(params.lng, 'artists');
 

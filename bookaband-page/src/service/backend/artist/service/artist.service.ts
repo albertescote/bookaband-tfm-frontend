@@ -6,6 +6,7 @@ import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem
 import { FeaturedBand } from '@/service/backend/artist/domain/featuredBand';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { BackendError } from '@/service/backend/shared/domain/backendError';
+import { Artist } from '@/service/backend/artist/domain/artist';
 
 export interface ArtistsDetailsFilteredResponse {
   bandCatalogItems: BandCatalogItem[];
@@ -58,6 +59,16 @@ export async function fetchArtistDetailsById(
 ): Promise<ArtistDetails | BackendError> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance.get(`/bands/${id}/profile`).then((res) => res.data),
+  ).catch((error) => {
+    return error.response.data as BackendError;
+  });
+}
+
+export async function fetchArtistById(
+  id: string,
+): Promise<Artist | BackendError> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance.get(`/bands/${id}`).then((res) => res.data),
   ).catch((error) => {
     return error.response.data as BackendError;
   });
