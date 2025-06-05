@@ -8,6 +8,7 @@ import {
   MapPin,
   MessageSquare,
   Music,
+  AlertTriangle,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -33,6 +34,7 @@ export default function BookingDetails({
   const router = useRouter();
   const [booking, setBooking] = useState<BookingSummary>(initialBooking);
   const [cancelling, setCancelling] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const handleCancel = async () => {
     try {
@@ -42,6 +44,7 @@ export default function BookingDetails({
       if (updatedBooking) {
         setBooking(updatedBooking);
       }
+      setShowCancelModal(false);
     } catch (error) {
       console.error('Error cancelling booking:', error);
     } finally {
@@ -212,7 +215,7 @@ export default function BookingDetails({
           <div className="flex justify-end gap-4 md:col-span-2">
             <Button
               variant="outline"
-              onClick={handleCancel}
+              onClick={() => setShowCancelModal(true)}
               disabled={cancelling}
               className="px-6 text-red-600 hover:bg-red-50 hover:text-red-700"
             >
@@ -228,6 +231,49 @@ export default function BookingDetails({
           </div>
         )}
       </div>
+
+      {/* Cancel Confirmation Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+            <div className="mb-4 flex items-center justify-center">
+              <div className="rounded-full bg-red-100 p-3">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+            <h3 className="mb-2 text-center text-lg font-semibold text-gray-900">
+              {t('confirmCancel')}
+            </h3>
+            <p className="mb-6 text-center text-gray-600">
+              {t('cancelConfirmationMessage')}
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowCancelModal(false)}
+                className="px-4"
+              >
+                {t('no')}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                disabled={cancelling}
+                className="px-4 text-red-600 hover:bg-red-50 hover:text-red-700"
+              >
+                {cancelling ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-red-600 border-t-transparent"></div>
+                    {t('cancelling')}
+                  </div>
+                ) : (
+                  t('yes')
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

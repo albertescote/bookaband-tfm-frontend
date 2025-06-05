@@ -113,9 +113,9 @@ export function ChatLayout({
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] bg-white">
+    <div className="flex h-[calc(100vh-5rem)] overflow-hidden bg-white">
       <div
-        className={`fixed z-20 h-full transition-all duration-300 ease-in-out md:relative ${
+        className={`fixed z-20 h-[calc(100vh-5rem)] transition-all duration-300 ease-in-out md:relative ${
           sidebarOpen
             ? 'w-96 translate-x-0'
             : 'w-0 -translate-x-full md:w-16 md:translate-x-0'
@@ -178,7 +178,7 @@ export function ChatLayout({
       )}
 
       <div
-        className={`flex-1 transition-all duration-300 ${isMobile && sidebarOpen ? 'opacity-30' : ''}`}
+        className={`flex-1 overflow-hidden transition-all duration-300 ${isMobile && sidebarOpen ? 'opacity-30' : ''}`}
       >
         {renderMainContent()}
       </div>

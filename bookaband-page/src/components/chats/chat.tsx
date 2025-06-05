@@ -351,9 +351,6 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
                     <p className="text-center text-gray-500">
                       {t('no-messages-yet')}
                     </p>
-                    <p className="text-center text-sm text-gray-400">
-                      {t('start-conversation')}
-                    </p>
                   </div>
                 ) : (
                   messageGroups.map((group, groupIndex) => (
@@ -422,7 +419,7 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
               </div>
 
               {/* Chat Input */}
-              <div className="border-t bg-white p-4">
+              <div className="border-t bg-white p-4 pb-8">
                 <div className="flex items-center gap-2">
                   <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
                     <Paperclip size={22} />

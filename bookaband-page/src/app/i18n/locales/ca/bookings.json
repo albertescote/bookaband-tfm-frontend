@@ -25,6 +25,10 @@
   "cancel": "Cancel·lar",
   "creating": "Creant...",
   "messageBand": "Enviar missatge a l'artista",
+  "confirmCancel": "Cancel·lar Reserva",
+  "cancelConfirmationMessage": "Estàs segur que vols cancel·lar aquesta reserva? Aquesta acció no es pot desfer.",
+  "yes": "Sí, Cancel·lar",
+  "no": "No, Mantenir",
   "errorScreen": {
     "title": "Alguna cosa ha anat malament",
     "description": "No hem pogut crear la teva reserva. Si us plau, torna-ho a provar més tard.",

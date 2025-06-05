@@ -25,6 +25,10 @@
   "cancel": "Cancelar",
   "creating": "Creando...",
   "messageBand": "Enviar mensaje al artista",
+  "confirmCancel": "Cancelar Reserva",
+  "cancelConfirmationMessage": "¿Estás seguro de que quieres cancelar esta reserva? Esta acción no se puede deshacer.",
+  "yes": "Sí, Cancelar",
+  "no": "No, Mantener",
   "errorScreen": {
     "title": "Algo salió mal",
     "description": "No pudimos crear tu reserva. Por favor, inténtalo de nuevo más tarde.",
