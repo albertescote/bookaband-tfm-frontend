@@ -59,25 +59,34 @@ export default function BookingsList({
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>
-                          {new Date(booking.initDate).toLocaleDateString(language, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}
+                          {new Date(booking.initDate).toLocaleDateString(
+                            language,
+                            {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            },
+                          )}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         <span>
-                          {new Date(booking.initDate).toLocaleTimeString(language, {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}{' '}
+                          {new Date(booking.initDate).toLocaleTimeString(
+                            language,
+                            {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            },
+                          )}{' '}
                           -{' '}
-                          {new Date(booking.endDate).toLocaleTimeString(language, {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
+                          {new Date(booking.endDate).toLocaleTimeString(
+                            language,
+                            {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            },
+                          )}
                         </span>
                       </div>
                     </div>

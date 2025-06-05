@@ -123,7 +123,7 @@
     min-width: 280px;
     padding: 1rem;
   }
-  
+
   .react-datepicker__day,
   .react-datepicker__day-name {
     width: 2rem;
@@ -131,7 +131,7 @@
     line-height: 2rem;
     font-size: 0.875rem;
   }
-  
+
   .react-datepicker__current-month {
     font-size: 1rem;
     margin-bottom: 0.75rem;
@@ -167,4 +167,4 @@
     transform: translate(-50%, -50%) !important;
     margin: 0 !important;
   }
-} 
+}

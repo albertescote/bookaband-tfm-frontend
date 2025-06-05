@@ -128,7 +128,7 @@ export default function MessagesMenu({ language }: { language: string }) {
           <span className="text-xs font-medium text-[#15b7b9]">
             {t('new-booking')}
           </span>
-          <span className="truncate text-xs text-gray-900 font-medium">
+          <span className="truncate text-xs font-medium text-gray-900">
             {lastMessage.metadata.eventName}
           </span>
           <span
