@@ -8,7 +8,7 @@ import {
   getAllBandBookings,
   getAllUserBookings,
 } from '@/service/backend/booking/service/booking.service';
-import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
+import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 import { getAvatar } from '@/components/shared/avatar';
 
 export function BookingsList({
@@ -25,7 +25,7 @@ export function BookingsList({
   };
 }) {
   const { t } = useTranslation(language, 'booking');
-  const [bookings, setBookings] = useState<BookingWithDetails[]>([]);
+  const [bookings, setBookings] = useState<BookingSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -34,7 +34,7 @@ export function BookingsList({
     async function fetchBookings() {
       try {
         setLoading(true);
-        let bookings: BookingWithDetails[] | undefined = [];
+        let bookings: BookingSummary[] | undefined = [];
         if (bandOptions?.id) {
           bookings = await getAllBandBookings(bandOptions.id);
         } else if (userId) {
