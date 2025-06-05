@@ -6,7 +6,7 @@ export enum BookingStatus {
 
 export interface Booking {
   id: string;
-  offerId: string;
+  bandId: string;
   userId: string;
   status: BookingStatus;
   date: Date;

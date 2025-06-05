@@ -7,11 +7,14 @@ import { fetchEventTypes } from '@/service/backend/filters/service/eventType.ser
 import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 import Error from '@/components/shared/error';
 import { getTranslation } from '@/app/i18n';
+import { SearchSummary } from '@/components/artists/searchSummary';
 
 export default async function ArtistProfilePage({
   params,
+  searchParams,
 }: {
   params: { lng: string; id: string };
+  searchParams?: { location?: string; date?: string };
 }) {
   const { t } = await getTranslation(params.lng, 'artists');
 
@@ -38,8 +41,17 @@ export default async function ArtistProfilePage({
     );
   }
 
+  const hasSearchParams = searchParams?.location || searchParams?.date;
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
+      {hasSearchParams && (
+        <SearchSummary
+          location={searchParams.location}
+          date={searchParams.date}
+          language={params.lng}
+        />
+      )}
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="w-full md:w-1/4">
           <ArtistSidebar
@@ -47,6 +59,7 @@ export default async function ArtistProfilePage({
             language={params.lng}
             musicalStyles={musicalStyles}
             eventTypes={eventTypes}
+            searchParams={hasSearchParams ? searchParams : undefined}
           />
         </div>
         <div className="flex-1">

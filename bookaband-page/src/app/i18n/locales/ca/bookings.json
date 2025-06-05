@@ -1,0 +1,22 @@
+{
+  "createBooking": "Crear Reserva",
+  "bookingDetails": "Detalls de la Reserva",
+  "bookingDetailsDesc": "Si us plau, completa els detalls de la teva sol·licitud de reserva",
+  "date": "Data",
+  "startTime": "Hora d'Inici",
+  "endTime": "Hora de Fi",
+  "location": "Ubicació",
+  "locationPlaceholder": "Introdueix la ubicació de l'esdeveniment",
+  "eventType": "Tipus d'Esdeveniment",
+  "selectEventType": "Selecciona un tipus d'esdeveniment",
+  "description": "Descripció",
+  "descriptionPlaceholder": "Explica'ns més sobre el teu esdeveniment...",
+  "cancel": "Cancel·lar",
+  "creating": "Creant...",
+  "errorScreen": {
+    "title": "Error",
+    "description": "Alguna cosa ha anat malament. Si us plau, torna-ho a provar.",
+    "noArtist": "No s'ha seleccionat cap artista. Si us plau, selecciona un artista primer.",
+    "retry": "Tornar a Intentar"
+  }
+} 

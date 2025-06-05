@@ -1,0 +1,32 @@
+{
+  "createBooking": "Create Booking",
+  "bookingDetails": "Booking Details",
+  "bookingDetailsDesc": "Please fill in the details for your event booking",
+  "date": "Date",
+  "eventName": "Event Name",
+  "eventNamePlaceholder": "Enter event name",
+  "country": "Country",
+  "countryPlaceholder": "Enter country",
+  "city": "City",
+  "cityPlaceholder": "Enter city",
+  "venue": "Venue",
+  "venuePlaceholder": "Enter venue name",
+  "postalCode": "Postal Code",
+  "postalCodePlaceholder": "Enter postal code",
+  "addressLine1": "Address Line 1",
+  "addressLine1Placeholder": "Enter street address",
+  "addressLine2": "Address Line 2 (Optional)",
+  "addressLine2Placeholder": "Enter additional address details",
+  "eventType": "Event Type",
+  "selectEventType": "Select event type",
+  "publicEvent": "This is a public event",
+  "description": "Description",
+  "descriptionPlaceholder": "Tell us more about your event...",
+  "cancel": "Cancel",
+  "creating": "Creating...",
+  "errorScreen": {
+    "title": "Something went wrong",
+    "description": "We couldn't create your booking. Please try again later.",
+    "retry": "Retry"
+  }
+} 

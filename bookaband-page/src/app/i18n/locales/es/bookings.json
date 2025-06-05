@@ -1,0 +1,30 @@
+{
+  "createBooking": "Crear Reserva",
+  "bookingDetails": "Detalles de la Reserva",
+  "bookingDetailsDesc": "Por favor, completa los detalles para tu reserva de evento",
+  "date": "Fecha",
+  "eventName": "Nombre del Evento",
+  "eventNamePlaceholder": "Introduce el nombre del evento",
+  "country": "País",
+  "countryPlaceholder": "Introduce el país",
+  "city": "Ciudad",
+  "cityPlaceholder": "Introduce la ciudad",
+  "venue": "Lugar",
+  "venuePlaceholder": "Introduce el nombre del lugar",
+  "postalCode": "Código Postal",
+  "postalCodePlaceholder": "Introduce el código postal",
+  "addressLine1": "Dirección Línea 1",
+  "addressLine1Placeholder": "Introduce la dirección",
+  "addressLine2": "Dirección Línea 2 (Opcional)",
+  "addressLine2Placeholder": "Introduce detalles adicionales de la dirección",
+  "eventType": "Tipo de Evento",
+  "selectEventType": "Selecciona el tipo de evento",
+  "publicEvent": "Este es un evento público",
+  "cancel": "Cancelar",
+  "creating": "Creando...",
+  "errorScreen": {
+    "title": "Algo salió mal",
+    "description": "No pudimos crear tu reserva. Por favor, inténtalo más tarde.",
+    "retry": "Reintentar"
+  }
+} 

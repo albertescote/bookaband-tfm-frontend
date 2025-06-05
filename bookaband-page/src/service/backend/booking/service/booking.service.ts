@@ -4,17 +4,25 @@ import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWith
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 
-export async function createBooking(request: {
-  offerId?: string;
-  date: Date;
-}): Promise<Booking | undefined> {
+export interface CreateBookingRequest {
+  bandId: string;
+  date: string;
+  name: string;
+  country: string;
+  city: string;
+  venue: string;
+  postalCode: string;
+  addressLine1: string;
+  addressLine2?: string;
+  eventTypeId?: string;
+  isPublic?: boolean;
+}
+
+export async function createBooking(
+  request: CreateBookingRequest,
+): Promise<Booking | undefined> {
   return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .post('/bookings', {
-        offerId: request.offerId,
-        date: request.date.toISOString(),
-      })
-      .then((res) => res.data),
+    authorizedAxiosInstance.post('/bookings', request).then((res) => res.data),
   );
 }
 

@@ -11,6 +11,7 @@ interface ArtistsGridProps {
   eventTypes: EventType[];
   language: string;
   hasSearched?: boolean;
+  searchParams?: { location?: string; date?: string };
 }
 
 const ArtistsGrid: React.FC<ArtistsGridProps> = ({
@@ -19,6 +20,7 @@ const ArtistsGrid: React.FC<ArtistsGridProps> = ({
   eventTypes,
   language,
   hasSearched = false,
+  searchParams,
 }) => {
   if (!artists || artists.length === 0) {
     return (
@@ -40,6 +42,7 @@ const ArtistsGrid: React.FC<ArtistsGridProps> = ({
           musicalStyles={musicalStyles}
           eventTypes={eventTypes}
           language={language}
+          searchParams={searchParams}
         />
       ))}
     </div>

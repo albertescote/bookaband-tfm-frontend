@@ -12,6 +12,7 @@ interface ArtistCardProps {
   musicalStyles: MusicalStyle[];
   eventTypes: EventType[];
   language: string;
+  searchParams?: { location?: string; date?: string };
 }
 
 const ArtistCard: React.FC<ArtistCardProps> = ({
@@ -19,6 +20,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
   musicalStyles,
   eventTypes,
   language,
+  searchParams,
 }) => {
   const { t } = useTranslation(language, 'find-artists');
   const router = useRouter();
@@ -152,7 +154,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
 
           <button
             onClick={() => {
-              router.push(`/${language}/artists/${artist.id}`);
+              const url = searchParams
+                ? `/${language}/artists/${artist.id}?location=${searchParams.location}&date=${searchParams.date}`
+                : `/${language}/artists/${artist.id}`;
+              router.push(url);
             }}
             className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20"
           >

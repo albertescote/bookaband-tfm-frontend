@@ -413,6 +413,7 @@ export default function FindArtistsContent({
             eventTypes={eventTypes}
             language={language}
             hasSearched={hasSearched}
+            searchParams={location || date ? { location, date } : undefined}
           />
 
           {/* Load More Artists Button */}

@@ -34,5 +34,6 @@
     "title": "Something went wrong",
     "description": "We couldn't load the artist profile. Please try again later.",
     "retry": "Retry"
-  }
+  },
+  "searchSummary": "Search Summary"
 }

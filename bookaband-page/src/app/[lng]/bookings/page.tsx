@@ -1,28 +1,45 @@
-import { Role } from '@/service/backend/user/domain/role';
-import { getUserInfo } from '@/service/backend/user/service/user.service';
-import { SelectBand } from '@/components/booking/selectBand';
-import { BookingsList } from '@/components/booking/bookingsList';
+import { getTranslation } from '@/app/i18n';
+import { fetchArtistDetailsById } from '@/service/backend/artist/service/artist.service';
+import { BookingForm } from '@/components/bookings/bookingForm';
+import Error from '@/components/shared/error';
 
-export const dynamic = 'force-dynamic';
+export default async function BookingPage({
+  params,
+  searchParams,
+}: {
+  params: { lng: string };
+  searchParams: { band_id: string };
+}) {
+  const { t } = await getTranslation(params.lng, 'bookings');
 
-interface PageParams {
-  params: {
-    lng: string;
-  };
-}
+  if (!searchParams.band_id) {
+    return (
+      <Error
+        title={t('errorScreen.title')}
+        description={t('errorScreen.noArtist')}
+        buttonText={t('errorScreen.retry')}
+      />
+    );
+  }
 
-export default async function Page({ params: { lng } }: PageParams) {
-  const user = await getUserInfo();
+  const artist = await fetchArtistDetailsById(searchParams.band_id);
+
+  if (!artist || 'error' in artist) {
+    return (
+      <Error
+        title={t('errorScreen.title')}
+        description={t('errorScreen.description')}
+        buttonText={t('errorScreen.retry')}
+      />
+    );
+  }
 
   return (
-    <div className="flex min-h-[75vh] items-center justify-center bg-gradient-to-r from-[#e6f0ff] to-[#e6f8ff] p-4 py-12">
-      <div className="w-full min-w-[90vh] max-w-md transform rounded-2xl bg-white p-8 shadow-lg">
-        {user?.role === Role.Musician ? (
-          <SelectBand language={lng}></SelectBand>
-        ) : (
-          <BookingsList language={lng} userId={user?.id}></BookingsList>
-        )}
-      </div>
+    <div className="mx-auto max-w-4xl px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold text-gray-900">
+        {t('createBooking')}
+      </h1>
+      <BookingForm artist={artist} language={params.lng} />
     </div>
   );
 }
