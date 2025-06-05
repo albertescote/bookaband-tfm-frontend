@@ -1,4 +1,5 @@
 import { getRandomColor } from '@/lib/utils';
+import Image from 'next/image';
 
 export const getAvatar = (
   height: number,
@@ -10,11 +11,12 @@ export const getAvatar = (
   const fontSize = size > 40 ? 'text-xl' : 'text-md';
 
   return imageUrl ? (
-    <img
+    <Image
       src={imageUrl}
-      alt={displayName}
+      alt={displayName ?? 'User Profile Image'}
+      height={height}
+      width={width}
       className="rounded-full object-cover"
-      style={{ height: `${height}px`, width: `${width}px` }}
     />
   ) : (
     <div
