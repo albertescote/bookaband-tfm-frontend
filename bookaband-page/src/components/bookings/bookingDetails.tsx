@@ -22,7 +22,7 @@ export default function BookingDetails({
   eventTypes: EventType[];
   initialBooking: BookingSummary;
 }) {
-  const { t } = useTranslation(language, 'booking');
+  const { t } = useTranslation(language, 'bookings');
   const router = useRouter();
   const [booking, setBooking] = useState<BookingSummary>(initialBooking);
   const [cancelling, setCancelling] = useState(false);

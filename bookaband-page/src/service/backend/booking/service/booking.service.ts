@@ -54,22 +54,6 @@ export async function getAllBandBookings(
   );
 }
 
-export async function acceptBooking(id?: string): Promise<Booking> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .put(`/bookings/${id}/accept`)
-      .then((res) => res.data),
-  );
-}
-
-export async function declineBooking(id?: string): Promise<Booking> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .put(`/bookings/${id}/decline`)
-      .then((res) => res.data),
-  );
-}
-
 export async function cancelBooking(
   bookingId: string,
 ): Promise<BookingSummary> {

@@ -25,6 +25,28 @@
   "errorScreen": {
     "title": "Alguna cosa ha anat malament",
     "description": "No hem pogut crear la teva reserva. Si us plau, torna-ho a provar més tard.",
-    "retry": "Tornar a intentar"
-  }
-} 
+    "retry": "Tornar a intentar",
+    "noArtist": "Artista no trobat"
+  },
+  "time": "Hora",
+  "address": "Adreça",
+  "bandInfo": "Informació de la Banda",
+  "placeInfo": "Informació del Lloc",
+  "eventDetails": "Detalls de l'Esdeveniment",
+  "performer": "Artista",
+  "accept": "Acceptar",
+  "decline": "Rebutjar",
+  "cancelling": "Cancel·lant...",
+  "status": {
+    "pending": "Pendent",
+    "accepted": "Acceptada",
+    "declined": "Rebutjada",
+    "cancelled": "Cancel·lada",
+    "canceled": "Cancel·lada"
+  },
+  "booking-not-found": "Reserva no trobada",
+  "error-loading": "Error en carregar la reserva",
+  "created-at": "Creada el",
+  "your-bookings": "Les teves reserves",
+  "no-bookings": "Encara no tens cap reserva"
+}

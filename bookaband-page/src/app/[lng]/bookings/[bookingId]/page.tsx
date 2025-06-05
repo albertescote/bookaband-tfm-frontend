@@ -1,5 +1,5 @@
 import { getTranslation } from '@/app/i18n';
-import BookingDetails from '@/components/booking/bookingDetails';
+import BookingDetails from '@/components/bookings/bookingDetails';
 import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 import { getBookingById } from '@/service/backend/booking/service/booking.service';
 
@@ -13,7 +13,7 @@ interface PageParams {
 export default async function BookingPage({
   params: { lng, bookingId },
 }: PageParams) {
-  const { t } = await getTranslation(lng, 'booking');
+  const { t } = await getTranslation(lng, 'bookings');
   const [eventTypes, booking] = await Promise.all([
     fetchEventTypes(),
     getBookingById(bookingId),
