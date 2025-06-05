@@ -1,53 +1,58 @@
 import { getTranslation } from '@/app/i18n';
-import { fetchArtistDetailsById } from '@/service/backend/artist/service/artist.service';
+import { getAllUserBookings } from '@/service/backend/booking/service/booking.service';
 import { BookingForm } from '@/components/bookings/bookingForm';
 import Error from '@/components/shared/error';
+import { fetchArtistDetailsById } from '@/service/backend/artist/service/artist.service';
 import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
+import BookingsList from '@/components/bookings/bookingsList';
 
-export default async function BookingPage({
-  params,
+interface PageParams {
+  params: {
+    lng: string;
+  };
+  searchParams: {
+    band_id?: string;
+  };
+}
+
+export default async function BookingsPage({
+  params: { lng },
   searchParams,
-}: {
-  params: { lng: string };
-  searchParams: { band_id: string };
-}) {
-  const { t } = await getTranslation(params.lng, 'bookings');
+}: PageParams) {
+  const { t } = await getTranslation(lng, 'bookings');
+  const showCreateForm = searchParams.band_id !== undefined;
 
-  if (!searchParams.band_id) {
+  if (showCreateForm) {
+    const [artist, eventTypes] = await Promise.all([
+      fetchArtistDetailsById(searchParams.band_id!),
+      fetchEventTypes(),
+    ]);
+
+    if (!artist || 'error' in artist || !eventTypes || 'error' in eventTypes) {
+      return (
+        <Error
+          title={t('errorScreen.title')}
+          description={t('errorScreen.description')}
+          buttonText={t('errorScreen.retry')}
+        />
+      );
+    }
+
     return (
-      <Error
-        title={t('errorScreen.title')}
-        description={t('errorScreen.noArtist')}
-        buttonText={t('errorScreen.retry')}
-      />
+      <div className="mx-auto max-w-4xl px-4 py-8">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">
+          {t('createBooking')}
+        </h1>
+        <BookingForm artist={artist} language={lng} eventTypes={eventTypes} />
+      </div>
     );
   }
 
-  const [artist, eventTypes] = await Promise.all([
-    fetchArtistDetailsById(searchParams.band_id),
-    fetchEventTypes(),
-  ]);
-
-  if (!artist || 'error' in artist || !eventTypes || 'error' in eventTypes) {
-    return (
-      <Error
-        title={t('errorScreen.title')}
-        description={t('errorScreen.description')}
-        buttonText={t('errorScreen.retry')}
-      />
-    );
-  }
+  const bookings = await getAllUserBookings();
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">
-        {t('createBooking')}
-      </h1>
-      <BookingForm
-        artist={artist}
-        language={params.lng}
-        eventTypes={eventTypes}
-      />
+      <BookingsList language={lng} bookings={bookings || []} />
     </div>
   );
 }

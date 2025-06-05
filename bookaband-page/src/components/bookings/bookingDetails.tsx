@@ -56,7 +56,7 @@ export default function BookingDetails({
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
-            onClick={() => router.back()}
+            onClick={() => router.push(`/${language}/bookings`)}
             className="h-8 w-8 p-0"
           >
             <ArrowLeft className="h-5 w-5" />

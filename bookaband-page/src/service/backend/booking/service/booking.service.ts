@@ -44,16 +44,6 @@ export async function getAllUserBookings(): Promise<
   );
 }
 
-export async function getAllBandBookings(
-  bandId: string,
-): Promise<BookingSummary[] | undefined> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .get(`/bookings/band/${bandId}`)
-      .then((res) => res.data),
-  );
-}
-
 export async function cancelBooking(
   bookingId: string,
 ): Promise<BookingSummary> {
