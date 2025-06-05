@@ -2,6 +2,7 @@ import { getTranslation } from '@/app/i18n';
 import { fetchArtistDetailsById } from '@/service/backend/artist/service/artist.service';
 import { BookingForm } from '@/components/bookings/bookingForm';
 import Error from '@/components/shared/error';
+import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 
 export default async function BookingPage({
   params,
@@ -22,9 +23,12 @@ export default async function BookingPage({
     );
   }
 
-  const artist = await fetchArtistDetailsById(searchParams.band_id);
+  const [artist, eventTypes] = await Promise.all([
+    fetchArtistDetailsById(searchParams.band_id),
+    fetchEventTypes(),
+  ]);
 
-  if (!artist || 'error' in artist) {
+  if (!artist || 'error' in artist || !eventTypes || 'error' in eventTypes) {
     return (
       <Error
         title={t('errorScreen.title')}
@@ -39,7 +43,11 @@ export default async function BookingPage({
       <h1 className="mb-8 text-3xl font-bold text-gray-900">
         {t('createBooking')}
       </h1>
-      <BookingForm artist={artist} language={params.lng} />
+      <BookingForm
+        artist={artist}
+        language={params.lng}
+        eventTypes={eventTypes}
+      />
     </div>
   );
 }

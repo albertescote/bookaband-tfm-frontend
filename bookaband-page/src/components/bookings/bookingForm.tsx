@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/shared/button';
@@ -8,15 +8,25 @@ import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
 import { useAuth } from '@/providers/authProvider';
 import { Calendar, MapPin } from 'lucide-react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './datepicker-custom.css';
+import { es } from 'date-fns/locale/es';
+import { enUS as en } from 'date-fns/locale/en-US';
+import { ca } from 'date-fns/locale/ca';
+import { EventType } from '@/service/backend/filters/domain/eventType';
 
 interface BookingFormProps {
   artist: ArtistDetails;
   language: string;
+  eventTypes: EventType[];
 }
 
-export function BookingForm({ artist, language }: BookingFormProps) {
+export function BookingForm({
+  artist,
+  language,
+  eventTypes,
+}: BookingFormProps) {
   const { t } = useTranslation(language, 'bookings');
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,13 +49,26 @@ export function BookingForm({ artist, language }: BookingFormProps) {
 
   useEffect(() => {
     const date = searchParams.get('date');
+    const location = searchParams.get('location');
+
     if (date) {
       const parsedDate = new Date(date);
       if (!isNaN(parsedDate.getTime())) {
         setFormData((prev) => ({ ...prev, date: parsedDate }));
       }
     }
+
+    if (location) {
+      setFormData((prev) => ({ ...prev, city: location }));
+    }
   }, [searchParams]);
+
+  // Register locales
+  useEffect(() => {
+    registerLocale('es', es);
+    registerLocale('en', en);
+    registerLocale('ca', ca);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +101,9 @@ export function BookingForm({ artist, language }: BookingFormProps) {
 
       router.push(`/${language}/bookings/${booking.id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('errorScreen.description'));
+      setError(
+        err instanceof Error ? err.message : t('errorScreen.description'),
+      );
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +116,9 @@ export function BookingForm({ artist, language }: BookingFormProps) {
           <h2 className="text-xl font-semibold text-gray-900">
             {t('bookingDetails')}
           </h2>
-          <p className="mt-1 text-sm text-gray-500">{t('bookingDetailsDesc')}</p>
+          <p className="mt-1 text-sm text-gray-500">
+            {t('bookingDetailsDesc')}
+          </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -107,10 +134,16 @@ export function BookingForm({ artist, language }: BookingFormProps) {
                   date && setFormData({ ...formData, date })
                 }
                 minDate={new Date()}
-                className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
-                dateFormat="P"
+                className="w-full rounded-lg border border-gray-300 p-2.5 pl-10 text-sm focus:border-[#15b7b9] focus:ring-[#15b7b9]"
+                dateFormat="dd/MM/yyyy"
+                calendarClassName="custom-calendar"
+                popperClassName="custom-popper"
+                popperPlacement="bottom-start"
+                locale={language === 'es' ? es : language === 'ca' ? ca : en}
+                showPopperArrow={false}
+                wrapperClassName="w-full"
               />
-              <Calendar className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             </div>
           </div>
 
@@ -249,8 +282,16 @@ export function BookingForm({ artist, language }: BookingFormProps) {
             >
               <option value="">{t('selectEventType')}</option>
               {artist.eventTypeIds.map((typeId) => (
-                <option key={typeId} value={typeId}>
-                  {typeId}
+                <option
+                  key={typeId}
+                  value={typeId}
+                  className="flex items-center gap-2"
+                >
+                  {eventTypes.find((eventType) => eventType.id === typeId).icon}{' '}
+                  {
+                    eventTypes.find((eventType) => eventType.id === typeId)
+                      .label[language]
+                  }
                 </option>
               ))}
             </select>
@@ -258,16 +299,26 @@ export function BookingForm({ artist, language }: BookingFormProps) {
 
           {/* Public Event Toggle */}
           <div className="md:col-span-2">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={formData.isPublic}
-                onChange={(e) =>
-                  setFormData({ ...formData, isPublic: e.target.checked })
-                }
-                className="h-4 w-4 rounded border-gray-300 text-[#15b7b9] focus:ring-[#15b7b9]"
-              />
-              <span className="text-sm text-gray-700">{t('publicEvent')}</span>
+            <label className="group flex cursor-pointer items-center space-x-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-[#15b7b9] hover:bg-gray-50">
+              <div className="relative flex h-5 w-5 items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={formData.isPublic}
+                  onChange={(e) =>
+                    setFormData({ ...formData, isPublic: e.target.checked })
+                  }
+                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border-2 border-gray-300 transition-all checked:border-[#15b7b9] checked:bg-[#15b7b9] hover:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                />
+                <svg
+                  className="pointer-events-none absolute h-3 w-3 scale-0 fill-white transition-transform peer-checked:scale-100"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium text-gray-700 group-hover:text-[#15b7b9]">
+                {t('publicEvent')}
+              </span>
             </label>
           </div>
         </div>
@@ -283,7 +334,7 @@ export function BookingForm({ artist, language }: BookingFormProps) {
         <Button
           type="button"
           variant="outline"
-          onClick={() => router.back()}
+          onClick={() => router.push(`/${language}/find-artists`)}
           className="px-6"
         >
           {t('cancel')}
@@ -298,4 +349,4 @@ export function BookingForm({ artist, language }: BookingFormProps) {
       </div>
     </form>
   );
-} 
+}

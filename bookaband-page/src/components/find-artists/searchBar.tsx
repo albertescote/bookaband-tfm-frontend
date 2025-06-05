@@ -5,12 +5,12 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
 import './autocomplete-custom.css';
-import { es } from 'date-fns/locale/es';
-import { ca } from 'date-fns/locale/ca';
+import { ca, enGB, es } from 'date-fns/locale';
 
 // Register the locales
 registerLocale('es', es);
 registerLocale('ca', ca);
+registerLocale('en', enGB);
 
 interface SearchBarProps {
   language: string;

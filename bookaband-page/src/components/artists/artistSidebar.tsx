@@ -28,11 +28,13 @@ export function ArtistSidebar({
   language,
   musicalStyles,
   eventTypes,
+  searchParams,
 }: {
   artist: ArtistDetails;
   language: string;
   musicalStyles: MusicalStyle[];
   eventTypes: EventType[];
+  searchParams?: { location?: string; date?: string };
 }) {
   const { t } = useTranslation(language, 'artists');
   const { user } = useAuth();
@@ -109,9 +111,10 @@ export function ArtistSidebar({
           <Button
             className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90"
             onClick={() => {
-              router.push(
-                `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}`,
-              );
+              const url = searchParams
+                ? `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}&date=${encodeURIComponent(searchParams.date)}&location=${encodeURIComponent(searchParams.location)}`
+                : `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}`;
+              router.push(url);
             }}
           >
             {t('hire')}
