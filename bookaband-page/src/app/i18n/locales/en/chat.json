@@ -25,7 +25,15 @@
   "chat-or-band-id-required": "Chat ID or Band ID is required",
   "errorScreen": {
     "title": "Something went wrong",
-    "description": "We couldn’t load your chats. Please try again later.",
+    "description": "We couldn't load your chats. Please try again later.",
     "retry": "Retry"
-  }
+  },
+  "new-booking": "New Booking",
+  "booking-status": "Status",
+  "booking-details": "Booking Details",
+  "pending": "Pending",
+  "accepted": "Accepted",
+  "declined": "Declined",
+  "cancelled": "Cancelled",
+  "viewDetails": "View Details"
 }

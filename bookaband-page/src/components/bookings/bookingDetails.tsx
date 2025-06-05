@@ -45,6 +45,8 @@ export default function BookingDetails({
         setBooking(updatedBooking);
       }
       setShowCancelModal(false);
+      // Refresh the page after successful cancellation
+      window.location.reload();
     } catch (error) {
       console.error('Error cancelling booking:', error);
     } finally {

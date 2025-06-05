@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { ChatMessage, useChat } from '@/hooks/useSocket';
+import { SocketMessage, useChat } from '@/hooks/useSocket';
 import {
   MessageSquareOff,
   MessageSquareWarning,
@@ -26,19 +26,27 @@ import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { fetchArtistById } from '@/service/backend/artist/service/artist.service';
+import BookingNotification from './bookingNotification';
 
 interface ChatProps {
   language: string;
+  userChats: ChatView[];
   setChats: React.Dispatch<React.SetStateAction<ChatView[]>>;
   chatId?: string;
   bandId?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
+const Chat: React.FC<ChatProps> = ({
+  language,
+  userChats,
+  setChats,
+  chatId,
+  bandId,
+}) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
-  const [allMessages, setAllMessages] = useState<ChatMessage[]>([]);
+  const [allMessages, setAllMessages] = useState<SocketMessage[]>([]);
   const [chat, setChat] = useState<ChatHistory | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [senderId, setSenderId] = useState<string>('');
@@ -95,10 +103,20 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
         setChat(chat);
       });
     } else if (bandId) {
-      createEmptyChat(bandId).then((chat) => {
-        setChat(chat);
-        setIsLoading(false);
-      });
+      const existingChat = userChats.find((chat) => chat.band.id === bandId);
+      console.log(existingChat);
+      if (existingChat) {
+        getChatById(existingChat.id).then((chat: ChatHistory | undefined) => {
+          console.log(chat);
+          setIsLoading(false);
+          setChat(chat);
+        });
+      } else {
+        createEmptyChat(bandId).then((chat) => {
+          setChat(chat);
+          setIsLoading(false);
+        });
+      }
     } else {
       setError(t('chat-or-band-id-required'));
     }
@@ -118,11 +136,20 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
 
       setAllMessages(
         chat.messages.map((msg) => ({
+          id: msg.id,
           chatId: chat.id,
           senderId: msg.senderId,
           recipientId: msg.recipientId,
-          message: msg.content,
-          timestamp: msg.timestamp,
+          message: msg.message ?? '',
+          timestamp: msg.timestamp ?? new Date(),
+          metadata: msg.metadata
+            ? {
+                ...msg.metadata,
+                eventDate: msg.metadata.eventDate
+                  ? new Date(msg.metadata.eventDate).toISOString()
+                  : undefined,
+              }
+            : undefined,
         })),
       );
     }
@@ -141,7 +168,8 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
           if (id) {
             chat!.id = id;
           }
-          const newMessage: ChatMessage = {
+          const newMessage: SocketMessage = {
+            id: crypto.randomUUID(),
             chatId: chat!.id,
             senderId,
             recipientId,
@@ -159,9 +187,9 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
                     ...c.messages,
                     {
                       id: crypto.randomUUID(),
-                      content: message,
                       senderId,
                       recipientId,
+                      message,
                       timestamp: new Date(),
                     },
                   ],
@@ -181,7 +209,8 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
           setShowEmojis(false);
         });
       } else {
-        const newMessage: ChatMessage = {
+        const newMessage: SocketMessage = {
+          id: crypto.randomUUID(),
           chatId: chat!.id,
           senderId,
           recipientId,
@@ -199,9 +228,9 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
                   ...c.messages,
                   {
                     id: crypto.randomUUID(),
-                    content: message,
                     senderId,
                     recipientId,
+                    message,
                     timestamp: new Date(),
                   },
                 ],
@@ -228,9 +257,9 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
   const groupMessagesByDate = () => {
     if (!allMessages.length) return [];
 
-    const groups: { date: string; messages: ChatMessage[] }[] = [];
+    const groups: { date: string; messages: SocketMessage[] }[] = [];
     let currentDate = '';
-    let currentGroup: ChatMessage[] = [];
+    let currentGroup: SocketMessage[] = [];
 
     const locale = language === 'es' ? es : language === 'ca' ? ca : undefined;
 
@@ -377,21 +406,40 @@ const Chat: React.FC<ChatProps> = ({ language, setChats, chatId, bandId }) => {
 
                         return (
                           <div
-                            key={index}
-                            className={`mb-4 flex ${isSender ? 'justify-end' : 'justify-start'}`}
+                            key={chatMessage.id}
+                            className={`flex items-end gap-2 ${
+                              isSender ? 'justify-end' : 'justify-start'
+                            }`}
                           >
-                            <div
-                              className={`max-w-[75%] ${isSender ? 'order-2' : 'order-1'}`}
-                            >
-                              <div
-                                className={`rounded-2xl px-4 py-2 ${
-                                  isSender
-                                    ? 'rounded-tr-none bg-[#15b7b9] text-white'
-                                    : 'rounded-tl-none bg-white text-gray-800'
-                                } shadow-sm`}
-                              >
-                                {chatMessage.message}
+                            {!isSender && showAvatar && (
+                              <div className="order-0 mr-2">
+                                {getAvatar(12, imageUrl, displayName)}
                               </div>
+                            )}
+
+                            <div
+                              className={`${
+                                chatMessage.metadata?.bookingId
+                                  ? 'w-full max-w-3xl'
+                                  : 'max-w-[75%]'
+                              } ${isSender ? 'order-2' : 'order-1'}`}
+                            >
+                              {chatMessage.metadata?.bookingId ? (
+                                <BookingNotification
+                                  metadata={chatMessage.metadata}
+                                  language={language}
+                                />
+                              ) : (
+                                <div
+                                  className={`rounded-2xl px-4 py-2 ${
+                                    isSender
+                                      ? 'rounded-tr-none bg-[#15b7b9] text-white'
+                                      : 'rounded-tl-none bg-white text-gray-800'
+                                  } shadow-sm`}
+                                >
+                                  {chatMessage.message}
+                                </div>
+                              )}
                               <div
                                 className={`mt-1 text-xs text-gray-500 ${isSender ? 'text-right' : 'text-left'}`}
                               >

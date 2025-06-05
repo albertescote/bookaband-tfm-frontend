@@ -1,6 +1,11 @@
 'use client';
 
-import { MessageSquareOff, MessageSquareText } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  MessageSquareOff,
+  MessageSquareText,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -9,6 +14,9 @@ import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { useAuth } from '@/providers/authProvider';
 import { toast } from 'react-hot-toast';
 import { getAvatar } from '@/components/shared/avatar';
+import { format } from 'date-fns';
+import { ca, es } from 'date-fns/locale';
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
 export default function MessagesMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -75,6 +83,72 @@ export default function MessagesMenu({ language }: { language: string }) {
     setMenuOpen(false);
   };
 
+  const getStatusColor = (status?: BookingStatus) => {
+    switch (status) {
+      case BookingStatus.PENDING:
+        return 'bg-yellow-100 text-yellow-800';
+      case BookingStatus.ACCEPTED:
+        return 'bg-green-100 text-green-800';
+      case BookingStatus.DECLINED:
+        return 'bg-red-100 text-red-800';
+      case BookingStatus.CANCELLED:
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusText = (status?: BookingStatus) => {
+    switch (status) {
+      case BookingStatus.PENDING:
+        return t('pending');
+      case BookingStatus.ACCEPTED:
+        return t('accepted');
+      case BookingStatus.DECLINED:
+        return t('declined');
+      case BookingStatus.CANCELLED:
+        return t('cancelled');
+      default:
+        return status;
+    }
+  };
+
+  const renderLastMessage = (chat: ChatView) => {
+    if (!chat.messages || chat.messages.length === 0) {
+      return (
+        <p className="truncate text-xs text-gray-500">{t('no-messages')}</p>
+      );
+    }
+
+    const lastMessage = chat.messages[chat.messages.length - 1];
+
+    if (lastMessage.metadata?.bookingId) {
+      return (
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-[#15b7b9]">
+            {t('new-booking')}
+          </span>
+          <span className="truncate text-xs text-gray-900 font-medium">
+            {lastMessage.metadata.eventName}
+          </span>
+          <span
+            className={`rounded-full px-2 py-0.5 text-xs font-medium ${getStatusColor(
+              lastMessage.metadata.bookingStatus,
+            )}`}
+          >
+            {getStatusText(lastMessage.metadata.bookingStatus)}
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <p className="truncate text-xs text-gray-500">
+        {lastMessage.message || t('no-messages')}
+      </p>
+    );
+  };
+
   return (
     <div ref={menuRef} className="relative">
       <button
@@ -107,11 +181,6 @@ export default function MessagesMenu({ language }: { language: string }) {
             {chats.length > 0 ? (
               <div className="divide-y divide-gray-100">
                 {chats.map((chat) => {
-                  const lastMessage =
-                    chat.messages.length > 0
-                      ? chat.messages[chat.messages.length - 1].content
-                      : t('no-messages');
-
                   const name =
                     chat.band?.name ||
                     `${chat.user.firstName} ${chat.user.familyName}`;
@@ -137,9 +206,7 @@ export default function MessagesMenu({ language }: { language: string }) {
                             </span>
                           )}
                         </div>
-                        <p className="truncate text-xs text-gray-500">
-                          {lastMessage}
-                        </p>
+                        {renderLastMessage(chat)}
                       </div>
                     </Link>
                   );

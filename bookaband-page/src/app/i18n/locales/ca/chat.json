@@ -27,5 +27,13 @@
     "title": "S'ha produït un error",
     "description": "No s'han pogut carregar els teus xat xats. Torna-ho a provar més tard.",
     "retry": "Torna-ho a provar"
-  }
+  },
+  "new-booking": "Nova Reserva",
+  "booking-status": "Estat",
+  "booking-details": "Detalls de la Reserva",
+  "pending": "Pendent",
+  "accepted": "Acceptada",
+  "declined": "Rebutjada",
+  "cancelled": "Cancel·lada",
+  "viewDetails": "Veure Detalls"
 }

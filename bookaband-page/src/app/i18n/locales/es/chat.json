@@ -27,5 +27,13 @@
     "title": "Algo salió mal",
     "description": "No pudimos cargar tus chats. Por favor, inténtalo más tarde.",
     "retry": "Reintentar"
-  }
+  },
+  "new-booking": "Nueva Reserva",
+  "booking-status": "Estado",
+  "booking-details": "Detalles de la Reserva",
+  "pending": "Pendiente",
+  "accepted": "Aceptada",
+  "declined": "Rechazada",
+  "cancelled": "Cancelada",
+  "viewDetails": "Ver Detalles"
 }

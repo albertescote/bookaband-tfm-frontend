@@ -22,25 +22,27 @@ export function ChatLayout({
   bandId,
 }: ChatClientPageProps) {
   const { t } = useTranslation(language, 'chat');
-  const [activeChatId, setActiveChatId] = useState<string | undefined>();
+  const [activeChatId, setActiveChatId] = useState<string | undefined>(chatId);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [chatsState, setChatsState] = useState(chats);
+  const [chatsState, setChatsState] = useState<ChatView[]>(chats);
+
+  useEffect(() => {
+    setChatsState(chats);
+  }, [chats]);
 
   useEffect(() => {
     if (bandId) {
-      const existingChat = chats.find((chat) => {
-        return chat.band.id === bandId;
-      });
+      const existingChat = chats.find((chat) => chat.band.id === bandId);
       if (existingChat) {
         selectChat(existingChat.id);
       }
     } else if (chatId) {
       selectChat(chatId);
-    } else if (chats.length > 0) {
+    } else if (chats.length > 0 && !activeChatId) {
       selectChat(chats[0].id);
     }
-  }, []);
+  }, [bandId, chatId, chats]);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -65,11 +67,12 @@ export function ChatLayout({
   }, [activeChatId, bandId, isMobile]);
 
   const selectChat = (selectedChatId: string) => {
-    setChatsState((prev) => {
-      if (!prev) return prev;
-      return prev.map((chat) =>
-        chat.id === chatId ? { ...chat, unreadMessagesCount: 0 } : chat,
-      );
+    setChatsState((prevChats) => {
+      return prevChats.map((chat) => ({
+        ...chat,
+        unreadMessagesCount:
+          chat.id === selectedChatId ? 0 : chat.unreadMessagesCount,
+      }));
     });
     setActiveChatId(selectedChatId);
   };
@@ -79,6 +82,7 @@ export function ChatLayout({
       return (
         <Chat
           language={language}
+          userChats={chats}
           setChats={setChatsState}
           bandId={bandId}
           chatId={activeChatId}
