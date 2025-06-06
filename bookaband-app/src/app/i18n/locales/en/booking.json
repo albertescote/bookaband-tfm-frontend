@@ -1,4 +1,6 @@
 {
+  "title": "Booking Details",
+  "back-to-bookings": "Back to Bookings",
   "booking-not-found": "Booking not found",
   "status.pending": "Pending",
   "status.accepted": "Accepted",
@@ -10,5 +12,19 @@
   "no-bookings": "You don't have any booking yet",
   "not-in-a-band-yet": "You must be member of a band to be able to view bookings",
   "accept": "Accept",
-  "decline": "Decline"
+  "decline": "Decline",
+  "time": "Time",
+  "venue": "Venue",
+  "eventType": "Event Type",
+  "address": "Address",
+  "booking-accepted": "Booking accepted successfully",
+  "booking-declined": "Booking declined successfully",
+  "error-fetching-booking": "Error fetching booking details",
+  "error-accepting-booking": "Error accepting booking",
+  "error-declining-booking": "Error declining booking",
+  "event-name": "Event Name",
+  "fullAddress": "Full Address",
+  "event-details": "Event Details",
+  "sendMessage": "Send Message",
+  "user-chat-not-found": "Could not find chat with this user"
 }

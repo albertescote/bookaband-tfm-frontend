@@ -1,4 +1,6 @@
 {
+  "title": "Detalls de la Reserva",
+  "back-to-bookings": "Tornar a Reserves",
   "booking-not-found": "Reserva no trobada",
   "status.pending": "Pendent",
   "status.accepted": "Acceptada",
@@ -10,5 +12,19 @@
   "no-bookings": "No tens cap reserva",
   "not-in-a-band-yet": "Has de ser miembre d'algun grup per a poder veure reserves",
   "accept": "Acceptar",
-  "decline": "Rebutjar"
+  "decline": "Rebutjar",
+  "time": "Hora",
+  "venue": "Lloc",
+  "eventType": "Tipus d'Esdeveniment",
+  "address": "Adreça",
+  "booking-accepted": "Reserva acceptada amb èxit",
+  "booking-declined": "Reserva rebutjada amb èxit",
+  "error-fetching-booking": "Error en obtenir els detalls de la reserva",
+  "error-accepting-booking": "Error en acceptar la reserva",
+  "error-declining-booking": "Error en rebutjar la reserva",
+  "event-name": "Nom de l'Esdeveniment",
+  "fullAddress": "Adreça Completa",
+  "event-details": "Detalls de l'Esdeveniment",
+  "sendMessage": "Enviar Missatge",
+  "user-chat-not-found": "No s'ha pogut trobar el xat amb aquest usuari"
 }

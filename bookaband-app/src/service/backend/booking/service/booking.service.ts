@@ -1,26 +1,12 @@
 'use server';
 import { Booking } from '@/service/backend/booking/domain/booking';
-import { BookingWithDetails } from '@/service/backend/booking/domain/bookingWithDetails';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
-
-export async function createBooking(request: {
-  offerId?: string;
-  date: Date;
-}): Promise<Booking | undefined> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance
-      .post('/bookings', {
-        offerId: request.offerId,
-        date: request.date.toISOString(),
-      })
-      .then((res) => res.data),
-  );
-}
+import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 
 export async function getBookingById(
   bookingId: string,
-): Promise<BookingWithDetails | undefined> {
+): Promise<BookingSummary | undefined> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get(`/bookings/${bookingId}`)
@@ -28,17 +14,9 @@ export async function getBookingById(
   );
 }
 
-export async function getAllUserBookings(): Promise<
-  BookingWithDetails[] | undefined
-> {
-  return withTokenRefreshRetry(() =>
-    authorizedAxiosInstance.get('/bookings/client').then((res) => res.data),
-  );
-}
-
 export async function getAllBandBookings(
   bandId: string,
-): Promise<BookingWithDetails[] | undefined> {
+): Promise<BookingSummary[] | undefined> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get(`/bookings/band/${bandId}`)

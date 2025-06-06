@@ -80,7 +80,7 @@ export default function Sidebar() {
               label={t('chats')}
               onClick={handleChatsClick}
             />
-            <NavItem href="/performances" label={t('performances')} />
+            <NavItem href="/bookings" label={t('bookings')} />
             <NavItem href="/profile" label={t('profile-tab')} />
           </nav>
           <div className="space-y-4 border-t p-4">

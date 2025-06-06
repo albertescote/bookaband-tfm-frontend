@@ -26,6 +26,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
+import Image from 'next/image';
 
 interface DashboardViewProps {
   language: string;
@@ -140,10 +141,11 @@ export default function DashboardView({ language }: DashboardViewProps) {
         <div className="flex flex-col md:flex-row">
           {/* Band Image */}
           <div className="relative h-32 w-full md:h-40 md:w-1/4">
-            <img
+            <Image
+              fill
               src={bandProfile?.imageUrl || '/default-band-image.jpg'}
-              alt={bandProfile?.name}
-              className="h-full w-full object-cover"
+              alt={bandProfile?.name ?? 'Artist image'}
+              className="object-cover"
             />
           </div>
 

@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { languages } from '@/app/i18n/settings';
 import { dir } from 'i18next';
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'sonner';
 import Sidebar from '@/components/layout/sidebar/sidebar';
 import { AuthProvider } from '@/providers/authProvider';
 import Header from '@/components/layout/header/header';
@@ -35,7 +35,7 @@ export default async function RootLayout({
             <div className="flex flex-1 flex-col overflow-hidden">
               <Header />
               <main className="flex-1 overflow-y-auto p-6">
-                <Toaster position="top-center" />
+                <Toaster />
                 {children}
               </main>
             </div>

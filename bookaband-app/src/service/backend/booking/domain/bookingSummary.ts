@@ -1,11 +1,6 @@
-export enum BookingStatus {
-  PENDING = 'PENDING',
-  ACCEPTED = 'ACCEPTED',
-  DECLINED = 'DECLINED',
-  CANCELED = 'CANCELED',
-}
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
-export interface Booking {
+export interface BookingSummary {
   id: string;
   bandId: string;
   userId: string;
@@ -13,6 +8,10 @@ export interface Booking {
   initDate: Date;
   endDate: Date;
   name: string;
+  userName: string;
+  bandName: string;
+  userImageUrl?: string;
+  bandImageUrl?: string;
   country: string;
   city: string;
   venue: string;

@@ -10,5 +10,22 @@
   "no-bookings": "No tienes ninguna reserva",
   "not-in-a-band-yet": "Debes ser miembro de algun grupo para poder ver reservas",
   "accept": "Aceptar",
-  "decline": "Rechazar"
+  "decline": "Rechazar",
+  "back-to-bookings": "Volver a Reservas",
+  "description": "Descripción",
+  "event-details": "Detalles del Evento",
+  "address": "Dirección",
+  "booking-accepted": "Reserva aceptada con éxito",
+  "booking-declined": "Reserva rechazada con éxito",
+  "error-fetching-booking": "Error al obtener los detalles de la reserva",
+  "error-accepting-booking": "Error al aceptar la reserva",
+  "error-declining-booking": "Error al rechazar la reserva",
+  "title": "Detalles de la Reserva",
+  "time": "Hora",
+  "venue": "Lugar",
+  "eventType": "Tipo de Evento",
+  "event-name": "Nombre del Evento",
+  "fullAddress": "Dirección Completa",
+  "sendMessage": "Enviar Mensaje",
+  "user-chat-not-found": "No se pudo encontrar el chat con este usuario"
 }
