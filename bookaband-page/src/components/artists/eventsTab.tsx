@@ -279,13 +279,13 @@ export default function EventsTab({
                   const eventCount = eventDates[dateKey]?.length || 0;
                   const dayOfWeek = day.date.getDay();
                   const dayName = [
+                    'sunday',
                     'monday',
                     'tuesday',
                     'wednesday',
                     'thursday',
                     'friday',
                     'saturday',
-                    'sunday',
                   ][dayOfWeek] as keyof WeeklyAvailability;
                   const isAvailable = artist.weeklyAvailability[dayName];
 
