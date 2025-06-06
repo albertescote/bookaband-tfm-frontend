@@ -33,8 +33,16 @@ export function ChatsList({
 
   const getLastMessagePreview = (chat: ChatView) => {
     if (!chat.messages || chat.messages.length === 0) return '...';
-    const content = chat.messages[chat.messages.length - 1].content;
-    return content.length > 40 ? `${content.substring(0, 40)}...` : content;
+    const lastMessage = chat.messages[chat.messages.length - 1];
+
+    if (lastMessage.metadata?.bookingId) {
+      return t('new-booking');
+    }
+
+    const messageText = lastMessage.message || '';
+    return messageText.length > 40
+      ? `${messageText.substring(0, 40)}...`
+      : messageText;
   };
 
   const getLastMessageTime = (chat: ChatView) => {
