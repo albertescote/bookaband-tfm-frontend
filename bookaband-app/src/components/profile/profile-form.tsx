@@ -12,6 +12,14 @@ import { getAvatar } from '@/components/shared/avatar';
 import { Camera } from 'lucide-react';
 import { updateProfile } from '@/service/backend/user/service/user.service';
 
+interface FileUploadResponse {
+  filename: string;
+  originalname: string;
+  mimetype: string;
+  size: number;
+  url: string;
+}
+
 interface ProfileFormProps {
   language: string;
 }
@@ -30,6 +38,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
+  const [tempFile, setTempFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -48,16 +57,40 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     setIsLoading(true);
 
     try {
+      let imageUrl = formData.imageUrl;
+
+      // Upload file if there's a temporary file
+      if (tempFile) {
+        const formData = new FormData();
+        formData.append('file', tempFile);
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to upload file');
+        }
+
+        const data: FileUploadResponse = await response.json();
+        imageUrl = data.url;
+      }
+
+      // Update profile with new data
       await updateProfile({
         firstName: formData.firstName || '',
         familyName: formData.familyName || '',
         bio: formData.bio,
-        imageUrl: tempImageUrl || formData.imageUrl,
+        imageUrl,
       });
-      if (tempImageUrl) {
-        setFormData((prev) => ({ ...prev, imageUrl: tempImageUrl }));
-        setTempImageUrl(null);
-      }
+
+      // Update local state
+      setFormData((prev) => ({ ...prev, imageUrl }));
+      setTempImageUrl(null);
+      setTempFile(null);
+      
       toast.success(t('profile-updated'));
       setIsEditing(false);
     } catch (error) {
@@ -72,8 +105,10 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     if (!file) return;
 
     try {
+      // Create a temporary blob URL for preview
       const blobUrl = URL.createObjectURL(file);
       setTempImageUrl(blobUrl);
+      setTempFile(file);
     } catch (error) {
       toast.error(t('error-uploading-image'));
     }
@@ -84,6 +119,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
       URL.revokeObjectURL(tempImageUrl);
     }
     setTempImageUrl(null);
+    setTempFile(null);
     setIsEditing(false);
   };
 
@@ -119,11 +155,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
               formData.firstName,
             )}
             {isEditing && (
-              <label
-                htmlFor="image-upload"
-                className="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#15b7b9] text-white transition-colors hover:bg-[#15b7b9]/90"
-              >
-                <Camera className="h-4 w-4" />
+              <>
                 <input
                   id="image-upload"
                   type="file"
@@ -131,7 +163,13 @@ export default function ProfileForm({ language }: ProfileFormProps) {
                   className="hidden"
                   onChange={handleImageUpload}
                 />
-              </label>
+                <label
+                  htmlFor="image-upload"
+                  className="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#15b7b9] text-white transition-colors hover:bg-[#15b7b9]/90"
+                >
+                  <Camera className="h-4 w-4" />
+                </label>
+              </>
             )}
           </div>
           <div>
