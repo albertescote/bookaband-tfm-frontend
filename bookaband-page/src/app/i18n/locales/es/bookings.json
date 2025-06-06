@@ -53,7 +53,7 @@
     "pending": "Pendiente",
     "accepted": "Aceptada",
     "declined": "Rechazada",
-    "cancelled": "Cancelada",
+    "canceled": "Cancelada",
     "canceled": "Cancelada"
   },
   "booking-not-found": "Reserva no encontrada",

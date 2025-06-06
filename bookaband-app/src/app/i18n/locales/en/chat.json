@@ -1,7 +1,7 @@
 {
   "not-in-a-band-yet": "You must be member of a band to be able to view chats",
   "chat-not-found": "Chat not found",
-  "no-messages-yet": "You don't have any message yet",
+  "no-messages-yet": "No messages yet",
   "no-chats-available": "No chats available",
   "your-chats": "Your chats",
   "type-a-message": "Type a message...",
@@ -24,6 +24,13 @@
   "band-not-found": "Band not found",
   "chat-or-band-id-required": "Chat ID or Band ID is required",
   "no-chats-yet": "No chats yet",
-  "start-conversation": "Start a new conversation to begin chatting",
-  "chat-not-found-description": "The chat you're looking for doesn't exist or you don't have access to it"
+  "start-conversation": "Start a conversation",
+  "chat-not-found-description": "The chat you're looking for doesn't exist or you don't have access to it",
+  "add-emoji": "Add emoji",
+  "new-booking": "New Booking",
+  "pending": "Pending",
+  "accepted": "Accepted",
+  "declined": "Declined",
+  "canceled": "Canceled",
+  "viewDetails": "View Details"
 }

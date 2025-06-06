@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { getAvatar } from '@/components/shared/avatar';
 import { UserBand } from '@/service/backend/band/domain/userBand';
 import { useAuth } from '@/providers/authProvider';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { PlusCircle, Settings } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 
@@ -49,7 +49,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
               {selectedBand?.name}
             </span>
             {selectedBand &&
-              getAvatar(36, 36, selectedBand.imageUrl, selectedBand.name)}
+              getAvatar(10, selectedBand.imageUrl, selectedBand.name)}
           </div>
         </Listbox.Button>
 
@@ -75,7 +75,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
               >
                 {({ selected }) => (
                   <div className="flex items-center space-x-2">
-                    {getAvatar(24, 24, band.imageUrl, band.name)}
+                    {getAvatar(8, band.imageUrl, band.name)}
                     <span
                       className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                     >

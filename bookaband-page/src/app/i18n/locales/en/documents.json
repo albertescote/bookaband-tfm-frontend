@@ -5,7 +5,7 @@
   "contractStatus": {
     "signed": "Signed",
     "pending": "Pending",
-    "cancelled": "Cancelled"
+    "canceled": "Canceled"
   },
   "invoices": "Invoices",
   "noInvoices": "No invoices available.",

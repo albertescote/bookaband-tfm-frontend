@@ -1,4 +1,4 @@
-export type ContractStatus = 'SIGNED' | 'PENDING' | 'CANCELLED';
+export type ContractStatus = 'SIGNED' | 'PENDING' | 'CANCELED';
 
 export interface Contract {
   id: string;

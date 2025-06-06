@@ -85,7 +85,7 @@ export default function Sidebar() {
           </nav>
           <div className="space-y-4 border-t p-4">
             <div className="flex items-center space-x-3 px-3">
-              {getAvatar(28, 28, user?.imageUrl, user?.firstName)}
+              {getAvatar(10, user?.imageUrl, user?.firstName)}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900">
                   {user?.firstName} {user?.familyName}

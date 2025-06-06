@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { BookingStatus } from '@/service/backend/booking/domain/booking';
+import { MessageMetadata } from '@/service/backend/chat/domain/message';
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
+
+export interface ChatMessage {
+  chatId: string;
+  senderId: string;
+  recipientId: string;
+  message: string;
+  timestamp: Date;
+  metadata?: MessageMetadata;
+}
 
 export interface SocketMessage {
   id: string;
@@ -11,14 +20,7 @@ export interface SocketMessage {
   recipientId: string;
   message: string;
   timestamp: string | Date;
-  metadata?: {
-    bookingId?: string;
-    bookingStatus?: BookingStatus;
-    eventName?: string;
-    eventDate?: string;
-    venue?: string;
-    city?: string;
-  };
+  metadata?: MessageMetadata;
 }
 
 export const useChat = (userId: string) => {

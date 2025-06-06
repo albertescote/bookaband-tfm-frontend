@@ -11,7 +11,7 @@ interface BookingNotificationProps {
     bookingId?: string;
     bookingStatus?: BookingStatus;
     eventName?: string;
-    eventDate?: string;
+    eventDate?: string | Date;
     venue?: string;
     city?: string;
   };
@@ -87,9 +87,15 @@ const BookingNotification: React.FC<BookingNotificationProps> = ({
                   <div className="flex items-center gap-1.5">
                     <Calendar className="h-4 w-4 text-[#15b7b9]" />
                     <span className="text-xs">
-                      {format(new Date(metadata.eventDate), 'PPP', {
-                        locale: language === 'es' ? es : ca,
-                      })}
+                      {format(
+                        metadata.eventDate instanceof Date
+                          ? metadata.eventDate
+                          : new Date(metadata.eventDate),
+                        'PPP',
+                        {
+                          locale: language === 'es' ? es : ca,
+                        },
+                      )}
                     </span>
                   </div>
                 )}

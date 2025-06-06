@@ -24,6 +24,13 @@
   "band-not-found": "Banda no trobada",
   "chat-or-band-id-required": "Es requereix ID de xat o ID de banda",
   "no-chats-yet": "Encara no hi ha xats",
-  "start-conversation": "Inicia una nova conversa per començar a xatejar",
-  "chat-not-found-description": "El xat que busques no existeix o no tens accés a ell"
+  "start-conversation": "Iniciar una conversa",
+  "chat-not-found-description": "El xat que busques no existeix o no tens accés a ell",
+  "add-emoji": "Afegir emoji",
+  "new-booking": "Nova Reserva",
+  "pending": "Pendent",
+  "accepted": "Acceptada",
+  "declined": "Rebutjada",
+  "canceled": "Cancel·lada",
+  "viewDetails": "Veure Detalls"
 }

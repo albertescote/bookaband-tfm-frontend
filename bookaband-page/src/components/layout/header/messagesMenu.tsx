@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  MapPin,
-  MessageSquareOff,
-  MessageSquareText,
-} from 'lucide-react';
+import { MessageSquareOff, MessageSquareText } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -14,8 +9,6 @@ import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { useAuth } from '@/providers/authProvider';
 import { toast } from 'react-hot-toast';
 import { getAvatar } from '@/components/shared/avatar';
-import { format } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
 export default function MessagesMenu({ language }: { language: string }) {
@@ -91,7 +84,7 @@ export default function MessagesMenu({ language }: { language: string }) {
         return 'bg-green-100 text-green-800';
       case BookingStatus.DECLINED:
         return 'bg-red-100 text-red-800';
-      case BookingStatus.CANCELLED:
+      case BookingStatus.CANCELED:
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -106,8 +99,8 @@ export default function MessagesMenu({ language }: { language: string }) {
         return t('accepted');
       case BookingStatus.DECLINED:
         return t('declined');
-      case BookingStatus.CANCELLED:
-        return t('cancelled');
+      case BookingStatus.CANCELED:
+        return t('canceled');
       default:
         return status;
     }

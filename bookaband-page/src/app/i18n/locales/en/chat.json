@@ -34,6 +34,6 @@
   "pending": "Pending",
   "accepted": "Accepted",
   "declined": "Declined",
-  "cancelled": "Cancelled",
+  "canceled": "Canceled",
   "viewDetails": "View Details"
 }

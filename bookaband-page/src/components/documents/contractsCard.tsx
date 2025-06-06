@@ -33,8 +33,8 @@ export default function ContractsCard({
       icon: <Clock className="h-4 w-4 text-yellow-500" />,
       color: 'text-yellow-600 bg-yellow-100',
     },
-    CANCELLED: {
-      label: t('contractStatus.cancelled'),
+    CANCELED: {
+      label: t('contractStatus.canceled'),
       icon: <XCircle className="h-4 w-4 text-red-500" />,
       color: 'text-red-600 bg-red-100',
     },

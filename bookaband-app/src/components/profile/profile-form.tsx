@@ -114,8 +114,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         <div className="mb-8 flex items-center space-x-6">
           <div className="relative">
             {getAvatar(
-              100,
-              100,
+              20,
               tempImageUrl || formData.imageUrl,
               formData.firstName,
             )}

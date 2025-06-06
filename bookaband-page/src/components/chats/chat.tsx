@@ -412,17 +412,9 @@ const Chat: React.FC<ChatProps> = ({
 
                         return (
                           <div
-                            key={chatMessage.id}
-                            className={`flex items-end gap-2 ${
-                              isSender ? 'justify-end' : 'justify-start'
-                            }`}
+                            key={index}
+                            className={`mb-4 flex ${isSender ? 'justify-end' : 'justify-start'}`}
                           >
-                            {!isSender && showAvatar && (
-                              <div className="order-0 mr-2">
-                                {getAvatar(12, imageUrl, displayName)}
-                              </div>
-                            )}
-
                             <div
                               className={`${
                                 chatMessage.metadata?.bookingId
@@ -447,7 +439,7 @@ const Chat: React.FC<ChatProps> = ({
                                 </div>
                               )}
                               <div
-                                className={`mt-1 text-xs text-gray-500 ${isSender ? 'text-right' : 'text-left'}`}
+                                className={`mt-2 text-xs text-gray-500 ${isSender ? 'text-right' : 'text-left'}`}
                               >
                                 {chatMessage.timestamp &&
                                   format(
@@ -473,7 +465,7 @@ const Chat: React.FC<ChatProps> = ({
               </div>
 
               {/* Chat Input */}
-              <div className="border-t bg-white p-4 pb-8">
+              <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
                   <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
                     <Paperclip size={22} />

@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { useAuth } from '@/providers/authProvider';
+import BookingNotification from './bookingNotification';
 
 interface ChatProps {
   language: string;
@@ -46,15 +47,21 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     if (chatId && !initialChat) {
       getChatById(chatId).then((chat: ChatHistory | undefined) => {
         setIsLoading(false);
         setChat(chat);
+        setTimeout(scrollToBottom, 100);
       });
     } else if (initialChat) {
       setIsLoading(false);
       setChat(initialChat);
+      setTimeout(scrollToBottom, 100);
     } else {
       setIsLoading(false);
     }
@@ -68,6 +75,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
         .then((chat: ChatHistory | undefined) => {
           if (chat && chat.band.id === selectedBand.id) {
             setChat(chat);
+            setTimeout(scrollToBottom, 100);
           } else {
             setChat(undefined);
           }
@@ -100,10 +108,12 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           chatId: chat.id,
           senderId: msg.senderId,
           recipientId: msg.recipientId,
-          message: msg.content,
-          timestamp: msg.timestamp,
+          message: msg.message || '',
+          timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
+          metadata: msg.metadata,
         })),
       );
+      setTimeout(scrollToBottom, 100);
     } else {
       setSenderId('');
       setRecipientId('');
@@ -117,6 +127,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
   useEffect(() => {
     setAllMessages((prevMessages) => [...prevMessages, ...messages]);
+    setTimeout(scrollToBottom, 100);
   }, [messages]);
 
   const handleSendMessage = () => {
@@ -132,6 +143,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
       sendMessage(chat!.id, recipientId, message);
       setMessage('');
       setShowEmojis(false);
+      setTimeout(scrollToBottom, 100);
     }
   };
 
@@ -253,7 +265,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
               {/* Chat Header */}
               <div className="flex items-center justify-between border-b bg-white px-4 py-3 shadow-sm">
                 <div className="flex items-center gap-3">
-                  {getAvatar(48, 48, imageUrl, displayName)}
+                  {getAvatar(12, imageUrl, displayName)}
                   <div>
                     <h2 className="font-medium">{displayName}</h2>
                   </div>
@@ -311,19 +323,30 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                             className={`mb-4 flex ${isSender ? 'justify-end' : 'justify-start'}`}
                           >
                             <div
-                              className={`max-w-[75%] ${isSender ? 'order-2' : 'order-1'}`}
+                              className={`${
+                                chatMessage.metadata?.bookingId
+                                  ? 'w-full max-w-3xl'
+                                  : 'max-w-[75%]'
+                              } ${isSender ? 'order-2' : 'order-1'}`}
                             >
+                              {chatMessage.metadata ? (
+                                <BookingNotification
+                                  metadata={chatMessage.metadata}
+                                  language={language}
+                                />
+                              ) : (
+                                <div
+                                  className={`rounded-2xl px-4 py-2 ${
+                                    isSender
+                                      ? 'rounded-tr-none bg-[#15b7b9] text-white'
+                                      : 'rounded-tl-none bg-white text-gray-800'
+                                  } shadow-sm`}
+                                >
+                                  {chatMessage.message}
+                                </div>
+                              )}
                               <div
-                                className={`rounded-2xl px-4 py-2 ${
-                                  isSender
-                                    ? 'rounded-tr-none bg-[#15b7b9] text-white'
-                                    : 'rounded-tl-none bg-white text-gray-800'
-                                } shadow-sm`}
-                              >
-                                {chatMessage.message}
-                              </div>
-                              <div
-                                className={`mt-1 text-xs text-gray-500 ${isSender ? 'text-right' : 'text-left'}`}
+                                className={`mt-2 text-xs text-gray-500 ${isSender ? 'text-right' : 'text-left'}`}
                               >
                                 {chatMessage.timestamp &&
                                   format(
@@ -336,7 +359,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
                             {!isSender && showAvatar && (
                               <div className="order-0 mr-2">
-                                {getAvatar(32, 32, imageUrl, displayName)}
+                                {getAvatar(12, imageUrl, displayName)}
                               </div>
                             )}
                           </div>

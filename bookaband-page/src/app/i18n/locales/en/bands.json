@@ -26,7 +26,7 @@
   "status-on_break": "On Break",
   "status-completed": "Completed",
   "status-upcoming": "Upcoming",
-  "status-cancelled": "Cancelled",
+  "status-canceled": "Canceled",
   "status-paid": "Paid",
   "status-pending": "Pending",
   "status-overdue": "Overdue"

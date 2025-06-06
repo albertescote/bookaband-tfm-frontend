@@ -1,7 +1,7 @@
 {
   "not-in-a-band-yet": "Debes ser miembro de una banda para poder ver los chats",
   "chat-not-found": "Chat no encontrado",
-  "no-messages-yet": "Aún no tienes ningún mensaje",
+  "no-messages-yet": "No hay mensajes aún",
   "no-chats-available": "No hay chats disponibles",
   "your-chats": "Tus chats",
   "type-a-message": "Escribe un mensaje...",
@@ -23,7 +23,14 @@
   "failed-to-get-user": "Error al obtener información del usuario",
   "band-not-found": "Banda no encontrada",
   "chat-or-band-id-required": "Se requiere ID de chat o ID de banda",
-  "no-chats-yet": "Aún no hay chats",
-  "start-conversation": "Inicia una nueva conversación para comenzar a chatear",
-  "chat-not-found-description": "El chat que buscas no existe o no tienes acceso a él"
+  "no-chats-yet": "No hay chats aún",
+  "start-conversation": "Iniciar una conversación",
+  "chat-not-found-description": "El chat que buscas no existe o no tienes acceso a él",
+  "add-emoji": "Añadir emoji",
+  "new-booking": "Nueva Reserva",
+  "pending": "Pendiente",
+  "accepted": "Aceptada",
+  "declined": "Rechazada",
+  "canceled": "Cancelada",
+  "viewDetails": "Ver Detalles"
 }

@@ -5,7 +5,7 @@
   "contractStatus": {
     "signed": "Signat",
     "pending": "Pendent",
-    "cancelled": "Cancel·lat"
+    "canceled": "Cancel·lat"
   },
   "invoices": "Factures",
   "noInvoices": "No hi ha factures disponibles.",

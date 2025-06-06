@@ -48,8 +48,8 @@
     "pending": "Pending",
     "accepted": "Accepted",
     "declined": "Declined",
-    "cancelled": "Cancelled",
-    "canceled": "Cancelled"
+    "canceled": "Canceled",
+    "canceled": "Canceled"
   },
   "booking-not-found": "Booking not found",
   "error-loading": "Error loading booking",

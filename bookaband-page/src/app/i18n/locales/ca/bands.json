@@ -26,7 +26,7 @@
   "status-on_break": "En Pausa",
   "status-completed": "Completat",
   "status-upcoming": "Proper",
-  "status-cancelled": "Cancel·lat",
+  "status-canceled": "Cancel·lat",
   "status-paid": "Pagat",
   "status-pending": "Pendent",
   "status-overdue": "Vençut"
