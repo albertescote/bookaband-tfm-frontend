@@ -113,7 +113,7 @@ export default function EventsTab({
     const month = currentMonth.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const firstDayOfWeek = firstDay.getDay();
+    const firstDayOfWeek = (firstDay.getDay() + 6) % 7;
     const totalDays = firstDayOfWeek + lastDay.getDate();
     const totalRows = Math.ceil(totalDays / 7);
     const grid = [];
