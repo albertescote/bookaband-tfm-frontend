@@ -26,5 +26,14 @@
   "fullAddress": "Full Address",
   "event-details": "Event Details",
   "sendMessage": "Send Message",
-  "user-chat-not-found": "Could not find chat with this user"
+  "user-chat-not-found": "Could not find chat with this user",
+  "client": "Client",
+  "public-event": "Public Event",
+  "private-event": "Private Event",
+  "postal-code": "Postal Code",
+  "location": "Location",
+  "processing": "Processing...",
+  "client-label": "Client",
+  "city": "City",
+  "country": "Country"
 }
