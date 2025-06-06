@@ -14,8 +14,8 @@ import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.service';
 import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
-
-const MAIN_COLOR = '#15b7b9';
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
+import Link from 'next/link';
 
 interface CalendarViewProps {
   language: string;
@@ -69,7 +69,15 @@ export default function CalendarView({ language }: CalendarViewProps) {
       try {
         const bandProfile = await getBandProfileById(selectedBand.id);
         if (bandProfile) {
-          setEvents(bandProfile.events || []);
+          setEvents(
+            bandProfile.events
+              ? bandProfile.events.filter(
+                  (event) =>
+                    event.status !== BookingStatus.DECLINED &&
+                    event.status !== BookingStatus.CANCELED,
+                )
+              : [],
+          );
           setWeeklyAvailability(
             bandProfile.weeklyAvailability || {
               monday: false,
@@ -173,6 +181,17 @@ export default function CalendarView({ language }: CalendarViewProps) {
     );
   };
 
+  const getEventStatusColor = (status: BookingStatus | undefined) => {
+    switch (status) {
+      case BookingStatus.PENDING:
+        return 'bg-yellow-100 text-yellow-600';
+      case BookingStatus.ACCEPTED:
+        return 'bg-[#15b7b9]/10 text-[#15b7b9]';
+      default:
+        return 'bg-[#15b7b9]/10 text-[#15b7b9]';
+    }
+  };
+
   if (loading) {
     return <div className="p-4">{t('loading')}</div>;
   }
@@ -252,13 +271,17 @@ export default function CalendarView({ language }: CalendarViewProps) {
                   </div>
                   <div className="space-y-1">
                     {dayEvents.map((event) => (
-                      <div
+                      <Link
+                        href={`/bookings/${event.id}`}
                         key={event.id}
-                        className="flex items-center gap-1 truncate rounded bg-[#15b7b9]/10 p-1 text-xs text-[#15b7b9]"
+                        className={cn(
+                          'flex items-center gap-1 truncate rounded p-1 text-xs transition-colors hover:opacity-80',
+                          getEventStatusColor(event.status),
+                        )}
                       >
                         <span>{getEventType(event.eventTypeId)?.icon}</span>
                         {event.name}
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -277,8 +300,14 @@ export default function CalendarView({ language }: CalendarViewProps) {
               <div className="space-y-4">
                 {upcomingEvents.map((event) => (
                   <div key={event.id} className="border-b pb-4 last:border-0">
-                    <div className="flex items-start gap-3">
-                      <div className="rounded-full bg-[#15b7b9]/10 p-2 text-[#15b7b9]">
+                    <Link
+                      href={`/bookings/${event.id}`}
+                      className={cn(
+                        'flex items-start gap-3 rounded-lg p-3 transition-colors hover:opacity-80',
+                        getEventStatusColor(event.status),
+                      )}
+                    >
+                      <div className="rounded-full bg-white/50 p-2">
                         <span>{getEventType(event.eventTypeId)?.icon}</span>
                       </div>
                       <div className="flex-1">
@@ -302,7 +331,7 @@ export default function CalendarView({ language }: CalendarViewProps) {
                           )}
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))}
                 {events.length > 3 && (

@@ -1,5 +1,6 @@
 import { BandSize } from './bandSize';
 import { BandRole } from '@/service/backend/band/domain/bandRole';
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
 export interface ArtistReview {
   id: string;
@@ -17,6 +18,7 @@ export interface Event {
   name: string;
   date: string;
   eventTypeId: string;
+  status?: BookingStatus;
   city?: string;
   country?: string;
   venue?: string;
