@@ -13,15 +13,19 @@ import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle
 import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.service';
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
+interface FormDataWithFiles extends Partial<UpsertBandRequest> {
+  imageFile?: File;
+}
+
 interface BasicInfoStepProps {
-  formData: Partial<UpsertBandRequest>;
-  onFormDataChange: (data: Partial<UpsertBandRequest>) => void;
+  formData: FormDataWithFiles;
+  onFormDataChange: (data: FormDataWithFiles) => void;
   hasError: boolean;
 }
 
 const BAND_SIZES = Object.values(BandSize);
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 export default function BasicInfoStep({
@@ -137,6 +141,7 @@ export default function BasicInfoStep({
       onFormDataChange({
         ...formData,
         imageUrl,
+        imageFile: file,
       });
     }
   };
@@ -145,6 +150,7 @@ export default function BasicInfoStep({
     onFormDataChange({
       ...formData,
       imageUrl: undefined,
+      imageFile: undefined,
     });
   };
 

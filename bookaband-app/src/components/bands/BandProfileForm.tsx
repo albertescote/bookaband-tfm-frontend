@@ -13,47 +13,45 @@ import { AvailabilityStep } from '@/components/bands/steps/AvailabilityStep';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
 
+interface FormDataWithFiles extends Partial<UpsertBandRequest> {
+  imageFile?: File;
+}
+
 interface BandProfileFormProps {
   onSubmit: (data: UpsertBandRequest) => Promise<void>;
 }
 
-const TOTAL_STEPS = 6;
 const FORM_STORAGE_KEY = 'bandProfileFormData';
-const CURRENT_STEP_KEY = 'bandProfileCurrentStep';
+const CURRENT_STEP_KEY = 'bandProfileFormStep';
+const TOTAL_STEPS = 6;
 
 export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
-  const [currentStep, setCurrentStep] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedStep = localStorage.getItem(CURRENT_STEP_KEY);
-      return savedStep ? parseInt(savedStep, 10) : 1;
-    }
-    return 1;
-  });
+  const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<UpsertBandRequest>>(() => {
+  const [formData, setFormData] = useState<FormDataWithFiles>(() => {
     if (typeof window !== 'undefined') {
       const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        if (!parsedData.weeklyAvailability) {
-          parsedData.weeklyAvailability = {
-            monday: false,
-            tuesday: false,
-            wednesday: false,
-            thursday: false,
-            friday: false,
-            saturday: false,
-            sunday: false,
-          };
-        }
-        return parsedData;
+        // Remove imageFile from saved data as it can't be serialized
+        const { imageFile, ...rest } = parsedData;
+        return rest;
       }
     }
     return {
+      name: '',
+      musicalStyleIds: [],
+      price: 0,
+      location: '',
+      bandSize: BandSize.BAND,
+      eventTypeIds: [],
+      bio: '',
+      imageUrl: '',
+      visible: true,
       weeklyAvailability: {
         monday: false,
         tuesday: false,
@@ -63,6 +61,26 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         saturday: false,
         sunday: false,
       },
+      hospitalityRider: {
+        accommodation: '',
+        catering: '',
+        beverages: '',
+        specialRequirements: '',
+      },
+      technicalRider: {
+        soundSystem: '',
+        microphones: '',
+        backline: '',
+        lighting: '',
+        otherRequirements: '',
+      },
+      performanceArea: {
+        regions: [],
+        travelPreferences: '',
+        restrictions: '',
+      },
+      media: [],
+      socialLinks: [],
     };
   });
   const [stepErrors, setStepErrors] = useState<Record<number, boolean>>({});
@@ -79,7 +97,9 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   // Save form data to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
+      // Remove imageFile before saving to localStorage
+      const { imageFile, ...dataToSave } = formData;
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(dataToSave));
     }
   }, [formData]);
 
@@ -154,6 +174,64 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       setError(null);
 
       try {
+        let uploadedImageUrl = formData.imageUrl;
+        const uploadedMediaUrls: { url: string; type: string }[] = [];
+
+        // Upload profile image if present
+        if (formData.imageFile instanceof File) {
+          const uploadFormData = new FormData();
+          uploadFormData.append('file', formData.imageFile);
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to upload profile image');
+          }
+
+          const data = await response.json();
+          uploadedImageUrl = data.url;
+        }
+
+        // Upload media files if any
+        if (
+          formData.media?.some(
+            (media) => 'file' in media && media.file instanceof File,
+          )
+        ) {
+          for (const media of formData.media) {
+            if ('file' in media && media.file instanceof File) {
+              const uploadFormData = new FormData();
+              uploadFormData.append('file', media.file);
+
+              const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: uploadFormData,
+              });
+
+              if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to upload media file');
+              }
+
+              const data = await response.json();
+              uploadedMediaUrls.push({
+                url: data.url,
+                type: media.type,
+              });
+            } else {
+              // Keep existing media that wasn't changed
+              uploadedMediaUrls.push({
+                url: media.url,
+                type: media.type,
+              });
+            }
+          }
+        }
+
         const data: UpsertBandRequest = {
           name: formData.name || '',
           musicalStyleIds: formData.musicalStyleIds || [],
@@ -162,7 +240,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           bandSize: (formData.bandSize as BandSize) || BandSize.BAND,
           eventTypeIds: formData.eventTypeIds || [],
           bio: formData.bio || '',
-          imageUrl: formData.imageUrl,
+          imageUrl: uploadedImageUrl === '' ? '' : uploadedImageUrl || '',
           visible: formData.visible ?? true,
           weeklyAvailability: formData.weeklyAvailability || {
             monday: false,
@@ -191,14 +269,16 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
             travelPreferences: '',
             restrictions: '',
           },
-          media: formData.media || [],
+          media:
+            uploadedMediaUrls.length > 0
+              ? uploadedMediaUrls
+              : formData.media || [],
           socialLinks: formData.socialLinks || [],
         };
 
         await onSubmit(data);
         clearFormStorage(); // Clear localStorage after successful submission
       } catch (error) {
-        console.error('Error submitting form:', error);
         setError(t('errorCreating'));
       } finally {
         setIsSubmitting(false);

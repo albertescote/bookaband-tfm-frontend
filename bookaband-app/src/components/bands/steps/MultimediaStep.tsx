@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { FileUpload } from '@/components/ui/file-upload';
 import { motion } from 'framer-motion';
-import { Facebook, Globe, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Facebook, Globe, Instagram, Twitter, X, Youtube } from 'lucide-react';
 import { AiOutlineSpotify, AiOutlineTikTok } from 'react-icons/ai';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
+import Image from 'next/image';
 
 interface MultimediaStepProps {
   formData: Partial<UpsertBandRequest>;
@@ -39,8 +40,18 @@ export default function MultimediaStep({
         ...files.map((file) => ({
           url: URL.createObjectURL(file),
           type: file.type.startsWith('image/') ? 'image' : 'video',
+          file,
         })),
       ],
+    });
+  };
+
+  const handleRemoveMedia = (index: number) => {
+    const updatedMedia = [...(formData.media || [])];
+    updatedMedia.splice(index, 1);
+    onFormDataChange({
+      ...formData,
+      media: updatedMedia,
     });
   };
 
@@ -222,13 +233,44 @@ export default function MultimediaStep({
               <h4 className="mb-2 text-sm font-medium">
                 {t('form.multimedia.uploadedFiles')}
               </h4>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                 {formData.media.map((media, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-2 rounded-lg bg-gray-50 p-2"
+                    className="group relative aspect-square overflow-hidden rounded-lg"
                   >
-                    <span className="truncate text-sm">{media.url}</span>
+                    {media.type === 'image' ? (
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                        className="h-full w-full"
+                      >
+                        <Image
+                          src={media.url}
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                        className="relative h-full w-full"
+                      >
+                        <video
+                          src={media.url}
+                          className="h-full w-full object-cover"
+                          controls
+                        />
+                      </motion.div>
+                    )}
+                    <button
+                      onClick={() => handleRemoveMedia(index)}
+                      className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white opacity-0 transition-opacity hover:bg-red-600 group-hover:opacity-100"
+                    >
+                      <X size={14} />
+                    </button>
                   </div>
                 ))}
               </div>
