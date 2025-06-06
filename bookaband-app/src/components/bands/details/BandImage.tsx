@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Edit2, X } from 'lucide-react';
 import { FileUpload } from '@/components/common/FileUpload';
 import { useTranslation } from '@/app/i18n/client';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 interface BandImageProps {
   imageUrl: string;
@@ -22,6 +24,28 @@ export function BandImage({
   language,
 }: BandImageProps) {
   const { t } = useTranslation(language, 'bands');
+  const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
+
+  const handleImageUpload = async (files: File[]) => {
+    const file = files[0];
+    if (!file) return;
+
+    try {
+      const blobUrl = URL.createObjectURL(file);
+      setTempImageUrl(blobUrl);
+      onImageUpload(files);
+    } catch (error) {
+      toast.error(t('error-uploading-image'));
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (tempImageUrl) {
+        URL.revokeObjectURL(tempImageUrl);
+      }
+    };
+  }, [tempImageUrl]);
 
   return (
     <motion.div
@@ -31,14 +55,14 @@ export function BandImage({
       className="mb-8 overflow-hidden rounded-lg"
     >
       <div className="relative h-[300px] w-full">
-        {imageUrl ? (
+        {tempImageUrl || imageUrl ? (
           <motion.div
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
             className="h-full w-full"
           >
             <Image
-              src={imageUrl}
+              src={tempImageUrl || imageUrl}
               alt={bandName}
               fill
               className="object-cover"
@@ -58,11 +82,17 @@ export function BandImage({
             animate={{ opacity: 1, y: 0 }}
             className="absolute bottom-4 right-4 flex gap-2"
           >
-            {imageUrl && onImageRemove && (
+            {(tempImageUrl || imageUrl) && onImageRemove && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={onImageRemove}
+                onClick={() => {
+                  if (tempImageUrl) {
+                    URL.revokeObjectURL(tempImageUrl);
+                    setTempImageUrl(null);
+                  }
+                  onImageRemove();
+                }}
                 className="flex items-center gap-2 rounded-lg bg-white/90 px-4 py-2 text-red-600 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl"
               >
                 <X size={18} />
@@ -70,7 +100,7 @@ export function BandImage({
               </motion.button>
             )}
             <FileUpload
-              onUpload={onImageUpload}
+              onUpload={handleImageUpload}
               accept="image/*"
               className="flex items-center gap-2 rounded-lg bg-white/90 px-4 py-2 text-gray-700 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl"
             >
@@ -81,7 +111,9 @@ export function BandImage({
                 <Edit2 size={18} />
               </motion.div>
               <span className="font-medium">
-                {imageUrl ? t('form.changeImage') : t('form.addImage')}
+                {tempImageUrl || imageUrl
+                  ? t('form.changeImage')
+                  : t('form.addImage')}
               </span>
             </FileUpload>
           </motion.div>

@@ -399,20 +399,59 @@ export default function BandDetails() {
 
     setIsUpdating(true);
     try {
-      // Create FormData for file upload
-      const formData = new FormData();
+      let uploadedImageUrl = editedValues.imageUrl;
+      const uploadedMediaUrls: { url: string; type: string }[] = [];
 
-      // Add profile image if it was changed
+      // Upload profile image if changed
       if (editedValues.imageFile) {
-        formData.append('image', editedValues.imageFile);
+        const formData = new FormData();
+        formData.append('file', editedValues.imageFile);
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to upload profile image');
+        }
+
+        const data = await response.json();
+        uploadedImageUrl = data.url;
       }
 
-      // Add all files from edited media
-      editedValues.media?.forEach((media) => {
-        if ('file' in media) {
-          formData.append('files', media.file);
+      // Upload media files if any
+      if (editedValues.media?.some((media) => 'file' in media)) {
+        for (const media of editedValues.media) {
+          if ('file' in media) {
+            const formData = new FormData();
+            formData.append('file', media.file);
+
+            const response = await fetch('/api/upload', {
+              method: 'POST',
+              body: formData,
+            });
+
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.error || 'Failed to upload media file');
+            }
+
+            const data = await response.json();
+            uploadedMediaUrls.push({
+              url: data.url,
+              type: media.type,
+            });
+          } else {
+            // Keep existing media that wasn't changed
+            uploadedMediaUrls.push({
+              url: media.url,
+              type: media.type,
+            });
+          }
         }
-      });
+      }
 
       // Add other band data
       const bandData = {
@@ -436,15 +475,14 @@ export default function BandDetails() {
             sunday: false,
           },
         media:
-          editedValues.media?.map((media) => ({
-            url: media.url,
-            type: media.type,
-          })) || [],
+          uploadedMediaUrls.length > 0
+            ? uploadedMediaUrls
+            : editedValues.media || bandProfile?.media || [],
         socialLinks: editedValues.socialLinks || bandProfile?.socialLinks || [],
         imageUrl:
-          editedValues.imageUrl === ''
+          uploadedImageUrl === ''
             ? ''
-            : editedValues.imageUrl || bandProfile?.imageUrl || '',
+            : uploadedImageUrl || bandProfile?.imageUrl || '',
         technicalRider: {
           soundSystem:
             editedValues.technicalRider?.soundSystem ||
@@ -507,9 +545,7 @@ export default function BandDetails() {
         },
       };
 
-      formData.append('data', JSON.stringify(bandData));
-
-      // TODO: Update the updateBand function to handle FormData
+      // Update the band with the new data
       await updateBand(id, bandData);
 
       const updatedProfile = await getBandProfileById(id);
@@ -517,6 +553,8 @@ export default function BandDetails() {
         setBandProfile(updatedProfile);
         toast.success(t('successUpdating'));
         setIsEditing(false);
+        setEditedValues({});
+        setHasImageChanged(false);
       }
     } catch (error) {
       console.error('Error updating band:', error);
