@@ -21,7 +21,9 @@ export default async function Page({ params: { lng, id } }: PageParams) {
     notFound();
   }
 
-  const validEventTypes: EventType[] = Array.isArray(eventTypes) ? eventTypes : [];
+  const validEventTypes: EventType[] = Array.isArray(eventTypes)
+    ? eventTypes
+    : [];
 
   return (
     <BookingDetail
