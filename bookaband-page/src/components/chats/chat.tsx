@@ -66,7 +66,7 @@ const Chat: React.FC<ChatProps> = ({
       const container = chatContainerRef.current;
       container.scrollTo({
         top: container.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   };
@@ -392,9 +392,9 @@ const Chat: React.FC<ChatProps> = ({
               </div>
 
               {/* Chat Messages */}
-              <div 
+              <div
                 ref={chatContainerRef}
-                className="flex-1 overflow-y-auto bg-gray-50 p-4 scroll-smooth"
+                className="flex-1 overflow-y-auto scroll-smooth bg-gray-50 p-4"
               >
                 {messageGroups.length === 0 ? (
                   <div className="flex h-full flex-col items-center justify-center gap-3 p-4">
