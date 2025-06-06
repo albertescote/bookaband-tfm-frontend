@@ -28,7 +28,7 @@ export interface ArtistReview {
   date: string;
 }
 
-interface Event {
+export interface Event {
   id: string;
   name: string;
   date: string;

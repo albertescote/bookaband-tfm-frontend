@@ -8,30 +8,15 @@ import {
   X,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-
-interface EventType {
-  id: string;
-  label: Record<string, string>;
-  icon: string;
-}
-
-interface ArtistEvent {
-  id: string;
-  date: string;
-  name: string;
-  eventTypeId: string;
-  city?: string;
-  country?: string;
-  venue?: string;
-  isPublic?: boolean;
-}
-
-interface Artist {
-  events?: ArtistEvent[];
-}
+import {
+  ArtistDetails,
+  Event,
+} from '@/service/backend/artist/domain/artistDetails';
+import { EventType } from '@/service/backend/filters/domain/eventType';
+import { WeeklyAvailability } from '@/service/backend/artist/domain/bandCatalogItem';
 
 interface EventsTabProps {
-  artist: Artist;
+  artist: ArtistDetails;
   language: string;
   eventTypes: EventType[];
 }
@@ -49,7 +34,7 @@ export default function EventsTab({
   const [viewAll, setViewAll] = useState(false);
   const [eventPopup, setEventPopup] = useState({
     visible: false,
-    events: [] as ArtistEvent[],
+    events: [] as Event[],
     position: { x: 0, y: 0 },
     date: null as Date | null,
   });
@@ -115,7 +100,7 @@ export default function EventsTab({
     eventTypes.find((e) => e.id === id)?.label[language] || '';
 
   const eventDates = useMemo(() => {
-    return events.reduce((acc: Record<string, ArtistEvent[]>, event) => {
+    return events.reduce((acc: Record<string, Event[]>, event) => {
       const key = new Date(event.date).toDateString();
       if (!acc[key]) acc[key] = [];
       acc[key].push(event);
@@ -292,16 +277,27 @@ export default function EventsTab({
                   const isEventDay = eventDates[dateKey]?.length > 0;
                   const isHovered = hoveredDay === dateKey;
                   const eventCount = eventDates[dateKey]?.length || 0;
+                  const dayOfWeek = day.date.getDay();
+                  const dayName = [
+                    'monday',
+                    'tuesday',
+                    'wednesday',
+                    'thursday',
+                    'friday',
+                    'saturday',
+                    'sunday',
+                  ][dayOfWeek] as keyof WeeklyAvailability;
+                  const isAvailable = artist.weeklyAvailability[dayName];
 
                   return (
                     <div
                       key={dayIndex}
-                      onClick={(e) => handleDayClick(day, e)}
+                      onClick={(e) => isAvailable && handleDayClick(day, e)}
                       onMouseEnter={() => setHoveredDay(dateKey)}
                       onMouseLeave={() => setHoveredDay(null)}
-                      className={`relative flex cursor-pointer items-center justify-center p-1 transition-all ${
-                        day.isCurrentMonth ? 'opacity-100' : 'opacity-30'
-                      }`}
+                      className={`relative flex cursor-pointer items-center justify-center p-1 transition-all
+    ${day.isCurrentMonth ? 'opacity-100' : 'opacity-30'}
+    ${isAvailable === false ? 'pointer-events-none opacity-30' : ''}`}
                     >
                       <div
                         className={`relative z-10 flex items-center justify-center rounded-full transition-all ${

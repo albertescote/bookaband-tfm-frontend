@@ -30,6 +30,7 @@
   "availability": "Disponibilitat",
   "noReviews": "Aquest artista encara no ha rebut cap ressenya",
   "eventTypes": "Tipus d'esdeveniments",
+  "searchSummary": "Resum de la cerca",
   "errorScreen": {
     "title": "S'ha produït un error",
     "description": "No s'ha pogut carregar el perfil de l'artista. Torna-ho a provar més tard.",

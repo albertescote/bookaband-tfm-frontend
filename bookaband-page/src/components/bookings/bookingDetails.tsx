@@ -2,13 +2,15 @@
 import { useTranslation } from '@/app/i18n/client';
 import { getStatusColor } from '@/lib/utils';
 import {
+  AlertTriangle,
   ArrowLeft,
+  Building2,
   Calendar,
   Clock,
-  MapPin,
+  Home,
   MessageSquare,
-  Music,
-  AlertTriangle,
+  Tag,
+  Type,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -97,12 +99,22 @@ export default function BookingDetails({
             {t('bandInfo')}
           </h2>
           <div className="flex items-center gap-4">
-            <div className="overflow-hidden rounded-full border border-gray-200 shadow-sm">
+            <div
+              className="cursor-pointer overflow-hidden rounded-full border border-gray-200 shadow-sm transition-opacity hover:opacity-80"
+              onClick={() =>
+                router.push(`/${language}/artists/${booking.bandId}`)
+              }
+            >
               {getAvatar(20, booking.bandImageUrl, booking.bandName)}
             </div>
             <div className="flex flex-col gap-2">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3
+                  className="cursor-pointer text-lg font-semibold text-gray-900 transition-colors hover:text-[#15b7b9]"
+                  onClick={() =>
+                    router.push(`/${language}/artists/${booking.bandId}`)
+                  }
+                >
                   {booking.bandName}
                 </h3>
               </div>
@@ -125,7 +137,7 @@ export default function BookingDetails({
           </h2>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <MapPin className="h-5 w-5 text-[#15b7b9]" />
+              <Building2 className="h-5 w-5 text-[#15b7b9]" />
               <div>
                 <p className="text-sm font-medium text-gray-500">
                   {t('venue')}
@@ -134,7 +146,7 @@ export default function BookingDetails({
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <MapPin className="h-5 w-5 text-[#15b7b9]" />
+              <Home className="h-5 w-5 text-[#15b7b9]" />
               <div>
                 <p className="text-sm font-medium text-gray-500">
                   {t('address')}
@@ -158,7 +170,7 @@ export default function BookingDetails({
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="flex items-center gap-3">
-              <Music className="h-5 w-5 text-[#15b7b9]" />
+              <Type className="h-5 w-5 text-[#15b7b9]" />
               <div>
                 <p className="text-sm font-medium text-gray-500">
                   {t('eventName')}
@@ -168,7 +180,7 @@ export default function BookingDetails({
             </div>
             {eventType && (
               <div className="flex items-center gap-3">
-                <Music className="h-5 w-5 text-[#15b7b9]" />
+                <Tag className="h-5 w-5 text-[#15b7b9]" />
                 <div>
                   <p className="text-sm font-medium text-gray-500">
                     {t('eventType')}
@@ -249,11 +261,11 @@ export default function BookingDetails({
             <p className="mb-6 text-center text-gray-600">
               {t('cancelConfirmationMessage')}
             </p>
-            <div className="flex justify-end gap-3">
+            <div className="flex justify-center gap-4">
               <Button
                 variant="outline"
                 onClick={() => setShowCancelModal(false)}
-                className="px-4"
+                className="px-6"
               >
                 {t('no')}
               </Button>
@@ -261,7 +273,7 @@ export default function BookingDetails({
                 variant="outline"
                 onClick={handleCancel}
                 disabled={cancelling}
-                className="px-4 text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="px-6 text-red-600 hover:bg-red-50 hover:text-red-700"
               >
                 {cancelling ? (
                   <div className="flex items-center gap-2">
