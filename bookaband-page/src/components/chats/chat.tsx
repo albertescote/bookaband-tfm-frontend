@@ -59,6 +59,17 @@ const Chat: React.FC<ChatProps> = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      const container = chatContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const createEmptyChat = async (
     bandId: string,
@@ -150,6 +161,7 @@ const Chat: React.FC<ChatProps> = ({
             : undefined,
         })),
       );
+      setTimeout(scrollToBottom, 100);
     }
   }, [chat, t]);
 
@@ -157,6 +169,7 @@ const Chat: React.FC<ChatProps> = ({
 
   useEffect(() => {
     setAllMessages((prevMessages) => [...prevMessages, ...messages]);
+    setTimeout(scrollToBottom, 100);
   }, [messages]);
 
   const handleSendMessage = () => {
@@ -205,6 +218,7 @@ const Chat: React.FC<ChatProps> = ({
           });
           setMessage('');
           setShowEmojis(false);
+          setTimeout(scrollToBottom, 100);
         });
       } else {
         const newMessage: SocketMessage = {
@@ -242,6 +256,7 @@ const Chat: React.FC<ChatProps> = ({
         sendMessage(chat!.id, recipientId, message);
         setMessage('');
         setShowEmojis(false);
+        setTimeout(scrollToBottom, 100);
       }
     }
   };
@@ -377,7 +392,10 @@ const Chat: React.FC<ChatProps> = ({
               </div>
 
               {/* Chat Messages */}
-              <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
+              <div 
+                ref={chatContainerRef}
+                className="flex-1 overflow-y-auto bg-gray-50 p-4 scroll-smooth"
+              >
                 {messageGroups.length === 0 ? (
                   <div className="flex h-full flex-col items-center justify-center gap-3 p-4">
                     <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#e3f8f8]">
