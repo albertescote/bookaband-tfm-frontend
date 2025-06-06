@@ -1,14 +1,13 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { useRouter } from 'next/navigation';
 import { PlusCircleIcon } from '@heroicons/react/outline';
+import { AUTH_URL } from '@/publicConfig';
 
 const SignUpButton = ({ language }: { language: string }) => {
-  const router = useRouter();
   const { t } = useTranslation(language, 'home');
 
   const signUp = () => {
-    router.push(`/${language}/sign-up`);
+    window.location.href = `${AUTH_URL}/${language}/sign-up`;
   };
 
   return (
