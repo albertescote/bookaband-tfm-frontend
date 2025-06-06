@@ -46,6 +46,21 @@ export default function ClientProfileEditor({
       });
   };
 
+  const handleImageUpdate = (newImageUrl: string) => {
+    updateContactInfo(
+      userProfileDetails.firstName,
+      userProfileDetails.familyName,
+      userProfileDetails.bio || '',
+      newImageUrl,
+    )
+      .then(() => {
+        router.refresh();
+      })
+      .catch(() => {
+        setError(true);
+      });
+  };
+
   if (error) {
     return (
       <Error
@@ -67,6 +82,7 @@ export default function ClientProfileEditor({
           language,
         )}
         bio={userProfileDetails.bio}
+        onImageUpdate={handleImageUpdate}
       />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

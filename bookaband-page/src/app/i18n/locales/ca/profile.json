@@ -1,5 +1,5 @@
 {
-  "activitySummary": "Resum d’activitat",
+  "activitySummary": "Resum d'activitat",
   "musiciansContacted": "Músics contactats",
   "eventsOrganized": "Esdeveniments organitzats",
   "billingAddress": "Adreça de facturació",
@@ -16,7 +16,7 @@
   "successUpdate": "Adreça de facturació actualitzada!",
   "successCreate": "Adreça de facturació creada!",
   "successDelete": "Adreça de facturació eliminada!",
-  "joinedDate": "S’hi va unir el",
+  "joinedDate": "S'hi va unir el",
   "contactInfo": "Informació de contacte",
   "bio": "Biografia",
   "email": "Correu electrònic",
@@ -26,7 +26,9 @@
   "editPersonalInfo": "Edita la informació personal",
   "name": "Nom",
   "surname": "Cognom",
-  "joinedLabel": "S’hi va unir el ",
+  "joinedLabel": "S'hi va unir el ",
+  "imageUpdated": "Imatge de perfil actualitzada amb èxit!",
+  "errorUploadingImage": "Error en pujar la imatge. Si us plau, torna-ho a intentar.",
   "paymentMethodModal": {
     "titleAdd": "Afegeix un mètode de pagament",
     "titleEdit": "Edita el mètode de pagament",
@@ -39,7 +41,7 @@
     "add": "Afegeix",
     "noMethods": "Encara no s'han afegit mètodes de pagament.",
     "card": "Targeta",
-    "default": "Predeterminat",
+    "default": "Predeterminado",
     "edit": "Edita",
     "delete": "Elimina"
   },

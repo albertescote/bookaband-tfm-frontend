@@ -26,10 +26,11 @@ export async function updateContactInfo(
   firstName: string,
   familyName: string,
   bio: string,
+  imageUrl?: string,
 ): Promise<UserProfileDetails | BackendError> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
-      .put(`/user`, { firstName, familyName, bio })
+      .put(`/user`, { firstName, familyName, bio, imageUrl })
       .then((res) => res.data),
   ).catch((error) => {
     return error.response.data as BackendError;

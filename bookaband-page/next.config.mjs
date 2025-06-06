@@ -5,6 +5,7 @@ const nextConfig = {
       'images.pexels.com',
       'images.unsplash.com',
       'lh3.googleusercontent.com',
+      'localhost',
     ],
   },
 };

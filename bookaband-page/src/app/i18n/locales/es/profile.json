@@ -27,6 +27,8 @@
   "name": "Nombre",
   "surname": "Apellido",
   "joinedLabel": "Se unió el ",
+  "imageUpdated": "¡Imagen de perfil actualizada con éxito!",
+  "errorUploadingImage": "Error al subir la imagen. Por favor, inténtalo de nuevo.",
   "paymentMethodModal": {
     "titleAdd": "Añadir método de pago",
     "titleEdit": "Editar método de pago",
