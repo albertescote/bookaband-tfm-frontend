@@ -217,7 +217,9 @@
         "DUO": "Duo",
         "TRIO": "Trio",
         "BAND": "Band"
-      }
+      },
+      "eventTypes": "Event types",
+      "eventTypesPlaceholder": "Select event types"
     },
     "technicalRider": {
       "title": "Technical rider",
@@ -340,7 +342,8 @@
       "hospitalityRider": "Please fill in all required hospitality rider fields",
       "technicalRider": "Please fill in all required technical rider fields",
       "performanceArea": "Please fill in all required performance area fields"
-    }
+    },
+    "atLeastOneEventType": "Please select at least one event type"
   },
   "roles": {
     "admin": "Admin",

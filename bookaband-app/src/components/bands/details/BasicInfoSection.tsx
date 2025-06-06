@@ -2,18 +2,22 @@ import { motion } from 'framer-motion';
 import { MapPin, Users } from 'lucide-react';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 import { CollapsibleSection } from './CollapsibleSection';
 
 interface BasicInfoSectionProps {
   location: string;
   musicalStyles: MusicalStyle[];
   selectedMusicalStyleIds: string[];
+  eventTypes: EventType[];
+  selectedEventTypeIds: string[];
   bandSize: string;
   bio: string;
   isEditing: boolean;
   language: string;
   onLocationChange: (value: string) => void;
   onMusicalStylesChange: (value: string[]) => void;
+  onEventTypesChange: (value: string[]) => void;
   onBandSizeChange: (value: string) => void;
   onBioChange: (value: string) => void;
   t: (key: string) => string;
@@ -23,12 +27,15 @@ export function BasicInfoSection({
   location,
   musicalStyles,
   selectedMusicalStyleIds,
+  eventTypes,
+  selectedEventTypeIds,
   bandSize,
   bio,
   isEditing,
   language,
   onLocationChange,
   onMusicalStylesChange,
+  onEventTypesChange,
   onBandSizeChange,
   onBioChange,
   t,
@@ -99,6 +106,49 @@ export function BasicInfoSection({
                     {style?.icon && <span>{style.icon}</span>}
                     <span>
                       {style?.label[language] || style?.label['en'] || styleId}
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="relative">
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            {t('form.basicInfo.eventTypes')}
+            {isEditing && <span className="ml-1 text-red-500">*</span>}
+          </label>
+          {isEditing ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="relative"
+            >
+              <MultiSelect
+                options={eventTypes.map((type) => ({
+                  label: type.label[language] || type.label['en'],
+                  value: type.id,
+                  icon: type.icon,
+                }))}
+                value={selectedEventTypeIds}
+                onChange={onEventTypesChange}
+                placeholder={t('form.basicInfo.eventTypesPlaceholder')}
+                className="w-full"
+              />
+            </motion.div>
+          ) : (
+            <div className="flex flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
+              {selectedEventTypeIds.map((typeId) => {
+                const type = eventTypes.find((t) => t.id === typeId);
+                return (
+                  <span
+                    key={typeId}
+                    className="inline-flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-sm text-[#15b7b9]"
+                  >
+                    {type?.icon && <span>{type.icon}</span>}
+                    <span>
+                      {type?.label[language] || type?.label['en'] || typeId}
                     </span>
                   </span>
                 );

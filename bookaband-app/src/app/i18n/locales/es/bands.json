@@ -224,7 +224,9 @@
         "DUO": "Dúo",
         "TRIO": "Trío",
         "BAND": "Banda"
-      }
+      },
+      "eventTypes": "Tipos de eventos",
+      "eventTypesPlaceholder": "Selecciona tipos de eventos"
     },
     "technicalRider": {
       "title": "Rider técnico",
@@ -337,7 +339,8 @@
     "location": "Por favor, introduce la ubicación de la banda",
     "bandSize": "Por favor, selecciona el tamaño de la banda",
     "genre": "Por favor, selecciona un género",
-    "description": "Por favor, proporciona una descripción"
+    "description": "Por favor, proporciona una descripción",
+    "atLeastOneEventType": "Por favor, selecciona al menos un tipo de evento"
   },
   "roles": {
     "admin": "Administrador",

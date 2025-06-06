@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { ArrowLeft, LogOut, Trash2 } from 'lucide-react';
 import {
@@ -37,6 +37,8 @@ import { TechnicalRiderSection } from './details/TechnicalRiderSection';
 import { HospitalityRiderSection } from './details/HospitalityRiderSection';
 import { PerformanceAreaSection } from './details/PerformanceAreaSection';
 import { LeaveBandModal } from './details/modals/LeaveBandModal';
+import { EventType } from '@/service/backend/eventTypes/domain/eventType';
+import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.service';
 
 interface Media {
   id: string;
@@ -73,23 +75,13 @@ type EditedBandProfile = Omit<Partial<BandProfile>, 'media' | 'bandSize'> & {
   performanceArea?: PerformanceArea;
 };
 
-interface BandDetailsProps {
-  language: string;
-  bandId: string;
-  initialBandProfile: BandProfile;
-}
-
-export default function BandDetails({
-  language,
-  bandId,
-  initialBandProfile,
-}: BandDetailsProps) {
-  const { t } = useTranslation(language, 'bands');
+export default function BandDetails() {
+  const { id, lng } = useParams<{ id: string; lng: string }>();
+  const { t } = useTranslation(lng || 'en', 'bands');
   const router = useRouter();
   const { user } = useAuth();
 
-  const [bandProfile, setBandProfile] =
-    useState<BandProfile>(initialBandProfile);
+  const [bandProfile, setBandProfile] = useState<BandProfile | null>(null);
   const [editedValues, setEditedValues] = useState<EditedBandProfile>({});
   const [isEditing, setIsEditing] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -106,21 +98,38 @@ export default function BandDetails({
   const [isLeaving, setIsLeaving] = useState(false);
   const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
   const [hasImageChanged, setHasImageChanged] = useState(false);
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadMusicalStyles = async () => {
+    const loadData = async () => {
+      if (!id) return;
+
       try {
-        const styles = await fetchMusicalStyles();
-        if (!('message' in styles)) {
-          setMusicalStyles(styles as MusicalStyle[]);
+        const [bandData, stylesData, eventTypesData] = await Promise.all([
+          getBandProfileById(id),
+          fetchMusicalStyles(),
+          fetchEventTypes(),
+        ]);
+
+        if (bandData && !('message' in bandData)) {
+          setBandProfile(bandData);
+        }
+        if (stylesData && !('message' in stylesData)) {
+          setMusicalStyles(stylesData as MusicalStyle[]);
+        }
+        if (eventTypesData && !('message' in eventTypesData)) {
+          setEventTypes(eventTypesData as EventType[]);
         }
       } catch (error) {
-        console.error('Error loading musical styles:', error);
+        console.error('Error loading band data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    loadMusicalStyles();
-  }, []);
+    loadData();
+  }, [id]);
 
   const hasChanges = () => {
     if (hasImageChanged) return true;
@@ -132,12 +141,12 @@ export default function BandDetails({
         return Object.entries(value as WeeklyAvailability).some(
           ([day, isAvailable]) =>
             isAvailable !==
-            bandProfile.weeklyAvailability[day as keyof WeeklyAvailability],
+            bandProfile?.weeklyAvailability[day as keyof WeeklyAvailability],
         );
       }
       return (
         JSON.stringify(value) !==
-        JSON.stringify(bandProfile[key as keyof BandProfile])
+        JSON.stringify(bandProfile?.[key as keyof BandProfile] || {})
       );
     });
   };
@@ -145,11 +154,11 @@ export default function BandDetails({
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      await deleteBand(bandId);
+      await deleteBand(id);
       toast.success(t('successDeleting'));
       router.refresh();
       setTimeout(() => {
-        router.push(`/${language}/bands`);
+        router.push(`/${lng}/bands`);
       }, 100);
     } catch (error) {
       console.error('Error deleting band:', error);
@@ -163,9 +172,9 @@ export default function BandDetails({
   const handleLeaveBand = async () => {
     setIsLeaving(true);
     try {
-      await leaveBand(bandId);
+      await leaveBand(id);
       toast.success(t('successLeaving'));
-      router.push(`/${language}/bands`);
+      router.push(`/${lng}/bands`);
       setTimeout(() => {
         window.location.reload();
       }, 100);
@@ -184,7 +193,7 @@ export default function BandDetails({
 
     setIsInviting(true);
     try {
-      await sendInvitation(bandId, inviteEmail.trim());
+      await sendInvitation(id, inviteEmail.trim());
       setInviteEmail('');
       setShowInviteModal(false);
       toast.success(t('invitationSent'));
@@ -199,11 +208,14 @@ export default function BandDetails({
   const handleRemoveMember = async (memberId: string) => {
     setIsRemoving(memberId);
     try {
-      await removeMember(bandId, memberId);
-      setBandProfile((prev) => ({
-        ...prev,
-        members: prev.members?.filter((member) => member.id !== memberId),
-      }));
+      await removeMember(id, memberId);
+      setBandProfile((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          members: prev.members?.filter((member) => member.id !== memberId),
+        };
+      });
       toast.success(t('memberRemoved'));
     } catch (err) {
       console.error('Error removing member:', err);
@@ -216,18 +228,42 @@ export default function BandDetails({
 
   const handleStartEdit = () => {
     setEditedValues({
-      name: bandProfile.name,
-      bio: bandProfile.bio,
-      location: bandProfile.location,
-      socialLinks: bandProfile.socialLinks,
-      imageUrl: bandProfile.imageUrl,
-      media: bandProfile.media,
-      weeklyAvailability: { ...bandProfile.weeklyAvailability },
-      musicalStyleIds: bandProfile.musicalStyleIds,
-      bandSize: bandProfile.bandSize,
-      hospitalityRider: bandProfile.hospitalityRider,
-      technicalRider: bandProfile.technicalRider,
-      performanceArea: bandProfile.performanceArea,
+      name: bandProfile?.name ?? '',
+      bio: bandProfile?.bio ?? '',
+      location: bandProfile?.location ?? '',
+      socialLinks: bandProfile?.socialLinks ?? [],
+      imageUrl: bandProfile?.imageUrl ?? '',
+      media: bandProfile?.media ?? [],
+      weeklyAvailability: bandProfile?.weeklyAvailability ?? {
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+        sunday: false,
+      },
+      musicalStyleIds: bandProfile?.musicalStyleIds ?? [],
+      bandSize: bandProfile?.bandSize ?? 'BAND',
+      hospitalityRider: bandProfile?.hospitalityRider ?? {
+        accommodation: '',
+        catering: '',
+        beverages: '',
+        specialRequirements: '',
+      },
+      technicalRider: bandProfile?.technicalRider ?? {
+        soundSystem: '',
+        microphones: '',
+        backline: '',
+        lighting: '',
+        otherRequirements: '',
+      },
+      performanceArea: bandProfile?.performanceArea ?? {
+        regions: [],
+        travelPreferences: '',
+        restrictions: '',
+      },
+      eventTypeIds: bandProfile?.eventTypeIds ?? [],
     });
     setHasImageChanged(false);
     setIsEditing(true);
@@ -236,10 +272,13 @@ export default function BandDetails({
   const handleCancelEdit = () => {
     setEditedValues({});
     setHasImageChanged(false);
-    setBandProfile((prev) => ({
-      ...prev,
-      imageUrl: initialBandProfile.imageUrl,
-    }));
+    setBandProfile((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        imageUrl: bandProfile?.imageUrl ?? '',
+      };
+    });
     setIsEditing(false);
   };
 
@@ -273,7 +312,7 @@ export default function BandDetails({
 
     setEditedValues((prev) => ({
       ...prev,
-      media: [...(prev.media || bandProfile.media || []), ...newMedia],
+      media: [...(prev.media || bandProfile?.media || []), ...newMedia],
     }));
   };
 
@@ -282,14 +321,14 @@ export default function BandDetails({
 
     setEditedValues((prev) => ({
       ...prev,
-      media: (prev.media || bandProfile.media || []).filter(
+      media: (prev.media || bandProfile?.media || []).filter(
         (media) => 'id' in media && media.id !== mediaId,
       ),
     }));
   };
 
   const handleSaveEdit = async () => {
-    if (!bandId || !hasChanges()) return;
+    if (!id || !hasChanges()) return;
 
     // Validate band name
     if (!editedValues.name?.trim()) {
@@ -348,12 +387,12 @@ export default function BandDetails({
     }
 
     // Ensure mandatory arrays are present
-    if (!editedValues.socialLinks && !bandProfile.socialLinks) {
+    if (!editedValues.socialLinks && !bandProfile?.socialLinks) {
       toast.error(t('validation.required.socialLinks'));
       return;
     }
 
-    if (!editedValues.media && !bandProfile.media) {
+    if (!editedValues.media && !bandProfile?.media) {
       toast.error(t('validation.required.media'));
       return;
     }
@@ -377,84 +416,93 @@ export default function BandDetails({
 
       // Add other band data
       const bandData = {
-        name: editedValues.name || bandProfile.name,
+        name: editedValues.name || bandProfile?.name || '',
         musicalStyleIds:
-          editedValues.musicalStyleIds || bandProfile.musicalStyleIds,
-        price: bandProfile.price || 0,
-        location: editedValues.location || bandProfile.location,
-        bandSize: editedValues.bandSize || bandProfile.bandSize,
-        eventTypeIds: bandProfile.eventTypeIds,
-        bio: editedValues.bio || bandProfile.bio,
-        weeklyAvailability:
-          editedValues.weeklyAvailability || bandProfile.weeklyAvailability,
+          editedValues.musicalStyleIds || bandProfile?.musicalStyleIds || [],
+        price: bandProfile?.price || 0,
+        location: editedValues.location || bandProfile?.location || '',
+        bandSize: editedValues.bandSize || bandProfile?.bandSize || 'BAND',
+        eventTypeIds:
+          editedValues.eventTypeIds || bandProfile?.eventTypeIds || [],
+        bio: editedValues.bio || bandProfile?.bio || '',
+        weeklyAvailability: editedValues.weeklyAvailability ||
+          bandProfile?.weeklyAvailability || {
+            monday: false,
+            tuesday: false,
+            wednesday: false,
+            thursday: false,
+            friday: false,
+            saturday: false,
+            sunday: false,
+          },
         media:
           editedValues.media?.map((media) => ({
             url: media.url,
             type: media.type,
           })) || [],
-        socialLinks: editedValues.socialLinks || bandProfile.socialLinks || [],
+        socialLinks: editedValues.socialLinks || bandProfile?.socialLinks || [],
         imageUrl:
           editedValues.imageUrl === ''
             ? ''
-            : editedValues.imageUrl || bandProfile.imageUrl,
+            : editedValues.imageUrl || bandProfile?.imageUrl || '',
         technicalRider: {
           soundSystem:
             editedValues.technicalRider?.soundSystem ||
-            bandProfile.technicalRider?.soundSystem ||
+            bandProfile?.technicalRider?.soundSystem ||
             '',
           microphones:
             editedValues.technicalRider?.microphones ||
-            bandProfile.technicalRider?.microphones ||
+            bandProfile?.technicalRider?.microphones ||
             '',
           backline:
             editedValues.technicalRider?.backline ||
-            bandProfile.technicalRider?.backline ||
+            bandProfile?.technicalRider?.backline ||
             '',
           lighting:
             editedValues.technicalRider?.lighting ||
-            bandProfile.technicalRider?.lighting ||
+            bandProfile?.technicalRider?.lighting ||
             '',
           otherRequirements:
             editedValues.technicalRider?.otherRequirements === ''
               ? ''
               : editedValues.technicalRider?.otherRequirements ||
-                bandProfile.technicalRider?.otherRequirements ||
+                bandProfile?.technicalRider?.otherRequirements ||
                 '',
         },
         performanceArea: {
           regions:
             editedValues.performanceArea?.regions ||
-            bandProfile.performanceArea?.regions ||
+            bandProfile?.performanceArea?.regions ||
             [],
           travelPreferences:
             editedValues.performanceArea?.travelPreferences ||
-            bandProfile.performanceArea?.travelPreferences ||
+            bandProfile?.performanceArea?.travelPreferences ||
             '',
           restrictions:
             editedValues.performanceArea?.restrictions === ''
               ? ''
               : editedValues.performanceArea?.restrictions ||
-                bandProfile.performanceArea?.restrictions ||
+                bandProfile?.performanceArea?.restrictions ||
                 '',
         },
         hospitalityRider: {
           accommodation:
             editedValues.hospitalityRider?.accommodation ||
-            bandProfile.hospitalityRider?.accommodation ||
+            bandProfile?.hospitalityRider?.accommodation ||
             '',
           catering:
             editedValues.hospitalityRider?.catering ||
-            bandProfile.hospitalityRider?.catering ||
+            bandProfile?.hospitalityRider?.catering ||
             '',
           beverages:
             editedValues.hospitalityRider?.beverages ||
-            bandProfile.hospitalityRider?.beverages ||
+            bandProfile?.hospitalityRider?.beverages ||
             '',
           specialRequirements:
             editedValues.hospitalityRider?.specialRequirements === ''
               ? ''
               : editedValues.hospitalityRider?.specialRequirements ||
-                bandProfile.hospitalityRider?.specialRequirements ||
+                bandProfile?.hospitalityRider?.specialRequirements ||
                 '',
         },
       };
@@ -462,9 +510,9 @@ export default function BandDetails({
       formData.append('data', JSON.stringify(bandData));
 
       // TODO: Update the updateBand function to handle FormData
-      await updateBand(bandId, bandData);
+      await updateBand(id, bandData);
 
-      const updatedProfile = await getBandProfileById(bandId);
+      const updatedProfile = await getBandProfileById(id);
       if (updatedProfile) {
         setBandProfile(updatedProfile);
         toast.success(t('successUpdating'));
@@ -481,19 +529,29 @@ export default function BandDetails({
   const toggleAvailability = (day: keyof WeeklyAvailability) => {
     if (!isEditing) return;
 
-    setEditedValues((prev) => ({
-      ...prev,
-      weeklyAvailability: {
-        ...(prev.weeklyAvailability || bandProfile.weeklyAvailability),
-        [day]: !(
-          prev.weeklyAvailability?.[day] ?? bandProfile.weeklyAvailability[day]
-        ),
-      },
-    }));
+    setEditedValues((prev) => {
+      const base = prev.weeklyAvailability ||
+        bandProfile?.weeklyAvailability || {
+          monday: false,
+          tuesday: false,
+          wednesday: false,
+          thursday: false,
+          friday: false,
+          saturday: false,
+          sunday: false,
+        };
+      return {
+        ...prev,
+        weeklyAvailability: {
+          ...base,
+          [day]: !base[day],
+        },
+      };
+    });
   };
 
   const isAdmin =
-    bandProfile.members?.some(
+    bandProfile?.members?.some(
       (member) => member.id === user?.id && member.role === 'ADMIN',
     ) ?? false;
 
@@ -509,6 +567,34 @@ export default function BandDetails({
     if (urlLower.includes('spotify.com')) return 'spotify';
     if (urlLower.includes('tiktok.com')) return 'tiktok';
     return 'website';
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!bandProfile) {
+    return <div>Band not found</div>;
+  }
+
+  const handleLocationChange = (value: string) => {
+    setEditedValues((prev) => ({ ...prev, location: value }));
+  };
+
+  const handleMusicalStylesChange = (value: string[]) => {
+    setEditedValues((prev) => ({ ...prev, musicalStyleIds: value }));
+  };
+
+  const handleEventTypesChange = (value: string[]) => {
+    setEditedValues((prev) => ({ ...prev, eventTypeIds: value }));
+  };
+
+  const handleBandSizeChange = (value: string) => {
+    setEditedValues((prev) => ({ ...prev, bandSize: value as BandSize }));
+  };
+
+  const handleBioChange = (value: string) => {
+    setEditedValues((prev) => ({ ...prev, bio: value }));
   };
 
   return (
@@ -553,13 +639,16 @@ export default function BandDetails({
               imageUrl: '',
               imageFile: undefined,
             }));
-            setBandProfile((prev) => ({
-              ...prev,
-              imageUrl: '',
-            }));
+            setBandProfile((prev) => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                imageUrl: '',
+              };
+            });
             setHasImageChanged(true);
           }}
-          language={language}
+          language={lng || 'en'}
         />
 
         <div className="space-y-6">
@@ -569,25 +658,19 @@ export default function BandDetails({
             selectedMusicalStyleIds={
               editedValues.musicalStyleIds || bandProfile.musicalStyleIds
             }
+            eventTypes={eventTypes}
+            selectedEventTypeIds={
+              editedValues.eventTypeIds || bandProfile.eventTypeIds
+            }
             bandSize={editedValues.bandSize || bandProfile.bandSize}
             bio={editedValues.bio ?? bandProfile.bio ?? ''}
             isEditing={isEditing}
-            language={language}
-            onLocationChange={(value) =>
-              setEditedValues((prev) => ({ ...prev, location: value }))
-            }
-            onMusicalStylesChange={(value) =>
-              setEditedValues((prev) => ({ ...prev, musicalStyleIds: value }))
-            }
-            onBandSizeChange={(value) =>
-              setEditedValues((prev) => ({
-                ...prev,
-                bandSize: value as BandSize,
-              }))
-            }
-            onBioChange={(value) =>
-              setEditedValues((prev) => ({ ...prev, bio: value }))
-            }
+            language={lng || 'en'}
+            onLocationChange={handleLocationChange}
+            onMusicalStylesChange={handleMusicalStylesChange}
+            onEventTypesChange={handleEventTypesChange}
+            onBandSizeChange={handleBandSizeChange}
+            onBioChange={handleBioChange}
             t={t}
           />
 

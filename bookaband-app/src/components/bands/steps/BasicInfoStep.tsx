@@ -10,6 +10,8 @@ import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
 import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.service';
+import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface BasicInfoStepProps {
   formData: Partial<UpsertBandRequest>;
@@ -32,20 +34,27 @@ export default function BasicInfoStep({
   const { t } = useTranslation(language, 'bands');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
 
   useEffect(() => {
-    const loadMusicalStyles = async () => {
+    const loadData = async () => {
       try {
-        const styles = await fetchMusicalStyles();
+        const [styles, types] = await Promise.all([
+          fetchMusicalStyles(),
+          fetchEventTypes(),
+        ]);
         if (!('message' in styles)) {
           setMusicalStyles(styles as MusicalStyle[]);
         }
+        if (!('message' in types)) {
+          setEventTypes(types as EventType[]);
+        }
       } catch (error) {
-        console.error('Error loading musical styles:', error);
+        console.error('Error loading data:', error);
       }
     };
 
-    loadMusicalStyles().then();
+    loadData().then();
   }, []);
 
   const validateField = (name: string, value: any) => {
@@ -86,6 +95,10 @@ export default function BasicInfoStep({
           }
         }
         break;
+      case 'eventTypeIds':
+        if (!value || value.length === 0)
+          return t('validation.atLeastOneEventType');
+        break;
     }
     return '';
   };
@@ -106,14 +119,6 @@ export default function BasicInfoStep({
     const error = validateField('musicalStyleIds', styles);
     setErrors((prev) => ({ ...prev, musicalStyleIds: error }));
     onFormDataChange({ ...formData, musicalStyleIds: styles });
-  };
-
-  const handleBandSizeChange = (sizes: string[]) => {
-    // Only take the last selected option, effectively making it a single select
-    const newSize = sizes.length > 0 ? sizes[sizes.length - 1] : undefined;
-    const error = validateField('bandSize', newSize);
-    setErrors((prev) => ({ ...prev, bandSize: error }));
-    onFormDataChange({ ...formData, bandSize: newSize });
   };
 
   const handleImageUpload = (files: File[]) => {
@@ -141,6 +146,12 @@ export default function BasicInfoStep({
       ...formData,
       imageUrl: undefined,
     });
+  };
+
+  const handleEventTypesChange = (types: string[]) => {
+    const error = validateField('eventTypeIds', types);
+    setErrors((prev) => ({ ...prev, eventTypeIds: error }));
+    onFormDataChange({ ...formData, eventTypeIds: types });
   };
 
   return (
@@ -287,6 +298,39 @@ export default function BasicInfoStep({
               formData.musicalStyleIds.length === 0) && (
               <p className="mt-1 text-sm text-red-500">
                 {t('validation.atLeastOneStyle')}
+              </p>
+            )}
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="eventTypeIds"
+          className="text-sm font-medium text-gray-700"
+        >
+          {t('form.basicInfo.eventTypes')} *
+        </label>
+        <div className="mt-2">
+          <MultiSelect
+            options={eventTypes.map((type) => ({
+              label: type.label[language] || type.label['en'],
+              value: type.id,
+              icon: type.icon,
+            }))}
+            value={formData.eventTypeIds || []}
+            onChange={handleEventTypesChange}
+            placeholder={t('form.basicInfo.eventTypesPlaceholder')}
+            className={
+              hasError &&
+              (!formData.eventTypeIds || formData.eventTypeIds.length === 0)
+                ? 'border-red-500'
+                : ''
+            }
+          />
+          {hasError &&
+            (!formData.eventTypeIds || formData.eventTypeIds.length === 0) && (
+              <p className="mt-1 text-sm text-red-500">
+                {t('validation.atLeastOneEventType')}
               </p>
             )}
         </div>

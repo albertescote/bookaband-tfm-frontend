@@ -223,7 +223,9 @@
         "DUO": "Dúo",
         "TRIO": "Trío",
         "BAND": "Banda"
-      }
+      },
+      "eventTypes": "Tipus d'esdeveniments",
+      "eventTypesPlaceholder": "Selecciona tipus d'esdeveniments"
     },
     "technicalRider": {
       "title": "Rider tècnic",
@@ -341,7 +343,8 @@
       "hospitalityRider": "Si us plau, omple tots els camps obligatoris del rider d'hospitalitat",
       "technicalRider": "Si us plau, omple tots els camps obligatoris del rider tècnic",
       "performanceArea": "Si us plau, omple tots els camps obligatoris de l'àrea d'actuació"
-    }
+    },
+    "atLeastOneEventType": "Si us plau, selecciona almenys un tipus d'esdeveniment"
   },
   "roles": {
     "admin": "Administrador",
