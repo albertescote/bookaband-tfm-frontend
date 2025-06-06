@@ -291,6 +291,12 @@ const Chat: React.FC<ChatProps> = ({
     router.push(`/${language}/chats`);
   };
 
+  const goToBandProfile = () => {
+    if (chat?.band.id) {
+      router.push(`/${language}/artists/${chat.band.id}`);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -353,8 +359,10 @@ const Chat: React.FC<ChatProps> = ({
             <div className="flex h-full flex-col">
               {/* Chat Header */}
               <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
-                <div className="flex items-center gap-3">
-                  {/* Back button removed as we're using the unified layout */}
+                <div
+                  className="flex cursor-pointer items-center gap-3"
+                  onClick={goToBandProfile}
+                >
                   {getAvatar(12, imageUrl, displayName)}
                   <div>
                     <h2 className="font-medium">{displayName}</h2>

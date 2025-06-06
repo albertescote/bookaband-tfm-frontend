@@ -4,8 +4,6 @@ import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { MessageSquare, Search } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { getAvatar } from '@/components/shared/avatar';
-import { formatDistanceToNow } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
 import { useAuth } from '@/providers/authProvider';
 
 interface ChatsListProps {
@@ -41,15 +39,6 @@ export function ChatsList({
     return messageText.length > 40
       ? `${messageText.substring(0, 40)}...`
       : messageText;
-  };
-
-  const getLastMessageTime = (chat: ChatView) => {
-    if (!chat.messages || chat.messages.length === 0) return '';
-    const date = new Date(
-      chat.messages[chat.messages.length - 1].timestamp || chat.updatedAt,
-    );
-    const locale = language === 'es' ? es : language === 'ca' ? ca : undefined;
-    return formatDistanceToNow(date, { addSuffix: true, locale });
   };
 
   return (
@@ -105,9 +94,6 @@ export function ChatsList({
                       <h3 className="truncate font-medium text-gray-900">
                         {chat.band?.name || t('unknown')}
                       </h3>
-                      <span className="text-xs text-gray-500">
-                        {getLastMessageTime(chat)}
-                      </span>
                     </div>
                     <p className="mt-1 truncate text-sm text-gray-600">
                       {getLastMessagePreview(chat)}
