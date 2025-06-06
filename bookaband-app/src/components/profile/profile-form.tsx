@@ -90,7 +90,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
       setFormData((prev) => ({ ...prev, imageUrl }));
       setTempImageUrl(null);
       setTempFile(null);
-      
+
       toast.success(t('profile-updated'));
       setIsEditing(false);
     } catch (error) {
