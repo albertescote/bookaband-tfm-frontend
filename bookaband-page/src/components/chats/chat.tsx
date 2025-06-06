@@ -104,10 +104,8 @@ const Chat: React.FC<ChatProps> = ({
       });
     } else if (bandId) {
       const existingChat = userChats.find((chat) => chat.band.id === bandId);
-      console.log(existingChat);
       if (existingChat) {
         getChatById(existingChat.id).then((chat: ChatHistory | undefined) => {
-          console.log(chat);
           setIsLoading(false);
           setChat(chat);
         });

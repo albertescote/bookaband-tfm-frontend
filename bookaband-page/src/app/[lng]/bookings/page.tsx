@@ -51,7 +51,7 @@ export default async function BookingsPage({
   const bookings = await getAllUserBookings();
 
   return (
-    <div className="mx-auto h-[calc(100vh-4rem)] max-w-4xl px-4 py-8">
+    <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-4xl px-4 py-8">
       <BookingsList language={lng} bookings={bookings || []} />
     </div>
   );

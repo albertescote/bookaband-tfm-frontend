@@ -22,6 +22,8 @@ export function getStatusColor(status: BookingStatus): string {
       return '#22C55E';
     case BookingStatus.DECLINED:
       return '#EF4444';
+    case BookingStatus.CANCELED:
+      return '#6B7280';
     default:
       return '#6B7280';
   }

@@ -3,6 +3,7 @@
   "status.pending": "Pendent",
   "status.accepted": "Acceptada",
   "status.declined": "Rebutjada",
+  "status.canceled": "Cancel·lada",
   "date": "Data",
   "created-at": "Creat el",
   "your-bookings": "Les teves reserves",

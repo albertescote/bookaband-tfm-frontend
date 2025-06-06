@@ -3,6 +3,7 @@
   "status.pending": "Pending",
   "status.accepted": "Accepted",
   "status.declined": "Declined",
+  "status.canceled": "Canceled",
   "date": "Date",
   "created-at": "Created at",
   "your-bookings": "Your bookings",

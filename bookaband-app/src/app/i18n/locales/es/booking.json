@@ -3,6 +3,7 @@
   "status.pending": "Pendiente",
   "status.accepted": "Aceptada",
   "status.declined": "Rechazada",
+  "status.canceled": "Cancelada",
   "date": "Fecha",
   "created-at": "Creado el",
   "your-bookings": "Tus reservas",

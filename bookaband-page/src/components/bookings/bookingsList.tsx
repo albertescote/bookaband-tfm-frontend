@@ -29,11 +29,11 @@ export default function BookingsList({
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="mb-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">
         {t('your-bookings')}
       </h1>
-      <div className="space-y-4">
+      <div className="max-h-[calc(100vh-16rem)] space-y-4 overflow-y-auto">
         {bookings.map((booking) => (
           <Link
             key={booking.id}

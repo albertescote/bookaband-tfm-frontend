@@ -30,6 +30,7 @@ interface FormErrors {
   city?: string;
   postalCode?: string;
   addressLine1?: string;
+  venue?: string;
 }
 
 export function BookingForm({
@@ -116,7 +117,6 @@ export function BookingForm({
       const durationInMinutes =
         (formData.endDate.getTime() - formData.initDate.getTime()) /
         (1000 * 60);
-      console.log(formData.initDate, formData.endDate, durationInMinutes);
       if (durationInMinutes < 5) {
         errors.date = t('validation.minDuration');
         isValid = false;
@@ -153,6 +153,11 @@ export function BookingForm({
 
     if (!formData.addressLine1.trim()) {
       errors.addressLine1 = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.venue.trim()) {
+      errors.venue = t('validation.required');
       isValid = false;
     }
 
@@ -329,34 +334,46 @@ export function BookingForm({
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              currentStep >= 1 ? 'bg-[#15b7b9] text-white' : 'bg-gray-200 text-gray-500'
-            }`}>
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                currentStep >= 1
+                  ? 'bg-[#15b7b9] text-white'
+                  : 'bg-gray-200 text-gray-500'
+              }`}
+            >
               1
             </div>
-            <div className={`ml-2 text-sm font-medium ${
-              currentStep >= 1 ? 'text-[#15b7b9]' : 'text-gray-500'
-            }`}>
+            <div
+              className={`ml-2 text-sm font-medium ${
+                currentStep >= 1 ? 'text-[#15b7b9]' : 'text-gray-500'
+              }`}
+            >
               {t('bookingDetails')}
             </div>
           </div>
-          <div className="flex-1 mx-4">
+          <div className="mx-4 flex-1">
             <div className="h-1 bg-gray-200">
-              <div 
+              <div
                 className="h-1 bg-[#15b7b9] transition-all duration-300"
                 style={{ width: currentStep === 2 ? '100%' : '0%' }}
               />
             </div>
           </div>
           <div className="flex items-center">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              currentStep >= 2 ? 'bg-[#15b7b9] text-white' : 'bg-gray-200 text-gray-500'
-            }`}>
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                currentStep >= 2
+                  ? 'bg-[#15b7b9] text-white'
+                  : 'bg-gray-200 text-gray-500'
+              }`}
+            >
               2
             </div>
-            <div className={`ml-2 text-sm font-medium ${
-              currentStep >= 2 ? 'text-[#15b7b9]' : 'text-gray-500'
-            }`}>
+            <div
+              className={`ml-2 text-sm font-medium ${
+                currentStep >= 2 ? 'text-[#15b7b9]' : 'text-gray-500'
+              }`}
+            >
               {t('bookingSummary')}
             </div>
           </div>
@@ -564,7 +581,7 @@ export function BookingForm({
             {/* Venue */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                {t('venue')}
+                {t('venue')} *
               </label>
               <input
                 type="text"
@@ -573,8 +590,14 @@ export function BookingForm({
                   setFormData({ ...formData, venue: e.target.value })
                 }
                 placeholder={t('venuePlaceholder')}
-                className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+                className={`w-full rounded-lg border ${
+                  formErrors.venue ? 'border-red-500' : 'border-gray-300'
+                } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
+                required
               />
+              {formErrors.venue && (
+                <p className="mt-1 text-sm text-red-500">{formErrors.venue}</p>
+              )}
             </div>
 
             {/* Address Line 1 */}
@@ -938,8 +961,8 @@ export function BookingForm({
             {currentStep === 1
               ? t('next')
               : isLoading
-              ? t('creating')
-              : t('createBooking')}
+                ? t('creating')
+                : t('createBooking')}
           </Button>
         </div>
       </div>

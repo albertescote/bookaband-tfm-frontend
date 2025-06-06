@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/providers/authProvider';
 import { getBandProfileById } from '@/service/backend/band/service/band.service';
 import { useTranslation } from '@/app/i18n/client';
-import { Heart, MessageCircle, Music, Star, Users, Wallet, TrendingUp, Calendar, MessageSquare } from 'lucide-react';
+import {
+  Calendar,
+  Heart,
+  MessageSquare,
+  Star,
+  TrendingUp,
+  Users,
+} from 'lucide-react';
 import MetricCard from '@/components/ui/metric-card';
 import { BandProfile } from '@/service/backend/band/domain/bandProfile';
 import { toast } from 'react-hot-toast';
@@ -60,6 +67,7 @@ export default function DashboardView({ language }: DashboardViewProps) {
           getAllBandBookings(selectedBand.id),
           getBandChats(selectedBand.id),
         ]);
+        console.log(bandBookings);
 
         if (profile) {
           setBandProfile(profile);
@@ -214,7 +222,9 @@ export default function DashboardView({ language }: DashboardViewProps) {
                   {bookingStats.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={['#FFC107', '#4CAF50', '#F44336'][index % 3]}
+                      fill={
+                        ['#FFC107', '#4CAF50', '#F44336', '#6B7280'][index % 4]
+                      }
                     />
                   ))}
                 </Pie>
