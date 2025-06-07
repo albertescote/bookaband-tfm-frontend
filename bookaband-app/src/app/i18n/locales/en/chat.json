@@ -37,5 +37,6 @@
   "error-uploading-file": "Error uploading file. Please try again.",
   "image-message": "📷 Image",
   "video-message": "🎥 Video",
-  "document-message": "📄 Document"
+  "document-message": "📄 Document",
+  "download-file": "Download"
 }

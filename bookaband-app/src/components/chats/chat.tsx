@@ -10,6 +10,8 @@ import {
   Send,
   Smile,
   Video,
+  X,
+  Download,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
@@ -46,6 +48,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const [displayName, setDisplayName] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
@@ -318,8 +321,19 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           <img
             src={fileUrl}
             alt="Shared image"
-            className="max-h-64 rounded-lg object-contain"
+            className="max-h-64 cursor-pointer rounded-lg object-contain transition-transform hover:scale-[1.02]"
+            onClick={() => setSelectedImage(fileUrl)}
           />
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={16} />
+            {t('download-file')}
+          </a>
         </div>
       );
     }
@@ -330,6 +344,16 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           <video src={fileUrl} controls className="max-h-64 rounded-lg">
             Your browser does not support the video tag.
           </video>
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={16} />
+            {t('download-file')}
+          </a>
         </div>
       );
     }
@@ -354,6 +378,16 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
               {fileExtension} • {t('view-document')}
             </p>
           </div>
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
+            onClick={(e) => e.stopPropagation()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={18} />
+          </a>
         </a>
       </div>
     );
@@ -607,6 +641,29 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={24} />
+          </button>
+          <div className="relative max-h-[90vh] max-w-[90vw]">
+            <img
+              src={selectedImage}
+              alt="Full size image"
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
         </div>
       )}
     </div>

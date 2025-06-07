@@ -37,5 +37,6 @@
   "error-uploading-file": "Error en pujar el fitxer. Si us plau, torna-ho a provar.",
   "image-message": "📷 Imatge",
   "video-message": "🎥 Vídeo",
-  "document-message": "📄 Document"
+  "document-message": "📄 Document",
+  "download-file": "Descarregar"
 }
