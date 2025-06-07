@@ -1,6 +1,6 @@
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
-export interface MessageMetadata {
+export interface BookingMetadata {
   bookingId: string;
   bookingStatus?: BookingStatus;
   eventName?: string;
@@ -14,6 +14,7 @@ export interface MessagePrimitives {
   senderId: string;
   recipientId: string;
   message?: string;
-  metadata?: MessageMetadata;
+  bookingMetadata?: BookingMetadata;
+  fileUrl?: string;
   timestamp?: string | Date;
 }

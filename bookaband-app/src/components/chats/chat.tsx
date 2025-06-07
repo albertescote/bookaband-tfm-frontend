@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
 import {
+  FileText,
   MessageSquareOff,
   MessageSquareWarning,
   Paperclip,
@@ -21,6 +22,7 @@ import { ca, es } from 'date-fns/locale';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { useAuth } from '@/providers/authProvider';
 import BookingNotification from './bookingNotification';
+import { toast } from 'react-hot-toast';
 
 interface ChatProps {
   language: string;
@@ -33,6 +35,8 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const router = useRouter();
   const { selectedBand } = useAuth();
   const [message, setMessage] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [allMessages, setAllMessages] = useState<ChatMessage[]>([]);
   const [chat, setChat] = useState<ChatHistory | undefined>(initialChat);
   const [isLoading, setIsLoading] = useState<boolean>(!initialChat);
@@ -46,6 +50,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -110,7 +115,8 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           recipientId: msg.recipientId,
           message: msg.message || '',
           timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
-          metadata: msg.metadata,
+          fileUrl: msg.fileUrl,
+          bookingMetadata: msg.bookingMetadata,
         })),
       );
       setTimeout(scrollToBottom, 100);
@@ -130,20 +136,77 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     setTimeout(scrollToBottom, 100);
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to upload file');
+      }
+
+      const data = await response.json();
+
+      // Send message with file URL
       const newMessage: ChatMessage = {
         chatId: chat!.id,
         senderId,
         recipientId,
-        message,
+        message: message.trim(),
+        fileUrl: data.url,
         timestamp: new Date(),
       };
+
       setAllMessages((prev) => [...prev, newMessage]);
-      sendMessage(chat!.id, recipientId, message);
+      sendMessage(chat!.id, recipientId, message.trim(), data.url);
+
+      // Reset states
       setMessage('');
+      setFile(null);
       setShowEmojis(false);
       setTimeout(scrollToBottom, 100);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast.error(t('error-uploading-file'));
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() || file) {
+      if (file) {
+        handleFileUpload();
+      } else {
+        const newMessage: ChatMessage = {
+          chatId: chat!.id,
+          senderId,
+          recipientId,
+          message: message.trim(),
+          timestamp: new Date(),
+        };
+        setAllMessages((prev) => [...prev, newMessage]);
+        sendMessage(chat!.id, recipientId, message.trim());
+        setMessage('');
+        setShowEmojis(false);
+        setTimeout(scrollToBottom, 100);
+      }
     }
   };
 
@@ -208,6 +271,92 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
   const onEmojiClick = (emojiData: EmojiClickData) => {
     setMessage((prevMessage) => prevMessage + emojiData.emoji);
+  };
+
+  const isImageFile = (url: string) => {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+  };
+
+  const isVideoFile = (url: string) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
+
+  const getFileNameFromUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+      const fileName = pathname.split('/').pop() || '';
+      return decodeURIComponent(fileName);
+    } catch {
+      return url.split('/').pop() || '';
+    }
+  };
+
+  const getFileIcon = (url: string) => {
+    const extension = url.split('.').pop()?.toLowerCase();
+
+    switch (extension) {
+      case 'pdf':
+        return <FileText className="h-6 w-6 text-red-500" />;
+      case 'doc':
+      case 'docx':
+        return <FileText className="h-6 w-6 text-blue-500" />;
+      case 'xls':
+      case 'xlsx':
+        return <FileText className="h-6 w-6 text-green-500" />;
+      case 'txt':
+        return <FileText className="h-6 w-6 text-gray-500" />;
+      default:
+        return <FileText className="h-6 w-6 text-gray-500" />;
+    }
+  };
+
+  const renderFileContent = (fileUrl: string) => {
+    if (isImageFile(fileUrl)) {
+      return (
+        <div className="mt-2">
+          <img
+            src={fileUrl}
+            alt="Shared image"
+            className="max-h-64 rounded-lg object-contain"
+          />
+        </div>
+      );
+    }
+
+    if (isVideoFile(fileUrl)) {
+      return (
+        <div className="mt-2">
+          <video src={fileUrl} controls className="max-h-64 rounded-lg">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      );
+    }
+
+    const fileName = getFileNameFromUrl(fileUrl);
+    const fileExtension = fileName.split('.').pop()?.toUpperCase() || '';
+
+    return (
+      <div className="mt-2">
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50"
+        >
+          <div className="flex-shrink-0">{getFileIcon(fileUrl)}</div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-gray-900">
+              {fileName}
+            </p>
+            <p className="text-xs text-gray-500">
+              {fileExtension} • {t('view-document')}
+            </p>
+          </div>
+        </a>
+      </div>
+    );
   };
 
   if (error) {
@@ -324,14 +473,14 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                           >
                             <div
                               className={`${
-                                chatMessage.metadata?.bookingId
+                                chatMessage.bookingMetadata
                                   ? 'w-full max-w-3xl'
                                   : 'max-w-[75%]'
                               } ${isSender ? 'order-2' : 'order-1'}`}
                             >
-                              {chatMessage.metadata ? (
+                              {chatMessage.bookingMetadata ? (
                                 <BookingNotification
-                                  metadata={chatMessage.metadata}
+                                  metadata={chatMessage.bookingMetadata}
                                   language={language}
                                 />
                               ) : (
@@ -343,6 +492,8 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                                   } shadow-sm`}
                                 >
                                   {chatMessage.message}
+                                  {chatMessage.fileUrl &&
+                                    renderFileContent(chatMessage.fileUrl)}
                                 </div>
                               )}
                               <div
@@ -374,9 +525,30 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
               {/* Chat Input */}
               <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
+                  >
                     <Paperclip size={22} />
                   </button>
+                  {file && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span>{file.name}</span>
+                      <button
+                        onClick={() => setFile(null)}
+                        className="text-red-500 hover:text-red-600"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
                   <div className="relative flex-1">
                     <input
                       type="text"
@@ -418,14 +590,18 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                   </div>
                   <button
                     onClick={handleSendMessage}
-                    disabled={!message.trim()}
+                    disabled={(!message.trim() && !file) || isUploading}
                     className={`rounded-full p-3 text-white transition-all ${
-                      message.trim()
+                      (message.trim() || file) && !isUploading
                         ? 'bg-[#15b7b9] hover:bg-[#109a9c]'
                         : 'bg-gray-300'
                     }`}
                   >
-                    <Send size={18} />
+                    {isUploading ? (
+                      <Spinner className="h-4 w-4" />
+                    ) : (
+                      <Send size={18} />
+                    )}
                   </button>
                 </div>
               </div>

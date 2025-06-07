@@ -32,5 +32,10 @@
   "accepted": "Accepted",
   "declined": "Declined",
   "canceled": "Canceled",
-  "viewDetails": "View Details"
+  "viewDetails": "View Details",
+  "view-document": "View Document",
+  "error-uploading-file": "Error uploading file. Please try again.",
+  "image-message": "📷 Image",
+  "video-message": "🎥 Video",
+  "document-message": "📄 Document"
 }

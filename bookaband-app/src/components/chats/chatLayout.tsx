@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Chat from './chat';
 import { Menu, MessageCircle, X } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { getBandChats } from '@/service/backend/chat/service/chat.service';
 import { useAuth } from '@/providers/authProvider';
+import Chat from '@/components/chats/chat';
 
 interface ChatClientPageProps {
   language: string;
