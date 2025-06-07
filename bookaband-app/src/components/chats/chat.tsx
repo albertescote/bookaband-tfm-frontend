@@ -142,6 +142,8 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     if (selectedFile) {
       setFile(selectedFile);
     }
+    // Reset the input value so the same file can be selected again
+    event.target.value = '';
   };
 
   const handleFileUpload = async () => {
@@ -361,12 +363,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
     return (
       <div className="mt-2">
-        <a
-          href={fileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50"
-        >
+        <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50">
           <div className="flex-shrink-0">{getFileIcon(fileUrl)}</div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-gray-900">
@@ -376,17 +373,26 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
               {fileExtension} • {t('view-document')}
             </p>
           </div>
-          <a
-            href={fileUrl}
-            download={getFileNameFromUrl(fileUrl)}
-            className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Download size={18} />
-          </a>
-        </a>
+          <div className="flex gap-2">
+            <a
+              href={fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
+            >
+              <FileText size={18} />
+            </a>
+            <a
+              href={fileUrl}
+              download={getFileNameFromUrl(fileUrl)}
+              className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Download size={18} />
+            </a>
+          </div>
+        </div>
       </div>
     );
   };
