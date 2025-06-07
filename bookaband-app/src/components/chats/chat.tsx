@@ -2,16 +2,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, useChat } from '@/hooks/useSocket';
 import {
+  Download,
   FileText,
   MessageSquareOff,
   MessageSquareWarning,
   Paperclip,
-  Phone,
   Send,
   Smile,
-  Video,
   X,
-  Download,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
@@ -452,14 +450,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                   <div>
                     <h2 className="font-medium">{displayName}</h2>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Phone size={22} />
-                  </button>
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Video size={22} />
-                  </button>
                 </div>
               </div>
 

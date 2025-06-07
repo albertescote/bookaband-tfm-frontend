@@ -31,14 +31,32 @@ export function ChatsList({
     if (!chat.messages || chat.messages.length === 0) return '...';
     const lastMessage = chat.messages[chat.messages.length - 1];
 
-    if (lastMessage.metadata?.bookingId) {
+    if (lastMessage.bookingMetadata?.bookingId) {
       return t('new-booking');
+    }
+
+    if (lastMessage.fileUrl) {
+      if (isImageFile(lastMessage.fileUrl)) {
+        return t('image-message');
+      }
+      if (isVideoFile(lastMessage.fileUrl)) {
+        return t('video-message');
+      }
+      return t('document-message');
     }
 
     const messageText = lastMessage.message || '';
     return messageText.length > 40
       ? `${messageText.substring(0, 40)}...`
       : messageText;
+  };
+
+  const isImageFile = (url: string) => {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+  };
+
+  const isVideoFile = (url: string) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
   };
 
   return (

@@ -106,6 +106,14 @@ export default function MessagesMenu({ language }: { language: string }) {
     }
   };
 
+  const isImageFile = (url: string) => {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+  };
+
+  const isVideoFile = (url: string) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
+
   const renderLastMessage = (chat: ChatView) => {
     if (!chat.messages || chat.messages.length === 0) {
       return (
@@ -115,24 +123,34 @@ export default function MessagesMenu({ language }: { language: string }) {
 
     const lastMessage = chat.messages[chat.messages.length - 1];
 
-    if (lastMessage.metadata?.bookingId) {
+    if (lastMessage.bookingMetadata?.bookingId) {
       return (
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-[#15b7b9]">
             {t('new-booking')}
           </span>
           <span className="truncate text-xs font-medium text-gray-900">
-            {lastMessage.metadata.eventName}
+            {lastMessage.bookingMetadata.eventName}
           </span>
           <span
             className={`rounded-full px-2 py-0.5 text-xs font-medium ${getStatusColor(
-              lastMessage.metadata.bookingStatus,
+              lastMessage.bookingMetadata.bookingStatus,
             )}`}
           >
-            {getStatusText(lastMessage.metadata.bookingStatus)}
+            {getStatusText(lastMessage.bookingMetadata.bookingStatus)}
           </span>
         </div>
       );
+    }
+
+    if (lastMessage.fileUrl) {
+      if (isImageFile(lastMessage.fileUrl)) {
+        return <p className="truncate text-xs text-gray-500">{t('image-message')}</p>;
+      }
+      if (isVideoFile(lastMessage.fileUrl)) {
+        return <p className="truncate text-xs text-gray-500">{t('video-message')}</p>;
+      }
+      return <p className="truncate text-xs text-gray-500">{t('document-message')}</p>;
     }
 
     return (

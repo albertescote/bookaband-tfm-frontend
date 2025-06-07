@@ -35,5 +35,12 @@
   "accepted": "Acceptada",
   "declined": "Rebutjada",
   "canceled": "Cancel·lada",
-  "viewDetails": "Veure Detalls"
+  "viewDetails": "Veure Detalls",
+  "download-file": "Descarregar fitxer",
+  "view-document": "Veure document",
+  "error-uploading-file": "Error en pujar el fitxer",
+  "file-attached": "Fitxer adjunt",
+  "image-message": "📷 Imatge",
+  "video-message": "🎥 Vídeo",
+  "document-message": "📄 Document"
 }

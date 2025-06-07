@@ -2,22 +2,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SocketMessage, useChat } from '@/hooks/useSocket';
 import {
+  Download,
+  FileText,
   MessageSquareOff,
   MessageSquareWarning,
   Paperclip,
-  Phone,
   Send,
   Smile,
-  Video,
+  X,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
-import {
-  createNewChat,
-  getChatById,
-  getClientChats,
-} from '@/service/backend/chat/service/chat.service';
+import { getChatById } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Spinner } from '@/components/shared/spinner';
@@ -27,6 +24,7 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { fetchArtistById } from '@/service/backend/artist/service/artist.service';
 import BookingNotification from './bookingNotification';
+import { toast } from 'react-hot-toast';
 
 interface ChatProps {
   language: string;
@@ -36,13 +34,7 @@ interface ChatProps {
   bandId?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({
-  language,
-  userChats,
-  setChats,
-  chatId,
-  bandId,
-}) => {
+const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, bandId }) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
@@ -55,11 +47,16 @@ const Chat: React.FC<ChatProps> = ({
   const [displayName, setDisplayName] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -147,18 +144,19 @@ const Chat: React.FC<ChatProps> = ({
         chat.messages.map((msg) => ({
           id: msg.id,
           chatId: chat.id,
-          senderId: msg.senderId,
-          recipientId: msg.recipientId,
+          senderId,
+          recipientId,
           message: msg.message ?? '',
           timestamp: msg.timestamp ?? new Date(),
-          metadata: msg.metadata
+          bookingMetadata: msg.bookingMetadata
             ? {
-                ...msg.metadata,
-                eventDate: msg.metadata.eventDate
-                  ? new Date(msg.metadata.eventDate).toISOString()
+                ...msg.bookingMetadata,
+                eventDate: msg.bookingMetadata.eventDate
+                  ? new Date(msg.bookingMetadata.eventDate)
                   : undefined,
               }
             : undefined,
+          fileUrl: msg.fileUrl,
         })),
       );
       setTimeout(scrollToBottom, 100);
@@ -170,90 +168,153 @@ const Chat: React.FC<ChatProps> = ({
   useEffect(() => {
     setAllMessages((prevMessages) => [...prevMessages, ...messages]);
     setTimeout(scrollToBottom, 100);
-  }, [messages]);
+
+    // Update chat list with new messages
+    if (messages.length > 0 && chat) {
+      const updatedChat: ChatView = {
+        ...chat,
+        messages: [...chat.messages, ...messages],
+        updatedAt: new Date(),
+        unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+      };
+      setChat(updatedChat);
+      setChats((prevChats: ChatView[]) => {
+        const otherChats = prevChats.filter((c) => c.id !== chat.id);
+        return [updatedChat, ...otherChats];
+      });
+    }
+  }, [messages, chat, setChats]);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      // Create preview URL for images and videos
+      if (
+        selectedFile.type.startsWith('image/') ||
+        selectedFile.type.startsWith('video/')
+      ) {
+        const previewUrl = URL.createObjectURL(selectedFile);
+        setFilePreview(previewUrl);
+      } else {
+        setFilePreview(null);
+      }
+    }
+  };
+
+  // Clean up preview URL when component unmounts or file changes
+  useEffect(() => {
+    return () => {
+      if (filePreview) {
+        URL.revokeObjectURL(filePreview);
+      }
+    };
+  }, [filePreview]);
+
+  const removeFile = () => {
+    if (filePreview) {
+      URL.revokeObjectURL(filePreview);
+    }
+    setFile(null);
+    setFilePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to upload file');
+      }
+
+      const data = await response.json();
+
+      // Send message with file URL
+      const newMessage: SocketMessage = {
+        id: crypto.randomUUID(),
+        chatId: chat!.id,
+        senderId,
+        recipientId,
+        message: message.trim(),
+        fileUrl: data.url,
+        timestamp: new Date(),
+      };
+
+      setAllMessages((prev) => [...prev, newMessage]);
+      sendMessage(chat!.id, recipientId, message.trim(), data.url);
+
+      // Update chat list with new message
+      if (chat) {
+        const updatedChat: ChatView = {
+          ...chat,
+          messages: [...chat.messages, newMessage],
+          updatedAt: new Date(),
+          unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+        };
+        setChat(updatedChat);
+        setChats((prevChats: ChatView[]) => {
+          const otherChats = prevChats.filter((c) => c.id !== chat.id);
+          return [updatedChat, ...otherChats];
+        });
+      }
+
+      // Reset states
+      setMessage('');
+      setFile(null);
+      setShowEmojis(false);
+      setTimeout(scrollToBottom, 100);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast.error(t('error-uploading-file'));
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSendMessage = () => {
-    if (message.trim()) {
-      if (allMessages.length === 0) {
-        createNewChat(chat!.band.id).then((id) => {
-          if (id) {
-            chat!.id = id;
-          }
-          const newMessage: SocketMessage = {
-            id: crypto.randomUUID(),
-            chatId: chat!.id,
-            senderId,
-            recipientId,
-            message,
-            timestamp: new Date(),
-          };
-          setAllMessages((prev) => [...prev, newMessage]);
-
-          setChats((prevChats) => {
-            return prevChats.map((c) => {
-              if (c.id === chat!.id) {
-                return {
-                  ...c,
-                  messages: [
-                    ...c.messages,
-                    {
-                      id: crypto.randomUUID(),
-                      senderId,
-                      recipientId,
-                      message,
-                      timestamp: new Date(),
-                    },
-                  ],
-                  updatedAt: new Date(),
-                };
-              }
-              return c;
-            });
-          });
-
-          sendMessage(chat!.id, recipientId, message);
-          getClientChats(senderId).then((chats) => {
-            if ('error' in chats) return;
-            setChats(chats);
-          });
-          setMessage('');
-          setShowEmojis(false);
-          setTimeout(scrollToBottom, 100);
-        });
+    if (message.trim() || file) {
+      if (file) {
+        handleFileUpload();
       } else {
         const newMessage: SocketMessage = {
           id: crypto.randomUUID(),
           chatId: chat!.id,
           senderId,
           recipientId,
-          message,
+          message: message.trim(),
           timestamp: new Date(),
         };
         setAllMessages((prev) => [...prev, newMessage]);
-
-        setChats((prevChats) => {
-          return prevChats.map((c) => {
-            if (c.id === chat!.id) {
-              return {
-                ...c,
-                messages: [
-                  ...c.messages,
-                  {
-                    id: crypto.randomUUID(),
-                    senderId,
-                    recipientId,
-                    message,
-                    timestamp: new Date(),
-                  },
-                ],
-                updatedAt: new Date(),
-              };
-            }
-            return c;
+        sendMessage(chat!.id, recipientId, message.trim());
+        
+        // Update chat list with new message
+        if (chat) {
+          const updatedChat: ChatView = {
+            ...chat,
+            messages: [...chat.messages, newMessage],
+            updatedAt: new Date(),
+            unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+          };
+          setChat(updatedChat);
+          setChats((prevChats: ChatView[]) => {
+            const otherChats = prevChats.filter((c) => c.id !== chat.id);
+            return [updatedChat, ...otherChats];
           });
-        });
-
-        sendMessage(chat!.id, recipientId, message);
+        }
+        
         setMessage('');
         setShowEmojis(false);
         setTimeout(scrollToBottom, 100);
@@ -330,6 +391,123 @@ const Chat: React.FC<ChatProps> = ({
     setMessage((prevMessage) => prevMessage + emojiData.emoji);
   };
 
+  const isImageFile = (url: string) => {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+  };
+
+  const isVideoFile = (url: string) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
+
+  const getFileNameFromUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+      const fileName = pathname.split('/').pop() || '';
+      return decodeURIComponent(fileName);
+    } catch {
+      return url.split('/').pop() || '';
+    }
+  };
+
+  const getFileIcon = (url: string) => {
+    const extension = url.split('.').pop()?.toLowerCase();
+
+    switch (extension) {
+      case 'pdf':
+        return <FileText className="h-6 w-6 text-red-500" />;
+      case 'doc':
+      case 'docx':
+        return <FileText className="h-6 w-6 text-blue-500" />;
+      case 'xls':
+      case 'xlsx':
+        return <FileText className="h-6 w-6 text-green-500" />;
+      case 'txt':
+        return <FileText className="h-6 w-6 text-gray-500" />;
+      default:
+        return <FileText className="h-6 w-6 text-gray-500" />;
+    }
+  };
+
+  const renderFileContent = (fileUrl: string) => {
+    if (isImageFile(fileUrl)) {
+      return (
+        <div className="mt-2">
+          <img
+            src={fileUrl}
+            alt="Shared image"
+            className="max-h-64 cursor-pointer rounded-lg object-contain transition-transform hover:scale-[1.02]"
+            onClick={() => setSelectedImage(fileUrl)}
+          />
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={16} />
+            {t('download-file')}
+          </a>
+        </div>
+      );
+    }
+
+    if (isVideoFile(fileUrl)) {
+      return (
+        <div className="mt-2">
+          <video src={fileUrl} controls className="max-h-64 rounded-lg">
+            Your browser does not support the video tag.
+          </video>
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={16} />
+            {t('download-file')}
+          </a>
+        </div>
+      );
+    }
+
+    const fileName = getFileNameFromUrl(fileUrl);
+    const fileExtension = fileName.split('.').pop()?.toUpperCase() || '';
+
+    return (
+      <div className="mt-2">
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50"
+        >
+          <div className="flex-shrink-0">{getFileIcon(fileUrl)}</div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-gray-900">
+              {fileName}
+            </p>
+            <p className="text-xs text-gray-500">
+              {fileExtension} • {t('view-document')}
+            </p>
+          </div>
+          <a
+            href={fileUrl}
+            download={getFileNameFromUrl(fileUrl)}
+            className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
+            onClick={(e) => e.stopPropagation()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={18} />
+          </a>
+        </a>
+      </div>
+    );
+  };
+
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -381,14 +559,6 @@ const Chat: React.FC<ChatProps> = ({
                     <h2 className="font-medium">{displayName}</h2>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Phone size={22} />
-                  </button>
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
-                    <Video size={22} />
-                  </button>
-                </div>
               </div>
 
               {/* Chat Messages */}
@@ -435,14 +605,22 @@ const Chat: React.FC<ChatProps> = ({
                           >
                             <div
                               className={`${
-                                chatMessage.metadata?.bookingId
+                                chatMessage.bookingMetadata?.bookingId
                                   ? 'w-full max-w-3xl'
                                   : 'max-w-[75%]'
                               } ${isSender ? 'order-2' : 'order-1'}`}
                             >
-                              {chatMessage.metadata?.bookingId ? (
+                              {chatMessage.bookingMetadata ? (
                                 <BookingNotification
-                                  metadata={chatMessage.metadata}
+                                  metadata={{
+                                    ...chatMessage.bookingMetadata,
+                                    eventDate: chatMessage.bookingMetadata
+                                      .eventDate
+                                      ? new Date(
+                                          chatMessage.bookingMetadata.eventDate,
+                                        ).toISOString()
+                                      : undefined,
+                                  }}
                                   language={language}
                                 />
                               ) : (
@@ -454,6 +632,8 @@ const Chat: React.FC<ChatProps> = ({
                                   } shadow-sm`}
                                 >
                                   {chatMessage.message}
+                                  {chatMessage.fileUrl &&
+                                    renderFileContent(chatMessage.fileUrl)}
                                 </div>
                               )}
                               <div
@@ -485,9 +665,30 @@ const Chat: React.FC<ChatProps> = ({
               {/* Chat Input */}
               <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
-                  <button className="rounded-full p-2 text-gray-500 hover:bg-gray-100">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
+                  >
                     <Paperclip size={22} />
                   </button>
+                  {file && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span>{file.name}</span>
+                      <button
+                        onClick={removeFile}
+                        className="text-red-500 hover:text-red-600"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
                   <div className="relative flex-1">
                     <input
                       type="text"
@@ -529,9 +730,9 @@ const Chat: React.FC<ChatProps> = ({
                   </div>
                   <button
                     onClick={handleSendMessage}
-                    disabled={!message.trim()}
+                    disabled={!message.trim() && !file}
                     className={`rounded-full p-3 text-white transition-all ${
-                      message.trim()
+                      message.trim() || file
                         ? 'bg-[#15b7b9] hover:bg-[#109a9c]'
                         : 'bg-gray-300'
                     }`}
@@ -542,6 +743,29 @@ const Chat: React.FC<ChatProps> = ({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={24} />
+          </button>
+          <div className="relative max-h-[90vh] max-w-[90vw]">
+            <img
+              src={selectedImage}
+              alt="Full size image"
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
         </div>
       )}
     </div>

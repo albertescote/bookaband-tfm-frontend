@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { BookingStatus } from '@/service/backend/booking/domain/booking';
+import { BookingMetadata } from '@/service/backend/chat/domain/message';
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
 
@@ -9,16 +9,10 @@ export interface SocketMessage {
   chatId: string;
   senderId: string;
   recipientId: string;
-  message: string;
   timestamp: string | Date;
-  metadata?: {
-    bookingId?: string;
-    bookingStatus?: BookingStatus;
-    eventName?: string;
-    eventDate?: string;
-    venue?: string;
-    city?: string;
-  };
+  message?: string;
+  fileUrl?: string;
+  bookingMetadata?: BookingMetadata;
 }
 
 export const useChat = (userId: string) => {
@@ -44,6 +38,7 @@ export const useChat = (userId: string) => {
     chatId: string,
     recipientId: string,
     message: string,
+    fileUrl?: string,
   ) => {
     if (socket) {
       socket.emit('message', {
@@ -51,6 +46,7 @@ export const useChat = (userId: string) => {
         senderId: userId,
         recipientId,
         message,
+        fileUrl,
       });
     }
   };
