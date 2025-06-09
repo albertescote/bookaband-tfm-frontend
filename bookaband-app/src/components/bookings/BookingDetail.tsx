@@ -1,15 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/authProvider';
 import { useTranslation } from '@/app/i18n/client';
 import {
   acceptBooking,
   declineBooking,
+  getBookingContract,
 } from '@/service/backend/booking/service/booking.service';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
+import { BookingContract } from '@/service/backend/booking/service/bookingContract';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import {
@@ -20,6 +22,7 @@ import {
   Clock,
   Eye,
   EyeOff,
+  FileText,
   MapPin,
   MessageSquare,
   X,
@@ -47,6 +50,23 @@ export default function BookingDetail({
   const [booking, setBooking] = useState<BookingSummary>(initialBooking);
   const [eventTypes] = useState<EventType[]>(initialEventTypes);
   const [processing, setProcessing] = useState(false);
+  const [contract, setContract] = useState<BookingContract | undefined>();
+
+  useEffect(() => {
+    const fetchContract = async () => {
+      try {
+        const contractData = await getBookingContract(booking.id);
+        setContract(contractData);
+      } catch (error) {
+        console.error('Error fetching contract:', error);
+        toast.error(t('error-fetching-contract'));
+      }
+    };
+
+    if (booking.status === BookingStatus.ACCEPTED) {
+      fetchContract();
+    }
+  }, [booking.id, booking.status, t]);
 
   const handleSendMessage = async () => {
     const bandChats = await getBandChats(selectedBand?.id ?? '');
@@ -151,6 +171,41 @@ export default function BookingDetail({
   const eventType = getEventType(booking.eventTypeId);
   const statusConfig = getStatusConfig(booking.status);
   const StatusIcon = statusConfig.icon;
+
+  const getContractStatusConfig = (
+    userSigned: boolean,
+    bandSigned: boolean,
+  ) => {
+    if (userSigned && bandSigned) {
+      return {
+        bg: 'bg-gradient-to-r from-emerald-50 to-green-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        status: t('contract-status.signed'),
+      };
+    } else if (userSigned) {
+      return {
+        bg: 'bg-gradient-to-r from-amber-50 to-orange-50',
+        text: 'text-amber-700',
+        border: 'border-amber-200',
+        status: t('contract-status.pending-band-signature'),
+      };
+    } else if (bandSigned) {
+      return {
+        bg: 'bg-gradient-to-r from-amber-50 to-orange-50',
+        text: 'text-amber-700',
+        border: 'border-amber-200',
+        status: t('contract-status.pending-user-signature'),
+      };
+    } else {
+      return {
+        bg: 'bg-gradient-to-r from-gray-50 to-slate-50',
+        text: 'text-gray-700',
+        border: 'border-gray-200',
+        status: t('contract-status.pending-signatures'),
+      };
+    }
+  };
 
   const InfoCard = ({
     icon: Icon,
@@ -346,6 +401,71 @@ export default function BookingDetail({
                 </div>
               </div>
             </div>
+
+            {/* Contract Section */}
+            {booking.status === BookingStatus.ACCEPTED && contract && (
+              <div className="mb-8">
+                <h2 className="mb-6 text-2xl font-bold text-gray-900">
+                  {t('contract-details')}
+                </h2>
+                <div className="rounded-xl border border-gray-200 bg-white p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-lg bg-[#15b7b9]/10 p-3">
+                        <FileText className="h-6 w-6 text-[#15b7b9]" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {contract.eventName}
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                          {t('contract-created')}:{' '}
+                          {format(new Date(contract.createdAt), 'PPP', {
+                            locale: lng === 'es' ? es : ca,
+                          })}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <div
+                            className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                              getContractStatusConfig(
+                                contract.userSigned,
+                                contract.bandSigned,
+                              ).bg
+                            } ${
+                              getContractStatusConfig(
+                                contract.userSigned,
+                                contract.bandSigned,
+                              ).text
+                            } ${
+                              getContractStatusConfig(
+                                contract.userSigned,
+                                contract.bandSigned,
+                              ).border
+                            }`}
+                          >
+                            {
+                              getContractStatusConfig(
+                                contract.userSigned,
+                                contract.bandSigned,
+                              ).status
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() =>
+                        router.push(`/${lng}/documents/contract/${contract.id}`)
+                      }
+                      variant="outline"
+                      className="border-[#15b7b9]/20 bg-white px-4 py-2 text-[#15b7b9] shadow-sm transition-all duration-300 hover:bg-[#15b7b9]/5 hover:shadow-md"
+                    >
+                      {t('view-contract')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="space-y-4">

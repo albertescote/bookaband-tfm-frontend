@@ -8,6 +8,6 @@ export async function fetchMusicalStyles(): Promise<MusicalStyle[]> {
     .get('/musical-styles')
     .then((res) => res.data)
     .catch((error) => {
-      return error.response.data;
+      return error.response?.data;
     });
 }

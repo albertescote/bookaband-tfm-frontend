@@ -22,6 +22,7 @@
   "error-fetching-booking": "Error fetching booking details",
   "error-accepting-booking": "Error accepting booking",
   "error-declining-booking": "Error declining booking",
+  "error-fetching-contract": "Error fetching contract details",
   "event-name": "Event Name",
   "fullAddress": "Full Address",
   "event-details": "Event Details",
@@ -35,5 +36,12 @@
   "processing": "Processing...",
   "client-label": "Client",
   "city": "City",
-  "country": "Country"
+  "country": "Country",
+  "contract-details": "Contract Details",
+  "contract-created": "Created",
+  "contract-status.signed": "Fully Signed",
+  "contract-status.pending-band-signature": "Pending Band Signature",
+  "contract-status.pending-user-signature": "Pending Client Signature",
+  "contract-status.pending-signatures": "Pending Signatures",
+  "view-contract": "View Contract"
 }

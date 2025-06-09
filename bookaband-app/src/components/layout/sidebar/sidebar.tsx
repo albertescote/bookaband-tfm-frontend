@@ -81,6 +81,7 @@ export default function Sidebar() {
               onClick={handleChatsClick}
             />
             <NavItem href="/bookings" label={t('bookings')} />
+            <NavItem href="/documents" label={t('documents')} />
             <NavItem href="/profile" label={t('profile-tab')} />
           </nav>
           <div className="space-y-4 border-t p-4">
