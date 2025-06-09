@@ -13,7 +13,10 @@ interface InvoiceDetailProps {
   language: string;
 }
 
-export default function InvoiceDetail({ invoice, language }: InvoiceDetailProps) {
+export default function InvoiceDetail({
+  invoice,
+  language,
+}: InvoiceDetailProps) {
   const router = useRouter();
   const { t } = useTranslation(language, 'documents');
   const [pdfDataUrl, setPdfDataUrl] = useState<string>('');

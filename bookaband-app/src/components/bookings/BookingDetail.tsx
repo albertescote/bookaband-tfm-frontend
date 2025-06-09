@@ -8,10 +8,12 @@ import {
   acceptBooking,
   declineBooking,
   getBookingContract,
+  getBookingInvoice,
 } from '@/service/backend/booking/service/booking.service';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
-import { BookingContract } from '@/service/backend/booking/service/bookingContract';
+import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
+import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import {
@@ -25,6 +27,7 @@ import {
   FileText,
   MapPin,
   MessageSquare,
+  Receipt,
   X,
 } from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
@@ -51,21 +54,26 @@ export default function BookingDetail({
   const [eventTypes] = useState<EventType[]>(initialEventTypes);
   const [processing, setProcessing] = useState(false);
   const [contract, setContract] = useState<BookingContract | undefined>();
+  const [invoice, setInvoice] = useState<BookingInvoice | undefined>();
 
   useEffect(() => {
-    const fetchContract = async () => {
+    const fetchData = async () => {
       try {
-        const contractData = await getBookingContract(booking.id);
-        setContract(contractData);
+        if (booking.status === BookingStatus.ACCEPTED) {
+          const [contractData, invoiceData] = await Promise.all([
+            getBookingContract(booking.id),
+            getBookingInvoice(booking.id),
+          ]);
+          setContract(contractData);
+          setInvoice(invoiceData);
+        }
       } catch (error) {
-        console.error('Error fetching contract:', error);
-        toast.error(t('error-fetching-contract'));
+        console.error('Error fetching booking data:', error);
+        toast.error(t('error-fetching-data'));
       }
     };
 
-    if (booking.status === BookingStatus.ACCEPTED) {
-      fetchContract();
-    }
+    fetchData();
   }, [booking.id, booking.status, t]);
 
   const handleSendMessage = async () => {
@@ -204,6 +212,39 @@ export default function BookingDetail({
         border: 'border-gray-200',
         status: t('contract-status.pending-signatures'),
       };
+    }
+  };
+
+  const getInvoiceStatusConfig = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'paid':
+        return {
+          bg: 'bg-gradient-to-r from-emerald-50 to-green-50',
+          text: 'text-emerald-700',
+          border: 'border-emerald-200',
+          status: t('invoice-status.paid'),
+        };
+      case 'pending':
+        return {
+          bg: 'bg-gradient-to-r from-amber-50 to-orange-50',
+          text: 'text-amber-700',
+          border: 'border-amber-200',
+          status: t('invoice-status.pending'),
+        };
+      case 'failed':
+        return {
+          bg: 'bg-gradient-to-r from-rose-50 to-red-50',
+          text: 'text-rose-700',
+          border: 'border-rose-200',
+          status: t('invoice-status.failed'),
+        };
+      default:
+        return {
+          bg: 'bg-gradient-to-r from-gray-50 to-slate-50',
+          text: 'text-gray-700',
+          border: 'border-gray-200',
+          status: t('invoice-status.unknown'),
+        };
     }
   };
 
@@ -461,6 +502,58 @@ export default function BookingDetail({
                       className="border-[#15b7b9]/20 bg-white px-4 py-2 text-[#15b7b9] shadow-sm transition-all duration-300 hover:bg-[#15b7b9]/5 hover:shadow-md"
                     >
                       {t('view-contract')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Invoice Section */}
+            {booking.status === BookingStatus.ACCEPTED && invoice && (
+              <div className="mb-8">
+                <h2 className="mb-6 text-2xl font-bold text-gray-900">
+                  {t('invoice-details')}
+                </h2>
+                <div className="rounded-xl border border-gray-200 bg-white p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-lg bg-[#15b7b9]/10 p-3">
+                        <Receipt className="h-6 w-6 text-[#15b7b9]" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {invoice.amount.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'EUR',
+                          })}
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                          {t('invoice-created')}:{' '}
+                          {format(new Date(invoice.createdAt), 'PPP', {
+                            locale: lng === 'es' ? es : ca,
+                          })}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <div
+                            className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                              getInvoiceStatusConfig(invoice.status).bg
+                            } ${getInvoiceStatusConfig(invoice.status).text} ${
+                              getInvoiceStatusConfig(invoice.status).border
+                            }`}
+                          >
+                            {getInvoiceStatusConfig(invoice.status).status}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() =>
+                        router.push(`/${lng}/documents/invoice/${invoice.id}`)
+                      }
+                      variant="outline"
+                      className="border-[#15b7b9]/20 bg-white px-4 py-2 text-[#15b7b9] shadow-sm transition-all duration-300 hover:bg-[#15b7b9]/5 hover:shadow-md"
+                    >
+                      {t('view-invoice')}
                     </Button>
                   </div>
                 </div>

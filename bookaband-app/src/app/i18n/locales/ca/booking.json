@@ -43,5 +43,14 @@
   "contract-status.pending-band-signature": "Pendent de Signatura de la Banda",
   "contract-status.pending-user-signature": "Pendent de Signatura del Client",
   "contract-status.pending-signatures": "Pendent de Signatures",
-  "view-contract": "Veure Contracte"
+  "view-contract": "Veure Contracte",
+  "invoice-details": "Detalls de la Factura",
+  "invoice-created": "Creada",
+  "view-invoice": "Veure Factura",
+  "invoice-status": {
+    "paid": "Pagada",
+    "pending": "Pendent",
+    "failed": "Fallida",
+    "unknown": "Desconeguda"
+  }
 }

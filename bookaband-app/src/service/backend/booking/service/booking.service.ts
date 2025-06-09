@@ -3,7 +3,8 @@ import { Booking } from '@/service/backend/booking/domain/booking';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
-import { BookingContract } from '@/service/backend/booking/service/bookingContract';
+import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
+import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
 
 export async function getBookingById(
   bookingId: string,
@@ -21,6 +22,16 @@ export async function getBookingContract(
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .get(`/bookings/${bookingId}/contract`)
+      .then((res) => res.data),
+  );
+}
+
+export async function getBookingInvoice(
+  bookingId: string,
+): Promise<BookingInvoice | undefined> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .get(`/bookings/${bookingId}/invoice`)
       .then((res) => res.data),
   );
 }

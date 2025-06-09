@@ -43,5 +43,14 @@
   "contract-status.pending-band-signature": "Pending Band Signature",
   "contract-status.pending-user-signature": "Pending Client Signature",
   "contract-status.pending-signatures": "Pending Signatures",
-  "view-contract": "View Contract"
+  "view-contract": "View Contract",
+  "invoice-details": "Invoice Details",
+  "invoice-created": "Created",
+  "view-invoice": "View Invoice",
+  "invoice-status": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "failed": "Failed",
+    "unknown": "Unknown"
+  }
 }
