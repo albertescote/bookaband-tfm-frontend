@@ -18,6 +18,7 @@
   "createdAt": "Created At",
   "updatedAt": "Updated At",
   "invoiceDetails": "Invoice Details",
+  "document": "Document",
   "status.signed": "Fully Signed",
   "status.pending-band-signature": "Pending Band Signature",
   "status.pending-user-signature": "Pending Client Signature",

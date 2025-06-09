@@ -18,6 +18,7 @@
   "createdAt": "Data de Creació",
   "updatedAt": "Última Actualització",
   "invoiceDetails": "Detalls de la Factura",
+  "document": "Document",
   "status.signed": "Totalment Signat",
   "status.pending-band-signature": "Pendent de Signatura de la Banda",
   "status.pending-user-signature": "Pendent de Signatura del Client",
