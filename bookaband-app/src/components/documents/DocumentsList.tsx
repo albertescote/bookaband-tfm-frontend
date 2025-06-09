@@ -7,7 +7,7 @@ import { Tab } from '@headlessui/react';
 import { Contract } from '@/service/backend/documents/domain/contract';
 import { Invoice } from '@/service/backend/documents/domain/invoice';
 import { getContractsByBandId } from '@/service/backend/documents/service/contract.service';
-import { getInvoices } from '@/service/backend/documents/service/invoice.service';
+import { getInvoicesByBandId } from '@/service/backend/documents/service/invoice.service';
 import { Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
@@ -34,18 +34,21 @@ export default function DocumentsList({ language }: DocumentsListProps) {
       try {
         const [contractsData, invoicesData] = await Promise.all([
           getContractsByBandId(selectedBand?.id ?? ''),
-          getInvoices(),
+          getInvoicesByBandId(selectedBand?.id ?? ''),
         ]);
         if (!('error' in contractsData)) {
           // Sort contracts by updatedAt in descending order
           const sortedContracts = [...contractsData].sort(
-            (a, b) =>
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+            (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           );
           setContracts(sortedContracts);
         }
         if (!('error' in invoicesData)) {
-          setInvoices(invoicesData);
+          // Sort invoices by updatedAt in descending order
+          const sortedInvoices = [...invoicesData].sort(
+            (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+          setInvoices(sortedInvoices);
         }
       } catch (error) {
         console.error('Error fetching documents:', error);
@@ -232,13 +235,19 @@ export default function DocumentsList({ language }: DocumentsListProps) {
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                          {t('date')}
+                          {t('createdAt')}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                           {t('amount')}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                           Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('updatedAt')}
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('actions')}
                         </th>
                       </tr>
                     </thead>
@@ -250,7 +259,9 @@ export default function DocumentsList({ language }: DocumentsListProps) {
                           className="cursor-pointer hover:bg-gray-50"
                         >
                           <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                            {new Date(invoice.date).toLocaleDateString()}
+                            {format(new Date(invoice.createdAt), 'PPP', {
+                              locale: language === 'es' ? es : ca,
+                            })}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                             {invoice.amount.toLocaleString('en-US', {
@@ -266,6 +277,22 @@ export default function DocumentsList({ language }: DocumentsListProps) {
                             >
                               {t(`status.${invoice.status.toLowerCase()}`)}
                             </span>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                            {format(new Date(invoice.updatedAt), 'PPP', {
+                              locale: language === 'es' ? es : ca,
+                            })}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                window.open(invoice.fileUrl, '_blank');
+                              }}
+                              className="text-[#15b7b9] hover:text-[#15b7b9]/80"
+                            >
+                              <Download className="h-5 w-5" />
+                            </button>
                           </td>
                         </tr>
                       ))}
