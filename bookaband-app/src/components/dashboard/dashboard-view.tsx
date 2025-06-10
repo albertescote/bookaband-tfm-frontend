@@ -18,6 +18,7 @@ import { toast } from 'react-hot-toast';
 import { getAllBandBookings } from '@/service/backend/booking/service/booking.service';
 import { getBandChats } from '@/service/backend/chat/service/chat.service';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
+import { getInvoicesByBandId } from '@/service/backend/documents/service/invoice.service';
 import {
   Cell,
   Legend,
@@ -63,12 +64,13 @@ export default function DashboardView({ language }: DashboardViewProps) {
       }
 
       try {
-        const [profile, bandBookings, bandChats] = await Promise.all([
-          getBandProfileById(selectedBand.id),
-          getAllBandBookings(selectedBand.id),
-          getBandChats(selectedBand.id),
-        ]);
-        console.log(bandBookings);
+        const [profile, bandBookings, bandChats, bandInvoices] =
+          await Promise.all([
+            getBandProfileById(selectedBand.id),
+            getAllBandBookings(selectedBand.id),
+            getBandChats(selectedBand.id),
+            getInvoicesByBandId(selectedBand.id),
+          ]);
 
         if (profile) {
           setBandProfile(profile);
@@ -79,14 +81,12 @@ export default function DashboardView({ language }: DashboardViewProps) {
               (booking) => booking.status === BookingStatus.ACCEPTED,
             ).length || 0;
 
-          // Calculate total income from accepted bookings
-          const totalIncome =
-            bandBookings?.reduce((sum, booking) => {
-              if (booking.status === BookingStatus.ACCEPTED) {
-                return sum + (profile.price || 0);
-              }
-              return sum;
-            }, 0) || 0;
+          // Calculate total income from paid invoices
+          const totalIncome = Array.isArray(bandInvoices)
+            ? bandInvoices
+                .filter((invoice) => invoice.status === 'PAID')
+                .reduce((sum, invoice) => sum + invoice.amount, 0)
+            : 0;
 
           // Calculate active chats (chats with unread messages)
           const activeChats = bandChats?.length || 0;

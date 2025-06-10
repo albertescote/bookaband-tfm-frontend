@@ -5,8 +5,7 @@ import { Fragment } from 'react';
 import { getAvatar } from '@/components/shared/avatar';
 import { UserBand } from '@/service/backend/band/domain/userBand';
 import { useAuth } from '@/providers/authProvider';
-import { useParams, useRouter } from 'next/navigation';
-import { PlusCircle, Settings } from 'lucide-react';
+import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 
 interface BandSwitcherProps {
@@ -15,28 +14,15 @@ interface BandSwitcherProps {
 
 export function BandSwitcher({ bands }: BandSwitcherProps) {
   const { selectedBand, setSelectedBand } = useAuth();
-  const router = useRouter();
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
 
-  const handleCreateBand = () => {
-    router.push(`/${language}/bands/create`);
-  };
-
-  const handleManageBands = () => {
-    router.push(`/${language}/bands`);
-  };
-
   if (bands.length === 0) {
     return (
-      <button
-        onClick={handleCreateBand}
-        className="flex items-center gap-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-white transition-colors hover:bg-[#15b7b9]/90"
-      >
-        <PlusCircle size={20} />
-        {t('createBand')}
-      </button>
+      <div className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500">
+        {t('noBands')}
+      </div>
     );
   }
 
@@ -85,21 +71,6 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
                 )}
               </Listbox.Option>
             ))}
-            <div className="my-1 border-t border-gray-200" />
-            <button
-              onClick={handleManageBands}
-              className="flex w-full items-center gap-2 px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
-            >
-              <Settings size={20} />
-              <span>{t('manageBands')}</span>
-            </button>
-            <button
-              onClick={handleCreateBand}
-              className="flex w-full items-center gap-2 px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
-            >
-              <PlusCircle size={20} />
-              <span>{t('createNewBand')}</span>
-            </button>
           </Listbox.Options>
         </Transition>
       </div>

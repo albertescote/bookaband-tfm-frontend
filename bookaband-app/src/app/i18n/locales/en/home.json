@@ -24,6 +24,7 @@
   "members": "Members",
   "followers": "Followers",
   "rating": "Rating",
+  "manageBands": "Manage Bands",
   "status": {
     "completed": "Completed",
     "pending": "Pending",

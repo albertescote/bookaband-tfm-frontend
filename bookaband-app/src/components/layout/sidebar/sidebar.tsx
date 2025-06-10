@@ -83,6 +83,7 @@ export default function Sidebar() {
             <NavItem href="/bookings" label={t('bookings')} />
             <NavItem href="/documents" label={t('documents')} />
             <NavItem href="/profile" label={t('profile-tab')} />
+            <NavItem href="/bands" label={t('manageBands')} />
           </nav>
           <div className="space-y-4 border-t p-4">
             <div className="flex items-center space-x-3 px-3">

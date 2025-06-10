@@ -24,6 +24,7 @@
   "members": "Membres",
   "followers": "Seguidors",
   "rating": "Valoració",
+  "manageBands": "Gestionar Bandes",
   "status": {
     "completed": "Completades",
     "pending": "Pendents",
