@@ -48,7 +48,7 @@ export default function BookingsList({ language: lng }: BookingsListProps) {
 
   if (!selectedBand) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
           <h1 className="text-xl font-semibold text-gray-700">
             {t('not-in-a-band-yet')}
@@ -60,7 +60,7 @@ export default function BookingsList({ language: lng }: BookingsListProps) {
 
   if (bookings.length === 0) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
           <h1 className="text-xl font-semibold text-gray-700">
             {t('no-bookings')}

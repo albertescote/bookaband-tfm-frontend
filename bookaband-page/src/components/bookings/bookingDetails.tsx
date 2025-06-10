@@ -6,8 +6,10 @@ import {
   Building2,
   Calendar,
   Clock,
+  FileText,
   Home,
   MessageSquare,
+  Receipt,
   Tag,
   Type,
 } from 'lucide-react';
@@ -15,13 +17,70 @@ import { useRouter } from 'next/navigation';
 import {
   cancelBooking,
   getBookingById,
+  getBookingContract,
+  getBookingInvoice,
 } from '@/service/backend/booking/service/booking.service';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAvatar } from '@/components/shared/avatar';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 import { Button } from '@/components/shared/button';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { cn, getStatusColor } from '@/lib/utils';
+import { format } from 'date-fns';
+import { es, ca } from 'date-fns/locale';
+import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
+import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
+
+const getContractStatusConfig = (userSigned: boolean, bandSigned: boolean) => {
+  if (userSigned && bandSigned) {
+    return {
+      status: 'signed',
+      bg: 'bg-green-50',
+      text: 'text-green-700',
+      border: 'border-green-200',
+    };
+  }
+  if (userSigned || bandSigned) {
+    return {
+      status: 'partially-signed',
+      bg: 'bg-yellow-50',
+      text: 'text-yellow-700',
+      border: 'border-yellow-200',
+    };
+  }
+  return {
+    status: 'pending',
+    bg: 'bg-gray-50',
+    text: 'text-gray-700',
+    border: 'border-gray-200',
+  };
+};
+
+const getInvoiceStatusConfig = (status: string) => {
+  switch (status) {
+    case 'PAID':
+      return {
+        status: 'paid',
+        bg: 'bg-green-50',
+        text: 'text-green-700',
+        border: 'border-green-200',
+      };
+    case 'PENDING':
+      return {
+        status: 'pending',
+        bg: 'bg-yellow-50',
+        text: 'text-yellow-700',
+        border: 'border-yellow-200',
+      };
+    default:
+      return {
+        status: 'unknown',
+        bg: 'bg-gray-50',
+        text: 'text-gray-700',
+        border: 'border-gray-200',
+      };
+  }
+};
 
 export default function BookingDetails({
   language,
@@ -37,6 +96,23 @@ export default function BookingDetails({
   const [booking, setBooking] = useState<BookingSummary>(initialBooking);
   const [cancelling, setCancelling] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [contract, setContract] = useState<BookingContract | undefined>();
+  const [invoice, setInvoice] = useState<BookingInvoice | undefined>();
+
+  useEffect(() => {
+    const fetchContractAndInvoice = async () => {
+      if (['ACCEPTED', 'SIGNED', 'PAID'].includes(booking.status)) {
+        const contractData = await getBookingContract(booking.id);
+        setContract(contractData);
+      }
+      if (['SIGNED', 'PAID'].includes(booking.status)) {
+        const invoiceData = await getBookingInvoice(booking.id);
+        setInvoice(invoiceData);
+      }
+    };
+
+    fetchContractAndInvoice();
+  }, [booking.id, booking.status]);
 
   const handleCancel = async () => {
     try {
@@ -247,6 +323,123 @@ export default function BookingDetails({
           </div>
         )}
       </div>
+
+      {/* Contract Section */}
+      {contract && (
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
+          <h2 className="mb-6 text-xl font-semibold text-gray-900">
+            {t('contract-details')}
+          </h2>
+          <div className="flex items-start justify-between">
+            <div className="flex items-start gap-4">
+              <div className="rounded-lg bg-[#15b7b9]/10 p-3">
+                <FileText className="h-6 w-6 text-[#15b7b9]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {contract.eventName}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  {t('contract-created')}:{' '}
+                  {format(new Date(contract.createdAt), 'PPP', {
+                    locale: language === 'es' ? es : ca,
+                  })}
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <div
+                    className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                      getContractStatusConfig(
+                        contract.userSigned,
+                        contract.bandSigned,
+                      ).bg
+                    } ${
+                      getContractStatusConfig(
+                        contract.userSigned,
+                        contract.bandSigned,
+                      ).text
+                    } ${
+                      getContractStatusConfig(
+                        contract.userSigned,
+                        contract.bandSigned,
+                      ).border
+                    }`}
+                  >
+                    {t(
+                      `contract-status.${
+                        getContractStatusConfig(
+                          contract.userSigned,
+                          contract.bandSigned,
+                        ).status
+                      }`,
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={() =>
+                router.push(`/${language}/documents/contract/${contract.id}`)
+              }
+              variant="outline"
+              className="border-[#15b7b9]/20 bg-white px-4 py-2 text-[#15b7b9] shadow-sm transition-all duration-300 hover:bg-[#15b7b9]/5 hover:shadow-md"
+            >
+              {t('view-contract')}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Invoice Section */}
+      {invoice && (
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
+          <h2 className="mb-6 text-xl font-semibold text-gray-900">
+            {t('invoice-details')}
+          </h2>
+          <div className="flex items-start justify-between">
+            <div className="flex items-start gap-4">
+              <div className="rounded-lg bg-[#15b7b9]/10 p-3">
+                <Receipt className="h-6 w-6 text-[#15b7b9]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {invoice.amount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'EUR',
+                  })}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  {t('invoice-created')}:{' '}
+                  {format(new Date(invoice.createdAt), 'PPP', {
+                    locale: language === 'es' ? es : ca,
+                  })}
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <div
+                    className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                      getInvoiceStatusConfig(invoice.status).bg
+                    } ${getInvoiceStatusConfig(invoice.status).text} ${
+                      getInvoiceStatusConfig(invoice.status).border
+                    }`}
+                  >
+                    {t(
+                      `invoice-status.${getInvoiceStatusConfig(invoice.status).status}`,
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={() =>
+                router.push(`/${language}/documents/invoice/${invoice.id}`)
+              }
+              variant="outline"
+              className="border-[#15b7b9]/20 bg-white px-4 py-2 text-[#15b7b9] shadow-sm transition-all duration-300 hover:bg-[#15b7b9]/5 hover:shadow-md"
+            >
+              {t('view-invoice')}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Cancel Confirmation Modal */}
       {showCancelModal && (

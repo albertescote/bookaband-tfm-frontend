@@ -62,7 +62,10 @@ export default function BookingDetail({
         if (booking.status === BookingStatus.ACCEPTED) {
           const contractData = await getBookingContract(booking.id);
           setContract(contractData);
-        } else if (booking.status === BookingStatus.SIGNED) {
+        } else if (
+          booking.status === BookingStatus.SIGNED ||
+          booking.status === BookingStatus.PAID
+        ) {
           const [contractData, invoiceData] = await Promise.all([
             getBookingContract(booking.id),
             getBookingInvoice(booking.id),

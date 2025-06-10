@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { BandSize } from '@/service/backend/artist/domain/bandSize';
+import Image from 'next/image';
 
 interface ArtistCardProps {
   artist: BandCatalogItem;
@@ -63,10 +64,12 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
   return (
     <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
       <div className="relative aspect-square overflow-hidden">
-        <img
-          src={artist.imageUrl}
+        <Image
+          src={artist.imageUrl ?? ''}
           alt={artist.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {artist.featured && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-[#15b7b9] px-3 py-1 text-xs font-semibold text-white shadow">

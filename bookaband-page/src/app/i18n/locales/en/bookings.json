@@ -70,5 +70,21 @@
   "hour": "Hour",
   "minute": "Minute",
   "selected": "Selected",
-  "done": "Done"
+  "done": "Done",
+  "contract-details": "Contract Details",
+  "contract-created": "Created",
+  "view-contract": "View Contract",
+  "invoice-details": "Invoice Details",
+  "invoice-created": "Created",
+  "view-invoice": "View Invoice",
+  "contract-status": {
+    "signed": "Signed",
+    "partially-signed": "Partially Signed",
+    "pending": "Pending"
+  },
+  "invoice-status": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "unknown": "Unknown"
+  }
 }

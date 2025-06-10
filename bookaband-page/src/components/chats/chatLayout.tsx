@@ -117,9 +117,9 @@ export function ChatLayout({
   };
 
   return (
-    <div className="flex h-[calc(100vh-5rem)] overflow-hidden bg-white">
+    <div className="flex min-h-[calc(100vh-5rem)] overflow-hidden bg-white">
       <div
-        className={`fixed z-20 h-[calc(100vh-5rem)] transition-all duration-300 ease-in-out md:relative ${
+        className={`fixed z-20 min-h-[calc(100vh-5rem)] transition-all duration-300 ease-in-out md:relative ${
           sidebarOpen
             ? 'w-96 translate-x-0'
             : 'w-0 -translate-x-full md:w-16 md:translate-x-0'

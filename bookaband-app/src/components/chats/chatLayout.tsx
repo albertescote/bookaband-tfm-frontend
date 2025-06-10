@@ -99,7 +99,7 @@ export function ChatLayout({ language, chatId }: ChatClientPageProps) {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] bg-white">
+    <div className="flex min-h-[calc(100vh-4rem)] bg-white">
       <div
         className={`fixed z-20 h-full transition-all duration-300 ease-in-out md:relative ${
           sidebarOpen

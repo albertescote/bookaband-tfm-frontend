@@ -3,6 +3,8 @@ import { Booking } from '@/service/backend/booking/domain/booking';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
+import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
+import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
 
 export interface CreateBookingRequest {
   bandId: string;
@@ -51,6 +53,26 @@ export async function cancelBooking(
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance
       .put(`/bookings/${bookingId}/cancel`)
+      .then((res) => res.data),
+  );
+}
+
+export async function getBookingContract(
+  bookingId: string,
+): Promise<BookingContract | undefined> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .get(`/bookings/${bookingId}/contract`)
+      .then((res) => res.data),
+  );
+}
+
+export async function getBookingInvoice(
+  bookingId: string,
+): Promise<BookingInvoice | undefined> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .get(`/bookings/${bookingId}/invoice`)
       .then((res) => res.data),
   );
 }

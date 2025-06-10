@@ -208,7 +208,7 @@ export default function InvoiceDetail({
         {/* PDF Viewer */}
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-lg bg-white shadow">
-            <div className="h-[calc(100vh-12rem)] w-full">
+            <div className="min-h-[calc(100vh-12rem)] w-full">
               {pdfDataUrl ? (
                 <iframe
                   src={pdfDataUrl}

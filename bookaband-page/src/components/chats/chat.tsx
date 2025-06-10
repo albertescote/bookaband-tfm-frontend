@@ -34,7 +34,13 @@ interface ChatProps {
   bandId?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, bandId }) => {
+const Chat: React.FC<ChatProps> = ({
+  language,
+  userChats,
+  setChats,
+  chatId,
+  bandId,
+}) => {
   const { t } = useTranslation(language, 'chat');
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
@@ -47,7 +53,6 @@ const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, band
   const [displayName, setDisplayName] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -225,7 +230,6 @@ const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, band
   const handleFileUpload = async () => {
     if (!file) return;
 
-    setIsUploading(true);
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -279,8 +283,6 @@ const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, band
     } catch (error) {
       console.error('Error uploading file:', error);
       toast.error(t('error-uploading-file'));
-    } finally {
-      setIsUploading(false);
     }
   };
 
@@ -299,7 +301,7 @@ const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, band
         };
         setAllMessages((prev) => [...prev, newMessage]);
         sendMessage(chat!.id, recipientId, message.trim());
-        
+
         // Update chat list with new message
         if (chat) {
           const updatedChat: ChatView = {
@@ -314,7 +316,7 @@ const Chat: React.FC<ChatProps> = ({ language, userChats, setChats, chatId, band
             return [updatedChat, ...otherChats];
           });
         }
-        
+
         setMessage('');
         setShowEmojis(false);
         setTimeout(scrollToBottom, 100);

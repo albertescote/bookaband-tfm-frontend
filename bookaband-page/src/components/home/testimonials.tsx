@@ -3,7 +3,7 @@
 import { useTranslation } from '@/app/i18n/client';
 import { FaStar } from 'react-icons/fa';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TestimonialsParams {
   lng: string;

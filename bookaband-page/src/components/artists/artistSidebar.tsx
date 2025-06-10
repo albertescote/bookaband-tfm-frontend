@@ -17,11 +17,12 @@ import { useTranslation } from '@/app/i18n/client';
 import { Button } from '@/components/shared/button';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/authProvider';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { formatNumberShort } from '@/lib/format';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { EventType } from '@/service/backend/filters/domain/eventType';
+import Image from 'next/image';
 
 export function ArtistSidebar({
   artist,
@@ -41,8 +42,8 @@ export function ArtistSidebar({
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
 
-  const followers = artist.followers || Math.floor(Math.random() * 2000 + 100);
-  const following = artist.following || Math.floor(Math.random() * 100 + 10);
+  const followers = artist.followers || 0;
+  const following = artist.following || 0;
 
   const handle = artist.name.toLowerCase().replace(/\s/g, '');
 
@@ -77,10 +78,12 @@ export function ArtistSidebar({
           onMouseLeave={() => setIsHovered(false)}
         >
           {artist.imageUrl ? (
-            <img
-              src={artist.imageUrl}
+            <Image
+              src={artist.imageUrl ?? ''}
               alt={artist.name}
+              fill
               className={`h-full w-full object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : ''}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-teal-400 to-blue-500">

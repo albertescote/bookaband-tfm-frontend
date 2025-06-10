@@ -78,7 +78,7 @@ export default function ContractDetail({
 
   if (isLoading) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-gray-500">{t('loading')}</div>
       </div>
     );
@@ -204,7 +204,7 @@ export default function ContractDetail({
         {/* PDF Viewer */}
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-lg bg-white shadow">
-            <div className="h-[calc(100vh-12rem)] w-full">
+            <div className="min-h-[calc(100vh-12rem)] w-full">
               {pdfDataUrl ? (
                 <iframe
                   src={pdfDataUrl}

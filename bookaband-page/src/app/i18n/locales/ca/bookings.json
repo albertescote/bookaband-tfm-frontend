@@ -89,5 +89,21 @@
   "specialRequirements": "Requisits Especials",
   "notSpecified": "No especificat",
   "location": "Ubicació",
-  "bandName": "Nom de la Banda"
+  "bandName": "Nom de la Banda",
+  "contract-details": "Detalls del Contracte",
+  "contract-created": "Creat",
+  "view-contract": "Veure Contracte",
+  "invoice-details": "Detalls de la Factura",
+  "invoice-created": "Creada",
+  "view-invoice": "Veure Factura",
+  "contract-status": {
+    "signed": "Signat",
+    "partially-signed": "Parcialment Signat",
+    "pending": "Pendent"
+  },
+  "invoice-status": {
+    "paid": "Pagada",
+    "pending": "Pendent",
+    "unknown": "Desconeguda"
+  }
 }

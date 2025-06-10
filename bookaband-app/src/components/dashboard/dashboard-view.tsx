@@ -120,7 +120,7 @@ export default function DashboardView({ language }: DashboardViewProps) {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-lg text-gray-500">{t('loading')}</div>
       </div>
     );
@@ -128,7 +128,7 @@ export default function DashboardView({ language }: DashboardViewProps) {
 
   if (!selectedBand) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-lg text-gray-500">{t('no-band-selected')}</div>
       </div>
     );
