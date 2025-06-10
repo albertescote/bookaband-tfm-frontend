@@ -4,6 +4,8 @@
   "booking-not-found": "Booking not found",
   "status.pending": "Pending",
   "status.accepted": "Accepted",
+  "status.signed": "Signed",
+  "status.paid": "Paid",
   "status.declined": "Declined",
   "status.canceled": "Canceled",
   "date": "Date",

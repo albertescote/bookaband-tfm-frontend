@@ -4,6 +4,8 @@
   "booking-not-found": "Reserva no trobada",
   "status.pending": "Pendent",
   "status.accepted": "Acceptada",
+  "status.signed": "Signada",
+  "status.paid": "Pagada",
   "status.declined": "Rebutjada",
   "status.canceled": "Cancel·lada",
   "date": "Data",

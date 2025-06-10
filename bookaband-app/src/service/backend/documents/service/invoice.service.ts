@@ -26,3 +26,13 @@ export async function getInvoiceById(
     return error.response.data as BackendError;
   });
 }
+
+export async function payInvoice(id: string): Promise<void | BackendError> {
+  return withTokenRefreshRetry(() =>
+    authorizedAxiosInstance
+      .put(`/invoices/${id}/payment`)
+      .then((res) => res.data),
+  ).catch((error) => {
+    return error.response.data as BackendError;
+  });
+}

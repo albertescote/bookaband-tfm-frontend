@@ -162,7 +162,7 @@ export default function ContractDetail({
                     {t('createdAt')}
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {format(new Date(contract.createdAt), 'PPP', {
+                    {format(new Date(contract.createdAt), 'PPpp', {
                       locale: language === 'es' ? es : ca,
                     })}
                   </dd>
@@ -172,7 +172,7 @@ export default function ContractDetail({
                     {t('updatedAt')}
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {format(new Date(contract.updatedAt), 'PPP', {
+                    {format(new Date(contract.updatedAt), 'PPpp', {
                       locale: language === 'es' ? es : ca,
                     })}
                   </dd>

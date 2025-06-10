@@ -19,11 +19,9 @@ export const getAvatar = (
     </div>
   ) : (
     <div
-      className={`flex items-center justify-center rounded-full font-bold text-white ${fontSize} shadow-sm`}
+      className={`flex h-${size} w-${size} items-center justify-center rounded-full font-bold text-white ${fontSize} shadow-sm`}
       style={{
         backgroundColor: getRandomColor(displayName ?? 'dummy'),
-        height: `${size}px`,
-        width: `${size}px`,
       }}
     >
       {displayName ? displayName.charAt(0).toUpperCase() : '?'}

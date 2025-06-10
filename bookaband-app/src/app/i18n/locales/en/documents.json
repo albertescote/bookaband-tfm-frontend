@@ -25,5 +25,11 @@
   "status.pending-signatures": "Pending Signatures",
   "status.paid": "Paid",
   "status.pending": "Pending",
-  "status.failed": "Failed"
+  "status.failed": "Failed",
+  "contractDetails": "Contract Details",
+  "parties": "Parties",
+  "mark-as-paid": "Mark as Paid",
+  "processing": "Processing...",
+  "marked-as-paid": "Invoice marked as paid successfully",
+  "error-marking-paid": "Error marking invoice as paid"
 } 

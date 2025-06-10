@@ -32,5 +32,9 @@
   "deleteSuccess": "Documento eliminado con éxito",
   "deleteError": "Error al eliminar el documento",
   "contractDetails": "Detalles del Contrato",
-  "parties": "Partes"
+  "parties": "Partes",
+  "mark-as-paid": "Marcar como Pagada",
+  "processing": "Procesando...",
+  "marked-as-paid": "Factura marcada como pagada con éxito",
+  "error-marking-paid": "Error al marcar la factura como pagada"
 } 

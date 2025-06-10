@@ -225,7 +225,15 @@ export default function DashboardView({ language }: DashboardViewProps) {
                     <Cell
                       key={`cell-${index}`}
                       fill={
-                        ['#FFC107', '#4CAF50', '#F44336', '#6B7280'][index % 4]
+                        [
+                          '#FF9800',
+                          '#4CAF50',
+                          '#1D4ED8',
+                          '#9C27B0',
+                          '#F44336',
+                          '#9E9E9E',
+                          '#757575',
+                        ][index % 6]
                       }
                     />
                   ))}

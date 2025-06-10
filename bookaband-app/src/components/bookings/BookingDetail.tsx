@@ -60,6 +60,9 @@ export default function BookingDetail({
     const fetchData = async () => {
       try {
         if (booking.status === BookingStatus.ACCEPTED) {
+          const contractData = await getBookingContract(booking.id);
+          setContract(contractData);
+        } else if (booking.status === BookingStatus.SIGNED) {
           const [contractData, invoiceData] = await Promise.all([
             getBookingContract(booking.id),
             getBookingInvoice(booking.id),
@@ -142,6 +145,22 @@ export default function BookingDetail({
           text: 'text-emerald-700',
           border: 'border-emerald-200',
           icon: Check,
+          pulse: false,
+        };
+      case BookingStatus.SIGNED:
+        return {
+          bg: 'bg-gradient-to-r from-blue-50 to-indigo-50',
+          text: 'text-blue-700',
+          border: 'border-blue-200',
+          icon: FileText,
+          pulse: false,
+        };
+      case BookingStatus.PAID:
+        return {
+          bg: 'bg-gradient-to-r from-purple-50 to-violet-50',
+          text: 'text-purple-700',
+          border: 'border-purple-200',
+          icon: Receipt,
           pulse: false,
         };
       case BookingStatus.DECLINED:
@@ -444,7 +463,7 @@ export default function BookingDetail({
             </div>
 
             {/* Contract Section */}
-            {booking.status === BookingStatus.ACCEPTED && contract && (
+            {contract && (
               <div className="mb-8">
                 <h2 className="mb-6 text-2xl font-bold text-gray-900">
                   {t('contract-details')}
@@ -509,7 +528,7 @@ export default function BookingDetail({
             )}
 
             {/* Invoice Section */}
-            {booking.status === BookingStatus.ACCEPTED && invoice && (
+            {invoice && (
               <div className="mb-8">
                 <h2 className="mb-6 text-2xl font-bold text-gray-900">
                   {t('invoice-details')}

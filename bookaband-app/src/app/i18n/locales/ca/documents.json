@@ -25,5 +25,11 @@
   "status.pending-signatures": "Pendent de Signatures",
   "status.paid": "Pagat",
   "status.pending": "Pendent",
-  "status.failed": "Fallit"
+  "status.failed": "Fallit",
+  "contractDetails": "Detalls del Contracte",
+  "parties": "Parts",
+  "mark-as-paid": "Marcar com a Pagada",
+  "processing": "Processant...",
+  "marked-as-paid": "Factura marcada com a pagada amb èxit",
+  "error-marking-paid": "Error en marcar la factura com a pagada"
 } 

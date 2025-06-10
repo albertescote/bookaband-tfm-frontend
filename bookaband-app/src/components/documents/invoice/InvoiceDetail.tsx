@@ -3,10 +3,15 @@
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Download, FileText } from 'lucide-react';
+import { ArrowLeft, Check, Download, FileText } from 'lucide-react';
 import { Invoice } from '@/service/backend/documents/domain/invoice';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
+import {
+  getInvoiceById,
+  payInvoice,
+} from '@/service/backend/documents/service/invoice.service';
+import { toast } from 'sonner';
 
 interface InvoiceDetailProps {
   invoice: Invoice;
@@ -21,6 +26,8 @@ export default function InvoiceDetail({
   const { t } = useTranslation(language, 'documents');
   const [pdfDataUrl, setPdfDataUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
+  const [currentInvoice, setCurrentInvoice] = useState<Invoice>(invoice);
 
   useEffect(() => {
     const fetchPdf = async () => {
@@ -71,6 +78,23 @@ export default function InvoiceDetail({
     }
   };
 
+  const handleMarkAsPaid = async () => {
+    try {
+      setProcessing(true);
+      await payInvoice(currentInvoice.id);
+      toast.success(t('marked-as-paid'));
+
+      const updatedInvoice = await getInvoiceById(currentInvoice.id);
+      if (!('error' in updatedInvoice)) {
+        setCurrentInvoice(updatedInvoice);
+      }
+    } catch (error) {
+      toast.error(t('error-marking-paid'));
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -79,7 +103,7 @@ export default function InvoiceDetail({
     );
   }
 
-  const statusConfig = getStatusColor(invoice.status);
+  const statusConfig = getStatusColor(currentInvoice.status);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -100,7 +124,7 @@ export default function InvoiceDetail({
             </h1>
           </div>
           <a
-            href={invoice.fileUrl}
+            href={currentInvoice.fileUrl}
             download
             className="flex items-center rounded-lg bg-[#15b7b9] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#15b7b9]/90"
           >
@@ -124,7 +148,7 @@ export default function InvoiceDetail({
                     {t('amount')}
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {invoice.amount.toLocaleString('en-US', {
+                    {currentInvoice.amount.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'EUR',
                     })}
@@ -138,7 +162,7 @@ export default function InvoiceDetail({
                     <span
                       className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${statusConfig.bg} ${statusConfig.text} ${statusConfig.border}`}
                     >
-                      {t(`status.${invoice.status.toLowerCase()}`)}
+                      {t(`status.${currentInvoice.status.toLowerCase()}`)}
                     </span>
                   </dd>
                 </div>
@@ -147,7 +171,7 @@ export default function InvoiceDetail({
                     {t('createdAt')}
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {format(new Date(invoice.createdAt), 'PPP', {
+                    {format(new Date(currentInvoice.createdAt), 'PPpp', {
                       locale: language === 'es' ? es : ca,
                     })}
                   </dd>
@@ -157,11 +181,25 @@ export default function InvoiceDetail({
                     {t('updatedAt')}
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {format(new Date(invoice.updatedAt), 'PPP', {
+                    {format(new Date(currentInvoice.updatedAt), 'PPpp', {
                       locale: language === 'es' ? es : ca,
                     })}
                   </dd>
                 </div>
+                {currentInvoice.status.toLowerCase() === 'pending' && (
+                  <div className="mt-6">
+                    <button
+                      onClick={handleMarkAsPaid}
+                      disabled={processing}
+                      className="w-full transform rounded-lg border border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-emerald-300 hover:from-emerald-100 hover:to-green-100 hover:shadow-md disabled:opacity-50"
+                    >
+                      <div className="flex items-center justify-center">
+                        <Check className="mr-2 h-5 w-5" />
+                        {processing ? t('processing') : t('mark-as-paid')}
+                      </div>
+                    </button>
+                  </div>
+                )}
               </dl>
             </div>
           </div>
