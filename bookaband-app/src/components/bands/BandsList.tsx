@@ -11,6 +11,7 @@ import {
   declineInvitation,
 } from '@/service/backend/invitation/service/invitation.service';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface BandsListProps {
   language: string;
@@ -26,7 +27,6 @@ export default function BandsList({
   const { t } = useTranslation(language, 'bands');
   const router = useRouter();
 
-  const [bands, setBands] = useState<UserBand[]>(initialBands);
   const [invitations, setInvitations] =
     useState<Invitation[]>(initialInvitations);
   const [isAccepting, setIsAccepting] = useState<string | null>(null);
@@ -127,7 +127,7 @@ export default function BandsList({
         <h2 className="mb-4 text-xl font-semibold text-gray-800">
           {t('yourBands')}
         </h2>
-        {bands.length === 0 ? (
+        {initialBands.length === 0 ? (
           <div className="rounded-lg bg-white p-8 text-center shadow-md">
             <p className="mb-4 text-gray-600">{t('noBands')}</p>
             <button
@@ -140,18 +140,20 @@ export default function BandsList({
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {bands.map((band) => (
+            {initialBands.map((band) => (
               <div
                 key={band.id}
                 onClick={() => router.push(`/${language}/bands/${band.id}`)}
                 className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg"
               >
-                <div className="mb-4 h-48 w-full rounded-lg bg-gray-100">
+                <div className="relative mb-4 h-48 w-full overflow-hidden rounded-lg bg-gray-100">
                   {band.imageUrl ? (
-                    <img
+                    <Image
                       src={band.imageUrl}
                       alt={band.name}
-                      className="h-full w-full rounded-lg object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center">
