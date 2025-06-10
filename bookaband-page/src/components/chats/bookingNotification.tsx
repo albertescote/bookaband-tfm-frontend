@@ -5,6 +5,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { BookingStatus } from '@/service/backend/booking/domain/booking';
 import { ArrowRight, Calendar, ClipboardList, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import { getStatusColor, getStatusText } from '@/lib/utils';
 
 interface BookingNotificationProps {
   metadata: {
@@ -24,36 +25,6 @@ const BookingNotification: React.FC<BookingNotificationProps> = ({
 }) => {
   const { t } = useTranslation(language, 'chat');
 
-  const getStatusColor = (status?: BookingStatus) => {
-    switch (status) {
-      case BookingStatus.PENDING:
-        return 'bg-yellow-50 text-yellow-700 border-yellow-200';
-      case BookingStatus.ACCEPTED:
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case BookingStatus.DECLINED:
-        return 'bg-rose-50 text-rose-700 border-rose-200';
-      case BookingStatus.CANCELED:
-        return 'bg-rose-50 text-rose-700 border-rose-200';
-      default:
-        return 'bg-gray-50 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStatusText = (status?: BookingStatus) => {
-    switch (status) {
-      case BookingStatus.PENDING:
-        return t('pending');
-      case BookingStatus.ACCEPTED:
-        return t('accepted');
-      case BookingStatus.DECLINED:
-        return t('declined');
-      case BookingStatus.CANCELED:
-        return t('canceled');
-      default:
-        return status;
-    }
-  };
-
   return (
     <div className="mx-auto w-full max-w-3xl overflow-hidden rounded-xl border border-[#15b7b9]/20 bg-gradient-to-br from-[#15b7b9]/5 to-white p-4 shadow-lg">
       <div className="flex items-center justify-between">
@@ -70,7 +41,7 @@ const BookingNotification: React.FC<BookingNotificationProps> = ({
             metadata.bookingStatus,
           )}`}
         >
-          {getStatusText(metadata.bookingStatus)}
+          {getStatusText(t, metadata.bookingStatus)}
         </span>
       </div>
 

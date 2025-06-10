@@ -51,10 +51,11 @@
   "cancelling": "Cancelando...",
   "status": {
     "pending": "Pendiente",
-    "accepted": "Aceptada",
-    "declined": "Rechazada",
-    "canceled": "Cancelada",
-    "canceled": "Cancelada"
+    "accepted": "Aceptado",
+    "declined": "Rechazado",
+    "canceled": "Cancelado",
+    "signed": "Firmado",
+    "paid": "Pagado"
   },
   "booking-not-found": "Reserva no encontrada",
   "error-loading": "Error al cargar la reserva",

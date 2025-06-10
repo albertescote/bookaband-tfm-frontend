@@ -9,7 +9,7 @@ import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { useAuth } from '@/providers/authProvider';
 import { toast } from 'react-hot-toast';
 import { getAvatar } from '@/components/shared/avatar';
-import { BookingStatus } from '@/service/backend/booking/domain/booking';
+import { getStatusColor, getStatusText } from '@/lib/utils';
 
 export default function MessagesMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -76,36 +76,6 @@ export default function MessagesMenu({ language }: { language: string }) {
     setMenuOpen(false);
   };
 
-  const getStatusColor = (status?: BookingStatus) => {
-    switch (status) {
-      case BookingStatus.PENDING:
-        return 'bg-yellow-100 text-yellow-800';
-      case BookingStatus.ACCEPTED:
-        return 'bg-green-100 text-green-800';
-      case BookingStatus.DECLINED:
-        return 'bg-red-100 text-red-800';
-      case BookingStatus.CANCELED:
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusText = (status?: BookingStatus) => {
-    switch (status) {
-      case BookingStatus.PENDING:
-        return t('pending');
-      case BookingStatus.ACCEPTED:
-        return t('accepted');
-      case BookingStatus.DECLINED:
-        return t('declined');
-      case BookingStatus.CANCELED:
-        return t('canceled');
-      default:
-        return status;
-    }
-  };
-
   const isImageFile = (url: string) => {
     return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
   };
@@ -137,7 +107,7 @@ export default function MessagesMenu({ language }: { language: string }) {
               lastMessage.bookingMetadata.bookingStatus,
             )}`}
           >
-            {getStatusText(lastMessage.bookingMetadata.bookingStatus)}
+            {getStatusText(t, lastMessage.bookingMetadata.bookingStatus)}
           </span>
         </div>
       );
@@ -145,12 +115,20 @@ export default function MessagesMenu({ language }: { language: string }) {
 
     if (lastMessage.fileUrl) {
       if (isImageFile(lastMessage.fileUrl)) {
-        return <p className="truncate text-xs text-gray-500">{t('image-message')}</p>;
+        return (
+          <p className="truncate text-xs text-gray-500">{t('image-message')}</p>
+        );
       }
       if (isVideoFile(lastMessage.fileUrl)) {
-        return <p className="truncate text-xs text-gray-500">{t('video-message')}</p>;
+        return (
+          <p className="truncate text-xs text-gray-500">{t('video-message')}</p>
+        );
       }
-      return <p className="truncate text-xs text-gray-500">{t('document-message')}</p>;
+      return (
+        <p className="truncate text-xs text-gray-500">
+          {t('document-message')}
+        </p>
+      );
     }
 
     return (

@@ -14,15 +14,43 @@ export function getRandomColor(name: string) {
   return `hsl(${hash % 360}, 70%, 60%)`;
 }
 
-export function getStatusColor(status: BookingStatus): string {
+export function getStatusColor(status?: BookingStatus): string {
   switch (status) {
     case BookingStatus.PENDING:
-      return '#EAB308';
+      return 'bg-yellow-50 text-yellow-700 border-yellow-200';
     case BookingStatus.ACCEPTED:
-      return '#22C55E';
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case BookingStatus.SIGNED:
+      return 'bg-gradient-to-r from-blue-50 to-indigo-50';
+    case BookingStatus.PAID:
+      return 'bg-gradient-to-r from-purple-50 to-violet-50';
     case BookingStatus.DECLINED:
-      return '#EF4444';
+      return 'bg-rose-50 text-rose-700 border-rose-200';
+    case BookingStatus.CANCELED:
+      return 'bg-gray-50 text-gray-700 border-gray-200';
     default:
-      return '#6B7280';
+      return 'bg-gray-50 text-gray-700 border-gray-200';
+  }
+}
+
+export function getStatusText(
+  t: (key: string) => string,
+  status?: BookingStatus,
+) {
+  switch (status) {
+    case BookingStatus.PENDING:
+      return t('pending');
+    case BookingStatus.ACCEPTED:
+      return t('accepted');
+    case BookingStatus.DECLINED:
+      return t('declined');
+    case BookingStatus.SIGNED:
+      return t('signed');
+    case BookingStatus.PAID:
+      return t('paid');
+    case BookingStatus.CANCELED:
+      return t('canceled');
+    default:
+      return status;
   }
 }

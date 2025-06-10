@@ -3,7 +3,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 import Link from 'next/link';
 import { Calendar, Clock, MapPin } from 'lucide-react';
-import { getStatusColor } from '@/lib/utils';
+import { cn, getStatusColor } from '@/lib/utils';
 import { getAvatar } from '@/components/shared/avatar';
 
 interface BookingsListProps {
@@ -92,8 +92,10 @@ export default function BookingsList({
                     </div>
                   </div>
                   <div
-                    className="rounded-full px-3 py-1 text-sm font-semibold text-white"
-                    style={{ backgroundColor: getStatusColor(booking.status) }}
+                    className={cn(
+                      getStatusColor(booking.status),
+                      'rounded-full px-3 py-1 text-sm font-semibold',
+                    )}
                   >
                     {t(`status.${booking.status.toLowerCase()}`)}
                   </div>

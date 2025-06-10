@@ -1,6 +1,5 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { getStatusColor } from '@/lib/utils';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -22,6 +21,7 @@ import { getAvatar } from '@/components/shared/avatar';
 import { BookingSummary } from '@/service/backend/booking/domain/bookingSummary';
 import { Button } from '@/components/shared/button';
 import { EventType } from '@/service/backend/filters/domain/eventType';
+import { cn, getStatusColor } from '@/lib/utils';
 
 export default function BookingDetails({
   language,
@@ -84,8 +84,10 @@ export default function BookingDetails({
           </h1>
         </div>
         <div
-          className="rounded-full px-4 py-2 text-sm font-semibold text-white"
-          style={{ backgroundColor: getStatusColor(booking.status) }}
+          className={cn(
+            getStatusColor(booking.status),
+            'rounded-full px-4 py-2 text-sm font-semibold',
+          )}
         >
           {t(`status.${booking.status.toLowerCase()}`)}
         </div>

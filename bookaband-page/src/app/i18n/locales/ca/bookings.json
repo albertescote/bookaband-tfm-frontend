@@ -54,7 +54,8 @@
     "accepted": "Acceptada",
     "declined": "Rebutjada",
     "canceled": "Cancel·lada",
-    "canceled": "Cancel·lada"
+    "signed": "Signat",
+    "paid": "Pagat"
   },
   "booking-not-found": "Reserva no trobada",
   "error-loading": "Error en carregar la reserva",

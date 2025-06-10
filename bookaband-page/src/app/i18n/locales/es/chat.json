@@ -35,6 +35,8 @@
   "accepted": "Aceptada",
   "declined": "Rechazada",
   "canceled": "Cancelada",
+  "signed": "Firmado",
+  "paid": "Pagado",
   "viewDetails": "Ver Detalles",
   "download-file": "Descargar archivo",
   "view-document": "Ver documento",
