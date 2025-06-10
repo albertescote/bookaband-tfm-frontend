@@ -33,6 +33,10 @@ export default function BookingsList({ language: lng }: BookingsListProps) {
         return 'bg-yellow-50 text-yellow-700 border-yellow-200';
       case BookingStatus.ACCEPTED:
         return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      case BookingStatus.SIGNED:
+        return 'bg-gradient-to-r from-blue-50 to-indigo-50';
+      case BookingStatus.PAID:
+        return 'bg-gradient-to-r from-purple-50 to-violet-50';
       case BookingStatus.DECLINED:
         return 'bg-rose-50 text-rose-700 border-rose-200';
       case BookingStatus.CANCELED:

@@ -187,6 +187,10 @@ export default function CalendarView({ language }: CalendarViewProps) {
         return 'bg-yellow-100 text-yellow-600';
       case BookingStatus.ACCEPTED:
         return 'bg-[#15b7b9]/10 text-[#15b7b9]';
+      case BookingStatus.SIGNED:
+        return 'bg-gradient-to-r from-blue-50 to-indigo-50';
+      case BookingStatus.PAID:
+        return 'bg-gradient-to-r from-purple-50 to-violet-50';
       default:
         return 'bg-[#15b7b9]/10 text-[#15b7b9]';
     }
