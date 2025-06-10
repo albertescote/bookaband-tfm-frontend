@@ -61,6 +61,29 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
     }
   };
 
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, index) => {
+      const starValue = Math.max(0, Math.min(5, rating - index));
+      const isHalfStar = starValue > 0 && starValue < 1;
+      const isFullStar = starValue >= 1;
+
+      return (
+        <div key={index} className="relative h-4 w-4">
+          <Star className="absolute h-4 w-4 text-gray-300" />
+          {isFullStar && (
+            <Star className="absolute h-4 w-4 fill-yellow-400 text-yellow-400" />
+          )}
+          {isHalfStar && (
+            <Star
+              className="absolute h-4 w-4 fill-yellow-400 text-yellow-400"
+              style={{ clipPath: 'inset(0 50% 0 0)' }}
+            />
+          )}
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
       <div className="relative aspect-square overflow-hidden">
@@ -135,8 +158,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
 
         {/* Rating */}
         <div className="mb-3 flex items-center gap-1 text-sm">
-          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-          <span className="font-medium text-gray-800">{artist.rating}</span>
+          <div className="flex">{renderStars(artist.rating ?? 0)}</div>
           <span className="text-xs text-gray-500">
             ({artist.reviewCount} {t('reviews')})
           </span>

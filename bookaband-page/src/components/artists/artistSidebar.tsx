@@ -163,7 +163,7 @@ export function ArtistSidebar({
           <div className="px-2">
             <div className="flex items-center justify-center">
               <span className="text-lg font-bold text-gray-800">
-                {artist.rating || '4.8'}
+                {artist.rating || '-'}
               </span>
               <Star className="ml-1 h-3 w-3 text-yellow-500" fill="#f59e0b" />
             </div>
