@@ -2,8 +2,10 @@ export type InvoiceStatus = 'PAID' | 'PENDING' | 'FAILED';
 
 export interface Invoice {
   id: string;
-  date: string;
+  contractId: string;
   amount: number;
   status: InvoiceStatus;
-  contractId: string;
+  fileUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

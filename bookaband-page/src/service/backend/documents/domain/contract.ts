@@ -2,8 +2,15 @@ export type ContractStatus = 'SIGNED' | 'PENDING' | 'CANCELED';
 
 export interface Contract {
   id: string;
-  bandName: string;
-  date: string;
-  status: ContractStatus;
   bookingId: string;
+  status: ContractStatus;
+  fileUrl: string;
+  userSigned: boolean;
+  bandSigned: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  eventName: string;
+  bandName: string;
+  userName: string;
+  eventDate: Date;
 }

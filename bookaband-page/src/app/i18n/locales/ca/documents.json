@@ -1,5 +1,6 @@
 {
   "activityTitle": "Documents",
+  "title": "Documents",
   "contracts": "Contractes",
   "noContracts": "No hi ha contractes disponibles.",
   "contractStatus": {
@@ -14,9 +15,34 @@
     "pending": "Pendent",
     "failed": "Erroni"
   },
+  "eventName": "Nom de l'Esdeveniment",
+  "eventDate": "Data de l'Esdeveniment",
+  "createdAt": "Data de Creació",
+  "amount": "Import",
+  "updatedAt": "Última Actualització",
+  "actions": "Accions",
+  "statusLabel": "Estat",
+  "status": {
+    "signed": "Signat",
+    "pending-band-signature": "Pendent Signatura de la Banda",
+    "pending-user-signature": "Pendent Signatura de l'Usuari",
+    "pending-signatures": "Pendent Signatures",
+    "pending": "Pendent",
+    "canceled": "Cancel·lat",
+    "paid": "Pagat",
+    "failed": "Erroni"
+  },
   "errorScreen": {
     "title": "S'ha produït un error",
     "description": "No s'han pogut carregar els documents. Torna-ho a provar més tard.",
     "retry": "Torna-ho a provar"
-  }
+  },
+  "back": "Tornar",
+  "download": "Descarregar",
+  "contractDetails": "Detalls del Contracte",
+  "invoiceDetails": "Detalls de la Factura",
+  "parties": "Parts",
+  "loading": "Carregant...",
+  "error-loading-contract": "Error en carregar el contracte",
+  "error-loading-invoice": "Error en carregar la factura"
 }

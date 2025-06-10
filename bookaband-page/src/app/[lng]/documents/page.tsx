@@ -1,11 +1,11 @@
-import DocumentsPage from '@/components/documents/documentsPage';
 import { Contract } from '@/service/backend/documents/domain/contract';
 import { Invoice } from '@/service/backend/documents/domain/invoice';
-import { getInvoices } from '@/service/backend/documents/service/invoice.service';
-import { getContracts } from '@/service/backend/documents/service/contract.service';
+import { getUserInvoices } from '@/service/backend/documents/service/invoice.service';
+import { getUserContracts } from '@/service/backend/documents/service/contract.service';
 import { BackendError } from '@/service/backend/shared/domain/backendError';
 import { getTranslation } from '@/app/i18n';
 import Error from '@/components/shared/error';
+import DocumentsList from '@/components/documents/documentsList';
 
 interface PageParams {
   params: {
@@ -17,7 +17,7 @@ interface PageParams {
 export default async function Page({ params: { lng } }: PageParams) {
   const { t } = await getTranslation(lng, 'documents');
 
-  const contracts: Contract[] | BackendError = await getContracts();
+  const contracts: Contract[] | BackendError = await getUserContracts();
   if (!contracts || 'error' in contracts) {
     return (
       <Error
@@ -27,7 +27,7 @@ export default async function Page({ params: { lng } }: PageParams) {
       ></Error>
     );
   }
-  const invoices: Invoice[] | BackendError = await getInvoices();
+  const invoices: Invoice[] | BackendError = await getUserInvoices();
   if (!invoices || 'error' in invoices) {
     return (
       <Error
@@ -39,6 +39,6 @@ export default async function Page({ params: { lng } }: PageParams) {
   }
 
   return (
-    <DocumentsPage contracts={contracts} invoices={invoices} language={lng} />
+    <DocumentsList contracts={contracts} invoices={invoices} language={lng} />
   );
 }

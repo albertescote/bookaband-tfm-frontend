@@ -1,5 +1,6 @@
 {
   "activityTitle": "Documentos",
+  "title": "Documentos",
   "contracts": "Contratos",
   "noContracts": "No hay contratos disponibles.",
   "contractStatus": {
@@ -14,9 +15,34 @@
     "pending": "Pendiente",
     "failed": "Fallido"
   },
+  "eventName": "Nombre del Evento",
+  "eventDate": "Fecha del Evento",
+  "createdAt": "Fecha de Creación",
+  "amount": "Importe",
+  "updatedAt": "Última Actualización",
+  "actions": "Acciones",
+  "statusLabel": "Estado",
+  "status": {
+    "signed": "Firmado",
+    "pending-band-signature": "Pendiente Firma de la Banda",
+    "pending-user-signature": "Pendiente Firma del Usuario",
+    "pending-signatures": "Pendiente Firmas",
+    "pending": "Pendiente",
+    "canceled": "Cancelado",
+    "paid": "Pagado",
+    "failed": "Fallido"
+  },
   "errorScreen": {
     "title": "Algo salió mal",
-    "description": "No pudimos cargar tu documentos. Por favor, inténtalo más tarde.",
+    "description": "No pudimos cargar tus documentos. Por favor, inténtalo más tarde.",
     "retry": "Reintentar"
-  }
+  },
+  "back": "Volver",
+  "download": "Descargar",
+  "contractDetails": "Detalles del Contrato",
+  "invoiceDetails": "Detalles de la Factura",
+  "parties": "Partes",
+  "loading": "Cargando...",
+  "error-loading-contract": "Error al cargar el contrato",
+  "error-loading-invoice": "Error al cargar la factura"
 }

@@ -1,22 +1,38 @@
 {
   "activityTitle": "Documents",
+  "title": "Documents",
   "contracts": "Contracts",
   "noContracts": "No contracts available.",
-  "contractStatus": {
-    "signed": "Signed",
-    "pending": "Pending",
-    "canceled": "Canceled"
-  },
   "invoices": "Invoices",
   "noInvoices": "No invoices available.",
-  "invoiceStatus": {
-    "paid": "Paid",
+  "eventName": "Event Name",
+  "eventDate": "Event Date",
+  "createdAt": "Created At",
+  "amount": "Amount",
+  "updatedAt": "Updated At",
+  "actions": "Actions",
+  "statusLabel": "Status",
+  "status": {
+    "signed": "Signed",
+    "pending-band-signature": "Pending Band Signature",
+    "pending-user-signature": "Pending User Signature",
+    "pending-signatures": "Pending Signatures",
     "pending": "Pending",
+    "canceled": "Canceled",
+    "paid": "Paid",
     "failed": "Failed"
   },
   "errorScreen": {
     "title": "Something went wrong",
-    "description": "We couldn’t load your documents. Please try again later.",
+    "description": "We couldn't load your documents. Please try again later.",
     "retry": "Retry"
-  }
+  },
+  "back": "Back",
+  "download": "Download",
+  "contractDetails": "Contract Details",
+  "invoiceDetails": "Invoice Details",
+  "parties": "Parties",
+  "loading": "Loading...",
+  "error-loading-contract": "Error loading contract",
+  "error-loading-invoice": "Error loading invoice"
 }

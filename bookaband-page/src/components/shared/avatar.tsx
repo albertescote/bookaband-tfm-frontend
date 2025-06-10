@@ -6,7 +6,7 @@ export const getAvatar = (
   imageUrl?: string,
   displayName?: string,
 ) => {
-  const fontSize = size > 40 ? 'text-xl' : 'text-md';
+  const fontSize = size > 10 ? 'text-xl' : 'text-md';
 
   return imageUrl ? (
     <div className={`relative h-${size} w-${size}`}>
@@ -19,14 +19,14 @@ export const getAvatar = (
     </div>
   ) : (
     <div
-      className={`flex items-center justify-center rounded-full font-bold text-white ${fontSize} shadow-sm`}
+      className={`flex h-${size} w-${size} items-center justify-center rounded-full shadow-sm`}
       style={{
         backgroundColor: getRandomColor(displayName ?? 'dummy'),
-        height: `${size}px`,
-        width: `${size}px`,
       }}
     >
-      {displayName ? displayName.charAt(0).toUpperCase() : '?'}
+      <span className={`${fontSize} font-bold text-white`}>
+        {displayName ? displayName.charAt(0).toUpperCase() : '?'}
+      </span>
     </div>
   );
 };
