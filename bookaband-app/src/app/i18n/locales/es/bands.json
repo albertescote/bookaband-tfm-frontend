@@ -340,7 +340,9 @@
     "bandSize": "Por favor, selecciona el tamaño de la banda",
     "genre": "Por favor, selecciona un género",
     "description": "Por favor, proporciona una descripción",
-    "atLeastOneEventType": "Por favor, selecciona al menos un tipo de evento"
+    "atLeastOneEventType": "Por favor, selecciona al menos un tipo de evento",
+    "completeProfileFirst": "Por favor, completa tu perfil con número de teléfono y DNI/NIE antes de crear una banda",
+    "completeProfileFirstJoin": "Por favor, completa tu perfil con número de teléfono y DNI/NIE antes de unirte una banda"
   },
   "roles": {
     "admin": "Administrador",

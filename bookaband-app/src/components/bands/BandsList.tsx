@@ -10,8 +10,9 @@ import {
   acceptInvitation,
   declineInvitation,
 } from '@/service/backend/invitation/service/invitation.service';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 import Image from 'next/image';
+import { useAuth } from '@/providers/authProvider';
 
 interface BandsListProps {
   language: string;
@@ -26,13 +27,29 @@ export default function BandsList({
 }: BandsListProps) {
   const { t } = useTranslation(language, 'bands');
   const router = useRouter();
+  const { user } = useAuth();
 
   const [invitations, setInvitations] =
     useState<Invitation[]>(initialInvitations);
   const [isAccepting, setIsAccepting] = useState<string | null>(null);
   const [isDeclining, setIsDeclining] = useState<string | null>(null);
 
+  const handleCreateBand = () => {
+    if (!user?.nationalId || !user?.phoneNumber) {
+      toast.error(t('validation.completeProfileFirst'));
+      router.push(`/${language}/profile`);
+      return;
+    }
+    router.push(`/${language}/bands/create`);
+  };
+
   const handleAcceptInvitation = async (invitationId: string) => {
+    if (!user?.nationalId || !user?.phoneNumber) {
+      toast.error(t('validation.completeProfileFirstJoin'));
+      router.push(`/${language}/profile`);
+      return;
+    }
+
     setIsAccepting(invitationId);
     try {
       await acceptInvitation(invitationId);
@@ -66,7 +83,7 @@ export default function BandsList({
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
         <button
-          onClick={() => router.push(`/${language}/bands/create`)}
+          onClick={handleCreateBand}
           className="flex items-center gap-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-white transition-colors hover:bg-[#15b7b9]/90"
         >
           <Plus size={20} />
@@ -131,7 +148,7 @@ export default function BandsList({
           <div className="rounded-lg bg-white p-8 text-center shadow-md">
             <p className="mb-4 text-gray-600">{t('noBands')}</p>
             <button
-              onClick={() => router.push(`/${language}/bands/create`)}
+              onClick={handleCreateBand}
               className="inline-flex items-center gap-2 rounded-lg bg-[#15b7b9] px-4 py-2 text-white transition-colors hover:bg-[#15b7b9]/90"
             >
               <Plus size={20} />

@@ -183,7 +183,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
       toast.error(t('error-updating'));
     } finally {
       setIsLoading(false);
-      window.location.reload();
     }
   };
 

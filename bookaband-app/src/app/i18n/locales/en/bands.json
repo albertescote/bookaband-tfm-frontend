@@ -343,7 +343,9 @@
       "technicalRider": "Please fill in all required technical rider fields",
       "performanceArea": "Please fill in all required performance area fields"
     },
-    "atLeastOneEventType": "Please select at least one event type"
+    "atLeastOneEventType": "Please select at least one event type",
+    "completeProfileFirst": "Please complete your profile with phone number and national ID before creating a band",
+    "completeProfileFirstJoin": "Please complete your profile with phone number and national ID before joining a band"
   },
   "roles": {
     "admin": "Admin",

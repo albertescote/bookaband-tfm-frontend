@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Bell } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   acceptInvitation,
   declineInvitation,
@@ -14,6 +14,7 @@ import { Invitation } from '@/service/backend/invitation/domain/invitation';
 import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@/providers/authProvider';
 
 export function NotificationDropdown() {
   const params = useParams();
@@ -21,6 +22,8 @@ export function NotificationDropdown() {
   const { t } = useTranslation(language, 'bands');
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchInvitations();
@@ -43,6 +46,11 @@ export function NotificationDropdown() {
 
   const handleAcceptInvitation = async (id: string) => {
     try {
+      if (!user?.nationalId || !user?.phoneNumber) {
+        toast.error(t('validation.completeProfileFirstJoin'));
+        router.push(`/${language}/profile`);
+        return;
+      }
       await acceptInvitation(id);
       setInvitations((prev) => prev.filter((inv) => inv.id !== id));
       toast.success(t('invitationAccepted'));

@@ -344,7 +344,9 @@
       "technicalRider": "Si us plau, omple tots els camps obligatoris del rider tècnic",
       "performanceArea": "Si us plau, omple tots els camps obligatoris de l'àrea d'actuació"
     },
-    "atLeastOneEventType": "Si us plau, selecciona almenys un tipus d'esdeveniment"
+    "atLeastOneEventType": "Si us plau, selecciona almenys un tipus d'esdeveniment",
+    "completeProfileFirst": "Si us plau, completa el teu perfil amb número de telèfon i DNI/NIE abans de crear una banda",
+    "completeProfileFirstJoin": "Si us plau, completa el teu perfil amb número de telèfon i DNI/NIE abans d'unir-te a una banda"
   },
   "roles": {
     "admin": "Administrador",
