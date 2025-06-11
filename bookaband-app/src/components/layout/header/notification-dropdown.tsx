@@ -12,7 +12,7 @@ import {
 } from '@/service/backend/invitation/service/invitation.service';
 import { Invitation } from '@/service/backend/invitation/domain/invitation';
 import { format } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
+import { ca, enUS, es } from 'date-fns/locale';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/providers/authProvider';
 
@@ -79,6 +79,8 @@ export function NotificationDropdown() {
         return es;
       case 'ca':
         return ca;
+      case 'en':
+        return enUS;
       default:
         return undefined;
     }

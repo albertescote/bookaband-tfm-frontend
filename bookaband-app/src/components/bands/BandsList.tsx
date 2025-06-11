@@ -13,6 +13,8 @@ import {
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { useAuth } from '@/providers/authProvider';
+import { format } from 'date-fns';
+import { ca, enUS, es } from 'date-fns/locale';
 
 interface BandsListProps {
   language: string;
@@ -64,6 +66,19 @@ export default function BandsList({
     }
   };
 
+  const getLocale = () => {
+    switch (language) {
+      case 'es':
+        return es;
+      case 'ca':
+        return ca;
+      case 'en':
+        return enUS;
+      default:
+        return undefined;
+    }
+  };
+
   const handleDeclineInvitation = async (invitationId: string) => {
     setIsDeclining(invitationId);
     try {
@@ -107,9 +122,9 @@ export default function BandsList({
                   <div>
                     <p className="font-medium text-gray-900">
                       {t('invitationReceived', {
-                        date: new Date(
-                          invitation.createdAt,
-                        ).toLocaleDateString(),
+                        date: format(new Date(invitation.createdAt), 'PPP', {
+                          locale: getLocale(),
+                        }),
                       })}
                     </p>
                     <p className="text-sm text-gray-600">
