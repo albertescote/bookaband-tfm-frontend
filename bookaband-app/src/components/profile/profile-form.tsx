@@ -41,23 +41,101 @@ export default function ProfileForm({ language }: ProfileFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
   const [tempFile, setTempFile] = useState<File | null>(null);
+  const [phoneError, setPhoneError] = useState('');
+  const [nationalIdError, setNationalIdError] = useState('');
+  const [countryCode, setCountryCode] = useState('+34');
 
   useEffect(() => {
     if (user) {
+      const phoneNumber = user.phoneNumber || '';
+      const [code, ...rest] = phoneNumber.split(' ');
+      setCountryCode(code || '+34');
       setFormData({
         firstName: user.firstName,
         familyName: user.familyName,
         email: user.email,
         imageUrl: user.imageUrl,
         bio: user.bio || '',
-        phoneNumber: user.phoneNumber || '',
+        phoneNumber: rest.join(' ') || '',
         nationalId: user.nationalId || '',
       });
     }
   }, [user]);
 
+  const validatePhoneNumber = (number: string) => {
+    if (!number) return true;
+
+    if (/[a-zA-Z]/.test(number)) {
+      return false;
+    }
+
+    const digitsOnly = number.replace(/\D/g, '');
+    const lengthByCountry: { [key: string]: number } = {
+      '+34': 9, // Spain
+      '+44': 10, // UK
+      '+33': 9, // France
+      '+49': 10, // Germany
+      '+39': 10, // Italy
+      '+351': 9, // Portugal
+      '+1': 10, // US/Canada
+    };
+    const expectedLength = lengthByCountry[countryCode] || 10;
+    return digitsOnly.length === expectedLength;
+  };
+
+  const validateNationalId = (id: string) => {
+    if (!id) return true;
+    if (countryCode === '+34') {
+      const dniRegex = /^[0-9]{8}[A-Z]$/;
+      const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/;
+      return dniRegex.test(id) || nieRegex.test(id);
+    }
+    return id.length > 0;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, phoneNumber: value }));
+    if (value) {
+      if (/[a-zA-Z]/.test(value)) {
+        setPhoneError(t('validation.phoneNumberLettersError'));
+      } else if (!validatePhoneNumber(value)) {
+        setPhoneError(t('validation.phoneNumberError'));
+      } else {
+        setPhoneError('');
+      }
+    } else {
+      setPhoneError('');
+    }
+  };
+
+  const handleNationalIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, nationalId: value }));
+    if (value && !validateNationalId(value)) {
+      setNationalIdError(
+        countryCode === '+34'
+          ? t('validation.nationalIdErrorSpain')
+          : t('validation.nationalIdError'),
+      );
+    } else {
+      setNationalIdError('');
+    }
+  };
+
+  const handleCountryCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setCountryCode(value);
+    if (formData.phoneNumber && !validatePhoneNumber(formData.phoneNumber)) {
+      setPhoneError(t('validation.phoneNumberError'));
+    } else {
+      setPhoneError('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (phoneError || nationalIdError) return;
     setIsLoading(true);
 
     try {
@@ -88,7 +166,9 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         familyName: formData.familyName || '',
         bio: formData.bio,
         imageUrl,
-        phoneNumber: formData.phoneNumber,
+        phoneNumber: formData.phoneNumber
+          ? `${countryCode} ${formData.phoneNumber}`
+          : '',
         nationalId: formData.nationalId,
       });
 
@@ -103,6 +183,7 @@ export default function ProfileForm({ language }: ProfileFormProps) {
       toast.error(t('error-updating'));
     } finally {
       setIsLoading(false);
+      window.location.reload();
     }
   };
 
@@ -232,34 +313,50 @@ export default function ProfileForm({ language }: ProfileFormProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="phoneNumber">{t('phone-number')}</Label>
-              <Input
-                id="phoneNumber"
-                type="tel"
-                value={formData.phoneNumber}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    phoneNumber: e.target.value,
-                  }))
-                }
-                disabled={!isEditing}
-                placeholder={t('phone-number-placeholder')}
-              />
+              <div className="flex gap-2">
+                <div className="w-24">
+                  <select
+                    value={countryCode}
+                    onChange={handleCountryCodeChange}
+                    disabled={!isEditing}
+                    className="h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm disabled:bg-gray-50"
+                  >
+                    <option value="+34">🇪🇸 +34</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+351">🇵🇹 +351</option>
+                    <option value="+1">🇺🇸 +1</option>
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    disabled={!isEditing}
+                    className={phoneError ? 'border-red-500' : ''}
+                  />
+                  {phoneError && (
+                    <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                  )}
+                </div>
+              </div>
             </div>
             <div>
               <Label htmlFor="nationalId">{t('national-id')}</Label>
               <Input
                 id="nationalId"
                 value={formData.nationalId}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    nationalId: e.target.value,
-                  }))
-                }
+                onChange={handleNationalIdChange}
                 disabled={!isEditing}
-                placeholder={t('national-id-placeholder')}
+                className={nationalIdError ? 'border-red-500' : ''}
               />
+              {nationalIdError && (
+                <p className="mt-1 text-xs text-red-500">{nationalIdError}</p>
+              )}
             </div>
           </div>
 

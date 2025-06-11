@@ -19,6 +19,12 @@
   "phone-number-placeholder": "Introduce tu número de teléfono",
   "national-id": "DNI/NIE",
   "national-id-placeholder": "Introduce tu DNI/NIE",
+  "validation": {
+    "phoneNumberLettersError": "El número de teléfono no puede contener letras",
+    "phoneNumberError": "Número de teléfono inválido para el país seleccionado",
+    "nationalIdError": "DNI/NIE inválido",
+    "nationalIdErrorSpain": "Formato de DNI/NIE inválido"
+  },
   "profile-updated": "Perfil actualizado con éxito",
   "error-updating": "Error al actualizar el perfil",
   "image-updated": "Imagen de perfil actualizada con éxito",

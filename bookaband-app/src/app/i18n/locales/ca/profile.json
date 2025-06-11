@@ -19,6 +19,12 @@
   "phone-number-placeholder": "Introdueix el teu número de telèfon",
   "national-id": "DNI/NIE",
   "national-id-placeholder": "Introdueix el teu DNI/NIE",
+  "validation": {
+    "phoneNumberLettersError": "El número de telèfon no pot contenir lletres",
+    "phoneNumberError": "Número de telèfon invàlid per al país seleccionat",
+    "nationalIdError": "DNI/NIE invàlid",
+    "nationalIdErrorSpain": "Format de DNI/NIE invàlid"
+  },
   "profile-updated": "Perfil actualitzat amb èxit",
   "error-updating": "Error en actualitzar el perfil",
   "image-updated": "Imatge de perfil actualitzada amb èxit",

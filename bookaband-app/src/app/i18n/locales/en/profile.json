@@ -19,6 +19,12 @@
   "phone-number-placeholder": "Enter your phone number",
   "national-id": "National ID",
   "national-id-placeholder": "Enter your national ID",
+  "validation": {
+    "phoneNumberLettersError": "Phone number cannot contain letters",
+    "phoneNumberError": "Invalid phone number for selected country",
+    "nationalIdError": "Invalid national ID",
+    "nationalIdErrorSpain": "Invalid DNI/NIE format"
+  },
   "profile-updated": "Profile updated successfully",
   "error-updating": "Error updating profile",
   "image-updated": "Profile image updated successfully",
