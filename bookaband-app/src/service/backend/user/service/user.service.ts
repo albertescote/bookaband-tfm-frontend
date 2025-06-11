@@ -9,6 +9,8 @@ interface UpdateUserRequest {
   familyName: string;
   bio?: string;
   imageUrl?: string;
+  phoneNumber?: string;
+  nationalId?: string;
 }
 
 export async function getUserInfo(): Promise<User | null> {

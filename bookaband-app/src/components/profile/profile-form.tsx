@@ -34,6 +34,8 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     email: '',
     imageUrl: '',
     bio: '',
+    phoneNumber: '',
+    nationalId: '',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +50,8 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         email: user.email,
         imageUrl: user.imageUrl,
         bio: user.bio || '',
+        phoneNumber: user.phoneNumber || '',
+        nationalId: user.nationalId || '',
       });
     }
   }, [user]);
@@ -84,6 +88,8 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         familyName: formData.familyName || '',
         bio: formData.bio,
         imageUrl,
+        phoneNumber: formData.phoneNumber,
+        nationalId: formData.nationalId,
       });
 
       // Update local state
@@ -221,6 +227,40 @@ export default function ProfileForm({ language }: ProfileFormProps) {
               disabled={true}
               className="bg-gray-50"
             />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <Label htmlFor="phoneNumber">{t('phone-number')}</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    phoneNumber: e.target.value,
+                  }))
+                }
+                disabled={!isEditing}
+                placeholder={t('phone-number-placeholder')}
+              />
+            </div>
+            <div>
+              <Label htmlFor="nationalId">{t('national-id')}</Label>
+              <Input
+                id="nationalId"
+                value={formData.nationalId}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    nationalId: e.target.value,
+                  }))
+                }
+                disabled={!isEditing}
+                placeholder={t('national-id-placeholder')}
+              />
+            </div>
           </div>
 
           <div>

@@ -5,7 +5,8 @@ export interface User {
   email: string;
   role: string;
   emailVerified: boolean;
-  bands?: string[];
+  phoneNumber?: string;
+  nationalId?: string;
   imageUrl?: string;
   bio?: string;
 }
