@@ -30,6 +30,7 @@
   "availability": "Availability",
   "noReviews": "This artist has not received any reviews yet",
   "eventTypes": "Event Types",
+  "completeProfile": "Please complete your profile with your national ID and phone number before hiring an artist",
   "errorScreen": {
     "title": "Something went wrong",
     "description": "We couldn't load the artist profile. Please try again later.",

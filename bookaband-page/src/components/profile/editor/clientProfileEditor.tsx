@@ -41,14 +41,7 @@ export default function ClientProfileEditor({
       data.newNationalId,
     )
       .then(() => {
-        if (
-          data.newFirstName !== userProfileDetails.firstName ||
-          data.newFamilyName !== userProfileDetails.familyName
-        ) {
-          window.location.reload();
-        } else {
-          router.refresh();
-        }
+        window.location.reload();
       })
       .catch(() => {
         setError(true);

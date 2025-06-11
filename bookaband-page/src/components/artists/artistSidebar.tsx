@@ -23,6 +23,7 @@ import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 
 export function ArtistSidebar({
   artist,
@@ -65,6 +66,19 @@ export function ArtistSidebar({
   const getEventTypeIcon = (typeId: string) => {
     const type = eventTypes.find((t) => t.id === typeId);
     return type ? type.icon : '📍';
+  };
+
+  const handleHireClick = () => {
+    if (!user?.nationalId || !user?.phoneNumber) {
+      toast.error(t('completeProfile'));
+      router.push(`/${language}/profile`);
+      return;
+    }
+
+    const url = searchParams
+      ? `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}&date=${encodeURIComponent(searchParams.date)}&location=${encodeURIComponent(searchParams.location)}`
+      : `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}`;
+    router.push(url);
   };
 
   return (
@@ -113,12 +127,7 @@ export function ArtistSidebar({
         <div className="w-full space-y-2">
           <Button
             className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90"
-            onClick={() => {
-              const url = searchParams
-                ? `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}&date=${encodeURIComponent(searchParams.date)}&location=${encodeURIComponent(searchParams.location)}`
-                : `/${language}/bookings?band_id=${encodeURIComponent(artist.id)}`;
-              router.push(url);
-            }}
+            onClick={handleHireClick}
           >
             {t('hire')}
           </Button>
