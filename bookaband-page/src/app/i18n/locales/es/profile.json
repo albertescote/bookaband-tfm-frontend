@@ -26,7 +26,7 @@
   "editPersonalInfo": "Editar información personal",
   "name": "Nombre",
   "surname": "Apellido",
-  "phoneNumber": "Número de teléfono",
+  "phoneNumber": "Número de telèfon",
   "nationalId": "DNI/NIE",
   "joinedLabel": "Se unió el ",
   "imageUpdated": "¡Imagen de perfil actualizada con éxito!",
@@ -53,9 +53,15 @@
     "retry": "Reintentar"
   },
   "typeLabels": {
-    "credit_card": "Tarjeta de crédito",
-    "debit_card": "Tarjeta de débito",
+    "credit_card": "Tarjeta de Crédito",
+    "debit_card": "Tarjeta de Débito",
     "paypal": "PayPal",
-    "bank_transfer": "Transferencia bancaria"
+    "bank_transfer": "Transferencia Bancaria"
+  },
+  "validation": {
+    "phoneNumberError": "Número de teléfono inválido para el país seleccionado",
+    "phoneNumberLettersError": "El número de teléfono no puede contener letras",
+    "nationalIdError": "Formato de documento de identidad inválido",
+    "nationalIdErrorSpain": "Formato de DNI/NIE inválido. Debe ser 8 dígitos + 1 letra o X/Y/Z + 7 dígitos + 1 letra"
   }
 }

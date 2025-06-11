@@ -36,7 +36,7 @@ export default function ClientProfileEditor({
       data.newFirstName,
       data.newFamilyName,
       data.newBio,
-      undefined,
+      userProfileDetails.imageUrl,
       data.newPhoneNumber,
       data.newNationalId,
     )

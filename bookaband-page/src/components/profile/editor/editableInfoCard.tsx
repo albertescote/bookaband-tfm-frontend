@@ -36,24 +36,113 @@ export default function EditableInfoCard({
   const [firstName, setFirstName] = useState(initialFirstName);
   const [familyName, setFamilyName] = useState(initialFamilyName);
   const [bio, setBio] = useState(initialBio);
-  const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber ?? '');
+  const [phoneNumber, setPhoneNumber] = useState(() => {
+    if (!initialPhoneNumber) return '';
+    const [code, ...rest] = initialPhoneNumber.split(' ');
+    return rest.join(' ');
+  });
   const [nationalId, setNationalId] = useState(initialNationalId ?? '');
+  const [countryCode, setCountryCode] = useState(() => {
+    if (!initialPhoneNumber) return '+34';
+    const [code] = initialPhoneNumber.split(' ');
+    return code || '+34';
+  });
+  const [phoneError, setPhoneError] = useState('');
+  const [nationalIdError, setNationalIdError] = useState('');
+
+  const validatePhoneNumber = (number: string) => {
+    if (!number) return true;
+
+    if (/[a-zA-Z]/.test(number)) {
+      return false;
+    }
+
+    const digitsOnly = number.replace(/\D/g, '');
+    const lengthByCountry: { [key: string]: number } = {
+      '+34': 9, // Spain
+      '+44': 10, // UK
+      '+33': 9, // France
+      '+49': 10, // Germany
+      '+39': 10, // Italy
+      '+351': 9, // Portugal
+      '+1': 10, // US/Canada
+    };
+    const expectedLength = lengthByCountry[countryCode] || 10;
+    return digitsOnly.length === expectedLength;
+  };
+
+  const validateNationalId = (id: string) => {
+    if (!id) return true;
+    if (countryCode === '+34') {
+      const dniRegex = /^[0-9]{8}[A-Z]$/;
+      const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/;
+      return dniRegex.test(id) || nieRegex.test(id);
+    }
+    return id.length > 0;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+    if (value) {
+      if (/[a-zA-Z]/.test(value)) {
+        setPhoneError(t('validation.phoneNumberLettersError'));
+      } else if (!validatePhoneNumber(value)) {
+        setPhoneError(t('validation.phoneNumberError'));
+      } else {
+        setPhoneError('');
+      }
+    } else {
+      setPhoneError('');
+    }
+  };
+
+  const handleNationalIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNationalId(value);
+    if (value && !validateNationalId(value)) {
+      setNationalIdError(
+        countryCode === '+34'
+          ? t('validation.nationalIdErrorSpain')
+          : t('validation.nationalIdError'),
+      );
+    } else {
+      setNationalIdError('');
+    }
+  };
+
+  const handleCountryCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setCountryCode(value);
+    if (phoneNumber && !validatePhoneNumber(phoneNumber)) {
+      setPhoneError(t('validation.phoneNumberError'));
+    } else {
+      setPhoneError('');
+    }
+  };
 
   const hasChanges =
     firstName !== initialFirstName ||
     familyName !== initialFamilyName ||
     bio !== initialBio ||
-    phoneNumber !== (initialPhoneNumber ?? '') ||
-    nationalId !== (initialNationalId ?? '');
+    phoneNumber !==
+      (initialPhoneNumber
+        ? initialPhoneNumber.split(' ').slice(1).join(' ')
+        : '') ||
+    nationalId !== (initialNationalId ?? '') ||
+    countryCode !==
+      (initialPhoneNumber ? initialPhoneNumber.split(' ')[0] : '+34');
+
+  const isValid = !phoneError && !nationalIdError;
 
   const handleSave = () => {
-    if (hasChanges) {
+    if (hasChanges && isValid) {
       onSave({
         newFirstName: firstName,
         newFamilyName: familyName,
         newBio: bio,
-        newPhoneNumber: phoneNumber || undefined,
-        newNationalId: nationalId || undefined,
+        newPhoneNumber: phoneNumber ? `${countryCode} ${phoneNumber}` : '',
+        newNationalId: nationalId,
       });
     }
   };
@@ -68,8 +157,8 @@ export default function EditableInfoCard({
       </div>
 
       <div className="space-y-4">
-        <div className="flex items-center space-x-6">
-          <div>
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700">
               {t('name')}
             </label>
@@ -80,7 +169,7 @@ export default function EditableInfoCard({
               className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
             />
           </div>
-          <div>
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700">
               {t('surname')}
             </label>
@@ -105,28 +194,59 @@ export default function EditableInfoCard({
           />
         </div>
 
-        <div className="flex items-center space-x-6">
-          <div>
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-x-6 sm:space-y-0">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700">
               {t('phoneNumber')}
             </label>
-            <input
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
-            />
+            <div className="flex gap-2">
+              <div className="w-24">
+                <select
+                  value={countryCode}
+                  onChange={handleCountryCodeChange}
+                  className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+                >
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+39">🇮🇹 +39</option>
+                  <option value="+351">🇵🇹 +351</option>
+                  <option value="+1">🇺🇸 +1</option>
+                </select>
+              </div>
+              <div className="flex-1">
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={handlePhoneChange}
+                  className={`mt-1 w-full rounded-md border ${
+                    phoneError ? 'border-red-500' : 'border-gray-300'
+                  } p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
+                />
+                {phoneError && (
+                  <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                )}
+              </div>
+            </div>
           </div>
-          <div>
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700">
               {t('nationalId')}
             </label>
-            <input
-              type="text"
-              value={nationalId}
-              onChange={(e) => setNationalId(e.target.value)}
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
-            />
+            <div>
+              <input
+                type="text"
+                value={nationalId}
+                onChange={handleNationalIdChange}
+                className={`mt-1 w-full rounded-md border ${
+                  nationalIdError ? 'border-red-500' : 'border-gray-300'
+                } p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
+              />
+              {nationalIdError && (
+                <p className="mt-1 text-xs text-red-500">{nationalIdError}</p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -145,9 +265,9 @@ export default function EditableInfoCard({
         <div className="pt-4 text-right">
           <button
             onClick={handleSave}
-            disabled={!hasChanges}
+            disabled={!hasChanges || !isValid}
             className={`rounded-full px-5 py-2 text-sm font-semibold text-white transition ${
-              hasChanges
+              hasChanges && isValid
                 ? 'bg-[#15b7b9] hover:scale-105 hover:bg-[#13a0a1]'
                 : 'bg-gray-300'
             }`}

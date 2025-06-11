@@ -55,5 +55,11 @@
     "debit_card": "Debit Card",
     "paypal": "PayPal",
     "bank_transfer": "Bank Transfer"
+  },
+  "validation": {
+    "phoneNumberError": "Invalid phone number for selected country",
+    "phoneNumberLettersError": "Phone number cannot contain letters",
+    "nationalIdError": "Invalid national ID format",
+    "nationalIdErrorSpain": "Invalid DNI/NIE format. Must be 8 digits + 1 letter or X/Y/Z + 7 digits + 1 letter"
   }
 }

@@ -26,6 +26,8 @@
   "editPersonalInfo": "Edita la informació personal",
   "name": "Nom",
   "surname": "Cognom",
+  "phoneNumber": "Número de telèfon",
+  "nationalId": "DNI/NIE",
   "joinedLabel": "S'hi va unir el ",
   "imageUpdated": "Imatge de perfil actualitzada amb èxit!",
   "errorUploadingImage": "Error en pujar la imatge. Si us plau, torna-ho a intentar.",
@@ -51,9 +53,15 @@
     "retry": "Torna-ho a provar"
   },
   "typeLabels": {
-    "credit_card": "Targeta de crèdit",
-    "debit_card": "Targeta de dèbit",
+    "credit_card": "Targeta de Crèdit",
+    "debit_card": "Targeta de Dèbit",
     "paypal": "PayPal",
-    "bank_transfer": "Transferència bancària"
+    "bank_transfer": "Transferència Bancària"
+  },
+  "validation": {
+    "phoneNumberError": "Número de telèfon invàlid per al país seleccionat",
+    "phoneNumberLettersError": "El número de telèfon no pot contenir lletres",
+    "nationalIdError": "Format de document d'identitat invàlid",
+    "nationalIdErrorSpain": "Format de DNI/NIE invàlid. Ha de ser 8 dígits + 1 lletra o X/Y/Z + 7 dígits + 1 lletra"
   }
 }
