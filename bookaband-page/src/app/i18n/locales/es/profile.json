@@ -26,6 +26,8 @@
   "editPersonalInfo": "Editar información personal",
   "name": "Nombre",
   "surname": "Apellido",
+  "phoneNumber": "Número de teléfono",
+  "nationalId": "DNI/NIE",
   "joinedLabel": "Se unió el ",
   "imageUpdated": "¡Imagen de perfil actualizada con éxito!",
   "errorUploadingImage": "Error al subir la imagen. Por favor, inténtalo de nuevo.",

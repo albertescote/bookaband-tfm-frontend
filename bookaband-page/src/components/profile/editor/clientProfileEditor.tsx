@@ -29,8 +29,17 @@ export default function ClientProfileEditor({
     newFirstName: string;
     newFamilyName: string;
     newBio: string;
+    newPhoneNumber?: string;
+    newNationalId?: string;
   }) => {
-    updateContactInfo(data.newFirstName, data.newFamilyName, data.newBio)
+    updateContactInfo(
+      data.newFirstName,
+      data.newFamilyName,
+      data.newBio,
+      undefined,
+      data.newPhoneNumber,
+      data.newNationalId,
+    )
       .then(() => {
         if (
           data.newFirstName !== userProfileDetails.firstName ||
@@ -52,6 +61,8 @@ export default function ClientProfileEditor({
       userProfileDetails.familyName,
       userProfileDetails.bio || '',
       newImageUrl,
+      userProfileDetails.phoneNumber || '',
+      userProfileDetails.nationalId || '',
     )
       .then(() => {
         router.refresh();
@@ -88,12 +99,14 @@ export default function ClientProfileEditor({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <EditableInfoCard
-            language={language}
             firstName={userProfileDetails.firstName}
             familyName={userProfileDetails.familyName}
             email={userProfileDetails.email}
             bio={userProfileDetails.bio}
+            phoneNumber={userProfileDetails.phoneNumber}
+            nationalId={userProfileDetails.nationalId}
             onSave={handleSaveContactInfo}
+            language={language}
           />
 
           <BillingAddressCard

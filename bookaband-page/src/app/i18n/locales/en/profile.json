@@ -26,6 +26,8 @@
   "editPersonalInfo": "Edit Personal Info",
   "name": "Name",
   "surname": "Surname",
+  "phoneNumber": "Phone Number",
+  "nationalId": "National ID",
   "joinedLabel": "Joined: ",
   "paymentMethodModal": {
     "titleAdd": "Add Payment Method",
@@ -45,7 +47,7 @@
   },
   "errorScreen": {
     "title": "Something went wrong",
-    "description": "We couldn’t load your profile information. Please try again later.",
+    "description": "We couldn't load your profile information. Please try again later.",
     "retry": "Retry"
   },
   "typeLabels": {

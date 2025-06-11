@@ -9,10 +9,14 @@ interface EditableInfoCardProps {
   familyName: string;
   email: string;
   bio?: string;
+  phoneNumber?: string;
+  nationalId?: string;
   onSave: (data: {
     newFirstName: string;
     newFamilyName: string;
     newBio: string;
+    newPhoneNumber?: string;
+    newNationalId?: string;
   }) => void;
   language: string;
 }
@@ -22,6 +26,8 @@ export default function EditableInfoCard({
   familyName: initialFamilyName,
   email,
   bio: initialBio = '',
+  phoneNumber: initialPhoneNumber = '',
+  nationalId: initialNationalId = '',
   onSave,
   language,
 }: EditableInfoCardProps) {
@@ -30,11 +36,15 @@ export default function EditableInfoCard({
   const [firstName, setFirstName] = useState(initialFirstName);
   const [familyName, setFamilyName] = useState(initialFamilyName);
   const [bio, setBio] = useState(initialBio);
+  const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber ?? '');
+  const [nationalId, setNationalId] = useState(initialNationalId ?? '');
 
   const hasChanges =
     firstName !== initialFirstName ||
     familyName !== initialFamilyName ||
-    bio !== initialBio;
+    bio !== initialBio ||
+    phoneNumber !== (initialPhoneNumber ?? '') ||
+    nationalId !== (initialNationalId ?? '');
 
   const handleSave = () => {
     if (hasChanges) {
@@ -42,6 +52,8 @@ export default function EditableInfoCard({
         newFirstName: firstName,
         newFamilyName: familyName,
         newBio: bio,
+        newPhoneNumber: phoneNumber || undefined,
+        newNationalId: nationalId || undefined,
       });
     }
   };
@@ -91,6 +103,31 @@ export default function EditableInfoCard({
             disabled
             className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 p-2 text-sm text-gray-500 shadow-sm"
           />
+        </div>
+
+        <div className="flex items-center space-x-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              {t('phoneNumber')}
+            </label>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              {t('nationalId')}
+            </label>
+            <input
+              type="text"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+            />
+          </div>
         </div>
 
         <div>

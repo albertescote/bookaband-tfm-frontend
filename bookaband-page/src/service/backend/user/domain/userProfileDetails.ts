@@ -13,6 +13,8 @@ export interface UserProfileDetails {
   role: string;
   email: string;
   joinedDate: Date;
+  phoneNumber?: string;
+  nationalId?: string;
   imageUrl?: string;
   bio?: string;
 
