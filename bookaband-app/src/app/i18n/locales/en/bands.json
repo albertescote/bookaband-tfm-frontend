@@ -368,5 +368,25 @@
   "sentOn": "{{date}}",
   "notifications": "Notifications",
   "new": "new",
-  "noNotifications": "No notifications"
+  "noNotifications": "No notifications",
+  "bookingStatus": {
+    "pending": "Booking Pending",
+    "accepted": "Booking Accepted",
+    "declined": "Booking Declined",
+    "canceled": "Booking Canceled",
+    "signed": "Booking Totally Signed",
+    "paid": "Booking Paid",
+    "userSigned": "Booking User Signed",
+    "bandSigned": "Booking Band Signed"
+  },
+  "bookingNotification": {
+    "pending": "New booking request for {{eventName}}",
+    "accepted": "{{eventName}} booking accepted",
+    "declined": "{{eventName}} booking declined",
+    "canceled": "{{eventName}} booking canceled",
+    "signed": "{{eventName}} contract totally signed",
+    "paid": "{{eventName}} payment received",
+    "userSigned": "{{eventName}} contract signed by {{userName}}",
+    "bandSigned": "Contract {{eventName}} signed"
+  }
 }

@@ -368,6 +368,26 @@
   "receivedOn": "{{date}}",
   "sentOn": "{{date}}",
   "notifications": "Notificacions",
-  "new": "noves",
-  "noNotifications": "No hi ha notificacions"
+  "new": "nova",
+  "noNotifications": "No hi ha notificacions",
+  "bookingStatus": {
+    "pending": "Reserva Pendent",
+    "accepted": "Reserva Acceptada",
+    "declined": "Reserva Rebutjada",
+    "canceled": "Reserva Cancel·lada",
+    "signed": "Reserva Totalment Signada",
+    "paid": "Reserva Pagada",
+    "userSigned": "Reserva Signada per l'usuari",
+    "bandSigned": "Reserva Signada per la banda"
+  },
+  "bookingNotification": {
+    "pending": "Nova sol·licitud de reserva per {{eventName}}",
+    "accepted": "Reserva de {{eventName}} acceptada",
+    "declined": "Reserva de {{eventName}} rebutjada",
+    "canceled": "Reserva de {{eventName}} cancel·lada",
+    "signed": "Contracte de {{eventName}} totalment signat",
+    "paid": "Pagament de {{eventName}} rebut",
+    "userSigned": "Contracte de {{eventName}} signat per {{userName}}",
+    "bandSigned": "Contracte {{eventName}} signat"
+  }
 }

@@ -62,6 +62,19 @@ export function NotificationDropdown() {
         router.push(`/${language}/bands`);
       }
       close();
+    } else if (notification.bookingMetadata) {
+      if (!notification.isRead) {
+        await markNotificationAsRead(notification.id);
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n.id === notification.id ? { ...n, isRead: true } : n,
+          ),
+        );
+      }
+      router.push(
+        `/${language}/bookings/${notification.bookingMetadata.bookingId}`,
+      );
+      close();
     }
   };
 
@@ -205,10 +218,33 @@ export function NotificationDropdown() {
                           </div>
                         )}
                         {notification.bookingMetadata && (
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">
-                                {t(notification.bookingMetadata.translationKey)}
+                          <div className="flex flex-col gap-0.5">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <p className="mt-1 text-sm font-medium text-gray-900">
+                                  {t(
+                                    `bookingNotification.${notification.bookingMetadata.status}`,
+                                    {
+                                      eventName:
+                                        notification.bookingMetadata.eventName,
+                                      userName:
+                                        notification.bookingMetadata.userName,
+                                      bandName:
+                                        notification.bookingMetadata.bandName,
+                                    },
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex justify-end">
+                              <p className="pt-2 text-xs text-gray-500">
+                                {format(
+                                  new Date(notification.createdAt),
+                                  'MMM d, HH:mm',
+                                  {
+                                    locale: getLocale(),
+                                  },
+                                )}
                               </p>
                             </div>
                           </div>

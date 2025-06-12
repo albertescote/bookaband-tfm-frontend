@@ -9,7 +9,10 @@ interface InvitationMetadata {
 
 interface BookingMetadata {
   bookingId: string;
-  translationKey: string;
+  status: string;
+  eventName: string;
+  userName: string;
+  bandName: string;
 }
 
 export interface Notification {

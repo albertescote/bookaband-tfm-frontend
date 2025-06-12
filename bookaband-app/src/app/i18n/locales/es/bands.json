@@ -364,6 +364,26 @@
   "receivedOn": "{{date}}",
   "sentOn": "{{date}}",
   "notifications": "Notificaciones",
-  "new": "nuevas",
-  "noNotifications": "No hay notificaciones"
+  "new": "nueva",
+  "noNotifications": "No hay notificaciones",
+  "bookingStatus": {
+    "pending": "Reserva Pendiente",
+    "accepted": "Reserva Aceptada",
+    "declined": "Reserva Rechazada",
+    "canceled": "Reserva Cancelada",
+    "signed": "Reserva Totalmente Firmada",
+    "paid": "Reserva Pagada",
+    "userSigned": "Reserva Firmada por el usuario",
+    "bandSigned": "Reserva Firmada por la banda"
+  },
+  "bookingNotification": {
+    "pending": "Nueva solicitud de reserva para {{eventName}}",
+    "accepted": "Reserva de {{eventName}} aceptada",
+    "declined": "Reserva de {{eventName}} rechazada",
+    "canceled": "Reserva de {{eventName}} cancelada",
+    "signed": "Contrato de {{eventName}} totalmente firmado",
+    "paid": "Pago de {{eventName}} recibido",
+    "userSigned": "Contrato de {{eventName}} firmado por {{userName}}",
+    "bandSigned": "Contrato {{eventName}} firmado"
+  }
 }
