@@ -364,5 +364,6 @@
   "receivedOn": "{{date}}",
   "sentOn": "{{date}}",
   "notifications": "Notificaciones",
+  "new": "nuevas",
   "noNotifications": "No hay notificaciones"
 }

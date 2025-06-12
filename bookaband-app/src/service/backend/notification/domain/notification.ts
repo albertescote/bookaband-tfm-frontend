@@ -17,6 +17,7 @@ export interface Notification {
   bandId: string;
   userId: string;
   isRead: boolean;
+  createdAt: Date;
   invitationMetadata?: InvitationMetadata;
   bookingMetadata?: BookingMetadata;
 }
