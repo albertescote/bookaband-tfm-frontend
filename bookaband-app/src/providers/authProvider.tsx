@@ -41,7 +41,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const language = pathname?.split('/')[1];
 
-  // Custom setter for selectedBand that also updates localStorage
   const setSelectedBand = (value: React.SetStateAction<UserBand | null>) => {
     setSelectedBandState((prevValue) => {
       const newValue = typeof value === 'function' ? value(prevValue) : value;
@@ -67,8 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             getUserBands().then((bands) => {
               if (bands) {
                 setUserBands(bands);
-                // Only set the first band as selected if there's no selected band in localStorage
-                // or if the selected band is not in the user's bands
+
                 if (
                   !selectedBand ||
                   !bands.some((band) => band.id === selectedBand.id)

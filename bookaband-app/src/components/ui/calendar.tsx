@@ -75,7 +75,6 @@ export function Calendar({
       'December',
     ];
 
-    // Add month header
     days.push(
       <div key="header" className="flex items-center justify-between p-2">
         <button
@@ -96,7 +95,6 @@ export function Calendar({
       </div>,
     );
 
-    // Add day names
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     days.push(
       <div key="days" className="grid grid-cols-7 gap-1 p-2">
@@ -111,7 +109,6 @@ export function Calendar({
       </div>,
     );
 
-    // Add calendar days
     const calendarDays = [];
     for (let i = 0; i < firstDayOfMonth; i++) {
       calendarDays.push(<div key={`empty-${i}`} />);

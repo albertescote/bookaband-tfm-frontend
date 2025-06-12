@@ -37,16 +37,16 @@ export default function DocumentsList({ language }: DocumentsListProps) {
           getInvoicesByBandId(selectedBand?.id ?? ''),
         ]);
         if (!('error' in contractsData)) {
-          // Sort contracts by updatedAt in descending order
           const sortedContracts = [...contractsData].sort(
-            (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+            (a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
           );
           setContracts(sortedContracts);
         }
         if (!('error' in invoicesData)) {
-          // Sort invoices by updatedAt in descending order
           const sortedInvoices = [...invoicesData].sort(
-            (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+            (a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
           );
           setInvoices(sortedInvoices);
         }

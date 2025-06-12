@@ -71,13 +71,13 @@ export default function ProfileForm({ language }: ProfileFormProps) {
 
     const digitsOnly = number.replace(/\D/g, '');
     const lengthByCountry: { [key: string]: number } = {
-      '+34': 9, // Spain
-      '+44': 10, // UK
-      '+33': 9, // France
-      '+49': 10, // Germany
-      '+39': 10, // Italy
-      '+351': 9, // Portugal
-      '+1': 10, // US/Canada
+      '+34': 9,
+      '+44': 10,
+      '+33': 9,
+      '+49': 10,
+      '+39': 10,
+      '+351': 9,
+      '+1': 10,
     };
     const expectedLength = lengthByCountry[countryCode] || 10;
     return digitsOnly.length === expectedLength;
@@ -141,7 +141,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     try {
       let imageUrl = formData.imageUrl;
 
-      // Upload file if there's a temporary file
       if (tempFile) {
         const formData = new FormData();
         formData.append('file', tempFile);
@@ -160,7 +159,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         imageUrl = data.url;
       }
 
-      // Update profile with new data
       await updateProfile({
         firstName: formData.firstName || '',
         familyName: formData.familyName || '',
@@ -172,7 +170,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
         nationalId: formData.nationalId,
       });
 
-      // Update local state
       setFormData((prev) => ({ ...prev, imageUrl }));
       setTempImageUrl(null);
       setTempFile(null);
@@ -192,7 +189,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     if (!file) return;
 
     try {
-      // Create a temporary blob URL for preview
       const blobUrl = URL.createObjectURL(file);
       setTempImageUrl(blobUrl);
       setTempFile(file);
@@ -210,7 +206,6 @@ export default function ProfileForm({ language }: ProfileFormProps) {
     setIsEditing(false);
   };
 
-  // Cleanup blob URLs when component unmounts
   useEffect(() => {
     return () => {
       if (tempImageUrl) {

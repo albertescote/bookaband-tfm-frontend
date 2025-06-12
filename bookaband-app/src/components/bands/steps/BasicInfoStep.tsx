@@ -25,7 +25,7 @@ interface BasicInfoStepProps {
 
 const BAND_SIZES = Object.values(BandSize);
 
-const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+const MAX_FILE_SIZE = 25 * 1024 * 1024;
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 export default function BasicInfoStep({

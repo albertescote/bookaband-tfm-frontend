@@ -113,7 +113,6 @@ export default function CalendarView({ language }: CalendarViewProps) {
     1,
   ).getDay();
 
-  // Adjust firstDayOfMonth to start from Monday (0 = Monday, 6 = Sunday)
   const adjustedFirstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
 
   const prevMonth = () => {
@@ -211,7 +210,6 @@ export default function CalendarView({ language }: CalendarViewProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Calendar Section */}
         <div className="rounded-lg bg-white p-4 shadow lg:col-span-2">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">
@@ -294,7 +292,6 @@ export default function CalendarView({ language }: CalendarViewProps) {
           </div>
         </div>
 
-        {/* Upcoming Events Section */}
         <div className="space-y-6">
           <div className="rounded-lg bg-white p-4 shadow">
             <h2 className="mb-4 text-lg font-semibold text-[#15b7b9]">

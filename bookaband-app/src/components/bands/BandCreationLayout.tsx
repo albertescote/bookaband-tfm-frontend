@@ -75,7 +75,6 @@ export default function BandCreationLayout({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Progress Bar */}
       <div className="bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="space-y-6">
@@ -140,18 +139,15 @@ export default function BandCreationLayout({
         </div>
       </div>
 
-      {/* Form Content */}
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
           {children}
         </div>
       </div>
 
-      {/* Navigation Footer */}
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            {/* Left: Back/Cancel Button */}
             <Button
               type="button"
               variant="outline"
@@ -169,12 +165,10 @@ export default function BandCreationLayout({
               {currentStep === 1 ? t('common.cancel') : t('common.previous')}
             </Button>
 
-            {/* Center: Step Summary */}
             <div className="text-sm text-gray-500">
               {currentStep} / {totalSteps}
             </div>
 
-            {/* Right: Next/Create Button */}
             <Button
               type="button"
               onClick={onNext}

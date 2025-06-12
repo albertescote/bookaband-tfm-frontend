@@ -116,7 +116,6 @@ export default function BandDetails({
     if (hasImageChanged) return true;
     if (Object.keys(editedValues).length === 0) return false;
 
-    // Check if any value is different from the original
     return Object.entries(editedValues).some(([key, value]) => {
       if (key === 'weeklyAvailability') {
         return Object.entries(value as WeeklyAvailability).some(
@@ -269,7 +268,6 @@ export default function BandDetails({
   ) => {
     if (!files.length) return;
 
-    // If we're uploading a profile image
     if (isProfileImage) {
       const file = files[0];
       if (file.type.startsWith('image/')) {
@@ -284,7 +282,6 @@ export default function BandDetails({
       return;
     }
 
-    // For media gallery
     const newMedia: PendingMedia[] = files.map((file) => ({
       url: URL.createObjectURL(file),
       type: file.type.startsWith('image/') ? 'image' : 'video',
@@ -311,13 +308,11 @@ export default function BandDetails({
   const handleSaveEdit = async () => {
     if (!id || !hasChanges()) return;
 
-    // Validate band name
     if (!editedValues.name?.trim()) {
       toast.error(t('validation.bandName'));
       return;
     }
 
-    // Validate required basic info fields
     if (!editedValues.location?.trim()) {
       toast.error(t('validation.location'));
       return;
@@ -333,7 +328,6 @@ export default function BandDetails({
       return;
     }
 
-    // Validate required fields within sections
     if (editedValues.hospitalityRider) {
       if (
         !editedValues.hospitalityRider.accommodation ||
@@ -367,7 +361,6 @@ export default function BandDetails({
       }
     }
 
-    // Ensure mandatory arrays are present
     if (!editedValues.socialLinks && !bandProfile.socialLinks) {
       toast.error(t('validation.required.socialLinks'));
       return;
@@ -383,7 +376,6 @@ export default function BandDetails({
       let uploadedImageUrl = editedValues.imageUrl;
       const uploadedMediaUrls: { url: string; type: string }[] = [];
 
-      // Upload profile image if changed
       if (editedValues.imageFile) {
         const formData = new FormData();
         formData.append('file', editedValues.imageFile);
@@ -402,7 +394,6 @@ export default function BandDetails({
         uploadedImageUrl = data.url;
       }
 
-      // Upload media files if any
       if (editedValues.media?.some((media) => 'file' in media)) {
         for (const media of editedValues.media) {
           if ('file' in media) {
@@ -425,7 +416,6 @@ export default function BandDetails({
               type: media.type,
             });
           } else {
-            // Keep existing media that wasn't changed
             uploadedMediaUrls.push({
               url: media.url,
               type: media.type,
@@ -434,7 +424,6 @@ export default function BandDetails({
         }
       }
 
-      // Add other band data
       const bandData = {
         name: editedValues.name || bandProfile.name || '',
         musicalStyleIds:
@@ -526,7 +515,6 @@ export default function BandDetails({
         },
       };
 
-      // Update the band with the new data
       await updateBand(id, bandData);
 
       const updatedProfile = await getBandProfileById(id);

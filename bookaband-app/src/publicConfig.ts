@@ -11,4 +11,9 @@ const PAGE_URL = checkStrVar(
   'NEXT_PUBLIC_PAGE_URL',
 );
 
-export { AUTH_URL, PAGE_URL };
+const BACKEND_URL = checkStrVar(
+  process.env.NEXT_PUBLIC_BACKEND_URL,
+  'NEXT_PUBLIC_BACKEND_URL',
+);
+
+export { AUTH_URL, PAGE_URL, BACKEND_URL };

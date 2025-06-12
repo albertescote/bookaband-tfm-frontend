@@ -37,7 +37,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        // Remove imageFile from saved data as it can't be serialized
+
         const { imageFile, ...rest } = parsedData;
         return rest;
       }
@@ -85,7 +85,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   });
   const [stepErrors, setStepErrors] = useState<Record<number, boolean>>({});
 
-  // Clear form state
   const clearFormState = () => {
     setCurrentStep(1);
     setFormData({});
@@ -94,23 +93,19 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     clearFormStorage();
   };
 
-  // Save form data to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Remove imageFile before saving to localStorage
       const { imageFile, ...dataToSave } = formData;
       localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(dataToSave));
     }
   }, [formData]);
 
-  // Save current step to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(CURRENT_STEP_KEY, currentStep.toString());
     }
   }, [currentStep]);
 
-  // Clear localStorage when form is successfully submitted
   const clearFormStorage = () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(FORM_STORAGE_KEY);
@@ -123,7 +118,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     formData: Partial<UpsertBandRequest>,
   ): boolean => {
     switch (step) {
-      case 1: // Basic Info
+      case 1:
         return !!(
           formData.name?.trim() &&
           formData.location?.trim() &&
@@ -132,30 +127,30 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           formData.bandSize &&
           Object.values(BandSize).includes(formData.bandSize as BandSize)
         );
-      case 2: // Technical Rider
+      case 2:
         return !!(
           formData.technicalRider?.soundSystem?.trim() &&
           formData.technicalRider?.microphones?.trim() &&
           formData.technicalRider?.backline?.trim() &&
           formData.technicalRider?.lighting?.trim()
         );
-      case 3: // Hospitality Rider
+      case 3:
         return !!(
           formData.hospitalityRider?.accommodation?.trim() &&
           formData.hospitalityRider?.catering?.trim() &&
           formData.hospitalityRider?.beverages?.trim()
         );
-      case 4: // Performance Area
+      case 4:
         return (
           (formData.performanceArea?.regions?.length ?? 0) > 0 &&
           !!formData.performanceArea?.travelPreferences?.trim()
         );
-      case 5: // Availability
+      case 5:
         return Object.values(formData.weeklyAvailability || {}).some(
           (value) => value,
         );
-      case 6: // Multimedia
-        return true; // No validation required for multimedia step
+      case 6:
+        return true;
       default:
         return false;
     }
@@ -177,7 +172,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         let uploadedImageUrl = formData.imageUrl;
         const uploadedMediaUrls: { url: string; type: string }[] = [];
 
-        // Upload profile image if present
         if (formData.imageFile instanceof File) {
           const uploadFormData = new FormData();
           uploadFormData.append('file', formData.imageFile);
@@ -196,7 +190,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           uploadedImageUrl = data.url;
         }
 
-        // Upload media files if any
         if (
           formData.media?.some(
             (media) => 'file' in media && media.file instanceof File,
@@ -223,7 +216,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
                 type: media.type,
               });
             } else {
-              // Keep existing media that wasn't changed
               uploadedMediaUrls.push({
                 url: media.url,
                 type: media.type,
@@ -277,7 +269,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         };
 
         await onSubmit(data);
-        clearFormStorage(); // Clear localStorage after successful submission
+        clearFormStorage();
       } catch (error) {
         setError(t('errorCreating'));
       } finally {
@@ -298,12 +290,11 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
 
   const handleFormDataChange = (data: Partial<UpsertBandRequest>) => {
     setFormData((prev) => ({ ...prev, ...data }));
-    // Clear step error when data changes
+
     setStepErrors((prev) => ({ ...prev, [currentStep]: false }));
   };
 
   const handleStepClick = (step: number) => {
-    // Only allow navigation to previous steps
     if (step < currentStep) {
       setCurrentStep(step);
     }

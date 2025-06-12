@@ -34,7 +34,6 @@ export function AvailabilityStep({
       [day]: !currentAvailability[day],
     };
 
-    // Check if at least one day is selected
     const hasSelectedDay = Object.values(newAvailability).some(
       (available) => available,
     );

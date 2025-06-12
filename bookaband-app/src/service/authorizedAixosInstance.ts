@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { BACKEND_URL } from '@/config';
 import { getAccessTokenCookie } from '@/service/utils';
+import { BACKEND_URL } from '@/publicConfig';
 
 declare module 'axios' {
   interface InternalAxiosRequestConfig<D = any> {

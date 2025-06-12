@@ -307,7 +307,6 @@ export default function BookingDetail({
   return (
     <div className="min-h-screen">
       <div className="container mx-auto max-w-4xl px-4 py-8">
-        {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <Button
             variant="ghost"
@@ -328,9 +327,7 @@ export default function BookingDetail({
           </div>
         </div>
 
-        {/* Main Card */}
         <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
-          {/* Hero Section */}
           <div className="relative bg-gray-100 p-8">
             <div className="absolute inset-0 opacity-5">
               <div className="h-full w-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.1)_2px,transparent_2px)] bg-[length:30px_30px]"></div>
@@ -382,9 +379,7 @@ export default function BookingDetail({
             </div>
           </div>
 
-          {/* Content Section */}
           <div className="p-8">
-            {/* Event Details Grid */}
             <div className="mb-8">
               <h2 className="mb-6 text-2xl font-bold text-gray-900">
                 {t('event-details')}
@@ -465,7 +460,6 @@ export default function BookingDetail({
               </div>
             </div>
 
-            {/* Contract Section */}
             {contract && (
               <div className="mb-8">
                 <h2 className="mb-6 text-2xl font-bold text-gray-900">
@@ -530,7 +524,6 @@ export default function BookingDetail({
               </div>
             )}
 
-            {/* Invoice Section */}
             {invoice && (
               <div className="mb-8">
                 <h2 className="mb-6 text-2xl font-bold text-gray-900">
@@ -582,7 +575,6 @@ export default function BookingDetail({
               </div>
             )}
 
-            {/* Action Buttons */}
             <div className="space-y-4">
               {booking.status === BookingStatus.PENDING && (
                 <div className="flex gap-4">

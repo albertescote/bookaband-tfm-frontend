@@ -91,7 +91,6 @@ export default function ContractDetail({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Header */}
       <div className="mb-8 space-y-4 border-b border-gray-200 pb-4">
         <button
           onClick={() => router.push(`/${language}/documents`)}
@@ -119,7 +118,6 @@ export default function ContractDetail({
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Contract Information */}
         <div className="lg:col-span-1">
           <div className="overflow-hidden rounded-lg bg-white shadow">
             <div className="px-4 py-5 sm:p-6">
@@ -201,7 +199,6 @@ export default function ContractDetail({
           </div>
         </div>
 
-        {/* PDF Viewer */}
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-lg bg-white shadow">
             <div className="h-[calc(100vh-12rem)] w-full">

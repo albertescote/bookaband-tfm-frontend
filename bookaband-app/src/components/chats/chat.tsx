@@ -142,7 +142,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     if (selectedFile) {
       setFile(selectedFile);
     }
-    // Reset the input value so the same file can be selected again
     event.target.value = '';
   };
 
@@ -166,7 +165,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
       const data = await response.json();
 
-      // Send message with file URL
       const newMessage: ChatMessage = {
         chatId: chat!.id,
         senderId,
@@ -179,7 +177,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
       setAllMessages((prev) => [...prev, newMessage]);
       sendMessage(chat!.id, recipientId, message.trim(), data.url);
 
-      // Reset states
       setMessage('');
       setFile(null);
       setShowEmojis(false);
@@ -449,7 +446,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
             </div>
           ) : (
             <div className="flex h-full flex-col">
-              {/* Chat Header */}
               <div className="flex items-center justify-between border-b bg-white px-4 py-3 shadow-sm">
                 <div className="flex items-center gap-3">
                   {getAvatar(12, imageUrl, displayName)}
@@ -459,7 +455,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                 </div>
               </div>
 
-              {/* Chat Messages */}
               <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
                 {messageGroups.length === 0 ? (
                   <div className="flex h-full flex-col items-center justify-center gap-3 p-4">
@@ -552,7 +547,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Chat Input */}
               <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
                   <input
@@ -640,7 +634,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
         </div>
       )}
 
-      {/* Image Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"

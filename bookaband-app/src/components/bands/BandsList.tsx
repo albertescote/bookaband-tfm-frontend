@@ -106,7 +106,6 @@ export default function BandsList({
         </button>
       </div>
 
-      {/* Invitations Section */}
       {invitations.length > 0 && (
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold text-gray-800">
@@ -154,7 +153,6 @@ export default function BandsList({
         </div>
       )}
 
-      {/* Bands Section */}
       <div>
         <h2 className="mb-4 text-xl font-semibold text-gray-800">
           {t('yourBands')}

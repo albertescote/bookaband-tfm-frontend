@@ -62,7 +62,6 @@ export default function Sidebar() {
 
   return (
     <div className="flex h-screen">
-      {/* Main Navigation Sidebar */}
       <aside
         className={`hidden border-r bg-white shadow-md transition-all duration-300 md:flex ${
           isMainSidebarCollapsed ? 'w-0' : 'w-64'
@@ -111,7 +110,6 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Chat List Sidebar (only visible on chats page) */}
       {isChatsPage && (
         <aside className="hidden h-screen w-64 flex-col border-r bg-white shadow-md md:flex">
           <div className="flex items-center justify-between border-b bg-gradient-to-r from-[#15b7b9] to-[#1fc8ca] px-4 pb-5 pt-4">

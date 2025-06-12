@@ -75,23 +75,19 @@ export default function DashboardView({ language }: DashboardViewProps) {
         if (profile) {
           setBandProfile(profile);
 
-          // Calculate total performances (only completed performances)
           const totalPerformances =
             bandBookings?.filter(
               (booking) => booking.status === BookingStatus.ACCEPTED,
             ).length || 0;
 
-          // Calculate total income from paid invoices
           const totalIncome = Array.isArray(bandInvoices)
             ? bandInvoices
                 .filter((invoice) => invoice.status === 'PAID')
                 .reduce((sum, invoice) => sum + invoice.amount, 0)
             : 0;
 
-          // Calculate active chats (chats with unread messages)
           const activeChats = bandChats?.length || 0;
 
-          // Calculate booking stats with translated status
           const stats = Object.values(BookingStatus).map((status) => ({
             status: t(`status.${status.toLowerCase()}`, { ns: 'booking' }),
             count:
@@ -136,10 +132,8 @@ export default function DashboardView({ language }: DashboardViewProps) {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Band Header Section */}
       <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-100">
         <div className="flex flex-col md:flex-row">
-          {/* Band Image */}
           <div className="relative h-32 w-full md:h-40 md:w-1/4">
             <Image
               fill
@@ -149,7 +143,6 @@ export default function DashboardView({ language }: DashboardViewProps) {
             />
           </div>
 
-          {/* Band Info */}
           <div className="flex flex-1 flex-col justify-center p-4 md:p-6">
             <div className="space-y-3">
               <div>
@@ -201,9 +194,7 @@ export default function DashboardView({ language }: DashboardViewProps) {
         </div>
       </div>
 
-      {/* Metrics and Chart Section */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {/* Bookings Chart Section */}
         <div className="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
           <h2 className="mb-4 text-lg font-medium text-gray-900">
             {t('bookingStats')}
@@ -245,7 +236,6 @@ export default function DashboardView({ language }: DashboardViewProps) {
           </div>
         </div>
 
-        {/* Metrics Section */}
         <div className="grid grid-cols-1 gap-4">
           <MetricCard
             title={t('totalPerformances')}
