@@ -42,6 +42,10 @@
   "declineInvitation": "Rebutjar",
   "invitationAccepted": "Invitació acceptada amb èxit",
   "invitationDeclined": "Invitació rebutjada amb èxit",
+  "invitationAcceptedBy": "{{user}} ha acceptat la invitació per unir-se a {{bandName}}",
+  "invitationDeclinedBy": "{{user}} ha rebutjat la invitació per unir-se a {{bandName}}",
+  "youAcceptedInvitation": "Has acceptat la invitació per unir-te a {{bandName}}",
+  "youDeclinedInvitation": "Has rebutjat la invitació per unir-te a {{bandName}}",
   "errorAcceptingInvitation": "Error en acceptar la invitació",
   "errorDecliningInvitation": "Error en rebutjar la invitació",
   "name": "Nom de la banda",
@@ -358,5 +362,11 @@
   "errorUpdating": "Error en actualitzar el perfil",
   "reviews": "Ressenyes",
   "bookingDates": "Dates de reserva",
-  "bandSize": "Mida de la banda"
+  "bandSize": "Mida de la banda",
+  "invitationReceivedFrom": "Invitació rebuda de {{bandName}}",
+  "invitationSentTo": "Invitació enviada a {{userName}}",
+  "receivedOn": "{{date}}",
+  "sentOn": "{{date}}",
+  "notifications": "Notificacions",
+  "noNotifications": "No hi ha notificacions"
 }

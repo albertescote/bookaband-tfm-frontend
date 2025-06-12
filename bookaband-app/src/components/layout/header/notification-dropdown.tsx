@@ -5,71 +5,47 @@ import { Menu, Transition } from '@headlessui/react';
 import { Bell } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { useParams, useRouter } from 'next/navigation';
-import {
-  acceptInvitation,
-  declineInvitation,
-  getUserInvitations,
-} from '@/service/backend/invitation/service/invitation.service';
-import { Invitation } from '@/service/backend/invitation/domain/invitation';
+import { getUserNotificationsWithBand } from '@/service/backend/notification/service/notification.service';
+import { Notification } from '@/service/backend/notification/domain/notification';
 import { format } from 'date-fns';
 import { ca, enUS, es } from 'date-fns/locale';
-import { toast } from 'react-hot-toast';
 import { useAuth } from '@/providers/authProvider';
 
 export function NotificationDropdown() {
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, selectedBand } = useAuth();
 
   useEffect(() => {
-    fetchInvitations();
+    fetchNotifications();
   }, []);
 
-  const fetchInvitations = async () => {
+  const fetchNotifications = async () => {
     try {
-      const userInvitations = await getUserInvitations();
-      if (userInvitations) {
-        setInvitations(
-          userInvitations.filter((inv) => inv.status === 'PENDING'),
-        );
+      const bandNotifications = await getUserNotificationsWithBand(
+        selectedBand?.id,
+      );
+      if (bandNotifications && !('error' in bandNotifications)) {
+        setNotifications(bandNotifications as unknown as Notification[]);
       }
     } catch (err) {
-      console.error('Error fetching invitations:', err);
+      console.error('Error fetching notifications:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleAcceptInvitation = async (id: string) => {
-    try {
-      if (!user?.nationalId || !user?.phoneNumber) {
-        toast.error(t('validation.completeProfileFirstJoin'));
-        router.push(`/${language}/profile`);
-        return;
+  const handleNotificationClick = (notification: Notification) => {
+    if (notification.invitationMetadata) {
+      if (notification.invitationMetadata.status === 'ACCEPTED') {
+        router.push(`/${language}/bands/${notification.bandId}`);
+      } else {
+        router.push(`/${language}/bands`);
       }
-      await acceptInvitation(id);
-      setInvitations((prev) => prev.filter((inv) => inv.id !== id));
-      toast.success(t('invitationAccepted'));
-      // Perform a hard refresh to update the band switcher
-      window.location.reload();
-    } catch (err) {
-      console.error('Error accepting invitation:', err);
-      toast.error(t('errorAcceptingInvitation'));
-    }
-  };
-
-  const handleDeclineInvitation = async (id: string) => {
-    try {
-      await declineInvitation(id);
-      setInvitations((prev) => prev.filter((inv) => inv.id !== id));
-      toast.success(t('invitationDeclined'));
-    } catch (err) {
-      console.error('Error declining invitation:', err);
-      toast.error(t('errorDecliningInvitation'));
     }
   };
 
@@ -86,13 +62,15 @@ export function NotificationDropdown() {
     }
   };
 
+  const unreadNotifications = notifications.filter((notif) => !notif.isRead);
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100">
         <Bell size={20} />
-        {invitations.length > 0 && (
+        {unreadNotifications.length > 0 && (
           <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-            {invitations.length}
+            {unreadNotifications.length}
           </span>
         )}
       </Menu.Button>
@@ -109,58 +87,103 @@ export function NotificationDropdown() {
         <Menu.Items className="absolute right-0 mt-2 w-80 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              {t('invitations')}
+              {t('notifications')}
             </h3>
             {isLoading ? (
               <div className="py-4 text-center text-sm text-gray-500">
                 {t('common:loading')}
               </div>
-            ) : invitations.length === 0 ? (
+            ) : notifications.length === 0 ? (
               <div className="py-4 text-center text-sm text-gray-500">
-                {t('noInvitations')}
+                {t('noNotifications')}
               </div>
             ) : (
               <div className="mt-2 space-y-2">
-                {invitations.map((invitation) => (
+                {notifications.map((notification) => (
                   <div
-                    key={invitation.id}
-                    className="rounded-lg border border-gray-200 p-3"
+                    key={notification.id}
+                    onClick={() => handleNotificationClick(notification)}
+                    className={`cursor-pointer rounded-lg border border-gray-200 p-3 ${
+                      !notification.isRead ? 'bg-gray-50' : ''
+                    } hover:bg-gray-50`}
                   >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {t('invitedBy')}{' '}
-                          <span className="font-semibold">
-                            {invitation.bandName}
-                          </span>
-                        </p>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {t('invitationReceived', {
-                            date: format(
-                              new Date(invitation.createdAt),
-                              'PPP',
-                              {
-                                locale: getLocale(),
-                              },
-                            ),
-                          })}
-                        </p>
+                    {notification.invitationMetadata && (
+                      <div className="flex items-start justify-between">
+                        <div>
+                          {notification.invitationMetadata.status ===
+                          'PENDING' ? (
+                            <>
+                              <p className="font-medium text-gray-900">
+                                {notification.userId === user?.id
+                                  ? t('invitationReceivedFrom', {
+                                      bandName:
+                                        notification.invitationMetadata
+                                          .bandName,
+                                    })
+                                  : t('invitationSentTo', {
+                                      userName:
+                                        notification.invitationMetadata
+                                          .userName,
+                                    })}
+                              </p>
+                              <p className="mt-1 text-sm text-gray-500">
+                                {notification.userId === user?.id
+                                  ? format(
+                                      new Date(
+                                        notification.invitationMetadata.createdAt!,
+                                      ),
+                                      'PPP',
+                                      {
+                                        locale: getLocale(),
+                                      },
+                                    )
+                                  : format(
+                                      new Date(
+                                        notification.invitationMetadata.createdAt!,
+                                      ),
+                                      'PPP',
+                                      {
+                                        locale: getLocale(),
+                                      },
+                                    )}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="font-medium text-gray-900">
+                              {notification.invitationMetadata.status ===
+                              'ACCEPTED'
+                                ? notification.userId === user?.id
+                                  ? t('youAcceptedInvitation', {
+                                      bandName: notification.invitationMetadata.bandName,
+                                    })
+                                  : t('invitationAcceptedBy', {
+                                      user: notification.invitationMetadata
+                                        .userName,
+                                      bandName: notification.invitationMetadata.bandName,
+                                    })
+                                : notification.userId === user?.id
+                                  ? t('youDeclinedInvitation', {
+                                      bandName: notification.invitationMetadata.bandName,
+                                    })
+                                  : t('invitationDeclinedBy', {
+                                      user: notification.invitationMetadata
+                                        .userName,
+                                      bandName: notification.invitationMetadata.bandName,
+                                    })}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        onClick={() => handleAcceptInvitation(invitation.id)}
-                        className="flex-1 rounded-lg bg-[#15b7b9] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#15b7b9]/90"
-                      >
-                        {t('acceptInvitation')}
-                      </button>
-                      <button
-                        onClick={() => handleDeclineInvitation(invitation.id)}
-                        className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                      >
-                        {t('declineInvitation')}
-                      </button>
-                    </div>
+                    )}
+                    {notification.bookingMetadata && (
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {t(notification.bookingMetadata.translationKey)}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

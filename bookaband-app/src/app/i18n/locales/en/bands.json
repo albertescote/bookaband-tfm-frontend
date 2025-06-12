@@ -42,6 +42,10 @@
   "declineInvitation": "Decline",
   "invitationAccepted": "Invitation accepted successfully",
   "invitationDeclined": "Invitation declined successfully",
+  "invitationAcceptedBy": "{{user}} accepted the invitation to join {{bandName}}",
+  "invitationDeclinedBy": "{{user}} declined the invitation to join {{bandName}}",
+  "youAcceptedInvitation": "You accepted the invitation to join {{bandName}}",
+  "youDeclinedInvitation": "You declined the invitation to join {{bandName}}",
   "errorAcceptingInvitation": "Error accepting invitation",
   "errorDecliningInvitation": "Error declining invitation",
   "name": "Band name",
@@ -357,5 +361,11 @@
   "errorUpdating": "Error updating profile",
   "reviews": "Reviews",
   "bookingDates": "Booking dates",
-  "bandSize": "Band size"
+  "bandSize": "Band size",
+  "invitationReceivedFrom": "Invitation received from {{bandName}}",
+  "invitationSentTo": "Invitation sent to {{userName}}",
+  "receivedOn": "{{date}}",
+  "sentOn": "{{date}}",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications"
 }
