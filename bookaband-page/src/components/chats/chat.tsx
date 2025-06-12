@@ -174,13 +174,12 @@ const Chat: React.FC<ChatProps> = ({
     setAllMessages((prevMessages) => [...prevMessages, ...messages]);
     setTimeout(scrollToBottom, 100);
 
-    // Update chat list with new messages
     if (messages.length > 0 && chat) {
       const updatedChat: ChatView = {
         ...chat,
         messages: [...chat.messages, ...messages],
         updatedAt: new Date(),
-        unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+        unreadMessagesCount: 0,
       };
       setChat(updatedChat);
       setChats((prevChats: ChatView[]) => {

@@ -82,7 +82,7 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
   });
 
   const handleRatingChange = (newRating: number) => {
-    const finalRating = rating === newRating ? 0 : newRating; // Toggle off if already selected
+    const finalRating = rating === newRating ? 0 : newRating;
     setRating(finalRating);
     onFilterChange({ minRating: finalRating });
   };

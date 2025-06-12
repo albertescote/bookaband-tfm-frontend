@@ -1,4 +1,3 @@
-/* Custom styles for react-datepicker in the Booking Form */
 .react-datepicker {
   font-family: inherit;
   border: none;
@@ -111,12 +110,10 @@
   right: 1rem;
 }
 
-/* Custom popper styles */
 .custom-popper {
   z-index: 50 !important;
 }
 
-/* Mobile styles */
 @media (max-width: 640px) {
   .react-datepicker {
     width: 90%;
@@ -150,7 +147,6 @@
   }
 }
 
-/* Tablet styles */
 @media (min-width: 641px) and (max-width: 1024px) {
   .react-datepicker {
     width: 95%;
@@ -158,7 +154,6 @@
   }
 }
 
-/* Ensure the calendar is properly positioned on mobile */
 @media (max-width: 640px) {
   .custom-popper {
     position: fixed !important;

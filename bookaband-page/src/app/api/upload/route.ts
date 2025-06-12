@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BACKEND_URL } from '@/config';
 import { getAccessTokenCookie } from '@/service/utils';
+import { BACKEND_URL } from '@/publicConfig';
 
 export async function POST(request: NextRequest) {
   try {

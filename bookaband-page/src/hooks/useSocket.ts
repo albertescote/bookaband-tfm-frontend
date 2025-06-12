@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { BookingMetadata } from '@/service/backend/chat/domain/message';
-
-const SOCKET_SERVER_URL = 'http://localhost:4000';
+import { BACKEND_URL } from '@/publicConfig';
 
 export interface SocketMessage {
   id: string;
@@ -20,7 +19,7 @@ export const useChat = (userId: string) => {
   const [messages, setMessages] = useState<SocketMessage[]>([]);
 
   useEffect(() => {
-    const newSocket: Socket = io(SOCKET_SERVER_URL);
+    const newSocket: Socket = io(BACKEND_URL);
     setSocket(newSocket);
 
     newSocket.emit('join', userId);

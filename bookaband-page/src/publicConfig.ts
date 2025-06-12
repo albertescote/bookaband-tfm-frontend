@@ -7,4 +7,9 @@ const AUTH_URL = checkStrVar(
   'NEXT_PUBLIC_AUTH_URL',
 );
 
-export { AUTH_URL };
+const BACKEND_URL = checkStrVar(
+  process.env.NEXT_PUBLIC_BACKEND_URL,
+  'NEXT_PUBLIC_BACKEND_URL',
+);
+
+export { AUTH_URL, BACKEND_URL };
