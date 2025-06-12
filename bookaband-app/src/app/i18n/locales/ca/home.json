@@ -41,5 +41,6 @@
   },
   "errors": {
     "fetchData": "Error en carregar les dades"
-  }
+  },
+  "no-band-selected": "Cap banda seleccionada"
 }

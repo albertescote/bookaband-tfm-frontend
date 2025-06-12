@@ -32,7 +32,6 @@ export function NotificationDropdown() {
       const bandNotifications = await getUserNotificationsWithBand(
         selectedBand?.id,
       );
-      console.log(bandNotifications);
       if (bandNotifications && !('error' in bandNotifications)) {
         setNotifications(bandNotifications as unknown as Notification[]);
       }

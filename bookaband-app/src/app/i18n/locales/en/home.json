@@ -41,5 +41,6 @@
   },
   "errors": {
     "fetchData": "Error fetching data"
-  }
+  },
+  "no-band-selected": "No band selected"
 }
