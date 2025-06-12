@@ -266,12 +266,10 @@ export default function FindArtistsContent({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Hero Section */}
       <div className="mb-6 rounded-2xl bg-gradient-to-r from-[#15b7b9] to-[#1e97a8] p-8 text-white shadow-lg">
         <h1 className="mb-3 text-4xl font-bold">{t('find-artists')}</h1>
         <p className="mb-6 text-lg opacity-90">{t('hero-subtitle')}</p>
 
-        {/* Search Bar */}
         <SearchBar
           language={language}
           location={location}
@@ -287,7 +285,6 @@ export default function FindArtistsContent({
           setHasSearched={setHasSearched}
         />
 
-        {/* Validation Errors */}
         {(validationErrors.location ||
           validationErrors.date ||
           validationErrors.searchQuery) && (
@@ -309,9 +306,7 @@ export default function FindArtistsContent({
         )}
       </div>
 
-      {/* Main Content */}
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
-        {/* Mobile Filter Toggle Button */}
         {hasSearched && (
           <button
             onClick={() => setIsFilterOpen(true)}
@@ -334,7 +329,6 @@ export default function FindArtistsContent({
           </button>
         )}
 
-        {/* Filters Sidebar */}
         {hasSearched && (
           <div
             className={`fixed inset-0 z-50 bg-white lg:static lg:sticky lg:top-4 lg:z-auto lg:w-80 lg:self-start lg:rounded-xl lg:border lg:border-gray-200 lg:bg-white lg:shadow-md lg:transition-all ${
@@ -357,7 +351,6 @@ export default function FindArtistsContent({
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-                {/* Additional Filters */}
                 <AdditionalFilters
                   language={language}
                   onFilterChange={handleAdditionalFiltersChange}
@@ -366,7 +359,6 @@ export default function FindArtistsContent({
                 />
               </div>
 
-              {/* Mobile Apply Button */}
               <div className="sticky bottom-0 border-t border-gray-200 bg-white p-4 lg:hidden">
                 <button
                   onClick={() => setIsFilterOpen(false)}
@@ -379,9 +371,7 @@ export default function FindArtistsContent({
           </div>
         )}
 
-        {/* Artists Grid */}
         <div className="flex-1">
-          {/* Sort Options */}
           <div className="mb-6 flex items-center justify-between">
             <div className="text-sm text-gray-600">
               <span className="font-medium text-gray-800">{totalArtists}</span>{' '}
@@ -406,7 +396,6 @@ export default function FindArtistsContent({
             </div>
           </div>
 
-          {/* Artists Grid */}
           <ArtistsGrid
             artists={allArtists}
             musicalStyles={musicalStyles}
@@ -416,7 +405,6 @@ export default function FindArtistsContent({
             searchParams={location || date ? { location, date } : undefined}
           />
 
-          {/* Load More Artists Button */}
           <LoadMoreButton
             onClick={loadMoreArtists}
             isLoading={isLoadingMore}

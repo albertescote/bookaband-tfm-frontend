@@ -18,11 +18,7 @@ export default function Navbar({
         label={t('search-musicians-tab')}
         onClick={onLinkClick}
       />
-      {/*<NavLink*/}
-      {/*  href={`/${language}/providers`}*/}
-      {/*  label={t('providers-tab')}*/}
-      {/*  onClick={onLinkClick}*/}
-      {/*/>*/}
+
       <NavLink
         href={`/${language}/how-it-works`}
         label={t('how-it-works-tab')}

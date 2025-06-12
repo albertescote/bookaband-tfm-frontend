@@ -145,7 +145,7 @@ export default function FeaturedArtists({
       setMaxPage(1);
     }
     setCurrentPage(1);
-    setAnimationDirection(null); // Reset animation on itemsPerPage change
+    setAnimationDirection(null);
   }, [itemsPerPage]);
 
   useEffect(() => {
@@ -208,13 +208,11 @@ export default function FeaturedArtists({
     BATCH_SIZE,
   ]);
 
-  // Reset animation direction after animation is likely complete
-  // This allows re-triggering if user clicks fast
   useEffect(() => {
     if (animationDirection) {
       const timer = setTimeout(() => {
         setAnimationDirection(null);
-      }, 350); // Match animation duration
+      }, 350);
       return () => clearTimeout(timer);
     }
   }, [animationDirection, currentPage]);
@@ -277,12 +275,10 @@ export default function FeaturedArtists({
                 className="h-[520px] w-full animate-pulse rounded-lg bg-gray-200 p-6"
               >
                 {' '}
-                {/* Adjusted skeleton height */}
                 <div className="mb-6 h-80 w-full rounded-lg bg-gray-300"></div>
                 <div className="mb-2 h-6 w-3/4 rounded bg-gray-300"></div>
                 <div className="mb-4 h-4 w-1/2 rounded bg-gray-300"></div>
                 <div className="mb-4 h-[4.5rem] w-full rounded bg-gray-300"></div>{' '}
-                {/* Skeleton for description */}
                 <div className="h-10 w-full rounded-lg bg-gray-300"></div>
               </div>
             ))

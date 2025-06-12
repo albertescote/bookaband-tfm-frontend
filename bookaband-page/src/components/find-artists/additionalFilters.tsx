@@ -176,7 +176,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Genre Filter */}
       <div className="space-y-4">
         <FilterHeader
           icon={<Music className="h-5 w-5 text-[#15b7b9]" />}
@@ -204,7 +203,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
-      {/* Ratings */}
       <div className="space-y-4">
         <FilterHeader
           icon={<Star className="h-5 w-5 text-[#15b7b9]" />}
@@ -235,7 +233,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
-      {/* Band Size Filter */}
       <div className="space-y-4">
         <FilterHeader
           icon={<Music className="h-5 w-5 text-[#15b7b9]" />}
@@ -262,7 +259,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
-      {/* Type of Event */}
       <div className="space-y-4">
         <FilterHeader
           icon={<PartyPopper className="h-5 w-5 text-[#15b7b9]" />}
@@ -300,7 +296,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         )}
       </div>
 
-      {/* Price Range Filter */}
       {user && (
         <div className="space-y-4">
           <FilterHeader
@@ -340,7 +335,6 @@ const AdditionalFilters: React.FC<AdditionalFiltersProps> = ({
         </div>
       )}
 
-      {/* Active Filters */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">

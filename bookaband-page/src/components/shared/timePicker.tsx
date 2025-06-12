@@ -25,7 +25,6 @@ export function TimePicker({
   );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -78,7 +77,6 @@ export function TimePicker({
     const columnRef = useRef<HTMLDivElement>(null);
     const selectedRef = useRef<HTMLButtonElement>(null);
 
-    // Scroll to selected item when opening
     useEffect(() => {
       if (isOpen && selectedRef.current && columnRef.current) {
         const container = columnRef.current;
@@ -86,7 +84,6 @@ export function TimePicker({
         const containerRect = container.getBoundingClientRect();
         const selectedRect = selectedElement.getBoundingClientRect();
 
-        // Calculate the scroll position to center the selected item
         const scrollTop =
           selectedElement.offsetTop -
           containerRect.height / 2 +

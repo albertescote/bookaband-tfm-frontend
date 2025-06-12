@@ -80,7 +80,7 @@ export default function BillingAddressCard({
       createBillingAddress(body)
         .then(() => {
           toast.success(t('successCreate'));
-          setCurrentInitialAddress({ ...address, id: 'temp' }); // assume id returned if needed
+          setCurrentInitialAddress({ ...address, id: 'temp' });
         })
         .catch(() => setError(true));
     }

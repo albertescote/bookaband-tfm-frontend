@@ -35,11 +35,10 @@ export default function HeaderSection({
 
     try {
       setIsUploading(true);
-      // Create a temporary blob URL for preview
+
       const blobUrl = URL.createObjectURL(file);
       setTempImageUrl(blobUrl);
 
-      // Upload the file
       const formData = new FormData();
       formData.append('file', file);
 
@@ -64,7 +63,6 @@ export default function HeaderSection({
     }
   };
 
-  // Cleanup blob URLs when component unmounts
   React.useEffect(() => {
     return () => {
       if (tempImageUrl) {

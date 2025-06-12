@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Validate file size (25MB)
     if (file.size > 25 * 1024 * 1024) {
       return NextResponse.json(
         { error: 'File size exceeds 25MB limit' },
@@ -19,23 +18,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
     const allowedTypes = [
-      // Images
       'image/jpeg',
       'image/jpg',
       'image/png',
       'image/gif',
       'image/webp',
-      // Documents
+
       'application/pdf',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      // Audio
+
       'audio/mpeg',
       'audio/wav',
       'audio/ogg',
-      // Video
+
       'video/mp4',
       'video/webm',
       'video/quicktime',
@@ -48,13 +45,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the access token
     const accessToken = getAccessTokenCookie();
     if (!accessToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Forward the file to the backend
     const backendFormData = new FormData();
     backendFormData.append('file', file);
 

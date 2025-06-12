@@ -27,7 +27,7 @@ import { Button } from '@/components/shared/button';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { cn, getStatusColor } from '@/lib/utils';
 import { format } from 'date-fns';
-import { es, ca } from 'date-fns/locale';
+import { ca, es } from 'date-fns/locale';
 import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
 import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
 
@@ -123,7 +123,6 @@ export default function BookingDetails({
         setBooking(updatedBooking);
       }
       setShowCancelModal(false);
-      // Refresh the page after successful cancellation
       window.location.reload();
     } catch (error) {
       console.error('Error cancelling booking:', error);
@@ -145,7 +144,6 @@ export default function BookingDetails({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -169,9 +167,7 @@ export default function BookingDetails({
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Band Information */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="mb-4 text-lg font-semibold text-gray-900">
             {t('bandInfo')}
@@ -208,7 +204,6 @@ export default function BookingDetails({
           </div>
         </div>
 
-        {/* Place Information */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="mb-4 text-lg font-semibold text-gray-900">
             {t('placeInfo')}
@@ -241,7 +236,6 @@ export default function BookingDetails({
           </div>
         </div>
 
-        {/* Event Details */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 md:col-span-2">
           <h2 className="mb-4 text-lg font-semibold text-gray-900">
             {t('eventDetails')}
@@ -302,7 +296,6 @@ export default function BookingDetails({
           </div>
         </div>
 
-        {/* Actions */}
         {canCancel && (
           <div className="flex justify-end gap-4 md:col-span-2">
             <Button
@@ -324,7 +317,6 @@ export default function BookingDetails({
         )}
       </div>
 
-      {/* Contract Section */}
       {contract && (
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="mb-6 text-xl font-semibold text-gray-900">
@@ -389,7 +381,6 @@ export default function BookingDetails({
         </div>
       )}
 
-      {/* Invoice Section */}
       {invoice && (
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="mb-6 text-xl font-semibold text-gray-900">
@@ -441,7 +432,6 @@ export default function BookingDetails({
         </div>
       )}
 
-      {/* Cancel Confirmation Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">

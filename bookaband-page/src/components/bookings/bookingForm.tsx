@@ -85,7 +85,6 @@ export function BookingForm({
     }
   }, [searchParams]);
 
-  // Register locales
   useEffect(() => {
     registerLocale('es', es);
     registerLocale('en', en);
@@ -96,7 +95,6 @@ export function BookingForm({
     const errors: FormErrors = {};
     let isValid = true;
 
-    // Validate dates and times
     if (!formData.initDate) {
       errors.date = t('validation.required');
       isValid = false;
@@ -106,14 +104,12 @@ export function BookingForm({
       isValid = false;
     }
 
-    // Check if end date is after start date
     if (formData.initDate && formData.endDate) {
       if (formData.endDate < formData.initDate) {
         errors.date = t('validation.endDateAfterStart');
         isValid = false;
       }
 
-      // Check if performance duration is at least 5 minutes
       const durationInMinutes =
         (formData.endDate.getTime() - formData.initDate.getTime()) /
         (1000 * 60);
@@ -122,7 +118,6 @@ export function BookingForm({
         isValid = false;
       }
 
-      // Check if dates are not in the past
       const now = new Date();
       if (formData.initDate < now) {
         errors.date = t('validation.futureDate');
@@ -130,7 +125,6 @@ export function BookingForm({
       }
     }
 
-    // Validate other fields
     if (!formData.name.trim()) {
       errors.name = t('validation.required');
       isValid = false;
@@ -223,19 +217,16 @@ export function BookingForm({
   };
 
   const isDateAvailable = (date: Date): boolean => {
-    // Normalize the input date to midnight
     const normalizedDate = new Date(date);
     normalizedDate.setHours(0, 0, 0, 0);
 
-    // Check if the date is in the past
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (normalizedDate < today) {
       return false;
     }
 
-    // Check weekly availability
-    const dayOfWeek = normalizedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const dayOfWeek = normalizedDate.getDay();
     const dayKey = [
       'sunday',
       'monday',
@@ -252,14 +243,12 @@ export function BookingForm({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Convert booking dates to Date objects
     const bookedDates = artist.bookingDates.map((dateStr) => {
       const date = new Date(dateStr);
       date.setHours(0, 0, 0, 0);
       return date;
     });
 
-    // Get all dates for the next 6 months
     const dates: Date[] = [];
     const endDate = new Date();
     endDate.setMonth(endDate.getMonth() + 6);
@@ -268,7 +257,6 @@ export function BookingForm({
       const date = new Date(d);
       date.setHours(0, 0, 0, 0);
 
-      // Add date if it's not available according to weekly schedule
       if (!isDateAvailable(date)) {
         dates.push(date);
       }
@@ -289,7 +277,6 @@ export function BookingForm({
     newDate.setHours(0, 0, 0, 0);
 
     setFormData((prev) => {
-      // If end date is before new start date, set it to start date + 1 hour
       const newEndDate =
         prev.endDate < newDate ? new Date(newDate) : prev.endDate;
       newEndDate.setHours(newEndDate.getHours() + 1);
@@ -300,7 +287,7 @@ export function BookingForm({
   const handleEndDateChange = (date: Date | null) => {
     if (!date) return;
     const newDate = new Date(date);
-    // Preserve the current time
+
     newDate.setHours(
       formData.endDate.getHours(),
       formData.endDate.getMinutes(),
@@ -330,7 +317,6 @@ export function BookingForm({
       onSubmit={currentStep === 1 ? handleNextStep : handleSubmit}
       className="space-y-6"
     >
-      {/* Progress Bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -392,7 +378,6 @@ export function BookingForm({
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Start Date */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('initDate')} *
@@ -428,7 +413,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Start Time */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('initTime')} *
@@ -440,7 +424,6 @@ export function BookingForm({
               />
             </div>
 
-            {/* End Date */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('endDate')} *
@@ -473,7 +456,6 @@ export function BookingForm({
               </div>
             </div>
 
-            {/* End Time */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('endTime')} *
@@ -486,7 +468,6 @@ export function BookingForm({
               />
             </div>
 
-            {/* Event Name */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('eventName')} *
@@ -508,7 +489,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* City */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('city')} *
@@ -530,7 +510,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Postal Code */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('postalCode')} *
@@ -554,7 +533,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Country */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('country')} *
@@ -578,7 +556,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Venue */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('venue')} *
@@ -600,7 +577,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Address Line 1 */}
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('addressLine1')} *
@@ -629,7 +605,6 @@ export function BookingForm({
               )}
             </div>
 
-            {/* Address Line 2 */}
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('addressLine2')}
@@ -645,7 +620,6 @@ export function BookingForm({
               />
             </div>
 
-            {/* Event Type */}
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('eventType')}
@@ -674,7 +648,6 @@ export function BookingForm({
               </select>
             </div>
 
-            {/* Public Event Toggle */}
             <div className="md:col-span-2">
               <label className="group flex cursor-pointer items-center space-x-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-[#15b7b9] hover:bg-gray-50">
                 <div className="relative flex h-5 w-5 items-center justify-center">
@@ -702,7 +675,6 @@ export function BookingForm({
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Booking Summary */}
           <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900">
@@ -811,7 +783,6 @@ export function BookingForm({
             </div>
           </div>
 
-          {/* Technical Rider */}
           {artist.technicalRider && (
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
               <h3 className="mb-4 text-lg font-medium text-gray-900">
@@ -872,7 +843,6 @@ export function BookingForm({
             </div>
           )}
 
-          {/* Hospitality Rider */}
           {artist.hospitalityRider && (
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
               <h3 className="mb-4 text-lg font-medium text-gray-900">

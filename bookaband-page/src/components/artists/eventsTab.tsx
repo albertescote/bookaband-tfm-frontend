@@ -45,7 +45,7 @@ export default function EventsTab({
   );
 
   const getLocalizedWeekdays = () => {
-    const baseDate = new Date(2024, 0, 1); // Monday
+    const baseDate = new Date(2024, 0, 1);
     return Array.from({ length: 7 }, (_, i) => {
       const date = new Date(baseDate);
       date.setDate(date.getDate() + i);

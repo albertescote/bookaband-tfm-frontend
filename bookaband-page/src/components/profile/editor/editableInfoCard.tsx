@@ -59,13 +59,13 @@ export default function EditableInfoCard({
 
     const digitsOnly = number.replace(/\D/g, '');
     const lengthByCountry: { [key: string]: number } = {
-      '+34': 9, // Spain
-      '+44': 10, // UK
-      '+33': 9, // France
-      '+49': 10, // Germany
-      '+39': 10, // Italy
-      '+351': 9, // Portugal
-      '+1': 10, // US/Canada
+      '+34': 9,
+      '+44': 10,
+      '+33': 9,
+      '+49': 10,
+      '+39': 10,
+      '+351': 9,
+      '+1': 10,
     };
     const expectedLength = lengthByCountry[countryCode] || 10;
     return digitsOnly.length === expectedLength;

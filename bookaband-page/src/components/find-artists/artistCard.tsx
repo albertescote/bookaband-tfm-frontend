@@ -105,7 +105,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           {artist.name}
         </h3>
 
-        {/* Musical Styles Tags */}
         <div className="mb-3 flex flex-wrap gap-2">
           {artist.musicalStyleIds.length > 0 ? (
             artist.musicalStyleIds.map((styleId) => (
@@ -125,13 +124,11 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           )}
         </div>
 
-        {/* Band Size */}
         <div className="mb-3 flex items-center gap-1 text-xs text-gray-600">
           <Users className="h-3 w-3" />
           {getBandSizeLabel(artist.bandSize)}
         </div>
 
-        {/* Event Types */}
         <div className="mb-3 flex flex-wrap gap-2">
           {artist.eventTypeIds.length > 0 ? (
             artist.eventTypeIds.map((typeId) => (
@@ -150,13 +147,11 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           )}
         </div>
 
-        {/* Location */}
         <div className="mb-3 flex items-center gap-1 text-xs text-gray-600">
           <MapPin className="h-3 w-3" />
           {artist.location}
         </div>
 
-        {/* Rating */}
         <div className="mb-3 flex items-center gap-1 text-sm">
           <div className="flex">{renderStars(artist.rating ?? 0)}</div>
           <span className="text-xs text-gray-500">
@@ -164,7 +159,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           </span>
         </div>
 
-        {/* Price and View Profile */}
         <div className="flex items-center justify-between">
           <span
             className={`text-lg font-semibold text-[#15b7b9] ${

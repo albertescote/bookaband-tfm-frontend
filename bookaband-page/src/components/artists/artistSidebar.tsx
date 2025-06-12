@@ -83,9 +83,7 @@ export function ArtistSidebar({
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
-      {/* Artist Header */}
       <div className="flex flex-col items-center">
-        {/* Avatar with hover effect */}
         <div
           className="relative mb-4 h-28 w-28 overflow-hidden rounded-full shadow-md ring-4 ring-white transition-transform duration-300 hover:scale-105"
           onMouseEnter={() => setIsHovered(true)}
@@ -106,13 +104,11 @@ export function ArtistSidebar({
           )}
         </div>
 
-        {/* Name & Handle with improved typography */}
         <h2 className="text-2xl font-bold text-gray-800">{artist.name}</h2>
         <p className="mb-3 flex items-center text-sm text-gray-500">
           @{handle}
         </p>
 
-        {/* Location - Added for more context */}
         <div className="mb-4 flex items-center justify-center text-sm text-gray-600">
           <MapPin className="mr-1 h-3 w-3" />
           <span>{artist.location || 'Worldwide'}</span>
@@ -123,7 +119,6 @@ export function ArtistSidebar({
           </span>
         </div>
 
-        {/* CTA Buttons with improved styling */}
         <div className="w-full space-y-2">
           <Button
             className="w-full bg-[#15b7b9] py-2 font-medium text-white hover:bg-[#15b7b9]/90"
@@ -145,10 +140,8 @@ export function ArtistSidebar({
         </div>
       </div>
 
-      {/* Stats Section */}
       <div className="mt-6 rounded-lg bg-gray-50 p-3">
         <div className="grid grid-cols-3 divide-x divide-gray-200 text-center">
-          {/* Followers */}
           <div className="px-2">
             <span className="block text-lg font-bold text-gray-800">
               {formatNumberShort(followers)}
@@ -158,7 +151,6 @@ export function ArtistSidebar({
             </span>
           </div>
 
-          {/* Following */}
           <div className="px-2">
             <span className="block text-lg font-bold text-gray-800">
               {formatNumberShort(following)}
@@ -168,7 +160,6 @@ export function ArtistSidebar({
             </span>
           </div>
 
-          {/* Rating */}
           <div className="px-2">
             <div className="flex items-center justify-center">
               <span className="text-lg font-bold text-gray-800">
@@ -183,7 +174,6 @@ export function ArtistSidebar({
         </div>
       </div>
 
-      {/* Musical Style Tags */}
       <div className="mt-5">
         <p className="mb-2 text-sm font-medium text-gray-700">{t('style')}</p>
         <div className="flex flex-wrap gap-2">
@@ -199,7 +189,6 @@ export function ArtistSidebar({
         </div>
       </div>
 
-      {/* Event Type Tags */}
       <div className="mt-5">
         <p className="mb-2 text-sm font-medium text-gray-700">
           {t('eventTypes')}
@@ -217,7 +206,6 @@ export function ArtistSidebar({
         </div>
       </div>
 
-      {/* Price Card */}
       {user && (
         <div className="mt-5 rounded-lg bg-gray-50 p-4">
           <p className="mb-1 text-sm font-medium text-gray-700">{t('price')}</p>
@@ -272,7 +260,6 @@ export function ArtistSidebar({
         </div>
       )}
 
-      {/* Footer Actions */}
       <div className="mt-6 flex justify-between border-t border-gray-100 pt-4 text-xs text-gray-500">
         <button className="flex items-center text-gray-500 transition-colors hover:text-red-500">
           <Flag className="mr-1 h-3 w-3" />

@@ -12,7 +12,6 @@ const NoResults: React.FC<NoResultsProps> = ({ language, type }) => {
 
   return (
     <div className="relative flex min-h-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-white p-8 text-center">
-      {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
         <div className="mb-6 grid h-20 w-20 place-items-center rounded-full bg-[#15b7b9]/10">
           <SearchX className="h-10 w-10 text-[#15b7b9]" strokeWidth={1.5} />

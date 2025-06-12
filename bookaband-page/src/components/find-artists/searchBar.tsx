@@ -7,7 +7,6 @@ import './datepicker-custom.css';
 import './autocomplete-custom.css';
 import { ca, enGB, es } from 'date-fns/locale';
 
-// Register the locales
 registerLocale('es', es);
 registerLocale('ca', ca);
 registerLocale('en', enGB);
@@ -54,7 +53,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const autocompleteRef = useRef<any>(null);
   const [displayLocation, setDisplayLocation] = useState(location);
 
-  // Map language to locale
   const getLocale = () => {
     switch (language) {
       case 'es':
@@ -69,9 +67,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const initializeAutocomplete = () => {
     if (window.google && locationInputRef.current) {
       const options = {
-        componentRestrictions: { country: ['es'] }, // Restrict to Spain
+        componentRestrictions: { country: ['es'] },
         fields: ['address_components', 'formatted_address'],
-        types: ['(cities)'], // Only show cities
+        types: ['(cities)'],
       };
 
       autocompleteRef.current = new window.google.maps.places.Autocomplete(
@@ -82,13 +80,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
       autocompleteRef.current.addListener('place_changed', () => {
         const place = autocompleteRef.current.getPlace();
         if (place.address_components) {
-          // Find the city component
           const cityComponent = place.address_components.find(
             (component: any) => component.types.includes('locality'),
           );
 
           if (cityComponent) {
-            // Use the city name for both display and filtering
             const cityName = cityComponent.long_name;
             setLocation(cityName);
             setDisplayLocation(cityName);
@@ -126,7 +122,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleDateChange = (newDate: Date | null) => {
     if (newDate) {
-      // Format the date directly without timezone conversion
       const year = newDate.getFullYear();
       const month = String(newDate.getMonth() + 1).padStart(2, '0');
       const day = String(newDate.getDate()).padStart(2, '0');
@@ -187,7 +182,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className="flex flex-col gap-4 md:flex-row">
       <div className="w-full">
         <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-white p-2 shadow-lg sm:flex-row sm:items-center sm:rounded-full sm:px-4 sm:py-0">
-          {/* Where? */}
           <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('where')}
@@ -213,9 +207,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
               </span>
             )}
           </div>
-          {/* Divider */}
+
           <div className="hidden h-8 w-px bg-gray-200 sm:block" />
-          {/* When? */}
+
           <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('when')}
@@ -265,9 +259,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
               </span>
             )}
           </div>
-          {/* Divider */}
+
           <div className="hidden h-8 w-px bg-gray-200 sm:block" />
-          {/* What style or artist? */}
+
           <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('search-style-or-artist')}
@@ -281,7 +275,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className="w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0"
             />
           </div>
-          {/* Search Button */}
+
           <button
             className="mt-2 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9] shadow-md transition-colors hover:bg-[#109a9c] disabled:opacity-50 sm:mt-0"
             onClick={handleSearchClick}

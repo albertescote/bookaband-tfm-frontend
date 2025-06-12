@@ -194,7 +194,7 @@ const Chat: React.FC<ChatProps> = ({
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      // Create preview URL for images and videos
+
       if (
         selectedFile.type.startsWith('image/') ||
         selectedFile.type.startsWith('video/')
@@ -207,7 +207,6 @@ const Chat: React.FC<ChatProps> = ({
     }
   };
 
-  // Clean up preview URL when component unmounts or file changes
   useEffect(() => {
     return () => {
       if (filePreview) {
@@ -246,7 +245,6 @@ const Chat: React.FC<ChatProps> = ({
 
       const data = await response.json();
 
-      // Send message with file URL
       const newMessage: SocketMessage = {
         id: crypto.randomUUID(),
         chatId: chat!.id,
@@ -260,13 +258,12 @@ const Chat: React.FC<ChatProps> = ({
       setAllMessages((prev) => [...prev, newMessage]);
       sendMessage(chat!.id, recipientId, message.trim(), data.url);
 
-      // Update chat list with new message
       if (chat) {
         const updatedChat: ChatView = {
           ...chat,
           messages: [...chat.messages, newMessage],
           updatedAt: new Date(),
-          unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+          unreadMessagesCount: 0,
         };
         setChat(updatedChat);
         setChats((prevChats: ChatView[]) => {
@@ -275,7 +272,6 @@ const Chat: React.FC<ChatProps> = ({
         });
       }
 
-      // Reset states
       setMessage('');
       setFile(null);
       setShowEmojis(false);
@@ -302,13 +298,12 @@ const Chat: React.FC<ChatProps> = ({
         setAllMessages((prev) => [...prev, newMessage]);
         sendMessage(chat!.id, recipientId, message.trim());
 
-        // Update chat list with new message
         if (chat) {
           const updatedChat: ChatView = {
             ...chat,
             messages: [...chat.messages, newMessage],
             updatedAt: new Date(),
-            unreadMessagesCount: 0, // Since we're the sender, there are no unread messages
+            unreadMessagesCount: 0,
           };
           setChat(updatedChat);
           setChats((prevChats: ChatView[]) => {
@@ -550,7 +545,6 @@ const Chat: React.FC<ChatProps> = ({
             </div>
           ) : (
             <div className="flex h-full flex-col">
-              {/* Chat Header */}
               <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
                 <div
                   className="flex cursor-pointer items-center gap-3"
@@ -563,7 +557,6 @@ const Chat: React.FC<ChatProps> = ({
                 </div>
               </div>
 
-              {/* Chat Messages */}
               <div
                 ref={chatContainerRef}
                 className="flex-1 overflow-y-auto scroll-smooth bg-gray-50 p-4"
@@ -664,7 +657,6 @@ const Chat: React.FC<ChatProps> = ({
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Chat Input */}
               <div className="border-t bg-white p-4">
                 <div className="flex items-center gap-2">
                   <input
@@ -748,7 +740,6 @@ const Chat: React.FC<ChatProps> = ({
         </div>
       )}
 
-      {/* Image Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"

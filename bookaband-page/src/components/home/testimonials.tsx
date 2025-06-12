@@ -51,32 +51,26 @@ export default function Testimonials({ lng }: TestimonialsParams) {
     },
   ];
 
-  // Responsive state for items per page
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Update items per page based on screen size
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setItemsPerPage(1); // Mobile: show 1 per page
+        setItemsPerPage(1);
       } else if (window.innerWidth < 1024) {
-        setItemsPerPage(2); // Tablet: show 2 per page
+        setItemsPerPage(2);
       } else {
-        setItemsPerPage(3); // Desktop: show 3 per page
+        setItemsPerPage(3);
       }
 
-      // Reset to first page when layout changes to avoid empty pages
       setCurrentPage(0);
     };
 
-    // Set initial value
     handleResize();
 
-    // Add event listener
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -94,10 +88,8 @@ export default function Testimonials({ lng }: TestimonialsParams) {
     }
   };
 
-  // Calculate card width based on items per page
   const cardWidth = 100 / itemsPerPage;
 
-  // Calculate translation value for the slider - move by itemsPerPage cards at a time
   const translateX = `-${currentPage * ((100 / testimonials.length) * itemsPerPage)}%`;
 
   return (
@@ -165,7 +157,6 @@ export default function Testimonials({ lng }: TestimonialsParams) {
           />
         </button>
 
-        {/* Show page indicators for better UX */}
         <div className="flex items-center gap-1 px-2 md:gap-2">
           {Array.from({ length: maxPage + 1 }).map((_, index) => (
             <button

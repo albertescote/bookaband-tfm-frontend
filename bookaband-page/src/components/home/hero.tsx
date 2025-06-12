@@ -38,7 +38,6 @@ export default function Hero({ lng }: HeroParams) {
     startAutoSlide();
   };
 
-  // Auto-slide functionality
   useEffect(() => {
     startAutoSlide();
     return () => {
@@ -49,7 +48,6 @@ export default function Hero({ lng }: HeroParams) {
   return (
     <section className="relative w-full overflow-hidden">
       <div className="relative h-screen max-h-[600px] sm:h-[70vh]">
-        {/* Slider track */}
         <div
           className="flex h-full transition-transform duration-700 ease-in-out"
           style={{
@@ -83,7 +81,6 @@ export default function Hero({ lng }: HeroParams) {
           ))}
         </div>
 
-        {/* Navigation buttons */}
         <button
           onClick={prevSlide}
           className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white bg-opacity-30 p-1 transition-all duration-300 hover:bg-opacity-50 sm:left-4 sm:p-2"
@@ -99,7 +96,6 @@ export default function Hero({ lng }: HeroParams) {
           <ChevronRight size={24} className="sm:h-8 sm:w-8" />
         </button>
 
-        {/* Slide indicators */}
         <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 space-x-2">
           {slides.map((_, index) => (
             <button
