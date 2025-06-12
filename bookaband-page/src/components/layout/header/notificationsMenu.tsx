@@ -2,40 +2,60 @@
 
 import { Bell, BellOff } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import { useAuth } from '@/providers/authProvider';
-import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
+import {
+  getUserNotifications,
+  markNotificationAsRead,
+} from '@/service/backend/notifications/service/notifications.service';
 import { Notification } from '@/service/backend/notifications/domain/notification';
+import { format } from 'date-fns';
+import { ca, enUS, es } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
 
 export default function NotificationsMenu({ language }: { language: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation(language, 'notifications');
   const { user } = useAuth();
+  const router = useRouter();
 
-  const getNotificationsAndUpdateUnread = (userId: string) => {
-    getClientNotifications(userId).then((receivedNotifications) => {
-      if (receivedNotifications) {
-        setNotifications(receivedNotifications);
-        const totalUnread = receivedNotifications.filter(
-          (notification) => notification.unread,
-        ).length;
-        setUnreadNotifications(totalUnread);
+  const getLocale = () => {
+    switch (language) {
+      case 'es':
+        return es;
+      case 'ca':
+        return ca;
+      case 'en':
+        return enUS;
+      default:
+        return undefined;
+    }
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const receivedNotifications = await getUserNotifications();
+      if (receivedNotifications && !('error' in receivedNotifications)) {
+        setNotifications(receivedNotifications as Notification[]);
       }
-    });
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
     if (user?.id) {
-      getNotificationsAndUpdateUnread(user.id);
+      fetchNotifications();
 
       interval = setInterval(() => {
-        getNotificationsAndUpdateUnread(user.id);
+        fetchNotifications();
       }, 30000);
     }
 
@@ -56,12 +76,22 @@ export default function NotificationsMenu({ language }: { language: string }) {
     };
   }, []);
 
-  const handleNavigateToNotification = (isUnread: boolean) => {
-    if (isUnread) {
-      setUnreadNotifications(unreadNotifications - 1);
+  const handleNotificationClick = async (notification: Notification) => {
+    if (!notification.isRead) {
+      await markNotificationAsRead(notification.id);
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === notification.id ? { ...n, isRead: true } : n,
+        ),
+      );
     }
+    router.push(
+      `/${language}/bookings/${notification.bookingMetadata.bookingId}`,
+    );
     setMenuOpen(false);
   };
+
+  const unreadNotifications = notifications.filter((notif) => !notif.isRead);
 
   return (
     <div ref={menuRef} className="relative">
@@ -70,58 +100,76 @@ export default function NotificationsMenu({ language }: { language: string }) {
         className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
       >
         <Bell size={24} />
-        {unreadNotifications > 0 && (
+        {unreadNotifications.length > 0 && (
           <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-[#15b7b9] ring-2 ring-white"></span>
         )}
       </button>
 
       {menuOpen && (
         <div
-          className="absolute right-0 z-50 mt-6 w-80 overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5"
-          style={{ maxHeight: '500px' }}
+          className="absolute right-0 z-50 mt-6 w-96 overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+          style={{ maxHeight: '600px' }}
         >
           <div className="flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-[#15b7b9]/10 to-white px-4 py-3">
             <h3 className="text-sm font-semibold text-gray-900">
               {t('recent-notifications')}
             </h3>
-            {unreadNotifications > 0 && (
+            {unreadNotifications.length > 0 && (
               <span className="rounded-full bg-[#15b7b9] px-2 py-1 text-xs font-medium text-white">
-                {unreadNotifications} {t('new')}
+                {unreadNotifications.length} {t('new')}
               </span>
             )}
           </div>
 
-          <div className="overflow-y-auto" style={{ maxHeight: '320px' }}>
-            {notifications.length > 0 ? (
+          <div className="overflow-y-auto" style={{ maxHeight: '520px' }}>
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center px-4 py-6 text-center">
+                <p className="text-sm text-gray-500">{t('loading')}</p>
+              </div>
+            ) : notifications.length > 0 ? (
               <div className="divide-y divide-gray-100">
                 {notifications.map((notification) => (
-                  <Link
+                  <div
                     key={notification.id}
-                    href={`/${language}${notification.link}`}
-                    onClick={() =>
-                      handleNavigateToNotification(notification.unread)
-                    }
-                    className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 hover:bg-[#15b7b9]/5"
+                    onClick={() => handleNotificationClick(notification)}
+                    className={`flex cursor-pointer items-start gap-3 px-4 py-3 transition-colors duration-200 ${
+                      !notification.isRead
+                        ? 'bg-[#15b7b9]/5'
+                        : 'hover:bg-[#15b7b9]/5'
+                    }`}
                   >
                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#15b7b9]/20 text-[#15b7b9]">
                       <Bell size={16} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="mb-1 flex items-center justify-between">
-                        <span className="truncate text-sm font-medium text-gray-900">
-                          {notification.title}
-                        </span>
-                        {notification.unread && (
+                      <div className="mb-1 flex items-start justify-between gap-2">
+                        <p className="text-sm font-medium text-gray-900">
+                          {t(
+                            `bookingNotification.${notification.bookingMetadata.status}`,
+                            {
+                              eventName: notification.bookingMetadata.eventName,
+                              userName: notification.bookingMetadata.userName,
+                              bandName: notification.bookingMetadata.bandName,
+                            },
+                          )}
+                        </p>
+                        {!notification.isRead && (
                           <span className="flex-shrink-0 rounded-full bg-[#15b7b9] px-2 py-0.5 text-xs text-white">
                             !
                           </span>
                         )}
                       </div>
-                      <p className="truncate text-xs text-gray-500">
-                        {notification.description}
+                      <p className="text-xs text-gray-500">
+                        {format(
+                          new Date(notification.createdAt),
+                          'MMM d, HH:mm',
+                          {
+                            locale: getLocale(),
+                          },
+                        )}
                       </p>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             ) : (
@@ -130,16 +178,6 @@ export default function NotificationsMenu({ language }: { language: string }) {
                 <p className="text-sm text-gray-500">{t('no-notifications')}</p>
               </div>
             )}
-          </div>
-
-          <div className="border-t border-gray-100">
-            <Link
-              href={`/${language}/notifications`}
-              onClick={() => setMenuOpen(false)}
-              className="block w-full px-4 py-3 text-center text-sm font-semibold text-[#15b7b9] transition-colors duration-200 hover:bg-[#15b7b9]/10"
-            >
-              {t('view-all-notifications')}
-            </Link>
           </div>
         </div>
       )}

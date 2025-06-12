@@ -1,36 +1,26 @@
 'use server';
 import { Notification } from '@/service/backend/notifications/domain/notification';
+import { BackendError } from '@/service/backend/shared/domain/backendError';
+import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 
-export async function getClientNotifications(
-  userId: string,
-): Promise<Notification[] | undefined> {
-  // return withTokenRefreshRetry(() =>
-  //   authorizedAxiosInstance
-  //     .get(`/notifications/client/${userId}`)
-  //     .then((res) => res.data),
-  // );
-  // TODO: implement me
-  return [
-    {
-      id: '1',
-      title: 'Nova reserva confirmada',
-      description: 'La reserva per al 15 de juny ha estat confirmada.',
-      link: '/bookings',
-      unread: true,
-    },
-    {
-      id: '2',
-      title: 'Missatge rebut',
-      description: 'Tens un nou missatge de Marta G.',
-      link: '/chats',
-      unread: false,
-    },
-    {
-      id: '3',
-      title: 'Contracte aprovat',
-      description: 'El contracte per al 20 de juliol ha estat aprovat.',
-      link: '/bookings',
-      unread: true,
-    },
-  ];
+export async function getUserNotifications(): Promise<
+  Notification[] | BackendError
+> {
+  return authorizedAxiosInstance
+    .get('/notifications/user')
+    .then((res) => res.data)
+    .catch((error) => {
+      return error.response.data;
+    });
+}
+
+export async function markNotificationAsRead(
+  notificationId: string,
+): Promise<void | BackendError> {
+  return authorizedAxiosInstance
+    .put(`/notifications/${notificationId}/read`)
+    .then((res) => res.data)
+    .catch((error) => {
+      return error.response.data;
+    });
 }

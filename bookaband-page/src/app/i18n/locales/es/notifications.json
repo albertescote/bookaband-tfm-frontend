@@ -1,8 +1,19 @@
 {
   "title": "Notificaciones",
   "description": "Mantente al día con tu actividad musical",
-  "no-notifications": "Aún no hay notificaciones",
+  "no-notifications": "No hay notificaciones disponibles",
   "recent-notifications": "Notificaciones recientes",
   "view-all-notifications": "Ver todas las notificaciones",
-  "new": "nuevo"
+  "new": "nueva",
+  "loading": "Cargando notificaciones...",
+  "bookingNotification": {
+    "pending": "Has solicitado a {{bandName}} para {{eventName}}",
+    "accepted": "{{bandName}} ha aceptado tu solicitud para {{eventName}}",
+    "signed": "El contrato para {{eventName}} con {{bandName}} ha sido firmado",
+    "paid": "Tu pago para {{eventName}} con {{bandName}} ha sido recibido",
+    "declined": "{{bandName}} ha rechazado tu solicitud para {{eventName}}",
+    "canceled": "Tu reserva para {{eventName}} con {{bandName}} ha sido cancelada",
+    "userSigned": "Has firmado el contrato para {{eventName}} con {{bandName}}",
+    "bandSigned": "{{bandName}} ha firmado el contrato para {{eventName}}"
+  }
 }

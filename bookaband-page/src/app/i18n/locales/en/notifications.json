@@ -4,5 +4,16 @@
   "recent-notifications": "Recent notifications",
   "no-notifications": "No notifications available",
   "view-all-notifications": "View all notifications",
-  "new": "new"
+  "new": "new",
+  "loading": "Loading notifications...",
+  "bookingNotification": {
+    "pending": "You have requested {{bandName}} for {{eventName}}",
+    "accepted": "{{bandName}} has accepted your booking request for {{eventName}}",
+    "signed": "The contract for {{eventName}} with {{bandName}} has been signed",
+    "paid": "Your payment for {{eventName}} with {{bandName}} has been received",
+    "declined": "{{bandName}} has declined your booking request for {{eventName}}",
+    "canceled": "Your booking for {{eventName}} with {{bandName}} has been canceled",
+    "userSigned": "You have signed the contract for {{eventName}} with {{bandName}}",
+    "bandSigned": "{{bandName}} has signed the contract for {{eventName}}"
+  }
 }

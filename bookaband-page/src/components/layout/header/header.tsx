@@ -8,7 +8,7 @@ import UserButtons from '@/components/layout/header/userButtons';
 import { useAuth } from '@/providers/authProvider';
 import { Bell, Calendar, LogOut, MessageSquareText } from 'lucide-react';
 import { getAvatar } from '@/components/shared/avatar';
-import { getClientNotifications } from '@/service/backend/notifications/service/notifications.service';
+import { getUserNotifications } from '@/service/backend/notifications/service/notifications.service';
 import { getClientChats } from '@/service/backend/chat/service/chat.service';
 import { toast } from 'react-hot-toast';
 
@@ -39,15 +39,18 @@ export default function Header({ language }: { language: string }) {
     let messagesInterval: NodeJS.Timeout;
 
     if (user?.id) {
-      const getNotificationsAndUpdateUnread = (userId: string) => {
-        getClientNotifications(userId).then((receivedNotifications) => {
-          if (receivedNotifications) {
+      const fetchNotifications = async () => {
+        try {
+          const receivedNotifications = await getUserNotifications();
+          if (receivedNotifications && !('error' in receivedNotifications)) {
             const totalUnread = receivedNotifications.filter(
-              (notification) => notification.unread,
+              (notification) => !notification.isRead,
             ).length;
             setUnreadNotifications(totalUnread);
           }
-        });
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
       };
 
       const getChatsAndUpdateUnreadMessages = (userId: string) => {
@@ -64,11 +67,11 @@ export default function Header({ language }: { language: string }) {
         });
       };
 
-      getNotificationsAndUpdateUnread(user.id);
+      fetchNotifications();
       getChatsAndUpdateUnreadMessages(user.id);
 
       notificationsInterval = setInterval(() => {
-        getNotificationsAndUpdateUnread(user.id);
+        fetchNotifications();
       }, 30000);
 
       messagesInterval = setInterval(() => {

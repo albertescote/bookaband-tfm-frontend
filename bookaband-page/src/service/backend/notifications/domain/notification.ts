@@ -1,7 +1,16 @@
+interface BookingMetadata {
+  bookingId: string;
+  status: string;
+  eventName: string;
+  userName: string;
+  bandName: string;
+}
+
 export interface Notification {
   id: string;
-  title: string;
-  description: string;
-  link: string;
-  unread: boolean;
+  bandId: string;
+  userId: string;
+  isRead: boolean;
+  createdAt: Date;
+  bookingMetadata: BookingMetadata;
 }
