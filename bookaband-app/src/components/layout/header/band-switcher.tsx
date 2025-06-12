@@ -18,6 +18,11 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
 
+  const handleChangeBand = (newSelectedBand: UserBand) => {
+    setSelectedBand(newSelectedBand);
+    window.location.reload();
+  };
+
   if (bands.length === 0) {
     return (
       <div className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500">
@@ -27,7 +32,7 @@ export function BandSwitcher({ bands }: BandSwitcherProps) {
   }
 
   return (
-    <Listbox value={selectedBand} onChange={setSelectedBand}>
+    <Listbox value={selectedBand} onChange={handleChangeBand}>
       <div className="relative">
         <Listbox.Button className="flex w-full min-w-[200px] items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]">
           <div className="flex flex-1 items-center space-x-4">
