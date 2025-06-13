@@ -69,7 +69,7 @@ export function ArtistSidebar({
   };
 
   const handleHireClick = () => {
-    if (!user?.nationalId || !user?.phoneNumber) {
+    if (user && (!user.nationalId || user?.phoneNumber)) {
       toast.error(t('completeProfile'));
       router.push(`/${language}/profile`);
       return;

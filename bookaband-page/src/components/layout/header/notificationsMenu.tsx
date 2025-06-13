@@ -97,9 +97,12 @@ export default function NotificationsMenu({ language }: { language: string }) {
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+        className="relative flex items-center justify-center rounded-full text-[#565d6d] will-change-transform hover:text-[#15b7b9]"
       >
-        <Bell size={24} />
+        <Bell
+          size={24}
+          className="transform transition-transform duration-200 hover:scale-110"
+        />
         {unreadNotifications.length > 0 && (
           <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-[#15b7b9] ring-2 ring-white"></span>
         )}

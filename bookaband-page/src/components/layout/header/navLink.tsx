@@ -15,17 +15,19 @@ export default function NavLink({ href, label, onClick }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`text-base font-medium hover:text-[#15b7b9] ${
-        isActive
-          ? 'font-semibold text-[#15b7b9]'
-          : 'text-[#565d6d] hover:text-[#15b7b9]'
+      className={`relative text-base font-medium will-change-transform ${
+        isActive ? 'font-semibold text-[#15b7b9]' : 'text-[#565d6d]'
       }`}
       onClick={onClick}
     >
-      {label}
-      <p
-        className={`${isActive ? 'border-b-2 border-[#15b7b9]' : 'invisible'}`}
-      ></p>
+      <span className="transform transition-transform duration-200 hover:scale-105">
+        {label}
+      </span>
+      <span
+        className={`absolute bottom-0 left-0 h-0.5 w-full origin-left transform bg-[#15b7b9] transition-transform duration-200 ease-in-out ${
+          isActive ? 'scale-x-100' : 'scale-x-0'
+        }`}
+      />
     </Link>
   );
 }

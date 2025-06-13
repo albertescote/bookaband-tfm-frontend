@@ -142,7 +142,7 @@ export default function MessagesMenu({ language }: { language: string }) {
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:text-[#15b7b9]"
+        className="relative flex items-center justify-center rounded-full text-[#565d6d] transition-colors duration-300 hover:scale-110 hover:text-[#15b7b9]"
       >
         <MessageSquareText size={24} />
         {unreadMessages > 0 && (
