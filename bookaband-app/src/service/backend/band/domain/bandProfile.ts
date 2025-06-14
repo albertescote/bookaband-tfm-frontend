@@ -56,8 +56,8 @@ export interface PerformanceArea {
   regions: string[];
   gasPriceCalculation?: {
     fuelConsumption: number;
-    pricePerLiter?: number;
     useDynamicPricing?: boolean;
+    pricePerLiter?: number;
   };
   otherComments?: string;
 }

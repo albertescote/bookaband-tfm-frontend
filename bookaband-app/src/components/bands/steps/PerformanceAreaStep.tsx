@@ -85,7 +85,7 @@ export default function PerformanceAreaStep({
       const parsedData = JSON.parse(storedData);
       return parsedData.performanceArea?.gasPriceCalculation ?? false;
     }
-    return false;
+    return formData.performanceArea?.gasPriceCalculation ?? false;
   });
   const [gasPriceCalculation, setGasPriceCalculation] =
     useState<GasPriceCalculation>(() => {
@@ -98,8 +98,13 @@ export default function PerformanceAreaStep({
         }
       }
       return {
-        fuelConsumption: 0,
-        useDynamicPricing: true,
+        fuelConsumption:
+          formData.performanceArea?.gasPriceCalculation?.fuelConsumption ?? 0,
+        useDynamicPricing:
+          formData.performanceArea?.gasPriceCalculation?.useDynamicPricing ??
+          true,
+        pricePerLiter:
+          formData.performanceArea?.gasPriceCalculation?.pricePerLiter,
       };
     });
 
@@ -110,28 +115,49 @@ export default function PerformanceAreaStep({
   }, []);
 
   useEffect(() => {
+    const storageKey = `bandForm_${language}`;
+    const storedData = localStorage.getItem(storageKey);
+    const parsedData = storedData ? JSON.parse(storedData) : {};
+
+    const updatedData = {
+      ...parsedData,
+      performanceArea: {
+        ...parsedData.performanceArea,
+        regions: selectedRegions.map((region) => region.id),
+        regionDetails: selectedRegions,
+        gasPriceCalculation: isGasPriceEnabled
+          ? gasPriceCalculation
+          : undefined,
+        otherComments: formData.performanceArea?.otherComments || '',
+      },
+    };
+
+    localStorage.setItem(storageKey, JSON.stringify(updatedData));
+  }, [
+    selectedRegions,
+    isGasPriceEnabled,
+    gasPriceCalculation,
+    formData.performanceArea?.otherComments,
+    language,
+  ]);
+
+  useEffect(() => {
     const performanceArea: PerformanceArea = {
       regions: selectedRegions.map((region) => region.id),
       gasPriceCalculation: isGasPriceEnabled ? gasPriceCalculation : undefined,
       otherComments: formData.performanceArea?.otherComments || '',
     };
 
-    const storageKey = `bandForm_${language}`;
-    const storedData = localStorage.getItem(storageKey);
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      parsedData.performanceArea = {
-        ...performanceArea,
-        regionDetails: selectedRegions,
-      };
-      localStorage.setItem(storageKey, JSON.stringify(parsedData));
-    }
-
     onFormDataChange({
       ...formData,
       performanceArea,
     });
-  }, [selectedRegions, gasPriceCalculation, isGasPriceEnabled, language]);
+  }, [
+    selectedRegions,
+    isGasPriceEnabled,
+    gasPriceCalculation,
+    formData.performanceArea?.otherComments,
+  ]);
 
   useEffect(() => {
     const fetchRegionDetails = async () => {
@@ -268,11 +294,11 @@ export default function PerformanceAreaStep({
 
   const handleGasPriceChange = (
     field: keyof GasPriceCalculation,
-    value: string | number,
+    value: string | number | boolean,
   ) => {
     setGasPriceCalculation((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: value === '' ? 0 : value,
     }));
   };
 
@@ -412,16 +438,24 @@ export default function PerformanceAreaStep({
                   <div className="relative">
                     <Input
                       type="number"
-                      value={gasPriceCalculation.fuelConsumption ?? 0}
+                      value={gasPriceCalculation.fuelConsumption || ''}
                       onChange={(e) =>
                         handleGasPriceChange(
                           'fuelConsumption',
-                          parseFloat(e.target.value),
+                          e.target.value === ''
+                            ? ''
+                            : parseFloat(e.target.value),
                         )
                       }
                       min="0"
                       step="0.1"
-                      className={`pr-12 ${hasError && (!gasPriceCalculation.fuelConsumption || gasPriceCalculation.fuelConsumption <= 0) ? 'border-red-500' : ''}`}
+                      className={`pr-12 ${
+                        hasError &&
+                        (!gasPriceCalculation.fuelConsumption ||
+                          gasPriceCalculation.fuelConsumption <= 0)
+                          ? 'border-red-500'
+                          : ''
+                      }`}
                       placeholder="0.0"
                     />
                   </div>
@@ -487,16 +521,22 @@ export default function PerformanceAreaStep({
                   <div className="relative">
                     <Input
                       type="number"
-                      value={gasPriceCalculation.pricePerLiter}
+                      value={gasPriceCalculation.pricePerLiter || ''}
                       onChange={(e) =>
                         handleGasPriceChange(
                           'pricePerLiter',
-                          parseFloat(e.target.value),
+                          e.target.value === ''
+                            ? ''
+                            : parseFloat(e.target.value),
                         )
                       }
                       min="0"
                       step="0.01"
-                      className={`pr-12 ${hasError && !gasPriceCalculation.pricePerLiter ? 'border-red-500' : ''}`}
+                      className={`pr-12 ${
+                        hasError && !gasPriceCalculation.pricePerLiter
+                          ? 'border-red-500'
+                          : ''
+                      }`}
                       placeholder="0.00"
                     />
                   </div>
