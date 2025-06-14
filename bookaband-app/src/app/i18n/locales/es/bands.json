@@ -283,26 +283,36 @@
     },
     "performanceArea": {
       "title": "Área de Actuación",
-      "subtitle": "Especifica dónde está disponible tu banda para actuar.",
+      "subtitle": "Define dónde está disponible tu banda para actuar",
       "info": {
-        "title": "Cómo funciona",
+        "title": "Información del Área de Actuación",
         "description": "Selecciona las regiones donde tu banda está disponible para actuar. Cuando los clientes busquen locales en estas áreas, tu banda aparecerá en sus resultados de búsqueda. Puedes seleccionar múltiples regiones en diferentes niveles (país, región o provincia)."
       },
       "regions": {
-        "label": "Regiones Disponibles",
+        "label": "Regiones de Actuación",
         "selectType": "Selecciona el tipo de región",
         "searchPlaceholder": "Busca una región...",
         "types": {
-          "world": "Mundial",
-          "continent": "Continente",
           "country": "País",
-          "region": "Comunidad Autónoma",
+          "region": "Región/Estado",
           "province": "Provincia"
-        }
+        },
+        "required": "Por favor, selecciona al menos una región"
       },
-      "travelPreferences": {
-        "label": "Preferencias de viaje",
-        "placeholder": "Describe tus preferencias de viaje"
+      "gasPrice": {
+        "enableLabel": "Activar cálculo automático del coste de gasolina",
+        "label": "Cálculo del Precio de Gasolina",
+        "fuelConsumption": "Consumo de combustible",
+        "fuelConsumptionHelp": "Introduce el consumo medio de combustible de tu vehículo",
+        "fuelConsumptionRequired": "Por favor, introduce un valor válido de consumo de combustible",
+        "pricingType": "Método de cálculo del precio",
+        "dynamicPricing": "Precio dinámico",
+        "staticPricing": "Precio fijo",
+        "staticPricePerLiter": "Precio fijo por litro",
+        "staticPriceHelp": "Introduce un precio fijo por litro de combustible",
+        "staticPriceRequired": "Por favor, introduce un precio válido por litro",
+        "dynamicDescription": "El sistema obtendrá automáticamente el precio actual del combustible al calcular los costes de las reservas.",
+        "staticDescription": "El sistema utilizará tu precio fijo al calcular los costes de las reservas."
       },
       "otherComments": {
         "label": "Otros Comentarios",

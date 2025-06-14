@@ -282,26 +282,36 @@
     },
     "performanceArea": {
       "title": "Àrea d'Actuació",
-      "subtitle": "Especifica on està disponible la teva banda per actuar.",
+      "subtitle": "Defineix on està disponible la teva banda per actuar",
       "info": {
-        "title": "Com funciona",
+        "title": "Informació de l'Àrea d'Actuació",
         "description": "Selecciona les regions on la teva banda està disponible per actuar. Quan els clients busquin locals en aquestes àrees, la teva banda apareixerà en els seus resultats de cerca. Pots seleccionar múltiples regions en diferents nivells (país, regió o província)."
       },
       "regions": {
-        "label": "Regions Disponibles",
+        "label": "Regions d'Actuació",
         "selectType": "Selecciona el tipus de regió",
         "searchPlaceholder": "Cerca una regió...",
         "types": {
-          "world": "Mundial",
-          "continent": "Continent",
           "country": "País",
-          "region": "Comunitat Autònoma",
+          "region": "Regió/Estat",
           "province": "Província"
-        }
+        },
+        "required": "Si us plau, selecciona almenys una regió"
       },
-      "travelPreferences": {
-        "label": "Preferències de viatge",
-        "placeholder": "Descriu les teves preferències de viatge"
+      "gasPrice": {
+        "enableLabel": "Activar càlcul automàtic del cost de benzina",
+        "label": "Càlcul del Preu de Benzina",
+        "fuelConsumption": "Consum de combustible",
+        "fuelConsumptionHelp": "Introdueix el consum mitjà de combustible del teu vehicle",
+        "fuelConsumptionRequired": "Si us plau, introdueix un valor vàlid de consum de combustible",
+        "pricingType": "Mètode de càlcul del preu",
+        "dynamicPricing": "Preu dinàmic",
+        "staticPricing": "Preu fix",
+        "staticPricePerLiter": "Preu fix per litre",
+        "staticPriceHelp": "Introdueix un preu fix per litre de combustible",
+        "staticPriceRequired": "Si us plau, introdueix un preu vàlid per litre",
+        "dynamicDescription": "El sistema obtindrà automàticament el preu actual del combustible en calcular els costos de les reserves.",
+        "staticDescription": "El sistema utilitzarà el teu preu fix en calcular els costos de les reserves."
       },
       "otherComments": {
         "label": "Altres Comentaris",

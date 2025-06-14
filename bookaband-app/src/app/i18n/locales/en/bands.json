@@ -276,26 +276,36 @@
     },
     "performanceArea": {
       "title": "Performance Area",
-      "subtitle": "Specify where your band is available to perform.",
+      "subtitle": "Define where your band is available to perform",
       "info": {
-        "title": "How it works",
+        "title": "Performance Area Information",
         "description": "Select the regions where your band is available to perform. When clients search for venues in these areas, your band will appear in their search results. You can select multiple regions at different levels (country, region, or province)."
       },
       "regions": {
-        "label": "Available Regions",
+        "label": "Performance Regions",
         "selectType": "Select region type",
         "searchPlaceholder": "Search for a region...",
         "types": {
-          "world": "Worldwide",
-          "continent": "Continent",
           "country": "Country",
           "region": "Region/State",
           "province": "Province"
-        }
+        },
+        "required": "Please select at least one region"
       },
-      "travelPreferences": {
-        "label": "Travel preferences",
-        "placeholder": "Describe your travel preferences"
+      "gasPrice": {
+        "enableLabel": "Enable automatic gas cost calculation",
+        "label": "Gas Price Calculation",
+        "fuelConsumption": "Fuel consumption",
+        "fuelConsumptionHelp": "Enter your vehicle's average fuel consumption",
+        "pricingType": "Price calculation method",
+        "dynamicPricing": "Dynamic pricing",
+        "staticPricing": "Fixed price",
+        "staticPricePerLiter": "Fixed price per liter",
+        "staticPriceHelp": "Enter a fixed price per liter of fuel",
+        "dynamicDescription": "The system will automatically fetch the current fuel price when calculating costs for bookings.",
+        "staticDescription": "The system will use your fixed price when calculating costs for bookings.",
+        "fuelConsumptionRequired": "Please enter a valid fuel consumption value",
+        "staticPriceRequired": "Please enter a valid price per liter"
       },
       "otherComments": {
         "label": "Other Comments",

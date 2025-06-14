@@ -13,12 +13,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 interface Region {
   id: string;
   name: string;
   type: 'country' | 'region' | 'province';
   parentId?: string;
+}
+
+interface GasPriceCalculation {
+  fuelConsumption: number;
+  useDynamicPricing: boolean;
+  pricePerLiter?: number;
 }
 
 interface PerformanceAreaStepProps {
@@ -70,6 +78,30 @@ export default function PerformanceAreaStep({
     return [];
   });
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const [isGasPriceEnabled, setIsGasPriceEnabled] = useState(() => {
+    const storageKey = `bandForm_${language}`;
+    const storedData = localStorage.getItem(storageKey);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      return parsedData.performanceArea?.gasPriceCalculation ?? false;
+    }
+    return false;
+  });
+  const [gasPriceCalculation, setGasPriceCalculation] =
+    useState<GasPriceCalculation>(() => {
+      const storageKey = `bandForm_${language}`;
+      const storedData = localStorage.getItem(storageKey);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData.performanceArea?.gasPriceCalculation) {
+          return parsedData.performanceArea.gasPriceCalculation;
+        }
+      }
+      return {
+        fuelConsumption: 0,
+        useDynamicPricing: true,
+      };
+    });
 
   useEffect(() => {
     if (window.google && window.google.maps) {
@@ -80,7 +112,7 @@ export default function PerformanceAreaStep({
   useEffect(() => {
     const performanceArea: PerformanceArea = {
       regions: selectedRegions.map((region) => region.id),
-      travelPreferences: formData.performanceArea?.travelPreferences || '',
+      gasPriceCalculation: isGasPriceEnabled ? gasPriceCalculation : undefined,
       otherComments: formData.performanceArea?.otherComments || '',
     };
 
@@ -99,7 +131,7 @@ export default function PerformanceAreaStep({
       ...formData,
       performanceArea,
     });
-  }, [selectedRegions, language]);
+  }, [selectedRegions, gasPriceCalculation, isGasPriceEnabled, language]);
 
   useEffect(() => {
     const fetchRegionDetails = async () => {
@@ -222,10 +254,7 @@ export default function PerformanceAreaStep({
     const { name, value } = e.target;
     const performanceArea: PerformanceArea = {
       regions: selectedRegions.map((region) => region.id),
-      travelPreferences:
-        name === 'travelPreferences'
-          ? value
-          : formData.performanceArea?.travelPreferences || '',
+      gasPriceCalculation: isGasPriceEnabled ? gasPriceCalculation : undefined,
       otherComments:
         name === 'otherComments'
           ? value
@@ -235,6 +264,16 @@ export default function PerformanceAreaStep({
       ...formData,
       performanceArea,
     });
+  };
+
+  const handleGasPriceChange = (
+    field: keyof GasPriceCalculation,
+    value: string | number,
+  ) => {
+    setGasPriceCalculation((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   return (
@@ -339,41 +378,160 @@ export default function PerformanceAreaStep({
 
             {hasError && selectedRegions.length === 0 && (
               <p className="mt-1 text-sm text-red-500">
-                {t('validation.required')}
+                {t('form.performanceArea.regions.required')}
               </p>
             )}
           </div>
         </div>
 
-        <div>
-          <label
-            htmlFor="travelPreferences"
+        <div className="flex items-center justify-between">
+          <Label
+            htmlFor="gas-price-enabled"
             className="text-sm font-medium text-gray-700"
           >
-            {t('form.performanceArea.travelPreferences.label')} *
-          </label>
-          <div className="mt-2">
-            <Textarea
-              id="travelPreferences"
-              name="travelPreferences"
-              value={formData.performanceArea?.travelPreferences || ''}
-              onChange={handleInputChange}
-              placeholder={t(
-                'form.performanceArea.travelPreferences.placeholder',
-              )}
-              className={
-                hasError && !formData.performanceArea?.travelPreferences
-                  ? 'border-red-500'
-                  : ''
-              }
-            />
-            {hasError && !formData.performanceArea?.travelPreferences && (
-              <p className="mt-1 text-sm text-red-500">
-                {t('validation.required')}
-              </p>
-            )}
-          </div>
+            {t('form.performanceArea.gasPrice.enableLabel')}
+          </Label>
+          <Switch
+            id="gas-price-enabled"
+            checked={isGasPriceEnabled}
+            onCheckedChange={setIsGasPriceEnabled}
+          />
         </div>
+
+        {isGasPriceEnabled && (
+          <div className="rounded-lg border border-gray-200 bg-white p-6">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700">
+                      {t('form.performanceArea.gasPrice.fuelConsumption')} *
+                    </label>
+                    <span className="text-xs text-gray-500">L/100km</span>
+                  </div>
+                  <div className="relative">
+                    <Input
+                      type="number"
+                      value={gasPriceCalculation.fuelConsumption ?? 0}
+                      onChange={(e) =>
+                        handleGasPriceChange(
+                          'fuelConsumption',
+                          parseFloat(e.target.value),
+                        )
+                      }
+                      min="0"
+                      step="0.1"
+                      className={`pr-12 ${hasError && (!gasPriceCalculation.fuelConsumption || gasPriceCalculation.fuelConsumption <= 0) ? 'border-red-500' : ''}`}
+                      placeholder="0.0"
+                    />
+                  </div>
+                  {hasError &&
+                    (!gasPriceCalculation.fuelConsumption ||
+                      gasPriceCalculation.fuelConsumption <= 0) && (
+                      <p className="text-xs text-red-500">
+                        {t(
+                          'form.performanceArea.gasPrice.fuelConsumptionRequired',
+                        )}
+                      </p>
+                    )}
+                  <p className="text-xs text-gray-500">
+                    {t('form.performanceArea.gasPrice.fuelConsumptionHelp')}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700">
+                      {t('form.performanceArea.gasPrice.pricingType')}
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleGasPriceChange('useDynamicPricing', true)
+                      }
+                      className={`rounded-md px-4 py-2 text-sm font-medium ${
+                        gasPriceCalculation.useDynamicPricing
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {t('form.performanceArea.gasPrice.dynamicPricing')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleGasPriceChange('useDynamicPricing', false)
+                      }
+                      className={`rounded-md px-4 py-2 text-sm font-medium ${
+                        !gasPriceCalculation.useDynamicPricing
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {t('form.performanceArea.gasPrice.staticPricing')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {!gasPriceCalculation.useDynamicPricing && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700">
+                      {t('form.performanceArea.gasPrice.staticPricePerLiter')}
+                    </label>
+                    <span className="text-xs text-gray-500">€/L</span>
+                  </div>
+                  <div className="relative">
+                    <Input
+                      type="number"
+                      value={gasPriceCalculation.pricePerLiter}
+                      onChange={(e) =>
+                        handleGasPriceChange(
+                          'pricePerLiter',
+                          parseFloat(e.target.value),
+                        )
+                      }
+                      min="0"
+                      step="0.01"
+                      className={`pr-12 ${hasError && !gasPriceCalculation.pricePerLiter ? 'border-red-500' : ''}`}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {t('form.performanceArea.gasPrice.staticPriceHelp')}
+                  </p>
+                </div>
+              )}
+
+              <div className="rounded-md bg-blue-50 p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <Info className="h-5 w-5 text-blue-400" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-blue-700">
+                      {gasPriceCalculation.useDynamicPricing
+                        ? t('form.performanceArea.gasPrice.dynamicDescription')
+                        : t('form.performanceArea.gasPrice.staticDescription')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {hasError &&
+                (!gasPriceCalculation.fuelConsumption ||
+                  (!gasPriceCalculation.useDynamicPricing &&
+                    !gasPriceCalculation.pricePerLiter)) && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
+            </div>
+          </div>
+        )}
 
         <div>
           <label

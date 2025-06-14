@@ -63,7 +63,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       },
       performanceArea: {
         regions: [],
-        travelPreferences: '',
+        gasPriceCalculation: undefined,
         otherComments: '',
       },
       media: [],
@@ -137,10 +137,21 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           hospitalityRider.beverages?.trim()
         );
       case 4:
-        return (
-          (formData.performanceArea?.regions?.length ?? 0) > 0 &&
-          !!formData.performanceArea?.travelPreferences?.trim()
-        );
+        if (!((formData.performanceArea?.regions?.length ?? 0) > 0)) {
+          return false;
+        }
+        if (formData.performanceArea?.gasPriceCalculation) {
+          if (!formData.performanceArea.gasPriceCalculation.fuelConsumption) {
+            return false;
+          }
+          if (
+            !formData.performanceArea.gasPriceCalculation.useDynamicPricing &&
+            !formData.performanceArea.gasPriceCalculation.pricePerLiter
+          ) {
+            return false;
+          }
+        }
+        return true;
       case 5:
         return Object.values(formData.weeklyAvailability || {}).some(
           (value) => value,
@@ -243,7 +254,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           technicalRider: formData.technicalRider || undefined,
           performanceArea: formData.performanceArea || {
             regions: [],
-            travelPreferences: '',
+            gasPriceCalculation: undefined,
             otherComments: '',
           },
           media:
