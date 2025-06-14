@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { getFormData, setFormData } from '@/utils/formStorage';
 
 interface Region {
   id: string;
@@ -47,13 +48,9 @@ export default function PerformanceAreaStep({
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Region[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<Region[]>(() => {
-    const storageKey = `bandForm_${language}`;
-    const storedData = localStorage.getItem(storageKey);
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      if (parsedData.performanceArea?.regionDetails) {
-        return parsedData.performanceArea.regionDetails;
-      }
+    const storedData = getFormData();
+    if (storedData?.performanceArea?.regionDetails) {
+      return storedData.performanceArea.regionDetails;
     }
 
     if (formData.performanceArea?.regions) {
@@ -79,23 +76,18 @@ export default function PerformanceAreaStep({
   });
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
   const [isGasPriceEnabled, setIsGasPriceEnabled] = useState(() => {
-    const storageKey = `bandForm_${language}`;
-    const storedData = localStorage.getItem(storageKey);
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      return parsedData.performanceArea?.gasPriceCalculation ?? false;
-    }
-    return formData.performanceArea?.gasPriceCalculation ?? false;
+    const storedData = getFormData();
+    return (
+      storedData?.performanceArea?.gasPriceCalculation ??
+      formData.performanceArea?.gasPriceCalculation ??
+      false
+    );
   });
   const [gasPriceCalculation, setGasPriceCalculation] =
     useState<GasPriceCalculation>(() => {
-      const storageKey = `bandForm_${language}`;
-      const storedData = localStorage.getItem(storageKey);
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData.performanceArea?.gasPriceCalculation) {
-          return parsedData.performanceArea.gasPriceCalculation;
-        }
+      const storedData = getFormData();
+      if (storedData?.performanceArea?.gasPriceCalculation) {
+        return storedData.performanceArea.gasPriceCalculation;
       }
       return {
         fuelConsumption:
@@ -115,14 +107,11 @@ export default function PerformanceAreaStep({
   }, []);
 
   useEffect(() => {
-    const storageKey = `bandForm_${language}`;
-    const storedData = localStorage.getItem(storageKey);
-    const parsedData = storedData ? JSON.parse(storedData) : {};
-
+    const storedData = getFormData() || {};
     const updatedData = {
-      ...parsedData,
+      ...storedData,
       performanceArea: {
-        ...parsedData.performanceArea,
+        ...storedData.performanceArea,
         regions: selectedRegions.map((region) => region.id),
         regionDetails: selectedRegions,
         gasPriceCalculation: isGasPriceEnabled
@@ -132,13 +121,12 @@ export default function PerformanceAreaStep({
       },
     };
 
-    localStorage.setItem(storageKey, JSON.stringify(updatedData));
+    setFormData(updatedData);
   }, [
     selectedRegions,
     isGasPriceEnabled,
     gasPriceCalculation,
     formData.performanceArea?.otherComments,
-    language,
   ]);
 
   useEffect(() => {

@@ -12,6 +12,7 @@ import MultimediaStep from './steps/MultimediaStep';
 import { AvailabilityStep } from '@/components/bands/steps/AvailabilityStep';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
+import { clearFormData, getFormData, setFormData } from '@/utils/formStorage';
 
 interface FormDataWithFiles extends Partial<UpsertBandRequest> {
   imageFile?: File;
@@ -21,7 +22,6 @@ interface BandProfileFormProps {
   onSubmit: (data: UpsertBandRequest) => Promise<void>;
 }
 
-const FORM_STORAGE_KEY = 'bandProfileFormData';
 const CURRENT_STEP_KEY = 'bandProfileFormStep';
 const TOTAL_STEPS = 6;
 
@@ -32,13 +32,11 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormDataWithFiles>(() => {
+  const [formData, setFormDataState] = useState<FormDataWithFiles>(() => {
     if (typeof window !== 'undefined') {
-      const savedData = localStorage.getItem(FORM_STORAGE_KEY);
+      const savedData = getFormData();
       if (savedData) {
-        const parsedData = JSON.parse(savedData);
-
-        const { imageFile, ...rest } = parsedData;
+        const { imageFile, ...rest } = savedData;
         return rest;
       }
     }
@@ -74,16 +72,16 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
 
   const clearFormState = () => {
     setCurrentStep(1);
-    setFormData({});
+    setFormDataState({});
     setStepErrors({});
     setError(null);
-    clearFormStorage();
+    clearFormData();
   };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const { imageFile, ...dataToSave } = formData;
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(dataToSave));
+      setFormData(dataToSave);
     }
   }, [formData]);
 
@@ -93,11 +91,18 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     }
   }, [currentStep]);
 
-  const clearFormStorage = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(FORM_STORAGE_KEY);
-      localStorage.removeItem(CURRENT_STEP_KEY);
-    }
+  const handleFormDataChange = (data: Partial<UpsertBandRequest>) => {
+    setFormDataState((prev) => {
+      const updatedData = {
+        ...prev,
+        ...data,
+        technicalRider: data.technicalRider ?? undefined,
+        hospitalityRider: data.hospitalityRider ?? undefined,
+      };
+      return updatedData;
+    });
+
+    setStepErrors((prev) => ({ ...prev, [currentStep]: false }));
   };
 
   const validateStep = (
@@ -265,7 +270,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         };
 
         await onSubmit(data);
-        clearFormStorage();
+        clearFormData();
       } catch (error) {
         setError(t('errorCreating'));
       } finally {
@@ -282,19 +287,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     } else {
       setCurrentStep((prev) => prev - 1);
     }
-  };
-
-  const handleFormDataChange = (data: Partial<UpsertBandRequest>) => {
-    setFormData((prev) => {
-      return {
-        ...prev,
-        ...data,
-        technicalRider: data.technicalRider ?? undefined,
-        hospitalityRider: data.hospitalityRider ?? undefined,
-      };
-    });
-
-    setStepErrors((prev) => ({ ...prev, [currentStep]: false }));
   };
 
   const handleStepClick = (step: number) => {

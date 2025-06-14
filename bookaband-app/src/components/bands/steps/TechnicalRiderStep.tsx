@@ -6,6 +6,7 @@ import { TechnicalRider } from '@/service/backend/band/domain/bandProfile';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
+import { setFormData } from '@/utils/formStorage';
 
 interface TechnicalRiderStepProps {
   formData: Partial<UpsertBandRequest>;
@@ -52,7 +53,7 @@ export default function TechnicalRiderStep({
       technicalRider,
     };
     onFormDataChange(updatedFormData);
-    localStorage.setItem('bandFormData', JSON.stringify(updatedFormData));
+    setFormData(updatedFormData);
   };
 
   const handleTechnicalRiderToggle = (checked: boolean) => {
@@ -76,7 +77,7 @@ export default function TechnicalRiderStep({
     }
 
     onFormDataChange(updatedFormData);
-    localStorage.setItem('bandFormData', JSON.stringify(updatedFormData));
+    setFormData(updatedFormData);
   };
 
   return (

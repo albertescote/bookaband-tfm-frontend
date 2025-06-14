@@ -6,6 +6,7 @@ import { HospitalityRider } from '@/service/backend/band/domain/bandProfile';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
+import { setFormData } from '@/utils/formStorage';
 
 interface HospitalityRiderStepProps {
   formData: Partial<UpsertBandRequest>;
@@ -52,7 +53,7 @@ export default function HospitalityRiderStep({
       hospitalityRider,
     };
     onFormDataChange(updatedFormData);
-    localStorage.setItem('bandFormData', JSON.stringify(updatedFormData));
+    setFormData(updatedFormData);
   };
 
   const handleHospitalityRiderToggle = (checked: boolean) => {
@@ -75,7 +76,7 @@ export default function HospitalityRiderStep({
     }
 
     onFormDataChange(updatedFormData);
-    localStorage.setItem('bandFormData', JSON.stringify(updatedFormData));
+    setFormData(updatedFormData);
   };
 
   return (

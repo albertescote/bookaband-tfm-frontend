@@ -53,10 +53,10 @@ export interface TechnicalRider {
 }
 
 export interface PerformanceArea {
-  regions: string[];
+  regions: { id: string; name: string }[] | string[];
   gasPriceCalculation?: {
     fuelConsumption: number;
-    useDynamicPricing?: boolean;
+    useDynamicPricing: boolean;
     pricePerLiter?: number;
   };
   otherComments?: string;
