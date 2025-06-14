@@ -97,8 +97,119 @@ export default function DocumentsList({ language }: DocumentsListProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <div className="text-gray-500">{t('loading')}</div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-2xl font-semibold text-gray-900">
+              {t('title')}
+            </h1>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <Tab.Group>
+            <Tab.List className="flex space-x-1 rounded-xl bg-gray-100 p-1">
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                    'ring-white ring-opacity-60 ring-offset-2 focus:outline-none focus:ring-2',
+                    selected
+                      ? 'bg-white text-[#15b7b9] shadow'
+                      : 'text-gray-600 hover:bg-white/[0.12] hover:text-[#15b7b9]',
+                  )
+                }
+              >
+                {t('contracts')}
+              </Tab>
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                    'ring-white ring-opacity-60 ring-offset-2 focus:outline-none focus:ring-2',
+                    selected
+                      ? 'bg-white text-[#15b7b9] shadow'
+                      : 'text-gray-600 hover:bg-white/[0.12] hover:text-[#15b7b9]',
+                  )
+                }
+              >
+                {t('invoices')}
+              </Tab>
+            </Tab.List>
+            <Tab.Panels className="mt-4">
+              <Tab.Panel>
+                <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('eventName')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('eventDate')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('status')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('updatedAt')}
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('actions')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-6 py-4 text-center text-sm text-gray-500"
+                        >
+                          {t('noContracts')}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Tab.Panel>
+              <Tab.Panel>
+                <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('createdAt')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('amount')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('status')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('updatedAt')}
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                          {t('actions')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-6 py-4 text-center text-sm text-gray-500"
+                        >
+                          {t('noInvoices')}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+        </div>
       </div>
     );
   }
