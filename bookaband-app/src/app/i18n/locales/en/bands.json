@@ -275,19 +275,31 @@
       }
     },
     "performanceArea": {
-      "title": "Performance area",
-      "subtitle": "Specify where you can perform",
+      "title": "Performance Area",
+      "subtitle": "Specify where your band is available to perform.",
+      "info": {
+        "title": "How it works",
+        "description": "Select the regions where your band is available to perform. When clients search for venues in these areas, your band will appear in their search results. You can select multiple regions at different levels (country, region, or province)."
+      },
       "regions": {
-        "label": "Regions",
-        "placeholder": "List the regions where you can perform"
+        "label": "Available Regions",
+        "selectType": "Select region type",
+        "searchPlaceholder": "Search for a region...",
+        "types": {
+          "world": "Worldwide",
+          "continent": "Continent",
+          "country": "Country",
+          "region": "Region/State",
+          "province": "Province"
+        }
       },
       "travelPreferences": {
         "label": "Travel preferences",
         "placeholder": "Describe your travel preferences"
       },
-      "restrictions": {
-        "label": "Restrictions",
-        "placeholder": "List any travel or performance restrictions"
+      "otherComments": {
+        "label": "Other Comments",
+        "placeholder": "Add any additional comments or requirements..."
       }
     }
   },

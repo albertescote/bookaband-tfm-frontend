@@ -282,19 +282,31 @@
       "disable": "No necesito rider de hospitalidad"
     },
     "performanceArea": {
-      "title": "Área de actuación",
-      "subtitle": "Especifica dónde puedes actuar",
+      "title": "Área de Actuación",
+      "subtitle": "Especifica dónde está disponible tu banda para actuar.",
+      "info": {
+        "title": "Cómo funciona",
+        "description": "Selecciona las regiones donde tu banda está disponible para actuar. Cuando los clientes busquen locales en estas áreas, tu banda aparecerá en sus resultados de búsqueda. Puedes seleccionar múltiples regiones en diferentes niveles (país, región o provincia)."
+      },
       "regions": {
-        "label": "Regiones",
-        "placeholder": "Lista las regiones donde puedes actuar"
+        "label": "Regiones Disponibles",
+        "selectType": "Selecciona el tipo de región",
+        "searchPlaceholder": "Busca una región...",
+        "types": {
+          "world": "Mundial",
+          "continent": "Continente",
+          "country": "País",
+          "region": "Comunidad Autónoma",
+          "province": "Provincia"
+        }
       },
       "travelPreferences": {
         "label": "Preferencias de viaje",
         "placeholder": "Describe tus preferencias de viaje"
       },
-      "restrictions": {
-        "label": "Restricciones",
-        "placeholder": "Lista cualquier restricción de viaje o actuación"
+      "otherComments": {
+        "label": "Otros Comentarios",
+        "placeholder": "Añade cualquier comentario o requisito adicional..."
       }
     }
   },

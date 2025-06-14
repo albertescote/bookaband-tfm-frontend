@@ -64,7 +64,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
       performanceArea: {
         regions: [],
         travelPreferences: '',
-        restrictions: '',
+        otherComments: '',
       },
       media: [],
       socialLinks: [],
@@ -104,6 +104,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
     step: number,
     formData: Partial<UpsertBandRequest>,
   ): boolean => {
+    console.log(formData);
     switch (step) {
       case 1:
         return !!(
@@ -243,7 +244,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           performanceArea: formData.performanceArea || {
             regions: [],
             travelPreferences: '',
-            restrictions: '',
+            otherComments: '',
           },
           media:
             uploadedMediaUrls.length > 0

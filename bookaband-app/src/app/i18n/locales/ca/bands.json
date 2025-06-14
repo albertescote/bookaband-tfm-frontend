@@ -281,19 +281,31 @@
       }
     },
     "performanceArea": {
-      "title": "Àrea d'actuació",
-      "subtitle": "Especifica on pots actuar",
+      "title": "Àrea d'Actuació",
+      "subtitle": "Especifica on està disponible la teva banda per actuar.",
+      "info": {
+        "title": "Com funciona",
+        "description": "Selecciona les regions on la teva banda està disponible per actuar. Quan els clients busquin locals en aquestes àrees, la teva banda apareixerà en els seus resultats de cerca. Pots seleccionar múltiples regions en diferents nivells (país, regió o província)."
+      },
       "regions": {
-        "label": "Regions",
-        "placeholder": "Llista les regions on pots actuar"
+        "label": "Regions Disponibles",
+        "selectType": "Selecciona el tipus de regió",
+        "searchPlaceholder": "Cerca una regió...",
+        "types": {
+          "world": "Mundial",
+          "continent": "Continent",
+          "country": "País",
+          "region": "Comunitat Autònoma",
+          "province": "Província"
+        }
       },
       "travelPreferences": {
         "label": "Preferències de viatge",
         "placeholder": "Descriu les teves preferències de viatge"
       },
-      "restrictions": {
-        "label": "Restriccions",
-        "placeholder": "Llista qualsevol restricció de viatge o actuació"
+      "otherComments": {
+        "label": "Altres Comentaris",
+        "placeholder": "Afegeix qualsevol comentari o requisit addicional..."
       }
     }
   },

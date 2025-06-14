@@ -55,7 +55,7 @@ export interface TechnicalRider {
 export interface PerformanceArea {
   regions: string[];
   travelPreferences: string;
-  restrictions?: string;
+  otherComments?: string;
 }
 
 export interface WeeklyAvailability {

@@ -38,7 +38,7 @@ export function SingleSelect({
         role="combobox"
         aria-expanded={isOpen}
         className={cn(
-          'w-full justify-between',
+          'w-full justify-between font-normal',
           !value && 'text-muted-foreground',
           className,
         )}

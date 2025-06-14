@@ -7,6 +7,8 @@ import { Toaster } from 'sonner';
 import Sidebar from '@/components/layout/sidebar/sidebar';
 import { AuthProvider } from '@/providers/authProvider';
 import Header from '@/components/layout/header/header';
+import Script from 'next/script';
+import { GOOGLE_MAPS_API_KEY } from '@/config';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +30,12 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang={lng} dir={dir(lng)}>
+      <head>
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`}
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${inter.className}`}>
         <AuthProvider>
           <div className="flex h-screen overflow-hidden bg-gray-50">
