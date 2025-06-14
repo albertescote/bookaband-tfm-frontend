@@ -239,7 +239,7 @@ export default function BasicInfoStep({
               {t('validation.required')}
             </p>
           )}
-          {formData.price !== undefined && formData.price <= 0 && (
+          {hasError && formData.price !== undefined && formData.price <= 0 && (
             <p className="mt-1 text-sm text-red-500">
               {t('validation.minValue', { min: 1 })}
             </p>
