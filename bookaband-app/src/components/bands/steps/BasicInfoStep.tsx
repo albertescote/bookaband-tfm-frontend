@@ -332,6 +332,8 @@ export default function BasicInfoStep({
                 ? 'border-red-500'
                 : ''
             }
+            showSelectAll
+            selectAllLabel={t('form.basicInfo.selectAllEventTypes')}
           />
           {hasError &&
             (!formData.eventTypeIds || formData.eventTypeIds.length === 0) && (

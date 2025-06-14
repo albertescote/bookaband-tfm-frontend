@@ -229,7 +229,8 @@
         "BAND": "Banda"
       },
       "eventTypes": "Tipus d'esdeveniments",
-      "eventTypesPlaceholder": "Selecciona tipus d'esdeveniments"
+      "eventTypesPlaceholder": "Selecciona tipus d'esdeveniments",
+      "selectAllEventTypes": "Seleccionar tots els tipus d'esdeveniments"
     },
     "technicalRider": {
       "title": "Rider tècnic",

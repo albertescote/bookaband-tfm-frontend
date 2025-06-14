@@ -223,7 +223,8 @@
         "BAND": "Band"
       },
       "eventTypes": "Event types",
-      "eventTypesPlaceholder": "Select event types"
+      "eventTypesPlaceholder": "Select event types",
+      "selectAllEventTypes": "Select all event types"
     },
     "technicalRider": {
       "title": "Technical rider",

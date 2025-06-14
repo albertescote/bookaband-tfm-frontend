@@ -230,7 +230,8 @@
         "BAND": "Banda"
       },
       "eventTypes": "Tipos de eventos",
-      "eventTypesPlaceholder": "Selecciona tipos de eventos"
+      "eventTypesPlaceholder": "Selecciona tipos de eventos",
+      "selectAllEventTypes": "Seleccionar todos los tipos de eventos"
     },
     "technicalRider": {
       "title": "Rider técnico",
