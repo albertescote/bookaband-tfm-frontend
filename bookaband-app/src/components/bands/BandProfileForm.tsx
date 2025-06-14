@@ -67,13 +67,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         beverages: '',
         specialRequirements: '',
       },
-      technicalRider: {
-        soundSystem: '',
-        microphones: '',
-        backline: '',
-        lighting: '',
-        otherRequirements: '',
-      },
       performanceArea: {
         regions: [],
         travelPreferences: '',
@@ -128,11 +121,15 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           Object.values(BandSize).includes(formData.bandSize as BandSize)
         );
       case 2:
+        if (!formData.technicalRider) {
+          return true;
+        }
+        const technicalRider = formData.technicalRider;
         return !!(
-          formData.technicalRider?.soundSystem?.trim() &&
-          formData.technicalRider?.microphones?.trim() &&
-          formData.technicalRider?.backline?.trim() &&
-          formData.technicalRider?.lighting?.trim()
+          technicalRider.soundSystem?.trim() &&
+          technicalRider.microphones?.trim() &&
+          technicalRider.backline?.trim() &&
+          technicalRider.lighting?.trim()
         );
       case 3:
         return !!(
@@ -243,19 +240,8 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
             saturday: false,
             sunday: false,
           },
-          hospitalityRider: formData.hospitalityRider || {
-            accommodation: '',
-            catering: '',
-            beverages: '',
-            specialRequirements: '',
-          },
-          technicalRider: formData.technicalRider || {
-            soundSystem: '',
-            microphones: '',
-            backline: '',
-            lighting: '',
-            otherRequirements: '',
-          },
+          hospitalityRider: formData.hospitalityRider || undefined,
+          technicalRider: formData.technicalRider || undefined,
           performanceArea: formData.performanceArea || {
             regions: [],
             travelPreferences: '',
@@ -289,7 +275,13 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
   };
 
   const handleFormDataChange = (data: Partial<UpsertBandRequest>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
+    setFormData((prev) => {
+      return {
+        ...prev,
+        ...data,
+        technicalRider: data.technicalRider ?? undefined,
+      };
+    });
 
     setStepErrors((prev) => ({ ...prev, [currentStep]: false }));
   };

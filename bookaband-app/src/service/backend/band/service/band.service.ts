@@ -19,8 +19,8 @@ export interface UpsertBandRequest {
   bandSize: string;
   eventTypeIds: string[];
   weeklyAvailability: WeeklyAvailability;
-  hospitalityRider: HospitalityRider;
-  technicalRider: TechnicalRider;
+  hospitalityRider?: HospitalityRider;
+  technicalRider?: TechnicalRider;
   performanceArea: PerformanceArea;
   media: { url: string; type: string }[];
   socialLinks: { platform: string; url: string }[];

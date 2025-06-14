@@ -227,8 +227,10 @@
       "selectAllEventTypes": "Select all event types"
     },
     "technicalRider": {
-      "title": "Technical rider",
-      "subtitle": "Specify your technical requirements",
+      "title": "Technical Rider",
+      "subtitle": "Specify your technical requirements for performances",
+      "enable": "I need technical rider",
+      "disable": "I don't need technical rider",
       "soundSystem": {
         "label": "Sound system",
         "placeholder": "Describe your sound system requirements"

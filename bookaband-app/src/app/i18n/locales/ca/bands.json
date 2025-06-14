@@ -233,8 +233,10 @@
       "selectAllEventTypes": "Seleccionar tots els tipus d'esdeveniments"
     },
     "technicalRider": {
-      "title": "Rider tècnic",
-      "subtitle": "Especifica els teus requisits tècnics",
+      "title": "Rider Tècnic",
+      "subtitle": "Especifica els teus requisits tècnics per a les actuacions",
+      "enable": "Necessito rider tècnic",
+      "disable": "No necessito rider tècnic",
       "soundSystem": {
         "label": "Sistema de so",
         "placeholder": "Descriu els teus requisits de sistema de so"
