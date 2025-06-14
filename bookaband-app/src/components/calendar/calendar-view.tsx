@@ -200,7 +200,13 @@ export default function CalendarView({ language }: CalendarViewProps) {
   }
 
   if (!selectedBand) {
-    return <div className="p-4">{t('no-band-selected')}</div>;
+    return (
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-lg text-gray-500">{t('no-band-selected')}</h1>
+        </div>
+      </div>
+    );
   }
 
   return (

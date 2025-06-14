@@ -50,9 +50,7 @@ export default function BookingsList({ language: lng }: BookingsListProps) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <h1 className="text-xl font-semibold text-gray-700">
-            {t('not-in-a-band-yet')}
-          </h1>
+          <h1 className="text-lg text-gray-500">{t('not-in-a-band-yet')}</h1>
         </div>
       </div>
     );
