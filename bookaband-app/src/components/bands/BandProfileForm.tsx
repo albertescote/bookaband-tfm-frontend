@@ -61,12 +61,6 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         saturday: false,
         sunday: false,
       },
-      hospitalityRider: {
-        accommodation: '',
-        catering: '',
-        beverages: '',
-        specialRequirements: '',
-      },
       performanceArea: {
         regions: [],
         travelPreferences: '',
@@ -132,10 +126,14 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
           technicalRider.lighting?.trim()
         );
       case 3:
+        if (!formData.hospitalityRider) {
+          return true;
+        }
+        const hospitalityRider = formData.hospitalityRider;
         return !!(
-          formData.hospitalityRider?.accommodation?.trim() &&
-          formData.hospitalityRider?.catering?.trim() &&
-          formData.hospitalityRider?.beverages?.trim()
+          hospitalityRider.accommodation?.trim() &&
+          hospitalityRider.catering?.trim() &&
+          hospitalityRider.beverages?.trim()
         );
       case 4:
         return (
@@ -280,6 +278,7 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
         ...prev,
         ...data,
         technicalRider: data.technicalRider ?? undefined,
+        hospitalityRider: data.hospitalityRider ?? undefined,
       };
     });
 

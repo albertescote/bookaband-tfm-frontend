@@ -260,8 +260,8 @@
       "disable": "No necesito rider técnico"
     },
     "hospitalityRider": {
-      "title": "Rider de hospitalidad",
-      "subtitle": "Especifica tus requisitos de hospitalidad",
+      "title": "Rider de Hospitalidad",
+      "subtitle": "Especifica tus requisitos de hospitalidad para las actuaciones",
       "accommodation": {
         "label": "Alojamiento",
         "placeholder": "Describe tus requisitos de alojamiento"
@@ -277,7 +277,9 @@
       "specialRequirements": {
         "label": "Requisitos especiales",
         "placeholder": "Lista cualquier requisito especial"
-      }
+      },
+      "enable": "Necesito rider de hospitalidad",
+      "disable": "No necesito rider de hospitalidad"
     },
     "performanceArea": {
       "title": "Área de actuación",

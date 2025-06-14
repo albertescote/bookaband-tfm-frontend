@@ -253,8 +253,10 @@
       }
     },
     "hospitalityRider": {
-      "title": "Hospitality rider",
-      "subtitle": "Specify your hospitality requirements",
+      "title": "Hospitality Rider",
+      "subtitle": "Specify your hospitality requirements for performances",
+      "enable": "I need hospitality rider",
+      "disable": "I don't need hospitality rider",
       "accommodation": {
         "label": "Accommodation",
         "placeholder": "Describe your accommodation requirements"

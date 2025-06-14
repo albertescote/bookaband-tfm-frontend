@@ -259,8 +259,10 @@
       }
     },
     "hospitalityRider": {
-      "title": "Rider d'hospitalitat",
-      "subtitle": "Especifica els teus requisits d'hospitalitat",
+      "title": "Rider d'Hospitalitat",
+      "subtitle": "Especifica els teus requisits d'hospitalitat per a les actuacions",
+      "enable": "Necessito rider d'hospitalitat",
+      "disable": "No necessito rider d'hospitalitat",
       "accommodation": {
         "label": "Allotjament",
         "placeholder": "Descriu els teus requisits d'allotjament"
