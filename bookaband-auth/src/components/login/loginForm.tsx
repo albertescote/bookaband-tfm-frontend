@@ -60,7 +60,7 @@ export default function LoginForm({
         rememberMe,
       );
       if (!authenticationResult.valid) {
-        toast.error(authenticationResult.errorMessage || t('error-login'));
+        toast.error(t('error-login'));
         setLoading(false);
         return;
       }

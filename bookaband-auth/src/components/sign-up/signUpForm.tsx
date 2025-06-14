@@ -8,7 +8,7 @@ import { Role } from '@/service/backend/user/domain/role';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Music, Users } from 'lucide-react';
 import zxcvbn from 'zxcvbn';
 import EmailVerificationWait from './emailVerificationWait';
 import { createUser } from '@/service/backend/user/service/user.service';
@@ -174,18 +174,31 @@ export default function SignUpForm({
                     setSelectedRole(Role.Musician);
                     setStep(2);
                   }}
-                  className={`w-full rounded-lg border ${
+                  className={`group relative w-full overflow-hidden rounded-lg border ${
                     selectedRole === Role.Musician
-                      ? 'border-[#15b7b9]'
-                      : 'border-gray-300'
-                  } bg-white p-4 text-left shadow-sm transition hover:border-[#15b7b9]`}
+                      ? 'border-[#15b7b9] bg-[#15b7b9]/5'
+                      : 'border-gray-300 bg-white'
+                  } p-6 text-left shadow-sm transition-all hover:border-[#15b7b9] hover:bg-[#15b7b9]/5`}
                 >
-                  <h2 className="text-lg font-bold text-gray-800">
-                    {t('musician')}
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    {t('musician-description')}
-                  </p>
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`rounded-lg p-2 ${
+                        selectedRole === Role.Musician
+                          ? 'bg-[#15b7b9] text-white'
+                          : 'bg-gray-100 text-gray-600 group-hover:bg-[#15b7b9] group-hover:text-white'
+                      } transition-colors`}
+                    >
+                      <Music className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-gray-800">
+                        {t('musician')}
+                      </h2>
+                      <p className="mt-1 text-sm text-gray-600">
+                        {t('musician-description')}
+                      </p>
+                    </div>
+                  </div>
                 </button>
 
                 <button
@@ -194,18 +207,31 @@ export default function SignUpForm({
                     setSelectedRole(Role.Client);
                     setStep(2);
                   }}
-                  className={`w-full rounded-lg border ${
+                  className={`group relative w-full overflow-hidden rounded-lg border ${
                     selectedRole === Role.Client
-                      ? 'border-[#15b7b9]'
-                      : 'border-gray-300'
-                  } bg-white p-4 text-left shadow-sm transition hover:border-[#15b7b9]`}
+                      ? 'border-[#15b7b9] bg-[#15b7b9]/5'
+                      : 'border-gray-300 bg-white'
+                  } p-6 text-left shadow-sm transition-all hover:border-[#15b7b9] hover:bg-[#15b7b9]/5`}
                 >
-                  <h2 className="text-lg font-bold text-gray-800">
-                    {t('client')}
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    {t('client-description')}
-                  </p>
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`rounded-lg p-2 ${
+                        selectedRole === Role.Client
+                          ? 'bg-[#15b7b9] text-white'
+                          : 'bg-gray-100 text-gray-600 group-hover:bg-[#15b7b9] group-hover:text-white'
+                      } transition-colors`}
+                    >
+                      <Users className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-gray-800">
+                        {t('client')}
+                      </h2>
+                      <p className="mt-1 text-sm text-gray-600">
+                        {t('client-description')}
+                      </p>
+                    </div>
+                  </div>
                 </button>
               </div>
             </>
@@ -214,12 +240,21 @@ export default function SignUpForm({
               <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
                 {t('form-title')}
               </h1>
-              <p className="mb-4 text-sm text-gray-600">
-                {t('selected-role')}:{' '}
-                <span className="font-bold text-gray-800">
-                  {t(selectedRole || '')}
+              <div className="mb-6 flex items-center justify-center gap-2">
+                <div className="rounded-lg bg-[#15b7b9] p-1.5 text-white">
+                  {selectedRole === Role.Musician ? (
+                    <Music className="h-4 w-4" />
+                  ) : (
+                    <Users className="h-4 w-4" />
+                  )}
+                </div>
+                <span className="text-sm text-gray-600">
+                  {t('selected-role')}:{' '}
+                  <span className="font-medium text-gray-800">
+                    {t(selectedRole?.toLowerCase() || '')}
+                  </span>
                 </span>
-              </p>
+              </div>
 
               <form onSubmit={handleSubmit}>
                 <div className="space-y-2">
