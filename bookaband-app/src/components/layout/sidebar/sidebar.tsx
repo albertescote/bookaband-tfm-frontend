@@ -82,13 +82,16 @@ export default function Sidebar() {
             <NavItem href="/bookings" label={t('bookings')} />
             <NavItem href="/documents" label={t('documents')} />
             <NavItem href="/bands" label={t('manageBands')} />
-            <NavItem href="/profile" label={t('profile-tab')} />
           </nav>
+
           <div className="space-y-4 border-t p-4">
-            <div className="flex items-center space-x-3 px-3">
+            <div
+              onClick={() => router.push(`/${language}/profile`)}
+              className="flex cursor-pointer items-center space-x-3 rounded-lg px-3 py-2 text-gray-900 transition-colors hover:bg-[#15b7b9]/10 hover:text-[#15b7b9]"
+            >
               {getAvatar(10, user?.imageUrl, user?.firstName)}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900">
+                <p className="truncate text-sm font-medium">
                   {user?.firstName} {user?.familyName}
                 </p>
                 <p className="truncate text-xs text-gray-500">{user?.email}</p>
