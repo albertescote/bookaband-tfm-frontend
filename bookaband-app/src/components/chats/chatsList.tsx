@@ -4,8 +4,6 @@ import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { MessageSquare, Search } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { getAvatar } from '@/components/shared/avatar';
-import { formatDistanceToNow } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
 
 interface ChatsListProps {
   language: string;
@@ -50,21 +48,6 @@ export function ChatsList({
     }
 
     return lastMessage.message || '';
-  };
-
-  const getLastMessageTime = (chat: ChatView) => {
-    if (!chat.messages.length) return '';
-
-    const lastMessage = chat.messages[chat.messages.length - 1];
-    const messageDate = lastMessage.timestamp
-      ? new Date(lastMessage.timestamp)
-      : new Date();
-
-    const locale = language === 'es' ? es : language === 'ca' ? ca : undefined;
-    return formatDistanceToNow(messageDate, {
-      addSuffix: true,
-      locale,
-    });
   };
 
   const filteredChats = chats.filter((chat) => {
@@ -138,9 +121,6 @@ export function ChatsList({
                         {chat.user?.firstName + ' ' + chat.user?.familyName ||
                           t('unknown')}
                       </h3>
-                      <span className="text-xs text-gray-500">
-                        {getLastMessageTime(chat)}
-                      </span>
                     </div>
                     <div className="mt-1 flex items-center gap-1 text-sm text-gray-600">
                       <p className="truncate">{getLastMessagePreview(chat)}</p>
