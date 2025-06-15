@@ -367,14 +367,24 @@ export default function BookingDetail({
                     </div>
                   </div>
                 </div>
-                <Button
-                  onClick={handleSendMessage}
-                  variant="outline"
-                  className="transform border-gray-200 bg-white px-4 py-2 text-gray-700 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-gray-50 hover:shadow-md"
-                >
-                  <MessageSquare className="mr-2 h-5 w-5" />
-                  {t('sendMessage')}
-                </Button>
+                <div className="flex flex-col items-end gap-4">
+                  <Button
+                    onClick={handleSendMessage}
+                    variant="outline"
+                    className="transform border-gray-200 bg-white px-4 py-2 text-gray-700 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-gray-50 hover:shadow-md"
+                  >
+                    <MessageSquare className="mr-2 h-5 w-5" />
+                    {t('sendMessage')}
+                  </Button>
+                  <div className="mt-8 text-2xl font-semibold text-[#15b7b9]">
+                    {booking.cost.toLocaleString(lng, {
+                      style: 'currency',
+                      currency: 'EUR',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

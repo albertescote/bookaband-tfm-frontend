@@ -55,5 +55,6 @@
     "pending": "Pendiente",
     "failed": "Fallida",
     "unknown": "Desconocida"
-  }
+  },
+  "cost": "Coste"
 }
