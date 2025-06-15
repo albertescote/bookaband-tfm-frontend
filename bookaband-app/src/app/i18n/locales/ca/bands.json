@@ -383,7 +383,20 @@
       "performanceArea": "Si us plau, omple tots els camps obligatoris de l'àrea d'actuació"
     },
     "completeProfileFirst": "Si us plau, completa el teu perfil amb número de telèfon i DNI/NIE abans de crear una banda",
-    "completeProfileFirstJoin": "Si us plau, completa el teu perfil amb número de telèfon i DNI/NIE abans d'unir-te a una banda"
+    "completeProfileFirstJoin": "Si us plau, completa el teu perfil amb número de telèfon i DNI/NIE abans d'unir-te a una banda",
+    "performanceArea": {
+      "regions": {
+        "required": "Si us plau, selecciona almenys una regió"
+      },
+      "gasPrice": {
+        "fuelConsumption": {
+          "required": "Si us plau, introdueix el consum de combustible"
+        },
+        "pricePerLiter": {
+          "required": "Si us plau, introdueix el preu per litre"
+        }
+      }
+    }
   },
   "roles": {
     "admin": "Administrador",

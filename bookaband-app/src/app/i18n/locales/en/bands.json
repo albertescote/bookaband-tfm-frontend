@@ -360,7 +360,6 @@
     "restrictions": "Please specify any restrictions",
     "socialMedia": "Please provide at least one social media link",
     "mediaUpload": "Please upload at least one media file",
-    "availability": "Please select at least one available day",
     "bandName": "Please enter a band name",
     "genre": "Please select a genre",
     "description": "Please provide a description",
@@ -381,6 +380,19 @@
     "completeProfileFirstJoin": "Please complete your profile with phone number and national ID before joining a band",
     "availability": {
       "required": "Please select at least one available day"
+    },
+    "performanceArea": {
+      "regions": {
+        "required": "Please select at least one region"
+      },
+      "gasPrice": {
+        "fuelConsumption": {
+          "required": "Please enter the fuel consumption"
+        },
+        "pricePerLiter": {
+          "required": "Please enter the price per liter"
+        }
+      }
     }
   },
   "roles": {

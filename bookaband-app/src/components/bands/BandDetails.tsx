@@ -114,7 +114,11 @@ export default function BandDetails({
   const [validationErrors, setValidationErrors] = useState<{
     technicalRider?: boolean;
     hospitalityRider?: boolean;
-    performanceArea?: boolean;
+    performanceArea?: {
+      regions: boolean;
+      fuelConsumption: boolean;
+      gasPrice: boolean;
+    };
     basicInfo?: {
       location?: boolean;
       price?: boolean;
@@ -324,7 +328,11 @@ export default function BandDetails({
     const errors = {
       technicalRider: false,
       hospitalityRider: false,
-      performanceArea: false,
+      performanceArea: {
+        regions: false,
+        fuelConsumption: false,
+        gasPrice: false,
+      },
       basicInfo: {
         location: false,
         price: false,
@@ -365,7 +373,8 @@ export default function BandDetails({
       toast.error(t('validation.price'));
     }
 
-    const weeklyAvailability = editedValues.weeklyAvailability || bandProfile.weeklyAvailability;
+    const weeklyAvailability =
+      editedValues.weeklyAvailability || bandProfile.weeklyAvailability;
     if (!Object.values(weeklyAvailability).some((isAvailable) => isAvailable)) {
       errors.availability = true;
       toast.error(t('validation.availability.required'));
@@ -396,19 +405,19 @@ export default function BandDetails({
 
     if (editedValues.performanceArea) {
       if (!((editedValues.performanceArea?.regions?.length ?? 0) > 0)) {
-        errors.performanceArea = true;
+        errors.performanceArea.regions = true;
         toast.error(t('validation.incomplete.performanceArea'));
       }
       if (editedValues.performanceArea?.gasPriceCalculation) {
         if (!editedValues.performanceArea.gasPriceCalculation.fuelConsumption) {
-          errors.performanceArea = true;
+          errors.performanceArea.fuelConsumption = true;
           toast.error(t('validation.incomplete.performanceArea'));
         }
         if (
           !editedValues.performanceArea.gasPriceCalculation.useDynamicPricing &&
           !editedValues.performanceArea.gasPriceCalculation.pricePerLiter
         ) {
-          errors.performanceArea = true;
+          errors.performanceArea.gasPrice = true;
           toast.error(t('validation.incomplete.performanceArea'));
         }
       }
@@ -814,6 +823,7 @@ export default function BandDetails({
               setEditedValues((prev) => ({ ...prev, performanceArea: area }))
             }
             t={t}
+            hasError={validationErrors.performanceArea}
           />
 
           <MembersSection

@@ -379,7 +379,20 @@
     "genre": "Por favor, selecciona un género",
     "description": "Por favor, proporciona una descripción",
     "completeProfileFirst": "Por favor, completa tu perfil con número de teléfono y DNI/NIE antes de crear una banda",
-    "completeProfileFirstJoin": "Por favor, completa tu perfil con número de teléfono y DNI/NIE antes de unirte una banda"
+    "completeProfileFirstJoin": "Por favor, completa tu perfil con número de teléfono y DNI/NIE antes de unirte una banda",
+    "performanceArea": {
+      "regions": {
+        "required": "Por favor, selecciona al menos una región"
+      },
+      "gasPrice": {
+        "fuelConsumption": {
+          "required": "Por favor, introduce el consumo de combustible"
+        },
+        "pricePerLiter": {
+          "required": "Por favor, introduce el precio por litro"
+        }
+      }
+    }
   },
   "roles": {
     "admin": "Administrador",

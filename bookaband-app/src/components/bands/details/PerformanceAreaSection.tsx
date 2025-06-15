@@ -26,6 +26,11 @@ interface PerformanceAreaSectionProps {
   isEditing: boolean;
   onUpdate: (area: PerformanceArea) => void;
   t: (key: string) => string;
+  hasError?: {
+    regions?: boolean;
+    fuelConsumption?: boolean;
+    gasPrice?: boolean;
+  };
 }
 
 export function PerformanceAreaSection({
@@ -33,6 +38,7 @@ export function PerformanceAreaSection({
   isEditing,
   onUpdate,
   t,
+  hasError,
 }: PerformanceAreaSectionProps) {
   const [selectedType, setSelectedType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -236,7 +242,9 @@ export function PerformanceAreaSection({
               className="space-y-2"
             >
               <Select value={selectedType} onValueChange={handleTypeChange}>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger
+                  className={`bg-white ${hasError?.regions ? 'border-red-500' : ''}`}
+                >
                   <SelectValue
                     placeholder={t('form.performanceArea.regions.selectType')}
                   />
@@ -296,6 +304,11 @@ export function PerformanceAreaSection({
                   </div>
                 ))}
               </div>
+              {hasError?.regions && regions.length === 0 && (
+                <p className="text-sm text-red-500">
+                  {t('validation.performanceArea.regions.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
@@ -362,13 +375,22 @@ export function PerformanceAreaSection({
                           }
                           min="0"
                           step="0.1"
-                          className="pr-12"
+                          className={`pr-12 ${hasError?.fuelConsumption ? 'border-red-500' : ''}`}
                           placeholder="0.0"
                         />
                       </div>
                       <p className="text-xs text-gray-500">
                         {t('form.performanceArea.gasPrice.fuelConsumptionHelp')}
                       </p>
+                      {hasError?.fuelConsumption &&
+                        !performanceArea.gasPriceCalculation
+                          .fuelConsumption && (
+                          <p className="text-sm text-red-500">
+                            {t(
+                              'validation.performanceArea.gasPrice.fuelConsumption.required',
+                            )}
+                          </p>
+                        )}
                     </div>
 
                     <div className="space-y-2">
@@ -437,13 +459,23 @@ export function PerformanceAreaSection({
                           }
                           min="0"
                           step="0.01"
-                          className="pr-12"
+                          className={`pr-12 ${hasError?.gasPrice ? 'border-red-500' : ''}`}
                           placeholder="0.00"
                         />
                       </div>
                       <p className="text-xs text-gray-500">
                         {t('form.performanceArea.gasPrice.staticPriceHelp')}
                       </p>
+                      {hasError?.gasPrice &&
+                        !performanceArea.gasPriceCalculation
+                          .useDynamicPricing &&
+                        !performanceArea.gasPriceCalculation.pricePerLiter && (
+                          <p className="text-sm text-red-500">
+                            {t(
+                              'validation.performanceArea.gasPrice.pricePerLiter.required',
+                            )}
+                          </p>
+                        )}
                     </div>
                   )}
 
