@@ -175,6 +175,7 @@
       "description": "Share your social media profiles and upload media content to showcase your band",
       "socialMedia": "Social media links",
       "mediaUpload": "Media upload",
+      "noSocialLinks": "No social links added yet",
       "instagramPlaceholder": "Enter your Instagram profile URL",
       "facebookPlaceholder": "Enter your Facebook page URL",
       "websitePlaceholder": "Enter your website URL",
@@ -363,7 +364,7 @@
     "bandName": "Please enter a band name",
     "genre": "Please select a genre",
     "description": "Please provide a description",
-    "location": "Please enter a location",
+    "location": "Please enter the band's location",
     "musicalStyles": "Please select at least one musical style",
     "artisticName": "Please enter an artistic name",
     "instrument": "Please enter an instrument",
@@ -377,7 +378,10 @@
     },
     "atLeastOneEventType": "Please select at least one event type",
     "completeProfileFirst": "Please complete your profile with phone number and national ID before creating a band",
-    "completeProfileFirstJoin": "Please complete your profile with phone number and national ID before joining a band"
+    "completeProfileFirstJoin": "Please complete your profile with phone number and national ID before joining a band",
+    "availability": {
+      "required": "Please select at least one available day"
+    }
   },
   "roles": {
     "admin": "Admin",

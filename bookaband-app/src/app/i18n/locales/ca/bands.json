@@ -181,6 +181,7 @@
       "mediaUpload": "Contingut multimèdia",
       "socialMedia": "Xarxes socials",
       "addSocialLink": "Afegir xarxa social",
+      "noSocialLinks": "No hi ha xarxes socials afegides",
       "instagramPlaceholder": "Introdueix la URL del teu perfil d'Instagram",
       "facebookPlaceholder": "Introdueix la URL de la teva pàgina de Facebook",
       "websitePlaceholder": "Introdueix la URL del teu lloc web",
@@ -368,7 +369,9 @@
     "restrictions": "Si us plau, especifica qualsevol restricció",
     "socialMedia": "Si us plau, proporciona almenys un enllaç a xarxes socials",
     "mediaUpload": "Si us plau, puja almenys un arxiu multimèdia",
-    "availability": "Si us plau, selecciona almenys un dia disponible",
+    "availability": {
+      "required": "Si us plau, selecciona almenys un dia disponible"
+    },
     "bandName": "Si us plau, introdueix un nom per a la banda",
     "location": "Si us plau, introdueix la ubicació de la banda",
     "bandSize": "Si us plau, selecciona la mida de la banda",

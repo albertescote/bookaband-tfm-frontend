@@ -58,27 +58,35 @@ export function SocialLinksSection({
       <div className="space-y-4">
         {isEditing ? (
           <div className="space-y-4">
-            {socialLinks.map((link, index) => (
-              <div key={link.id} className="flex items-center gap-4">
-                <input
-                  type="url"
-                  value={link.url}
-                  onChange={(e) => {
-                    onUpdateLink(index, e.target.value);
-                  }}
-                  className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
-                  placeholder="https://..."
-                />
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => onRemoveLink(index)}
-                  className="rounded-full border-2 border-red-600 p-0.5 text-red-600 transition-colors hover:bg-red-600 hover:text-white"
-                >
-                  <X size={16} />
-                </motion.button>
+            {socialLinks.length > 0 ? (
+              socialLinks.map((link, index) => (
+                <div key={link.id} className="flex items-center gap-4">
+                  <input
+                    type="url"
+                    value={link.url}
+                    onChange={(e) => {
+                      onUpdateLink(index, e.target.value);
+                    }}
+                    className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                    placeholder="https://..."
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => onRemoveLink(index)}
+                    className="rounded-full border-2 border-red-600 p-0.5 text-red-600 transition-colors hover:bg-red-600 hover:text-white"
+                  >
+                    <X size={16} />
+                  </motion.button>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                <p className="text-gray-500">
+                  {t('form.multimedia.noSocialLinks')}
+                </p>
               </div>
-            ))}
+            )}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -91,23 +99,31 @@ export function SocialLinksSection({
           </div>
         ) : (
           <div className="flex flex-wrap gap-4">
-            {socialLinks.map((link) => {
-              const Icon = getPlatformIcon(link.platform);
+            {socialLinks.length > 0 ? (
+              socialLinks.map((link) => {
+                const Icon = getPlatformIcon(link.platform);
 
-              return (
-                <motion.a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
-                >
-                  <Icon size={20} />
-                  <span className="capitalize">{link.platform}</span>
-                </motion.a>
-              );
-            })}
+                return (
+                  <motion.a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    <Icon size={20} />
+                    <span className="capitalize">{link.platform}</span>
+                  </motion.a>
+                );
+              })
+            ) : (
+              <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                <p className="text-gray-500">
+                  {t('form.multimedia.noSocialLinks')}
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

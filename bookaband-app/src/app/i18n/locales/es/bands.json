@@ -182,6 +182,7 @@
       "description": "Comparte tus perfiles en redes sociales y sube contenido multimedia para mostrar tu banda",
       "socialMedia": "Enlaces a redes sociales",
       "mediaUpload": "Subida de medios",
+      "noSocialLinks": "No hay redes sociales añadidas",
       "instagramPlaceholder": "Introduce la URL de tu perfil de Instagram",
       "facebookPlaceholder": "Introduce la URL de tu página de Facebook",
       "websitePlaceholder": "Introduce la URL de tu sitio web",
@@ -369,7 +370,9 @@
     "restrictions": "Por favor, especifica cualquier restricción",
     "socialMedia": "Por favor, proporciona al menos un enlace a redes sociales",
     "mediaUpload": "Por favor, sube al menos un archivo multimedia",
-    "availability": "Por favor, selecciona al menos un día disponible",
+    "availability": {
+      "required": "Por favor, selecciona al menos un día disponible"
+    },
     "bandName": "Por favor, introduce un nombre para la banda",
     "location": "Por favor, introduce la ubicación de la banda",
     "bandSize": "Por favor, selecciona el tamaño de la banda",

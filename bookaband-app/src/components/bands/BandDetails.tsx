@@ -122,6 +122,7 @@ export default function BandDetails({
       eventTypes?: boolean;
       bandSize?: boolean;
     };
+    availability?: boolean;
   }>({});
 
   const hasChanges = () => {
@@ -331,6 +332,7 @@ export default function BandDetails({
         eventTypes: false,
         bandSize: false,
       },
+      availability: false,
     };
 
     if (!editedValues.name?.trim()) {
@@ -361,6 +363,12 @@ export default function BandDetails({
     if (!editedValues.price) {
       errors.basicInfo.price = true;
       toast.error(t('validation.price'));
+    }
+
+    const weeklyAvailability = editedValues.weeklyAvailability || bandProfile.weeklyAvailability;
+    if (!Object.values(weeklyAvailability).some((isAvailable) => isAvailable)) {
+      errors.availability = true;
+      toast.error(t('validation.availability.required'));
     }
 
     if (editedValues.hospitalityRider) {
@@ -410,6 +418,7 @@ export default function BandDetails({
       errors.technicalRider ||
       errors.hospitalityRider ||
       errors.performanceArea ||
+      errors.availability ||
       Object.values(errors.basicInfo).some(Boolean)
     ) {
       setValidationErrors(errors);
@@ -704,6 +713,7 @@ export default function BandDetails({
             isEditing={isEditing}
             onToggleDay={toggleAvailability}
             t={t}
+            hasError={validationErrors.availability}
           />
 
           <SocialLinksSection
