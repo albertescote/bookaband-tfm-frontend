@@ -5,12 +5,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { SingleSelect } from '@/components/ui/single-select';
 import { FileUpload } from '@/components/ui/file-upload';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
-import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
-import { fetchEventTypes } from '@/service/backend/eventTypes/service/eventType.service';
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface FormDataWithFiles extends Partial<UpsertBandRequest> {
@@ -21,6 +19,8 @@ interface BasicInfoStepProps {
   formData: FormDataWithFiles;
   onFormDataChange: (data: FormDataWithFiles) => void;
   hasError: boolean;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
 }
 
 const BAND_SIZES = Object.values(BandSize);
@@ -32,34 +32,13 @@ export default function BasicInfoStep({
   formData,
   onFormDataChange,
   hasError,
+  musicalStyles,
+  eventTypes,
 }: BasicInfoStepProps) {
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [musicalStyles, setMusicalStyles] = useState<MusicalStyle[]>([]);
-  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [styles, types] = await Promise.all([
-          fetchMusicalStyles(),
-          fetchEventTypes(),
-        ]);
-        if (!('message' in styles)) {
-          setMusicalStyles(styles as MusicalStyle[]);
-        }
-        if (!('message' in types)) {
-          setEventTypes(types as EventType[]);
-        }
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    };
-
-    loadData().then();
-  }, []);
 
   const validateField = (name: string, value: any) => {
     switch (name) {

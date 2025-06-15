@@ -13,19 +13,27 @@ import { AvailabilityStep } from '@/components/bands/steps/AvailabilityStep';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
 import { clearFormData, getFormData, setFormData } from '@/utils/formStorage';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface FormDataWithFiles extends Partial<UpsertBandRequest> {
   imageFile?: File;
 }
 
 interface BandProfileFormProps {
-  onSubmit: (data: UpsertBandRequest) => Promise<void>;
+  onSubmit: (data: FormDataWithFiles) => Promise<void>;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
 }
 
 const CURRENT_STEP_KEY = 'bandProfileFormStep';
 const TOTAL_STEPS = 6;
 
-export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
+export default function BandProfileForm({
+  onSubmit,
+  musicalStyles,
+  eventTypes,
+}: BandProfileFormProps) {
   const params = useParams();
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
@@ -303,6 +311,8 @@ export default function BandProfileForm({ onSubmit }: BandProfileFormProps) {
             formData={formData}
             onFormDataChange={handleFormDataChange}
             hasError={stepErrors[1]}
+            musicalStyles={musicalStyles}
+            eventTypes={eventTypes}
           />
         );
       case 2:

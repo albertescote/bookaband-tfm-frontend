@@ -9,18 +9,31 @@ import {
 } from '@/service/backend/band/service/band.service';
 import { toast } from 'react-hot-toast';
 import BandProfileForm from './BandProfileForm';
+import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface CreateBandFormProps {
   language: string;
+  musicalStyles: MusicalStyle[];
+  eventTypes: EventType[];
 }
 
-export default function CreateBandForm({ language }: CreateBandFormProps) {
+interface FormDataWithFiles extends Partial<UpsertBandRequest> {
+  imageFile?: File;
+}
+
+export default function CreateBandForm({
+  language,
+  musicalStyles,
+  eventTypes,
+}: CreateBandFormProps) {
   const { t } = useTranslation(language, 'bands');
   const router = useRouter();
 
-  const handleSubmit = async (data: UpsertBandRequest) => {
+  const handleSubmit = async (data: FormDataWithFiles) => {
     try {
-      await createBand(data);
+      const { imageFile, ...bandData } = data;
+      await createBand(bandData as UpsertBandRequest);
       toast.success(t('successCreating'));
       router.push(`/${language}/bands`);
     } catch (err) {
@@ -45,7 +58,11 @@ export default function CreateBandForm({ language }: CreateBandFormProps) {
           {t('createBand')}
         </h1>
 
-        <BandProfileForm onSubmit={handleSubmit} />
+        <BandProfileForm
+          onSubmit={handleSubmit}
+          musicalStyles={musicalStyles}
+          eventTypes={eventTypes}
+        />
       </div>
     </div>
   );
