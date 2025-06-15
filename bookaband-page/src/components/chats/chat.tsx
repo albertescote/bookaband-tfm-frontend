@@ -28,6 +28,7 @@ import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { fetchArtistById } from '@/service/backend/artist/service/artist.service';
 import BookingNotification from './bookingNotification';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface ChatProps {
   language: string;
@@ -413,10 +414,6 @@ const Chat: React.FC<ChatProps> = ({
     return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
   };
 
-  const isVideoFile = (url: string) => {
-    return /\.(mp4|webm|ogg)$/i.test(url);
-  };
-
   const getFileNameFromUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -450,58 +447,35 @@ const Chat: React.FC<ChatProps> = ({
   const renderFileContent = (fileUrl: string) => {
     if (isImageFile(fileUrl)) {
       return (
-        <div className="mt-2">
-          <img
-            src={fileUrl}
-            alt="Shared image"
-            className="max-h-64 cursor-pointer rounded-lg object-contain transition-transform hover:scale-[1.02]"
-            onClick={() => setSelectedImage(fileUrl)}
-          />
-          <a
-            href={fileUrl}
-            download={getFileNameFromUrl(fileUrl)}
-            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Download size={16} />
-            {t('download-file')}
-          </a>
+        <div>
+          <div className="relative aspect-[4/3] w-full max-w-md cursor-pointer overflow-hidden rounded-lg">
+            <Image
+              src={fileUrl}
+              alt="Shared image"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain transition-transform hover:scale-[1.02]"
+              onClick={() => setSelectedImage(fileUrl)}
+            />
+          </div>
+          <div className="mt-2">
+            <button
+              onClick={() => window.open(fileUrl, '_blank')}
+              className="flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            >
+              <Download size={16} />
+              {t('download-file')}
+            </button>
+          </div>
         </div>
       );
     }
-
-    if (isVideoFile(fileUrl)) {
-      return (
-        <div className="mt-2">
-          <video src={fileUrl} controls className="max-h-64 rounded-lg">
-            Your browser does not support the video tag.
-          </video>
-          <a
-            href={fileUrl}
-            download={getFileNameFromUrl(fileUrl)}
-            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Download size={16} />
-            {t('download-file')}
-          </a>
-        </div>
-      );
-    }
-
     const fileName = getFileNameFromUrl(fileUrl);
     const fileExtension = fileName.split('.').pop()?.toUpperCase() || '';
 
     return (
       <div className="mt-2">
-        <a
-          href={fileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50"
-        >
+        <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50">
           <div className="flex-shrink-0">{getFileIcon(fileUrl)}</div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-gray-900">
@@ -511,17 +485,13 @@ const Chat: React.FC<ChatProps> = ({
               {fileExtension} • {t('view-document')}
             </p>
           </div>
-          <a
-            href={fileUrl}
-            download={getFileNameFromUrl(fileUrl)}
+          <button
+            onClick={() => window.open(fileUrl, '_blank')}
             className="flex-shrink-0 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-[#15b7b9]"
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <Download size={18} />
-          </a>
-        </a>
+          </button>
+        </div>
       </div>
     );
   };
@@ -685,7 +655,7 @@ const Chat: React.FC<ChatProps> = ({
                     ref={fileInputRef}
                     onChange={handleFileSelect}
                     className="hidden"
-                    accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+                    accept="image/*,.pdf,.doc,.docx,.txt"
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
@@ -772,12 +742,14 @@ const Chat: React.FC<ChatProps> = ({
           >
             <X size={24} />
           </button>
-          <div className="relative max-h-[90vh] max-w-[90vw]">
-            <img
+          <div className="relative h-[90vh] w-[90vw] max-w-4xl">
+            <Image
               src={selectedImage}
               alt="Full size image"
-              className="max-h-[90vh] max-w-[90vw] object-contain"
-              onClick={(e) => e.stopPropagation()}
+              fill
+              sizes="90vw"
+              className="object-contain"
+              priority
             />
           </div>
         </div>
