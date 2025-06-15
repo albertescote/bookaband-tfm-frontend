@@ -291,8 +291,7 @@
           "country": "Country",
           "region": "Region/State",
           "province": "Province"
-        },
-        "required": "Please select at least one region"
+        }
       },
       "gasPrice": {
         "enableLabel": "Enable automatic gas cost calculation",

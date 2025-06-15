@@ -295,10 +295,9 @@
         "searchPlaceholder": "Cerca una regió...",
         "types": {
           "country": "País",
-          "region": "Regió/Estat",
+          "region": "Comunitat Autònoma",
           "province": "Província"
-        },
-        "required": "Si us plau, selecciona almenys una regió"
+        }
       },
       "gasPrice": {
         "enableLabel": "Activar càlcul automàtic del cost de benzina",

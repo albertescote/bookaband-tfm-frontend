@@ -296,10 +296,9 @@
         "searchPlaceholder": "Busca una región...",
         "types": {
           "country": "País",
-          "region": "Región/Estado",
+          "region": "Comunidad Autónoma",
           "province": "Provincia"
-        },
-        "required": "Por favor, selecciona al menos una región"
+        }
       },
       "gasPrice": {
         "enableLabel": "Activar cálculo automático del coste de gasolina",
