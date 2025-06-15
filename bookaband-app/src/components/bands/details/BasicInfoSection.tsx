@@ -13,6 +13,7 @@ interface BasicInfoSectionProps {
   selectedEventTypeIds: string[];
   bandSize: string;
   bio: string;
+  price: number;
   isEditing: boolean;
   language: string;
   onLocationChange: (value: string) => void;
@@ -20,6 +21,7 @@ interface BasicInfoSectionProps {
   onEventTypesChange: (value: string[]) => void;
   onBandSizeChange: (value: string) => void;
   onBioChange: (value: string) => void;
+  onPriceChange: (value: number) => void;
   t: (key: string) => string;
 }
 
@@ -31,6 +33,7 @@ export function BasicInfoSection({
   selectedEventTypeIds,
   bandSize,
   bio,
+  price,
   isEditing,
   language,
   onLocationChange,
@@ -38,6 +41,7 @@ export function BasicInfoSection({
   onEventTypesChange,
   onBandSizeChange,
   onBioChange,
+  onPriceChange,
   t,
 }: BasicInfoSectionProps) {
   return (
@@ -67,6 +71,39 @@ export function BasicInfoSection({
             <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
               <MapPin className="h-5 w-5 text-gray-400" />
               <span className="text-gray-900">{location}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="relative">
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            {t('form.basicInfo.price')}
+            {isEditing && <span className="ml-1 text-red-500">*</span>}
+          </label>
+          {isEditing ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="relative"
+            >
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value={price || ''}
+                onChange={(e) => onPriceChange(parseInt(e.target.value) || 0)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                placeholder={t('form.basicInfo.pricePlaceholder')}
+                onKeyPress={(e) => {
+                  if (e.key === '-' || e.key === 'e' || e.key === '.') {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </motion.div>
+          ) : (
+            <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+              <span className="text-gray-900">{price} €</span>
             </div>
           )}
         </div>

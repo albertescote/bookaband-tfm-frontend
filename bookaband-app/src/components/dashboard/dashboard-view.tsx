@@ -249,7 +249,7 @@ export default function DashboardView({ language }: DashboardViewProps) {
           />
           <MetricCard
             title={t('totalIncome')}
-            value={`$${metrics.totalIncome.toLocaleString()}`}
+            value={`${metrics.totalIncome.toLocaleString()}€`}
             icon={
               <div className="rounded-full bg-gradient-to-br from-[#4CAF50] to-[#45a049] p-2">
                 <TrendingUp className="h-5 w-5 text-white" />
