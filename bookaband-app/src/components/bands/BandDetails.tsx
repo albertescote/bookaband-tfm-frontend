@@ -115,6 +115,13 @@ export default function BandDetails({
     technicalRider?: boolean;
     hospitalityRider?: boolean;
     performanceArea?: boolean;
+    basicInfo?: {
+      location?: boolean;
+      price?: boolean;
+      musicalStyles?: boolean;
+      eventTypes?: boolean;
+      bandSize?: boolean;
+    };
   }>({});
 
   const hasChanges = () => {
@@ -221,6 +228,7 @@ export default function BandDetails({
     setEditedValues({
       name: bandProfile.name ?? '',
       bio: bandProfile.bio ?? '',
+      price: bandProfile.price ?? 0,
       location: bandProfile.location ?? '',
       socialLinks: bandProfile.socialLinks ?? [],
       imageUrl: bandProfile.imageUrl ?? '',
@@ -312,31 +320,48 @@ export default function BandDetails({
 
     console.log('editedvalues: ' + JSON.stringify(editedValues));
 
+    const errors = {
+      technicalRider: false,
+      hospitalityRider: false,
+      performanceArea: false,
+      basicInfo: {
+        location: false,
+        price: false,
+        musicalStyles: false,
+        eventTypes: false,
+        bandSize: false,
+      },
+    };
+
     if (!editedValues.name?.trim()) {
       toast.error(t('validation.bandName'));
       return;
     }
 
     if (!editedValues.location?.trim()) {
+      errors.basicInfo.location = true;
       toast.error(t('validation.location'));
-      return;
     }
 
     if (!editedValues.bandSize) {
+      errors.basicInfo.bandSize = true;
       toast.error(t('validation.bandSize'));
-      return;
     }
 
     if (!editedValues.musicalStyleIds?.length) {
+      errors.basicInfo.musicalStyles = true;
       toast.error(t('validation.atLeastOneStyle'));
-      return;
     }
 
-    const errors = {
-      technicalRider: false,
-      hospitalityRider: false,
-      performanceArea: false,
-    };
+    if (!editedValues.eventTypeIds?.length) {
+      errors.basicInfo.eventTypes = true;
+      toast.error(t('validation.atLeastOneEventType'));
+    }
+
+    if (!editedValues.price) {
+      errors.basicInfo.price = true;
+      toast.error(t('validation.price'));
+    }
 
     if (editedValues.hospitalityRider) {
       if (
@@ -384,7 +409,8 @@ export default function BandDetails({
     if (
       errors.technicalRider ||
       errors.hospitalityRider ||
-      errors.performanceArea
+      errors.performanceArea ||
+      Object.values(errors.basicInfo).some(Boolean)
     ) {
       setValidationErrors(errors);
       return;
@@ -457,7 +483,7 @@ export default function BandDetails({
         name: editedValues.name || bandProfile.name || '',
         musicalStyleIds:
           editedValues.musicalStyleIds || bandProfile.musicalStyleIds || [],
-        price: bandProfile.price || 0,
+        price: editedValues.price ?? bandProfile.price ?? 0,
         location: editedValues.location || bandProfile.location || '',
         bandSize: editedValues.bandSize || bandProfile.bandSize || 'BAND',
         eventTypeIds:
@@ -668,6 +694,7 @@ export default function BandDetails({
             onBioChange={handleBioChange}
             onPriceChange={handlePriceChange}
             t={t}
+            hasError={validationErrors.basicInfo}
           />
 
           <WeeklyAvailabilitySection

@@ -23,6 +23,13 @@ interface BasicInfoSectionProps {
   onBioChange: (value: string) => void;
   onPriceChange: (value: number) => void;
   t: (key: string) => string;
+  hasError?: {
+    location?: boolean;
+    price?: boolean;
+    musicalStyles?: boolean;
+    eventTypes?: boolean;
+    bandSize?: boolean;
+  };
 }
 
 export function BasicInfoSection({
@@ -43,6 +50,7 @@ export function BasicInfoSection({
   onBioChange,
   onPriceChange,
   t,
+  hasError,
 }: BasicInfoSectionProps) {
   return (
     <CollapsibleSection title={t('form.basicInfo.title')} defaultOpen={true}>
@@ -62,10 +70,17 @@ export function BasicInfoSection({
                 type="text"
                 value={location}
                 onChange={(e) => onLocationChange(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                className={`w-full rounded-lg border ${
+                  hasError?.location ? 'border-red-500' : 'border-gray-300'
+                } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                 placeholder={t('form.basicInfo.location')}
               />
               <MapPin className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              {hasError?.location && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
@@ -92,7 +107,9 @@ export function BasicInfoSection({
                 step="1"
                 value={price || ''}
                 onChange={(e) => onPriceChange(parseInt(e.target.value) || 0)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                className={`w-full rounded-lg border ${
+                  hasError?.price ? 'border-red-500' : 'border-gray-300'
+                } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                 placeholder={t('form.basicInfo.pricePlaceholder')}
                 onKeyPress={(e) => {
                   if (e.key === '-' || e.key === 'e' || e.key === '.') {
@@ -100,6 +117,11 @@ export function BasicInfoSection({
                   }
                 }}
               />
+              {hasError?.price && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
@@ -128,8 +150,15 @@ export function BasicInfoSection({
                 value={selectedMusicalStyleIds}
                 onChange={onMusicalStylesChange}
                 placeholder={t('form.basicInfo.musicalStylesPlaceholder')}
-                className="w-full"
+                className={`w-full ${
+                  hasError?.musicalStyles ? 'border-red-500' : ''
+                }`}
               />
+              {hasError?.musicalStyles && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="flex flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
@@ -171,8 +200,15 @@ export function BasicInfoSection({
                 value={selectedEventTypeIds}
                 onChange={onEventTypesChange}
                 placeholder={t('form.basicInfo.eventTypesPlaceholder')}
-                className="w-full"
+                className={`w-full ${
+                  hasError?.eventTypes ? 'border-red-500' : ''
+                }`}
               />
+              {hasError?.eventTypes && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="flex flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
@@ -208,7 +244,9 @@ export function BasicInfoSection({
               <select
                 value={bandSize}
                 onChange={(e) => onBandSizeChange(e.target.value)}
-                className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                className={`w-full appearance-none rounded-lg border ${
+                  hasError?.bandSize ? 'border-red-500' : 'border-gray-300'
+                } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
               >
                 <option value="SOLO">
                   {t('form.basicInfo.bandSizes.SOLO')}
@@ -221,6 +259,11 @@ export function BasicInfoSection({
                   {t('form.basicInfo.bandSizes.BAND')}
                 </option>
               </select>
+              {hasError?.bandSize && (
+                <p className="mt-1 text-sm text-red-500">
+                  {t('validation.required')}
+                </p>
+              )}
             </motion.div>
           ) : (
             <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
