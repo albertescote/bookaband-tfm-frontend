@@ -89,9 +89,12 @@ export function GasCostSummary({
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h3 className="mb-4 text-lg font-medium text-gray-900">
-          {t('gasCostSummary')}
+          {t('gasCostSummary.title')}
         </h3>
-        <p className="text-sm text-gray-500">{t('calculating')}</p>
+
+        <p className="text-sm text-gray-500">
+          {t('gasCostSummary.calculating')}
+        </p>
       </div>
     );
   }
