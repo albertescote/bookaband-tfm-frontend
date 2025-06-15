@@ -6,6 +6,7 @@ import {
   Building2,
   Calendar,
   Clock,
+  Euro,
   FileText,
   Home,
   MessageSquare,
@@ -290,6 +291,24 @@ export default function BookingDetails({
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Euro className="h-5 w-5 text-[#15b7b9]" />
+              <div>
+                <p className="text-sm font-medium text-gray-500">
+                  {t('totalCost')}
+                </p>
+                <p className="text-gray-900">
+                  {booking.cost.toLocaleString(
+                    language === 'es'
+                      ? 'es-ES'
+                      : language === 'ca'
+                        ? 'ca-ES'
+                        : 'en-US',
+                    { style: 'currency', currency: 'EUR' },
+                  )}
                 </p>
               </div>
             </div>

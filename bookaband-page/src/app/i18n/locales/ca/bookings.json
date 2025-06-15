@@ -135,5 +135,6 @@
   "calculating": "Calculant costos de gasolina...",
   "oneWay": "(anada)",
   "roundTrip": "(anada i tornada)",
-  "totalDistance": "Distància Total"
+  "totalDistance": "Distància Total",
+  "totalCost": "Cost Total"
 }

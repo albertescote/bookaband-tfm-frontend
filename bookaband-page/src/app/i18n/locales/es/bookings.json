@@ -135,5 +135,6 @@
   "calculating": "Calculando costes de gasolina...",
   "oneWay": "(ida)",
   "roundTrip": "(ida y vuelta)",
-  "totalDistance": "Distancia Total"
+  "totalDistance": "Distancia Total",
+  "totalCost": "Coste Total"
 }

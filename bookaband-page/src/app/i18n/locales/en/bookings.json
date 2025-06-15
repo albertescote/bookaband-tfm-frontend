@@ -115,5 +115,6 @@
   "calculating": "Calculating gas costs...",
   "oneWay": "(one way)",
   "roundTrip": "(round trip)",
-  "totalDistance": "Total Distance"
+  "totalDistance": "Total Distance",
+  "totalCost": "Total Cost"
 }

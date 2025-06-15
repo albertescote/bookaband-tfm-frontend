@@ -20,4 +20,5 @@ export interface BookingSummary {
   addressLine2?: string;
   eventTypeId?: string;
   isPublic?: boolean;
+  cost: number;
 }
