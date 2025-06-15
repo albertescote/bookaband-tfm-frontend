@@ -7,8 +7,8 @@ import {
 } from '@/service/backend/artist/domain/bandCatalogItem';
 
 export enum MediaType {
-  IMAGE = 'IMAGE',
-  VIDEO = 'VIDEO',
+  IMAGE = 'image',
+  VIDEO = 'video',
 }
 
 interface Media {

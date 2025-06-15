@@ -13,7 +13,7 @@ import { EventType } from '@/service/backend/filters/domain/eventType';
 import EventsTab from '@/components/artists/eventsTab';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 
-export function ArtistMediaTabs({
+export function ArtistContentsTab({
   artist,
   language,
   eventTypes,

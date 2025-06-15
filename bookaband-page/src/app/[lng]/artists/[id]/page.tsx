@@ -1,13 +1,13 @@
 import { fetchArtistDetailsById } from '@/service/backend/artist/service/artist.service';
 import { ArtistSidebar } from '@/components/artists/artistSidebar';
 import { ArtistBio } from '@/components/artists/artistBio';
-import { ArtistMediaTabs } from '@/components/artists/artistMediaTab';
 import { ArtistSpotifySection } from '@/components/artists/artistSpotifySection';
 import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 import Error from '@/components/shared/error';
 import { getTranslation } from '@/app/i18n';
 import { SearchSummary } from '@/components/artists/searchSummary';
+import { ArtistContentsTab } from '@/components/artists/artistContentTabs';
 
 export default async function ArtistProfilePage({
   params,
@@ -65,7 +65,7 @@ export default async function ArtistProfilePage({
         <div className="flex-1">
           <ArtistBio artist={artist} language={params.lng} />
           <ArtistSpotifySection artist={artist} />
-          <ArtistMediaTabs
+          <ArtistContentsTab
             artist={artist}
             language={params.lng}
             eventTypes={eventTypes}
