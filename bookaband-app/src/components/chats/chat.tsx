@@ -45,7 +45,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const [displayName, setDisplayName] = useState<string>('');
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
+  const { messages, sendMessage } = useChat(senderId);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -107,17 +107,28 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
       setImageUrl(newImageUrl);
       setDisplayName(newDisplayName);
 
-      setAllMessages(
-        chat.messages.map((msg) => ({
-          chatId: chat.id,
-          senderId: msg.senderId,
-          recipientId: msg.recipientId,
-          message: msg.message || '',
-          timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
-          fileUrl: msg.fileUrl,
-          bookingMetadata: msg.bookingMetadata,
-        })),
+      const initialMessages = chat.messages.map((msg) => ({
+        chatId: chat.id,
+        senderId: msg.senderId,
+        recipientId: msg.recipientId,
+        message: msg.message || '',
+        timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
+        fileUrl: msg.fileUrl,
+        bookingMetadata: msg.bookingMetadata,
+      }));
+
+      initialMessages.sort(
+        (a, b) =>
+          (a.timestamp instanceof Date
+            ? a.timestamp
+            : new Date(a.timestamp)
+          ).getTime() -
+          (b.timestamp instanceof Date
+            ? b.timestamp
+            : new Date(b.timestamp)
+          ).getTime(),
       );
+      setAllMessages(initialMessages);
       setTimeout(scrollToBottom, 100);
     } else {
       setSenderId('');
@@ -128,11 +139,56 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     }
   }, [chat, t]);
 
-  const { messages, sendMessage } = useChat(senderId);
-
   useEffect(() => {
-    setAllMessages((prevMessages) => [...prevMessages, ...messages]);
-    setTimeout(scrollToBottom, 100);
+    if (messages.length > 0) {
+      console.log('New socket messages received:', messages);
+
+      setAllMessages((prevMessages) => {
+        const existingMessageIds = new Set(
+          prevMessages.map((msg) => {
+            const timestamp =
+              msg.timestamp instanceof Date
+                ? msg.timestamp
+                : new Date(msg.timestamp);
+            return `${msg.chatId}-${timestamp.getTime()}-${msg.message}`;
+          }),
+        );
+
+        const newMessages = messages.filter((msg) => {
+          const timestamp =
+            msg.timestamp instanceof Date
+              ? msg.timestamp
+              : new Date(msg.timestamp);
+          return !existingMessageIds.has(
+            `${msg.chatId}-${timestamp.getTime()}-${msg.message}`,
+          );
+        });
+
+        if (newMessages.length > 0) {
+          console.log('Adding new messages:', newMessages);
+
+          const combinedMessages = [...prevMessages, ...newMessages].sort(
+            (a, b) => {
+              const timestampA =
+                a.timestamp instanceof Date
+                  ? a.timestamp
+                  : new Date(a.timestamp);
+              const timestampB =
+                b.timestamp instanceof Date
+                  ? b.timestamp
+                  : new Date(b.timestamp);
+              return timestampA.getTime() - timestampB.getTime();
+            },
+          );
+
+          return combinedMessages;
+        }
+
+        return prevMessages;
+      });
+
+      setTimeout(scrollToBottom, 100);
+    }
   }, [messages]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +255,18 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           message: message.trim(),
           timestamp: new Date(),
         };
-        setAllMessages((prev) => [...prev, newMessage]);
+
+        setAllMessages((prev) => {
+          const updatedMessages = [...prev, newMessage].sort((a, b) => {
+            const timestampA =
+              a.timestamp instanceof Date ? a.timestamp : new Date(a.timestamp);
+            const timestampB =
+              b.timestamp instanceof Date ? b.timestamp : new Date(b.timestamp);
+            return timestampA.getTime() - timestampB.getTime();
+          });
+          return updatedMessages;
+        });
+
         sendMessage(chat!.id, recipientId, message.trim());
         setMessage('');
         setShowEmojis(false);
