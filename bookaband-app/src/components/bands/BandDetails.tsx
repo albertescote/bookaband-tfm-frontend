@@ -423,17 +423,6 @@ export default function BandDetails({
       }
     }
 
-    if (
-      errors.technicalRider ||
-      errors.hospitalityRider ||
-      errors.performanceArea ||
-      errors.availability ||
-      Object.values(errors.basicInfo).some(Boolean)
-    ) {
-      setValidationErrors(errors);
-      return;
-    }
-
     if (!editedValues.socialLinks && !bandProfile.socialLinks) {
       toast.error(t('validation.required.socialLinks'));
       return;
