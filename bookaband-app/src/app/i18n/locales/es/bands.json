@@ -182,6 +182,7 @@
       "description": "Comparte tus perfiles en redes sociales y sube contenido multimedia para mostrar tu banda",
       "socialMedia": "Enlaces a redes sociales",
       "mediaUpload": "Subida de medios",
+      "noSocialLinks": "No hay redes sociales añadidas",
       "instagramPlaceholder": "Introduce la URL de tu perfil de Instagram",
       "facebookPlaceholder": "Introduce la URL de tu página de Facebook",
       "websitePlaceholder": "Introduce la URL de tu sitio web",
