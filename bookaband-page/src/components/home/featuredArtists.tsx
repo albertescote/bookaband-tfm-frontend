@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
+import Image from 'next/image';
 
 interface FeaturedArtistsParams {
   lng: string;
@@ -266,7 +267,7 @@ export default function FeaturedArtists({
               : animationDirection === 'right'
                 ? 'animate-slide-in-right'
                 : ''
-          } mx-auto grid max-w-6xl gap-8 ${getGridClasses()}`}
+          } mx-auto grid max-w-6xl gap-8 p-2 ${getGridClasses()}`}
         >
           {showLoadingSkeleton ? (
             Array.from({ length: itemsPerPage }).map((_, index) => (
@@ -290,18 +291,24 @@ export default function FeaturedArtists({
             visibleArtists.map((artist, index) => (
               <div
                 key={artist.name + '-' + index}
-                className={`flex h-full flex-col rounded-lg border bg-white p-6 text-left shadow-md ${
+                onClick={() => {
+                  router.push(`/${lng}/artists/${artist.id}`);
+                }}
+                className={`flex h-full cursor-pointer flex-col rounded-lg border bg-white p-6 text-left shadow-md transition-transform hover:scale-[1.02] ${
                   itemsPerPage === 1 ? 'w-full max-w-sm sm:max-w-md' : 'w-full'
                 }`}
               >
-                <img
+                <Image
                   src={artist.imageUrl || '/placeholder-artist.jpg'}
                   alt={artist.name}
+                  width={400}
+                  height={320}
                   className="mb-6 h-80 w-full rounded-lg object-cover"
-                  loading={index < itemsPerPage ? 'eager' : 'lazy'}
-                  onError={(e) =>
-                    (e.currentTarget.src = '/placeholder-artist.jpg')
-                  }
+                  priority={index < itemsPerPage}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder-artist.jpg';
+                  }}
                 />
                 <div className="flex flex-1 flex-col">
                   <div className="flex-grow">
@@ -329,7 +336,8 @@ export default function FeaturedArtists({
                     </p>
                   </div>
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       router.push(`/${lng}/artists/${artist.id}`);
                     }}
                     className="mt-auto w-full rounded-lg border border-[#15b7b9] px-4 py-2 font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#15b7b9] focus:ring-offset-2"
