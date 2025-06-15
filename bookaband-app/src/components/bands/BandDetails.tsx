@@ -18,7 +18,7 @@ import {
   PerformanceArea,
   TechnicalRider,
 } from '@/service/backend/band/domain/bandProfile';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useAuth } from '@/providers/authProvider';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { motion } from 'framer-motion';
@@ -111,6 +111,11 @@ export default function BandDetails({
   const [musicalStyles] = useState<MusicalStyle[]>(initialMusicalStyles);
   const [hasImageChanged, setHasImageChanged] = useState(false);
   const [eventTypes] = useState<EventType[]>(initialEventTypes);
+  const [validationErrors, setValidationErrors] = useState<{
+    technicalRider?: boolean;
+    hospitalityRider?: boolean;
+    performanceArea?: boolean;
+  }>({});
 
   const hasChanges = () => {
     if (hasImageChanged) return true;
@@ -124,9 +129,15 @@ export default function BandDetails({
             bandProfile.weeklyAvailability[day as keyof WeeklyAvailability],
         );
       }
+
+      const currentValue = bandProfile[key as keyof BandProfile];
+      const normalizedValue =
+        value ?? (typeof currentValue === 'string' ? '' : {});
+      const normalizedCurrent =
+        currentValue ?? (typeof currentValue === 'string' ? '' : {});
+
       return (
-        JSON.stringify(value) !==
-        JSON.stringify(bandProfile[key as keyof BandProfile] || {})
+        JSON.stringify(normalizedValue) !== JSON.stringify(normalizedCurrent)
       );
     });
   };
@@ -235,12 +246,14 @@ export default function BandDetails({
       eventTypeIds: bandProfile.eventTypeIds ?? [],
     });
     setHasImageChanged(false);
+    setValidationErrors({});
     setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
     setEditedValues({});
     setHasImageChanged(false);
+    setValidationErrors({});
     setBandProfile((prev) => {
       if (!prev) return prev;
       return {
@@ -297,6 +310,8 @@ export default function BandDetails({
   const handleSaveEdit = async () => {
     if (!id || !hasChanges()) return;
 
+    console.log('editedvalues: ' + JSON.stringify(editedValues));
+
     if (!editedValues.name?.trim()) {
       toast.error(t('validation.bandName'));
       return;
@@ -317,14 +332,20 @@ export default function BandDetails({
       return;
     }
 
+    const errors = {
+      technicalRider: false,
+      hospitalityRider: false,
+      performanceArea: false,
+    };
+
     if (editedValues.hospitalityRider) {
       if (
         !editedValues.hospitalityRider.accommodation ||
         !editedValues.hospitalityRider.catering ||
         !editedValues.hospitalityRider.beverages
       ) {
+        errors.hospitalityRider = true;
         toast.error(t('validation.incomplete.hospitalityRider'));
-        return;
       }
     }
 
@@ -335,29 +356,38 @@ export default function BandDetails({
         !editedValues.technicalRider.backline ||
         !editedValues.technicalRider.lighting
       ) {
+        errors.technicalRider = true;
         toast.error(t('validation.incomplete.technicalRider'));
-        return;
       }
     }
 
     if (editedValues.performanceArea) {
       if (!((editedValues.performanceArea?.regions?.length ?? 0) > 0)) {
+        errors.performanceArea = true;
         toast.error(t('validation.incomplete.performanceArea'));
-        return;
       }
       if (editedValues.performanceArea?.gasPriceCalculation) {
         if (!editedValues.performanceArea.gasPriceCalculation.fuelConsumption) {
+          errors.performanceArea = true;
           toast.error(t('validation.incomplete.performanceArea'));
-          return;
         }
         if (
           !editedValues.performanceArea.gasPriceCalculation.useDynamicPricing &&
           !editedValues.performanceArea.gasPriceCalculation.pricePerLiter
         ) {
+          errors.performanceArea = true;
           toast.error(t('validation.incomplete.performanceArea'));
-          return;
         }
       }
+    }
+
+    if (
+      errors.technicalRider ||
+      errors.hospitalityRider ||
+      errors.performanceArea
+    ) {
+      setValidationErrors(errors);
+      return;
     }
 
     if (!editedValues.socialLinks && !bandProfile.socialLinks) {
@@ -716,6 +746,7 @@ export default function BandDetails({
               setEditedValues((prev) => ({ ...prev, technicalRider: rider }))
             }
             t={t}
+            hasError={validationErrors.technicalRider}
           />
 
           <HospitalityRiderSection

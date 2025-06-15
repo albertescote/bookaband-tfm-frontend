@@ -34,7 +34,6 @@ export function PerformanceAreaSection({
   onUpdate,
   t,
 }: PerformanceAreaSectionProps) {
-  console.log(performanceArea.regions);
   const [selectedType, setSelectedType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Region[]>([]);

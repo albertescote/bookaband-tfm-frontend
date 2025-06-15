@@ -8,6 +8,7 @@ interface TechnicalRiderSectionProps {
   isEditing: boolean;
   onUpdate: (rider: TechnicalRider | undefined) => void;
   t: (key: string) => string;
+  hasError?: boolean;
 }
 
 export function TechnicalRiderSection({
@@ -15,6 +16,7 @@ export function TechnicalRiderSection({
   isEditing,
   onUpdate,
   t,
+  hasError = false,
 }: TechnicalRiderSectionProps) {
   const handleChange = (field: keyof TechnicalRider, value: string) => {
     const updatedRider: TechnicalRider = {
@@ -89,10 +91,19 @@ export function TechnicalRiderSection({
                 <textarea
                   value={technicalRider.soundSystem}
                   onChange={(e) => handleChange('soundSystem', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !technicalRider.soundSystem
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.technicalRider.soundSystem.placeholder')}
                 />
+                {hasError && !technicalRider.soundSystem && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -103,10 +114,19 @@ export function TechnicalRiderSection({
                 <textarea
                   value={technicalRider.microphones}
                   onChange={(e) => handleChange('microphones', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !technicalRider.microphones
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.technicalRider.microphones.placeholder')}
                 />
+                {hasError && !technicalRider.microphones && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -117,10 +137,19 @@ export function TechnicalRiderSection({
                 <textarea
                   value={technicalRider.backline}
                   onChange={(e) => handleChange('backline', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !technicalRider.backline
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.technicalRider.backline.placeholder')}
                 />
+                {hasError && !technicalRider.backline && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -131,10 +160,19 @@ export function TechnicalRiderSection({
                 <textarea
                   value={technicalRider.lighting}
                   onChange={(e) => handleChange('lighting', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !technicalRider.lighting
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.technicalRider.lighting.placeholder')}
                 />
+                {hasError && !technicalRider.lighting && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
