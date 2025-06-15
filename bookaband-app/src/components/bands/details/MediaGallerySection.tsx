@@ -3,6 +3,7 @@ import { Maximize2, Upload, X } from 'lucide-react';
 import { FileUpload } from '@/components/common/FileUpload';
 import { useState } from 'react';
 import { CollapsibleSection } from '@/components/bands/details/CollapsibleSection';
+import Image from 'next/image';
 
 interface Media {
   id: string;
@@ -69,12 +70,16 @@ export function MediaGallerySection({
               className="group relative aspect-square overflow-hidden rounded-lg"
             >
               {mediaItem.type === 'image' ? (
-                <motion.img
-                  src={mediaItem.url}
-                  alt=""
-                  className="h-full w-full cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
-                  onClick={() => handleMediaClick(mediaItem)}
-                />
+                <div className="relative h-full w-full">
+                  <Image
+                    src={mediaItem.url}
+                    alt=""
+                    fill
+                    className="cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
+                    onClick={() => handleMediaClick(mediaItem)}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  />
+                </div>
               ) : (
                 <motion.div
                   className="relative h-full w-full cursor-pointer"
@@ -125,11 +130,15 @@ export function MediaGallerySection({
               onClick={(e) => e.stopPropagation()}
             >
               {selectedMedia.type === 'image' ? (
-                <img
-                  src={selectedMedia.url}
-                  alt=""
-                  className="max-h-[90vh] max-w-[90vw] object-contain"
-                />
+                <div className="relative h-[90vh] w-[90vw]">
+                  <Image
+                    src={selectedMedia.url}
+                    alt=""
+                    fill
+                    className="object-contain"
+                    sizes="90vw"
+                  />
+                </div>
               ) : (
                 <video
                   src={selectedMedia.url}
