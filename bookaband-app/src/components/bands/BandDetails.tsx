@@ -225,12 +225,7 @@ export default function BandDetails({
       },
       musicalStyleIds: bandProfile.musicalStyleIds ?? [],
       bandSize: bandProfile.bandSize ?? 'BAND',
-      hospitalityRider: bandProfile.hospitalityRider ?? {
-        accommodation: '',
-        catering: '',
-        beverages: '',
-        specialRequirements: '',
-      },
+      hospitalityRider: bandProfile.hospitalityRider ?? undefined,
       technicalRider: bandProfile.technicalRider ?? undefined,
       performanceArea: bandProfile.performanceArea ?? {
         regions: [],
@@ -467,26 +462,10 @@ export default function BandDetails({
                 bandProfile.performanceArea?.restrictions ||
                 '',
         },
-        hospitalityRider: {
-          accommodation:
-            editedValues.hospitalityRider?.accommodation ||
-            bandProfile.hospitalityRider?.accommodation ||
-            '',
-          catering:
-            editedValues.hospitalityRider?.catering ||
-            bandProfile.hospitalityRider?.catering ||
-            '',
-          beverages:
-            editedValues.hospitalityRider?.beverages ||
-            bandProfile.hospitalityRider?.beverages ||
-            '',
-          specialRequirements:
-            editedValues.hospitalityRider?.specialRequirements === ''
-              ? ''
-              : editedValues.hospitalityRider?.specialRequirements ||
-                bandProfile.hospitalityRider?.specialRequirements ||
-                '',
-        },
+        hospitalityRider:
+          editedValues.hospitalityRider ||
+          bandProfile.hospitalityRider ||
+          undefined,
       };
 
       await updateBand(id, bandData);
@@ -734,12 +713,8 @@ export default function BandDetails({
           <HospitalityRiderSection
             hospitalityRider={
               editedValues.hospitalityRider ||
-              bandProfile.hospitalityRider || {
-                accommodation: '',
-                catering: '',
-                beverages: '',
-                specialRequirements: '',
-              }
+              bandProfile.hospitalityRider ||
+              undefined
             }
             isEditing={isEditing}
             onUpdate={(rider) =>

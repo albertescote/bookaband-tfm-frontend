@@ -265,22 +265,23 @@
       "subtitle": "Especifica tus requisitos de hospitalidad para las actuaciones",
       "accommodation": {
         "label": "Alojamiento",
-        "placeholder": "Describe tus requisitos de alojamiento"
+        "placeholder": "Especifica los requisitos de alojamiento"
       },
       "catering": {
         "label": "Catering",
-        "placeholder": "Describe tus requisitos de catering"
+        "placeholder": "Especifica los requisitos de catering"
       },
       "beverages": {
         "label": "Bebidas",
-        "placeholder": "Lista tus requisitos de bebidas"
+        "placeholder": "Especifica los requisitos de bebidas"
       },
       "specialRequirements": {
-        "label": "Requisitos especiales",
-        "placeholder": "Lista cualquier requisito especial"
+        "label": "Requisitos Especiales",
+        "placeholder": "Especifica cualquier requisito especial"
       },
       "enable": "Necesito rider de hospitalidad",
-      "disable": "No necesito rider de hospitalidad"
+      "disable": "No necesito rider de hospitalidad",
+      "noRider": "No se ha especificado ningún rider de hospitalidad"
     },
     "performanceArea": {
       "title": "Área de Actuación",

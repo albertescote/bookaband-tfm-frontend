@@ -266,20 +266,21 @@
       "disable": "No necessito rider d'hospitalitat",
       "accommodation": {
         "label": "Allotjament",
-        "placeholder": "Descriu els teus requisits d'allotjament"
+        "placeholder": "Especifica els requisits d'allotjament"
       },
       "catering": {
         "label": "Catering",
-        "placeholder": "Descriu els teus requisits de catering"
+        "placeholder": "Especifica els requisits de catering"
       },
       "beverages": {
         "label": "Begudes",
-        "placeholder": "Llista els teus requisits de begudes"
+        "placeholder": "Especifica els requisits de begudes"
       },
       "specialRequirements": {
-        "label": "Requisits especials",
-        "placeholder": "Llista qualsevol requisit especial"
-      }
+        "label": "Requisits Especials",
+        "placeholder": "Especifica qualsevol requisit especial"
+      },
+      "noRider": "No s'ha especificat cap rider d'hospitalitat"
     },
     "performanceArea": {
       "title": "Àrea d'Actuació",

@@ -260,20 +260,21 @@
       "disable": "I don't need hospitality rider",
       "accommodation": {
         "label": "Accommodation",
-        "placeholder": "Describe your accommodation requirements"
+        "placeholder": "Specify accommodation requirements"
       },
       "catering": {
         "label": "Catering",
-        "placeholder": "Describe your catering requirements"
+        "placeholder": "Specify catering requirements"
       },
       "beverages": {
         "label": "Beverages",
-        "placeholder": "List your beverage requirements"
+        "placeholder": "Specify beverage requirements"
       },
       "specialRequirements": {
-        "label": "Special requirements",
-        "placeholder": "List any special requirements"
-      }
+        "label": "Special Requirements",
+        "placeholder": "Specify any special requirements"
+      },
+      "noRider": "No hospitality rider has been specified"
     },
     "performanceArea": {
       "title": "Performance Area",
