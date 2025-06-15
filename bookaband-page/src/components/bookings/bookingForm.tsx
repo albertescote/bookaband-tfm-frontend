@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/shared/button';
@@ -31,6 +31,29 @@ interface FormErrors {
   postalCode?: string;
   addressLine1?: string;
   venue?: string;
+  eventTypeId?: string;
+}
+
+interface Place {
+  id: string;
+  name: string;
+  type: 'country' | 'city';
+  postalCode?: string;
+  country?: string;
+}
+
+interface GooglePrediction {
+  place_id: string;
+  description: string;
+  types: string[];
+}
+
+interface GooglePlaceDetails {
+  address_components?: Array<{
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }>;
 }
 
 export function BookingForm({
@@ -47,6 +70,11 @@ export function BookingForm({
   const [isStartDateOpen, setIsStartDateOpen] = useState(false);
   const [isEndDateOpen, setIsEndDateOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const [citySuggestions, setCitySuggestions] = useState<Place[]>([]);
+  const [citySearchQuery, setCitySearchQuery] = useState('');
+  const cityInputRef = useRef<HTMLDivElement>(null);
+  const [isCitySearching, setIsCitySearching] = useState(false);
 
   const [formData, setFormData] = useState({
     initDate: new Date(new Date().setHours(0, 0, 0, 0)),
@@ -90,6 +118,114 @@ export function BookingForm({
     registerLocale('en', en);
     registerLocale('ca', ca);
   }, []);
+
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      setIsGoogleMapsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        cityInputRef.current &&
+        !cityInputRef.current.contains(event.target as Node)
+      ) {
+        setCitySuggestions([]);
+        setIsCitySearching(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleCitySearch = useCallback(
+    async (query: string) => {
+      setCitySearchQuery(query);
+      setIsCitySearching(true);
+      if (!query.trim() || !isGoogleMapsLoaded) {
+        setCitySuggestions([]);
+        return;
+      }
+
+      try {
+        const autocompleteService =
+          new window.google.maps.places.AutocompleteService();
+        const request = {
+          input: query,
+          types: ['(cities)'],
+          componentRestrictions: { country: [] },
+          language: language,
+        };
+
+        const response = await autocompleteService.getPlacePredictions(request);
+        const places = response.predictions.map(
+          (prediction: GooglePrediction): Place => {
+            const cityName = prediction.description.split(',')[0].trim();
+            return {
+              id: prediction.place_id,
+              name: cityName,
+              type: 'city',
+            };
+          },
+        );
+
+        setCitySuggestions(places);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+        setCitySuggestions([]);
+      }
+    },
+    [isGoogleMapsLoaded, language],
+  );
+
+  const handleCitySelect = async (place: Place) => {
+    try {
+      const placesService = new window.google.maps.places.PlacesService(
+        document.createElement('div'),
+      );
+
+      placesService.getDetails(
+        { placeId: place.id },
+        (placeDetails: GooglePlaceDetails | null, status: string) => {
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            placeDetails
+          ) {
+            const addressComponents = placeDetails.address_components || [];
+            let postalCode = '';
+            let country = '';
+            let city = place.name;
+
+            for (const component of addressComponents) {
+              if (component.types.includes('postal_code')) {
+                postalCode = component.long_name;
+              }
+              if (component.types.includes('country')) {
+                country = component.long_name;
+              }
+            }
+
+            setFormData((prev) => ({
+              ...prev,
+              city: city,
+              country: country,
+              postalCode: postalCode,
+            }));
+          }
+        },
+      );
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+    }
+
+    setCitySearchQuery('');
+    setCitySuggestions([]);
+    setIsCitySearching(false);
+  };
 
   const validateForm = (): boolean => {
     const errors: FormErrors = {};
@@ -152,6 +288,11 @@ export function BookingForm({
 
     if (!formData.venue.trim()) {
       errors.venue = t('validation.required');
+      isValid = false;
+    }
+
+    if (!formData.eventTypeId) {
+      errors.eventTypeId = t('validation.required');
       isValid = false;
     }
 
@@ -315,7 +456,7 @@ export function BookingForm({
   return (
     <form
       onSubmit={currentStep === 1 ? handleNextStep : handleSubmit}
-      className="space-y-6"
+      className="min-h-[calc(100vh-4rem)] space-y-6"
     >
       <div className="mb-8">
         <div className="flex items-center justify-between">
@@ -482,31 +623,71 @@ export function BookingForm({
                 className={`w-full rounded-lg border ${
                   formErrors.name ? 'border-red-500' : 'border-gray-300'
                 } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                required
               />
               {formErrors.name && (
                 <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
               )}
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 {t('city')} *
               </label>
-              <input
-                type="text"
-                value={formData.city}
-                onChange={(e) =>
-                  setFormData({ ...formData, city: e.target.value })
-                }
-                placeholder={t('cityPlaceholder')}
-                className={`w-full rounded-lg border ${
-                  formErrors.city ? 'border-red-500' : 'border-gray-300'
-                } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                required
-              />
+              <div className="relative" ref={cityInputRef}>
+                <input
+                  type="text"
+                  value={isCitySearching ? citySearchQuery : formData.city}
+                  onChange={(e) => handleCitySearch(e.target.value)}
+                  onFocus={() => setIsCitySearching(true)}
+                  placeholder={t('cityPlaceholder')}
+                  className={`w-full rounded-lg border ${
+                    formErrors.city ? 'border-red-500' : 'border-gray-300'
+                  } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
+                />
+                {citySuggestions.length > 0 && (
+                  <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                    {citySuggestions.map((suggestion) => (
+                      <button
+                        key={suggestion.id}
+                        type="button"
+                        className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                        onClick={() => handleCitySelect(suggestion)}
+                      >
+                        {suggestion.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               {formErrors.city && (
                 <p className="mt-1 text-sm text-red-500">{formErrors.city}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                {t('country')} *
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={formData.country}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      country: e.target.value,
+                    }))
+                  }
+                  placeholder={t('countryPlaceholder')}
+                  className={`w-full rounded-lg border ${
+                    formErrors.country ? 'border-red-500' : 'border-gray-300'
+                  } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
+                />
+              </div>
+              {formErrors.country && (
+                <p className="mt-1 text-sm text-red-500">
+                  {formErrors.country}
+                </p>
               )}
             </div>
 
@@ -518,40 +699,19 @@ export function BookingForm({
                 type="text"
                 value={formData.postalCode}
                 onChange={(e) =>
-                  setFormData({ ...formData, postalCode: e.target.value })
+                  setFormData((prev) => ({
+                    ...prev,
+                    postalCode: e.target.value,
+                  }))
                 }
                 placeholder={t('postalCodePlaceholder')}
                 className={`w-full rounded-lg border ${
                   formErrors.postalCode ? 'border-red-500' : 'border-gray-300'
                 } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                required
               />
               {formErrors.postalCode && (
                 <p className="mt-1 text-sm text-red-500">
                   {formErrors.postalCode}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                {t('country')} *
-              </label>
-              <input
-                type="text"
-                value={formData.country}
-                onChange={(e) =>
-                  setFormData({ ...formData, country: e.target.value })
-                }
-                placeholder={t('countryPlaceholder')}
-                className={`w-full rounded-lg border ${
-                  formErrors.country ? 'border-red-500' : 'border-gray-300'
-                } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                required
-              />
-              {formErrors.country && (
-                <p className="mt-1 text-sm text-red-500">
-                  {formErrors.country}
                 </p>
               )}
             </div>
@@ -569,8 +729,15 @@ export function BookingForm({
                       setFormData({ ...formData, venue: e.target.value })
                     }
                     placeholder={t('venuePlaceholder')}
-                    className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+                    className={`w-full rounded-lg border ${
+                      formErrors.venue ? 'border-red-500' : 'border-gray-300'
+                    } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
                   />
+                  {formErrors.venue && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {formErrors.venue}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
@@ -606,7 +773,6 @@ export function BookingForm({
                       ? 'border-red-500'
                       : 'border-gray-300'
                   } p-2.5 pl-10 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                  required
                 />
                 <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               </div>
@@ -658,6 +824,11 @@ export function BookingForm({
                   );
                 })}
               </select>
+              {formErrors.eventTypeId && (
+                <p className="mt-1 text-sm text-red-500">
+                  {formErrors.eventTypeId}
+                </p>
+              )}
             </div>
 
             <div className="md:col-span-2">
