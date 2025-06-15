@@ -44,7 +44,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const [recipientId, setRecipientId] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string | undefined>('');
   const [displayName, setDisplayName] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -249,10 +248,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     return groups;
   };
 
-  const goToChats = () => {
-    router.push(`/${language}/chats`);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -394,21 +389,10 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     );
   };
 
-  if (error) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4 p-8 text-center">
-          <MessageSquareWarning className="h-12 w-12 text-[#15b7b9]" />
-          <div className="text-gray-400">{error}</div>
-        </div>
-      </div>
-    );
-  }
-
   const messageGroups = groupMessagesByDate();
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-[calc(100vh-4rem)] flex-col">
       {isLoading ? (
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <Spinner className="h-12 w-12 text-[#15b7b9]" />
