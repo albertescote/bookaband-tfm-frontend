@@ -229,6 +229,23 @@ export function PerformanceAreaSection({
 
   return (
     <CollapsibleSection title={t('form.performanceArea.title')}>
+      {isEditing && (
+        <div className="mb-4 rounded-lg border border-blue-100 bg-blue-50 p-4">
+          <div className="flex items-start gap-2">
+            <div className="flex items-start">
+              <Info className="mt-0.5 h-6 w-6 text-blue-500" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="font-medium text-blue-900">
+                {t('form.performanceArea.info.title')}
+              </h3>
+              <p className="text-sm text-blue-700">
+                {t('form.performanceArea.info.description')}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="space-y-4">
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-700">
