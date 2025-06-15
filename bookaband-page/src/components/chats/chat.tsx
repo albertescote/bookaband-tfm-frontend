@@ -14,7 +14,10 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { useRouter } from 'next/navigation';
 import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
-import { getChatById } from '@/service/backend/chat/service/chat.service';
+import {
+  createNewChat,
+  getChatById,
+} from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
 import { getUserInfo } from '@/service/backend/user/service/user.service';
 import { Spinner } from '@/components/shared/spinner';
@@ -56,7 +59,8 @@ const Chat: React.FC<ChatProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
-
+  const [isNewChat, setIsNewChat] = useState<boolean>(false);
+  const { messages, sendMessage } = useChat(senderId);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -112,6 +116,7 @@ const Chat: React.FC<ChatProps> = ({
   useEffect(() => {
     if (chatId) {
       getChatById(chatId).then((chat: ChatHistory | undefined) => {
+        console.log(chat);
         setIsLoading(false);
         setChat(chat);
       });
@@ -123,6 +128,7 @@ const Chat: React.FC<ChatProps> = ({
           setChat(chat);
         });
       } else {
+        setIsNewChat(true);
         createEmptyChat(bandId).then((chat) => {
           setChat(chat);
           setIsLoading(false);
@@ -149,8 +155,8 @@ const Chat: React.FC<ChatProps> = ({
         chat.messages.map((msg) => ({
           id: msg.id,
           chatId: chat.id,
-          senderId,
-          recipientId,
+          senderId: msg.senderId ?? newSenderId,
+          recipientId: msg.recipientId ?? newRecipientId,
           message: msg.message ?? '',
           timestamp: msg.timestamp ?? new Date(),
           bookingMetadata: msg.bookingMetadata
@@ -168,24 +174,28 @@ const Chat: React.FC<ChatProps> = ({
     }
   }, [chat, t]);
 
-  const { messages, sendMessage } = useChat(senderId);
-
   useEffect(() => {
-    setAllMessages((prevMessages) => [...prevMessages, ...messages]);
-    setTimeout(scrollToBottom, 100);
-
     if (messages.length > 0 && chat) {
-      const updatedChat: ChatView = {
-        ...chat,
-        messages: [...chat.messages, ...messages],
-        updatedAt: new Date(),
-        unreadMessagesCount: 0,
-      };
-      setChat(updatedChat);
-      setChats((prevChats: ChatView[]) => {
-        const otherChats = prevChats.filter((c) => c.id !== chat.id);
-        return [updatedChat, ...otherChats];
-      });
+      const newMessages = messages.filter(
+        (msg) => !allMessages.some((existingMsg) => existingMsg.id === msg.id),
+      );
+
+      if (newMessages.length > 0) {
+        setAllMessages((prevMessages) => [...prevMessages, ...newMessages]);
+        setTimeout(scrollToBottom, 100);
+
+        const updatedChat: ChatView = {
+          ...chat,
+          messages: [...chat.messages, ...newMessages],
+          updatedAt: new Date(),
+          unreadMessagesCount: 0,
+        };
+        setChat(updatedChat);
+        setChats((prevChats: ChatView[]) => {
+          const otherChats = prevChats.filter((c) => c.id !== chat.id);
+          return [updatedChat, ...otherChats];
+        });
+      }
     }
   }, [messages, chat, setChats]);
 
@@ -283,38 +293,50 @@ const Chat: React.FC<ChatProps> = ({
 
   const handleSendMessage = () => {
     if (message.trim() || file) {
-      if (file) {
-        handleFileUpload();
+      if (isNewChat) {
+        createNewChat(bandId!).then((chatId) => {
+          if (chatId) {
+            getChatById(chatId).then((createdChat: ChatHistory | undefined) => {
+              if (createdChat) createMessageAndSendIt(createdChat);
+            });
+          }
+        });
       } else {
-        const newMessage: SocketMessage = {
-          id: crypto.randomUUID(),
-          chatId: chat!.id,
-          senderId,
-          recipientId,
-          message: message.trim(),
-          timestamp: new Date(),
-        };
-        setAllMessages((prev) => [...prev, newMessage]);
-        sendMessage(chat!.id, recipientId, message.trim());
-
-        if (chat) {
-          const updatedChat: ChatView = {
-            ...chat,
-            messages: [...chat.messages, newMessage],
-            updatedAt: new Date(),
-            unreadMessagesCount: 0,
-          };
-          setChat(updatedChat);
-          setChats((prevChats: ChatView[]) => {
-            const otherChats = prevChats.filter((c) => c.id !== chat.id);
-            return [updatedChat, ...otherChats];
-          });
-        }
-
-        setMessage('');
-        setShowEmojis(false);
-        setTimeout(scrollToBottom, 100);
+        if (chat) createMessageAndSendIt(chat);
       }
+    }
+  };
+
+  const createMessageAndSendIt = (createdChat: ChatHistory) => {
+    if (file) {
+      handleFileUpload();
+    } else {
+      const newMessage: SocketMessage = {
+        id: crypto.randomUUID(),
+        chatId: createdChat.id,
+        senderId,
+        recipientId,
+        message: message.trim(),
+        timestamp: new Date(),
+      };
+      setAllMessages((prev) => [...prev, newMessage]);
+      sendMessage(createdChat.id, recipientId, message.trim());
+
+      const updatedChat: ChatView = {
+        ...createdChat,
+        messages: [...createdChat.messages, newMessage],
+        updatedAt: new Date(),
+        unreadMessagesCount: 0,
+      };
+      setChat(updatedChat);
+      setChats((prevChats: ChatView[]) => {
+        const otherChats = prevChats.filter((c) => c.id !== createdChat.id);
+        return [updatedChat, ...otherChats];
+      });
+
+      setMessage('');
+      setShowEmojis(false);
+      setTimeout(scrollToBottom, 100);
     }
   };
 
@@ -543,7 +565,7 @@ const Chat: React.FC<ChatProps> = ({
               </div>
             </div>
           ) : (
-            <div className="flex h-full flex-col">
+            <div className="flex h-[calc(100vh-4rem)] flex-col">
               <div className="flex items-center justify-between border-b bg-white p-4 shadow-sm">
                 <div
                   className="flex cursor-pointer items-center gap-3"
@@ -558,7 +580,7 @@ const Chat: React.FC<ChatProps> = ({
 
               <div
                 ref={chatContainerRef}
-                className="flex-1 overflow-y-auto scroll-smooth bg-gray-50 p-4"
+                className="flex-1 overflow-y-auto bg-gray-50 p-4"
               >
                 {messageGroups.length === 0 ? (
                   <div className="flex h-full flex-col items-center justify-center gap-3 p-4">
@@ -579,7 +601,7 @@ const Chat: React.FC<ChatProps> = ({
                       </div>
 
                       {group.messages.map((chatMessage, index) => {
-                        const isSender = chatMessage.senderId === senderId;
+                        const isSender = chatMessage.senderId === chat?.user.id;
                         const showAvatar =
                           index === 0 ||
                           group.messages[index - 1]?.senderId !==
@@ -656,7 +678,7 @@ const Chat: React.FC<ChatProps> = ({
                 <div ref={messagesEndRef} />
               </div>
 
-              <div className="border-t bg-white p-4">
+              <div className="border-t bg-white p-4 pb-8">
                 <div className="flex items-center gap-2">
                   <input
                     type="file"
