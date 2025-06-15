@@ -7,7 +7,7 @@ import { Button } from '@/components/shared/button';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { WeeklyAvailability } from '@/service/backend/artist/domain/bandCatalogItem';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
-import { Calendar, ChevronDown, MapPin } from 'lucide-react';
+import { Calendar, ChevronDown, Info, MapPin } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
@@ -556,25 +556,37 @@ export function BookingForm({
               )}
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                {t('venue')} *
-              </label>
-              <input
-                type="text"
-                value={formData.venue}
-                onChange={(e) =>
-                  setFormData({ ...formData, venue: e.target.value })
-                }
-                placeholder={t('venuePlaceholder')}
-                className={`w-full rounded-lg border ${
-                  formErrors.venue ? 'border-red-500' : 'border-gray-300'
-                } p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]`}
-                required
-              />
-              {formErrors.venue && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.venue}</p>
-              )}
+            <div className="md:col-span-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col justify-center">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {t('venue')} *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.venue}
+                    onChange={(e) =>
+                      setFormData({ ...formData, venue: e.target.value })
+                    }
+                    placeholder={t('venuePlaceholder')}
+                    className="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#15b7b9] focus:ring-1 focus:ring-[#15b7b9]"
+                  />
+                </div>
+                <div>
+                  <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+                    <div className="flex items-start gap-2">
+                      <div className="flex items-start">
+                        <Info className="mt-0.5 h-6 w-6 text-blue-500" />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-blue-700">
+                          {t('venueInfo')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="md:col-span-2">

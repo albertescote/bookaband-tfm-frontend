@@ -15,6 +15,7 @@
   "cityPlaceholder": "Introduce la ciudad",
   "venue": "Lugar de celebración",
   "venuePlaceholder": "Introduce el nombre del lugar de celebración",
+  "venueInfo": "El lugar específico o establecimiento donde se llevará a cabo el evento (por ejemplo, sala de conciertos, restaurante, local privado)",
   "postalCode": "Código Postal",
   "postalCodePlaceholder": "Introduce el código postal",
   "addressLine1": "Dirección",
