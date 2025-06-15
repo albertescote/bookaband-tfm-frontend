@@ -596,6 +596,10 @@ export default function BandDetails({
     setEditedValues((prev) => ({ ...prev, bio: value }));
   };
 
+  const handlePriceChange = (value: number) => {
+    setEditedValues((prev) => ({ ...prev, price: value }));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -663,6 +667,7 @@ export default function BandDetails({
             }
             bandSize={editedValues.bandSize || bandProfile.bandSize}
             bio={editedValues.bio ?? bandProfile.bio ?? ''}
+            price={editedValues.price ?? bandProfile.price ?? 0}
             isEditing={isEditing}
             language={lng || 'en'}
             onLocationChange={handleLocationChange}
@@ -670,6 +675,7 @@ export default function BandDetails({
             onEventTypesChange={handleEventTypesChange}
             onBandSizeChange={handleBandSizeChange}
             onBioChange={handleBioChange}
+            onPriceChange={handlePriceChange}
             t={t}
           />
 
