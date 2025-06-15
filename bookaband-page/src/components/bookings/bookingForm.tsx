@@ -7,7 +7,7 @@ import { Button } from '@/components/shared/button';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { WeeklyAvailability } from '@/service/backend/artist/domain/bandCatalogItem';
 import { createBooking } from '@/service/backend/booking/service/booking.service';
-import { Calendar, ChevronDown, Info, MapPin } from 'lucide-react';
+import { Calendar, ChevronDown, Info, Loader2, MapPin } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
@@ -77,6 +77,7 @@ export function BookingForm({
   const cityInputRef = useRef<HTMLDivElement>(null);
   const [isCitySearching, setIsCitySearching] = useState(false);
   const [totalCost, setTotalCost] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     initDate: new Date(new Date().setHours(0, 0, 0, 0)),
@@ -327,6 +328,7 @@ export function BookingForm({
       return;
     }
 
+    setIsSubmitting(true);
     setIsLoading(true);
 
     try {
@@ -355,7 +357,7 @@ export function BookingForm({
       setError(
         err instanceof Error ? err.message : t('errorScreen.description'),
       );
-    } finally {
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   };
@@ -878,7 +880,7 @@ export function BookingForm({
 
       <div className="flex justify-between">
         <div>
-          {currentStep === 2 && (
+          {currentStep === 2 && !isSubmitting && (
             <Button
               type="button"
               variant="outline"
@@ -890,24 +892,31 @@ export function BookingForm({
           )}
         </div>
         <div className="flex gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push(`/${language}/find-artists`)}
-            className="px-6"
-          >
-            {t('cancel')}
-          </Button>
+          {!isSubmitting && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push(`/${language}/find-artists`)}
+              className="px-6"
+            >
+              {t('cancel')}
+            </Button>
+          )}
           <Button
             type="submit"
-            className="bg-[#15b7b9] px-6 text-white hover:bg-[#15b7b9]/90"
+            className="bg-[#15b7b9] px-6 text-white hover:bg-[#15b7b9]/90 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={isLoading}
           >
-            {currentStep === 1
-              ? t('next')
-              : isLoading
-                ? t('creating')
-                : t('createBooking')}
+            {currentStep === 1 ? (
+              t('next')
+            ) : isLoading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t('creating')}
+              </div>
+            ) : (
+              t('createBooking')
+            )}
           </Button>
         </div>
       </div>
