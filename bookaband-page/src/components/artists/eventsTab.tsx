@@ -163,11 +163,6 @@ export default function EventsTab({
     });
   };
 
-  if (!events.length) {
-    return (
-      <p className="mt-4 text-sm text-gray-500">{t('noUpcomingEvents')}</p>
-    );
-  }
   return (
     <div className="relative mt-6">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -187,51 +182,57 @@ export default function EventsTab({
             )}
           </div>
 
-          <div className="space-y-4">
-            {upcomingEvents.map((event) => (
-              <div
-                key={event.id}
-                className="relative overflow-visible rounded-xl border border-[#e2f7f7] p-4 transition-all hover:shadow-lg"
-              >
-                <div className="absolute left-0 top-0 h-full w-1 bg-[#15b7b9]" />
-                <div className="flex items-start pl-3">
-                  <div className="mr-4 flex flex-col items-center justify-center">
-                    <div className="text-sm font-bold text-gray-400">
-                      {new Date(event.date).toLocaleDateString(language, {
-                        month: 'short',
-                      })}
-                    </div>
-                    <div className="text-2xl font-bold text-[#15b7b9]">
-                      {new Date(event.date).getDate()}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between">
-                      <h4 className="font-semibold text-gray-900">
-                        {event.name}
-                      </h4>
-                      <span className="rounded-full bg-[#15b7b9] px-2 py-1 text-xs text-white">
-                        {getEventTypeLabel(event.eventTypeId)}
-                      </span>
-                    </div>
-                    <div className="mt-2 space-y-2 text-sm text-gray-600">
-                      <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4 text-[#15b7b9]" />
-                        {formatEventTime(event.date)}
+          {events.length === 0 ? (
+            <div className="rounded-xl border border-[#e2f7f7] p-6 text-center">
+              <p className="text-gray-500">{t('noUpcomingEvents')}</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {upcomingEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="relative overflow-visible rounded-xl border border-[#e2f7f7] p-4 transition-all hover:shadow-lg"
+                >
+                  <div className="absolute left-0 top-0 h-full w-1 bg-[#15b7b9]" />
+                  <div className="flex items-start pl-3">
+                    <div className="mr-4 flex flex-col items-center justify-center">
+                      <div className="text-sm font-bold text-gray-400">
+                        {new Date(event.date).toLocaleDateString(language, {
+                          month: 'short',
+                        })}
                       </div>
-                      {event.city && (
+                      <div className="text-2xl font-bold text-[#15b7b9]">
+                        {new Date(event.date).getDate()}
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between">
+                        <h4 className="font-semibold text-gray-900">
+                          {event.name}
+                        </h4>
+                        <span className="rounded-full bg-[#15b7b9] px-2 py-1 text-xs text-white">
+                          {getEventTypeLabel(event.eventTypeId)}
+                        </span>
+                      </div>
+                      <div className="mt-2 space-y-2 text-sm text-gray-600">
                         <div className="flex items-center">
-                          <MapPin className="mr-2 h-4 w-4 text-[#15b7b9]" />
-                          {event.venue ? `${event.venue}, ` : ''}
-                          {event.city}, {event.country}
+                          <Clock className="mr-2 h-4 w-4 text-[#15b7b9]" />
+                          {formatEventTime(event.date)}
                         </div>
-                      )}
+                        {event.city && (
+                          <div className="flex items-center">
+                            <MapPin className="mr-2 h-4 w-4 text-[#15b7b9]" />
+                            {event.venue ? `${event.venue}, ` : ''}
+                            {event.city}, {event.country}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="overflow-visible rounded-xl shadow-lg">
