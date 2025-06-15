@@ -19,6 +19,7 @@ export interface Booking {
   city: string;
   venue: string;
   postalCode: string;
+  cost: number;
   addressLine1: string;
   addressLine2?: string;
   eventTypeId?: string;

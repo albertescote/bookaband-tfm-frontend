@@ -1,11 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { CostSummary } from './costSummary';
 import { GasCostSummary } from './gasCostSummary';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface BookingSummaryProps {
   formData: {
@@ -25,6 +24,7 @@ interface BookingSummaryProps {
   eventTypes: EventType[];
   language: string;
   t: (key: string) => string;
+  onTotalCostCalculated: (cost: number | null) => void;
 }
 
 export function BookingSummary({
@@ -33,8 +33,15 @@ export function BookingSummary({
   eventTypes,
   language,
   t,
+  onTotalCostCalculated,
 }: BookingSummaryProps) {
   const [gasCost, setGasCost] = useState<number | null>(null);
+
+  useEffect(() => {
+    const total = (gasCost ?? 0) + (artist.price ?? 0);
+    const totalCostRounded = Math.round(total * 100) / 100;
+    onTotalCostCalculated(totalCostRounded);
+  }, [gasCost]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-3">
@@ -48,7 +55,6 @@ export function BookingSummary({
               {t('bookingSummaryDesc')}
             </p>
           </div>
-
           <div className="grid gap-6 md:grid-cols-2">
             <div>
               <h3 className="mb-4 text-lg font-medium text-gray-900">
@@ -116,17 +122,6 @@ export function BookingSummary({
                 {t('bandDetails')}
               </h3>
               <div className="flex items-start gap-4">
-                {artist.imageUrl && (
-                  <div className="relative h-16 w-16 overflow-hidden rounded-full">
-                    <Image
-                      src={artist.imageUrl}
-                      alt={artist.name}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                    />
-                  </div>
-                )}
                 <dl className="space-y-3">
                   <div>
                     <dt className="text-sm font-medium text-gray-500">

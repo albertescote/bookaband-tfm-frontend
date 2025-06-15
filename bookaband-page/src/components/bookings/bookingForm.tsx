@@ -76,6 +76,7 @@ export function BookingForm({
   const [citySearchQuery, setCitySearchQuery] = useState('');
   const cityInputRef = useRef<HTMLDivElement>(null);
   const [isCitySearching, setIsCitySearching] = useState(false);
+  const [totalCost, setTotalCost] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
     initDate: new Date(new Date().setHours(0, 0, 0, 0)),
@@ -342,6 +343,7 @@ export function BookingForm({
         addressLine2: formData.addressLine2 || undefined,
         eventTypeId: formData.eventTypeId || undefined,
         isPublic: formData.isPublic,
+        cost: totalCost || 0,
       });
 
       if (!booking) {
@@ -864,6 +866,7 @@ export function BookingForm({
           eventTypes={eventTypes}
           language={language}
           t={t}
+          onTotalCostCalculated={setTotalCost}
         />
       )}
 

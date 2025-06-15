@@ -18,7 +18,8 @@ export interface CreateBookingRequest {
   addressLine1: string;
   addressLine2?: string;
   eventTypeId?: string;
-  isPublic?: boolean;
+  isPublic: boolean;
+  cost: number;
 }
 
 export async function createBooking(
