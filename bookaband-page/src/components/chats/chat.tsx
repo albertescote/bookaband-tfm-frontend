@@ -444,7 +444,7 @@ const Chat: React.FC<ChatProps> = ({
     }
   };
 
-  const renderFileContent = (fileUrl: string) => {
+  const renderFileContent = (fileUrl: string, isSender: boolean) => {
     if (isImageFile(fileUrl)) {
       return (
         <div>
@@ -452,7 +452,8 @@ const Chat: React.FC<ChatProps> = ({
             <Image
               src={fileUrl}
               alt="Shared image"
-              fill
+              width={400}
+              height={300}
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-contain transition-transform hover:scale-[1.02]"
               onClick={() => setSelectedImage(fileUrl)}
@@ -461,7 +462,7 @@ const Chat: React.FC<ChatProps> = ({
           <div className="mt-2">
             <button
               onClick={() => window.open(fileUrl, '_blank')}
-              className="flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+              className={`${isSender ? 'text-white hover:text-gray-200' : 'text-gray-600 hover:text-[#15b7b9]'} flex items-center gap-2 text-sm hover:underline `}
             >
               <Download size={16} />
               {t('download-file')}
@@ -619,7 +620,10 @@ const Chat: React.FC<ChatProps> = ({
                                 >
                                   {chatMessage.message}
                                   {chatMessage.fileUrl &&
-                                    renderFileContent(chatMessage.fileUrl)}
+                                    renderFileContent(
+                                      chatMessage.fileUrl,
+                                      chatMessage.senderId === senderId,
+                                    )}
                                 </div>
                               )}
                               <div

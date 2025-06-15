@@ -12,7 +12,6 @@ import {
   X,
 } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
-import { useRouter } from 'next/navigation';
 import { ChatHistory } from '@/service/backend/chat/domain/chatHistory';
 import { getChatById } from '@/service/backend/chat/service/chat.service';
 import { getAvatar } from '@/components/shared/avatar';
@@ -23,6 +22,7 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { useAuth } from '@/providers/authProvider';
 import BookingNotification from './bookingNotification';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface ChatProps {
   language: string;
@@ -32,7 +32,6 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
   const { t } = useTranslation(language, 'chat');
-  const router = useRouter();
   const { selectedBand } = useAuth();
   const [message, setMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
@@ -272,10 +271,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
   };
 
-  const isVideoFile = (url: string) => {
-    return /\.(mp4|webm|ogg)$/i.test(url);
-  };
-
   const getFileNameFromUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -306,40 +301,25 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
     }
   };
 
-  const renderFileContent = (fileUrl: string) => {
+  const renderFileContent = (fileUrl: string, isSender: boolean) => {
     if (isImageFile(fileUrl)) {
       return (
         <div className="mt-2">
-          <img
-            src={fileUrl}
-            alt="Shared image"
-            className="max-h-64 cursor-pointer rounded-lg object-contain transition-transform hover:scale-[1.02]"
-            onClick={() => setSelectedImage(fileUrl)}
-          />
+          <div className="relative aspect-[4/3] w-full max-w-md cursor-pointer overflow-hidden rounded-lg">
+            <Image
+              src={fileUrl}
+              alt="Shared image"
+              width={400}
+              height={300}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain transition-transform hover:scale-[1.02]"
+              onClick={() => setSelectedImage(fileUrl)}
+            />
+          </div>
           <a
             href={fileUrl}
             download={getFileNameFromUrl(fileUrl)}
-            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Download size={16} />
-            {t('download-file')}
-          </a>
-        </div>
-      );
-    }
-
-    if (isVideoFile(fileUrl)) {
-      return (
-        <div className="mt-2">
-          <video src={fileUrl} controls className="max-h-64 rounded-lg">
-            Your browser does not support the video tag.
-          </video>
-          <a
-            href={fileUrl}
-            download={getFileNameFromUrl(fileUrl)}
-            className="mt-2 flex items-center gap-2 text-sm text-white hover:text-gray-200 hover:underline"
+            className={`${isSender ? 'text-white hover:text-gray-200' : 'text-gray-600 hover:text-[#15b7b9]'} mt-2 flex items-center gap-2 text-sm hover:underline`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -502,7 +482,10 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                                 >
                                   {chatMessage.message}
                                   {chatMessage.fileUrl &&
-                                    renderFileContent(chatMessage.fileUrl)}
+                                    renderFileContent(
+                                      chatMessage.fileUrl,
+                                      chatMessage.senderId === senderId,
+                                    )}
                                 </div>
                               )}
                               <div
@@ -538,7 +521,7 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
                     ref={fileInputRef}
                     onChange={handleFileSelect}
                     className="hidden"
-                    accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+                    accept="image/*,.pdf,.doc,.docx,.txt"
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
@@ -629,12 +612,16 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
           >
             <X size={24} />
           </button>
-          <div className="relative max-h-[90vh] max-w-[90vw]">
-            <img
+          <div className="relative inline-block">
+            <Image
               src={selectedImage}
               alt="Full size image"
-              className="max-h-[90vh] max-w-[90vw] object-contain"
+              width={1200}
+              height={800}
+              className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
               onClick={(e) => e.stopPropagation()}
+              quality={100}
+              priority
             />
           </div>
         </div>
