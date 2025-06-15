@@ -26,7 +26,7 @@ export default async function Page({
   const [data, musicalStyles, eventTypes] = await Promise.all([
     fetchFilteredArtists(
       1,
-      6,
+      8,
       hasSearched ? { location, date, searchQuery: query } : {},
     ),
     fetchMusicalStyles(),

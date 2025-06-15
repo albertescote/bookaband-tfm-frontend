@@ -85,7 +85,15 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
   };
 
   return (
-    <div className="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md">
+    <div 
+      onClick={() => {
+        const url = searchParams
+          ? `/${language}/artists/${artist.id}?location=${searchParams.location}&date=${searchParams.date}`
+          : `/${language}/artists/${artist.id}`;
+        router.push(url);
+      }}
+      className="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md hover:scale-[1.02]"
+    >
       <div className="relative aspect-square overflow-hidden">
         <Image
           src={artist.imageUrl ?? ''}
@@ -172,7 +180,8 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           </span>
 
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               const url = searchParams
                 ? `/${language}/artists/${artist.id}?location=${searchParams.location}&date=${searchParams.date}`
                 : `/${language}/artists/${artist.id}`;

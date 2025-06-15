@@ -49,7 +49,7 @@ export default function FindArtistsContent({
 
   const { user } = useAuth();
 
-  const pageSize = 6;
+  const pageSize = 8;
 
   const [searchQuery, setSearchQuery] = useState(initialFilters.query);
   const [location, setLocation] = useState(initialFilters.location);
