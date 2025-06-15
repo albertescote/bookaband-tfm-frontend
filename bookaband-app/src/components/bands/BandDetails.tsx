@@ -323,8 +323,6 @@ export default function BandDetails({
   const handleSaveEdit = async () => {
     if (!id || !hasChanges()) return;
 
-    console.log('editedvalues: ' + JSON.stringify(editedValues));
-
     const errors = {
       technicalRider: false,
       hospitalityRider: false,

@@ -91,5 +91,29 @@
   "costSummary": "Cost Summary",
   "basePrice": "Base Price",
   "totalPrice": "Total Price",
-  "hours": "hours"
+  "hours": "hours",
+  "gasCostSummary": {
+    "title": "Gas Cost Summary",
+    "distance": "Distance",
+    "totalDistance": "Total Distance",
+    "fuelConsumption": "Fuel Consumption",
+    "pricePerLiter": "Price per Liter",
+    "eurosPerLiter": "€/L",
+    "gasCost": "Gas Cost",
+    "kilometers": "km",
+    "oneWay": "(one way)",
+    "roundTrip": "(round trip)",
+    "litersPer100km": "L/100km",
+    "calculating": "Calculating gas costs...",
+    "additionalInfo": "Additional Information"
+  },
+  "distance": "Distance",
+  "kilometers": "km",
+  "fuelConsumption": "Fuel Consumption",
+  "litersPer100km": "L/100km",
+  "gasCost": "Gas Cost",
+  "calculating": "Calculating gas costs...",
+  "oneWay": "(one way)",
+  "roundTrip": "(round trip)",
+  "totalDistance": "Total Distance"
 }

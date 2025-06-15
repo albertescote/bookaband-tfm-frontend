@@ -117,7 +117,6 @@ const Chat: React.FC<ChatProps> = ({
   useEffect(() => {
     if (chatId) {
       getChatById(chatId).then((chat: ChatHistory | undefined) => {
-        console.log(chat);
         setIsLoading(false);
         setChat(chat);
       });

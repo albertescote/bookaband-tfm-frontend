@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { ArtistDetails } from '@/service/backend/artist/domain/artistDetails';
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { CostSummary } from './costSummary';
+import { GasCostSummary } from './gasCostSummary';
+import { useState } from 'react';
 
 interface BookingSummaryProps {
   formData: {
@@ -32,6 +34,8 @@ export function BookingSummary({
   language,
   t,
 }: BookingSummaryProps) {
+  const [gasCost, setGasCost] = useState<number | null>(null);
+
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       <div className="space-y-6 lg:col-span-2">
@@ -265,6 +269,16 @@ export function BookingSummary({
             </div>
           </div>
         )}
+        <GasCostSummary
+          artist={artist}
+          bookingLocation={{
+            city: formData.city,
+            country: formData.country,
+          }}
+          language={language}
+          t={t}
+          onGasCostCalculated={setGasCost}
+        />
       </div>
 
       <div className="lg:col-span-1">
@@ -274,6 +288,7 @@ export function BookingSummary({
             artist={artist}
             language={language}
             t={t}
+            gasCost={gasCost}
           />
         </div>
       </div>

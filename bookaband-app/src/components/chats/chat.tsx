@@ -141,8 +141,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
 
   useEffect(() => {
     if (messages.length > 0) {
-      console.log('New socket messages received:', messages);
-
       setAllMessages((prevMessages) => {
         const existingMessageIds = new Set(
           prevMessages.map((msg) => {
@@ -165,8 +163,6 @@ const Chat: React.FC<ChatProps> = ({ language, chatId, initialChat }) => {
         });
 
         if (newMessages.length > 0) {
-          console.log('Adding new messages:', newMessages);
-
           const combinedMessages = [...prevMessages, ...newMessages].sort(
             (a, b) => {
               const timestampA =

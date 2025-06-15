@@ -110,5 +110,30 @@
   "costSummary": "Resumen de Costes",
   "basePrice": "Precio Base",
   "totalPrice": "Precio Total",
-  "hours": "horas"
+  "hours": "horas",
+  "gasCostSummary": {
+    "title": "Resumen de Costes de Gasolina",
+    "distance": "Distancia",
+    "totalDistance": "Distancia Total",
+    "fuelConsumption": "Consumo de Combustible",
+    "pricePerLiter": "Precio por Litro",
+    "eurosPerLiter": "€/L",
+    "gasCost": "Coste de Gasolina",
+    "kilometers": "km",
+    "oneWay": "(ida)",
+    "roundTrip": "(ida y vuelta)",
+    "litersPer100km": "L/100km",
+    "calculating": "Calculando costes de gasolina...",
+    "additionalInfo": "Información Adicional",
+    "fetchError": "Error al obtener el precio de la gasolina"
+  },
+  "distance": "Distancia",
+  "kilometers": "km",
+  "fuelConsumption": "Consumo de Combustible",
+  "litersPer100km": "L/100km",
+  "gasCost": "Coste de Gasolina",
+  "calculating": "Calculando costes de gasolina...",
+  "oneWay": "(ida)",
+  "roundTrip": "(ida y vuelta)",
+  "totalDistance": "Distancia Total"
 }

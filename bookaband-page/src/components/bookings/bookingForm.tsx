@@ -62,7 +62,6 @@ export function BookingForm({
   language,
   eventTypes,
 }: BookingFormProps) {
-  console.log(artist);
   const { t } = useTranslation(language, 'bookings');
   const router = useRouter();
   const searchParams = useSearchParams();

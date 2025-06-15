@@ -10,6 +10,7 @@ interface CostSummaryProps {
   artist: ArtistDetails;
   language: string;
   t: (key: string) => string;
+  gasCost?: number | null;
 }
 
 export function CostSummary({
@@ -17,6 +18,7 @@ export function CostSummary({
   artist,
   language,
   t,
+  gasCost,
 }: CostSummaryProps) {
   const durationInHours =
     (formData.endDate.getTime() - formData.initDate.getTime()) /
@@ -45,13 +47,30 @@ export function CostSummary({
             )}
           </dd>
         </div>
+        {gasCost !== null && gasCost !== undefined && (
+          <div className="flex justify-between">
+            <dt className="text-sm font-medium text-gray-500">
+              {t('gasCost')}
+            </dt>
+            <dd className="text-sm text-gray-900">
+              {gasCost.toLocaleString(
+                language === 'es'
+                  ? 'es-ES'
+                  : language === 'ca'
+                    ? 'ca-ES'
+                    : 'en-US',
+                { style: 'currency', currency: 'EUR' },
+              )}
+            </dd>
+          </div>
+        )}
         <div className="mt-4 border-t border-gray-200 pt-4">
           <div className="flex justify-between">
             <dt className="text-base font-semibold text-gray-900">
               {t('totalPrice')}
             </dt>
             <dd className="text-base font-semibold text-gray-900">
-              {basePrice.toLocaleString(
+              {(basePrice + (gasCost || 0)).toLocaleString(
                 language === 'es'
                   ? 'es-ES'
                   : language === 'ca'
