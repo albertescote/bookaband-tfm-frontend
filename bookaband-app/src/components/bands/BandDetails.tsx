@@ -231,13 +231,7 @@ export default function BandDetails({
         beverages: '',
         specialRequirements: '',
       },
-      technicalRider: bandProfile.technicalRider ?? {
-        soundSystem: '',
-        microphones: '',
-        backline: '',
-        lighting: '',
-        otherRequirements: '',
-      },
+      technicalRider: bandProfile.technicalRider ?? undefined,
       performanceArea: bandProfile.performanceArea ?? {
         regions: [],
         travelPreferences: '',
@@ -453,30 +447,10 @@ export default function BandDetails({
           uploadedImageUrl === ''
             ? ''
             : uploadedImageUrl || bandProfile.imageUrl || '',
-        technicalRider: {
-          soundSystem:
-            editedValues.technicalRider?.soundSystem ||
-            bandProfile.technicalRider?.soundSystem ||
-            '',
-          microphones:
-            editedValues.technicalRider?.microphones ||
-            bandProfile.technicalRider?.microphones ||
-            '',
-          backline:
-            editedValues.technicalRider?.backline ||
-            bandProfile.technicalRider?.backline ||
-            '',
-          lighting:
-            editedValues.technicalRider?.lighting ||
-            bandProfile.technicalRider?.lighting ||
-            '',
-          otherRequirements:
-            editedValues.technicalRider?.otherRequirements === ''
-              ? ''
-              : editedValues.technicalRider?.otherRequirements ||
-                bandProfile.technicalRider?.otherRequirements ||
-                '',
-        },
+        technicalRider:
+          editedValues.technicalRider ||
+          bandProfile.technicalRider ||
+          undefined,
         performanceArea: {
           regions:
             editedValues.performanceArea?.regions ||
@@ -747,13 +721,8 @@ export default function BandDetails({
           <TechnicalRiderSection
             technicalRider={
               editedValues.technicalRider ||
-              bandProfile.technicalRider || {
-                soundSystem: '',
-                microphones: '',
-                backline: '',
-                lighting: '',
-                otherRequirements: '',
-              }
+              bandProfile.technicalRider ||
+              undefined
             }
             isEditing={isEditing}
             onUpdate={(rider) =>

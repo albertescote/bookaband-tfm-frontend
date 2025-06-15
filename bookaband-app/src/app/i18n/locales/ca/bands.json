@@ -237,6 +237,7 @@
       "subtitle": "Especifica els teus requisits tècnics per a les actuacions",
       "enable": "Necessito rider tècnic",
       "disable": "No necessito rider tècnic",
+      "noRider": "No s'ha especificat cap rider tècnic",
       "soundSystem": {
         "label": "Sistema de so",
         "placeholder": "Descriu els teus requisits de sistema de so"

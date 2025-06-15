@@ -231,6 +231,7 @@
       "subtitle": "Specify your technical requirements for performances",
       "enable": "I need technical rider",
       "disable": "I don't need technical rider",
+      "noRider": "No technical rider has been specified",
       "soundSystem": {
         "label": "Sound system",
         "placeholder": "Describe your sound system requirements"

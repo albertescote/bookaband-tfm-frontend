@@ -236,6 +236,9 @@
     "technicalRider": {
       "title": "Rider Técnico",
       "subtitle": "Especifica tus requisitos técnicos para las actuaciones",
+      "enable": "Necesito rider técnico",
+      "disable": "No necesito rider técnico",
+      "noRider": "No se ha especificado ningún rider técnico",
       "soundSystem": {
         "label": "Sistema de sonido",
         "placeholder": "Describe tus requisitos de sistema de sonido"
@@ -255,9 +258,7 @@
       "otherRequirements": {
         "label": "Otros requisitos",
         "placeholder": "Lista cualquier otro requisito técnico"
-      },
-      "enable": "Necesito rider técnico",
-      "disable": "No necesito rider técnico"
+      }
     },
     "hospitalityRider": {
       "title": "Rider de Hospitalidad",
