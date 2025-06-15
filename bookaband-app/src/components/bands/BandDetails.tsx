@@ -760,6 +760,7 @@ export default function BandDetails({
               setEditedValues((prev) => ({ ...prev, hospitalityRider: rider }))
             }
             t={t}
+            hasError={validationErrors.hospitalityRider}
           />
 
           <PerformanceAreaSection

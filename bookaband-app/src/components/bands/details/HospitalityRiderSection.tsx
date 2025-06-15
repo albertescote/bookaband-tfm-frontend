@@ -8,6 +8,7 @@ interface HospitalityRiderSectionProps {
   isEditing: boolean;
   onUpdate: (rider: HospitalityRider | undefined) => void;
   t: (key: string) => string;
+  hasError?: boolean;
 }
 
 export function HospitalityRiderSection({
@@ -15,6 +16,7 @@ export function HospitalityRiderSection({
   isEditing,
   onUpdate,
   t,
+  hasError,
 }: HospitalityRiderSectionProps) {
   const handleChange = (field: keyof HospitalityRider, value: string) => {
     const updatedRider: HospitalityRider = {
@@ -93,12 +95,21 @@ export function HospitalityRiderSection({
                   onChange={(e) =>
                     handleChange('accommodation', e.target.value)
                   }
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !hospitalityRider.accommodation
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t(
                     'form.hospitalityRider.accommodation.placeholder',
                   )}
                 />
+                {hasError && !hospitalityRider.accommodation && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -109,10 +120,19 @@ export function HospitalityRiderSection({
                 <textarea
                   value={hospitalityRider.catering}
                   onChange={(e) => handleChange('catering', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !hospitalityRider.catering
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.hospitalityRider.catering.placeholder')}
                 />
+                {hasError && !hospitalityRider.catering && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -123,10 +143,19 @@ export function HospitalityRiderSection({
                 <textarea
                   value={hospitalityRider.beverages}
                   onChange={(e) => handleChange('beverages', e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
+                  className={`w-full resize-none rounded-lg border ${
+                    hasError && !hospitalityRider.beverages
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                   rows={3}
                   placeholder={t('form.hospitalityRider.beverages.placeholder')}
                 />
+                {hasError && !hospitalityRider.beverages && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {t('validation.required')}
+                  </p>
+                )}
               </div>
 
               <div>
