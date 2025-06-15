@@ -87,5 +87,9 @@
     "paid": "Paid",
     "pending": "Pending",
     "unknown": "Unknown"
-  }
+  },
+  "costSummary": "Cost Summary",
+  "basePrice": "Base Price",
+  "totalPrice": "Total Price",
+  "hours": "hours"
 }

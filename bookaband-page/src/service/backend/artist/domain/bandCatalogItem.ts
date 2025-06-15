@@ -27,8 +27,12 @@ export interface TechnicalRider {
 
 export interface PerformanceArea {
   regions: string[];
-  travelPreferences: string;
-  restrictions: string;
+  gasPriceCalculation?: {
+    fuelConsumption: number;
+    useDynamicPricing: boolean;
+    pricePerLiter?: number;
+  };
+  otherComments?: string;
 }
 
 export interface BandCatalogItem {

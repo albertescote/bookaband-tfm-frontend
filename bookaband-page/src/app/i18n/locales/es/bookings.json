@@ -106,5 +106,9 @@
     "paid": "Pagada",
     "pending": "Pendiente",
     "unknown": "Desconocida"
-  }
+  },
+  "costSummary": "Resumen de Costes",
+  "basePrice": "Precio Base",
+  "totalPrice": "Precio Total",
+  "hours": "horas"
 }
