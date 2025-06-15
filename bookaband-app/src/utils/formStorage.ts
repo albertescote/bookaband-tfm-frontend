@@ -11,4 +11,4 @@ export const getFormData = () => {
 
 export const setFormData = (data: any) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}; 
+};
