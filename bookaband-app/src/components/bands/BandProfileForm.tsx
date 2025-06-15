@@ -117,7 +117,6 @@ export default function BandProfileForm({
     step: number,
     formData: Partial<UpsertBandRequest>,
   ): boolean => {
-    console.log(formData);
     switch (step) {
       case 1:
         return !!(

@@ -2,10 +2,24 @@ import { PerformanceArea } from '@/service/backend/band/domain/bandProfile';
 import { CollapsibleSection } from './CollapsibleSection';
 import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
-import { Info, Plus, X } from 'lucide-react';
-import { useState } from 'react';
+import { Info, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+interface Region {
+  id: string;
+  name: string;
+  type: 'country' | 'region' | 'province';
+  parentId?: string;
+}
 
 interface PerformanceAreaSectionProps {
   performanceArea: PerformanceArea;
@@ -20,47 +34,157 @@ export function PerformanceAreaSection({
   onUpdate,
   t,
 }: PerformanceAreaSectionProps) {
-  const [newRegion, setNewRegion] = useState('');
+  console.log(performanceArea.regions);
+  const [selectedType, setSelectedType] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<Region[]>([]);
+  const [regions, setRegions] = useState<Region[]>(() => {
+    if (Array.isArray(performanceArea.regions)) {
+      return performanceArea.regions.map((region) => {
+        if (typeof region === 'string') {
+          return {
+            id: region,
+            name: region,
+            type: 'region',
+          };
+        }
+        return {
+          id: region.id,
+          name: region.name,
+          type: 'region',
+        };
+      });
+    }
+    return [];
+  });
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
-  const handleChange = (
-    field: keyof PerformanceArea,
-    value: string | string[] | PerformanceArea['gasPriceCalculation'],
-  ) => {
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      setIsGoogleMapsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchRegionDetails = async () => {
+      if (!isGoogleMapsLoaded || regions.length === 0) return;
+
+      const placesService = new google.maps.places.PlacesService(
+        document.createElement('div'),
+      );
+
+      const updatedRegions = await Promise.all(
+        regions.map(async (region) => {
+          if (region.name === region.id) {
+            return new Promise<Region>((resolve) => {
+              placesService.getDetails(
+                { placeId: region.id },
+                (place, status) => {
+                  if (
+                    status === google.maps.places.PlacesServiceStatus.OK &&
+                    place
+                  ) {
+                    resolve({
+                      id: region.id,
+                      name: place.name || region.id,
+                      type: region.type,
+                    });
+                  } else {
+                    resolve(region);
+                  }
+                },
+              );
+            });
+          }
+          return region;
+        }),
+      );
+
+      setRegions(updatedRegions);
+    };
+
+    fetchRegionDetails();
+  }, [isGoogleMapsLoaded, regions.length]);
+
+  const handleTypeChange = (type: string) => {
+    setSelectedType(type);
+    setSearchQuery('');
+    setSuggestions([]);
+  };
+
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    if (!query.trim() || !isGoogleMapsLoaded) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const autocompleteService = new google.maps.places.AutocompleteService();
+
+      let types: string[] = [];
+      switch (selectedType) {
+        case 'country':
+          types = ['country'];
+          break;
+        case 'region':
+          types = ['administrative_area_level_1'];
+          break;
+        case 'province':
+          types = ['administrative_area_level_2'];
+          break;
+        default:
+          types = ['country'];
+          break;
+      }
+
+      const request = {
+        input: query,
+        types: types,
+        componentRestrictions: { country: [] },
+      };
+
+      const response = await autocompleteService.getPlacePredictions(request);
+      const places = response.predictions.map((prediction) => ({
+        id: prediction.place_id,
+        name: prediction.description,
+        type: determineRegionType(prediction.types),
+      }));
+
+      setSuggestions(places);
+    } catch (error) {
+      console.error('Error fetching places:', error);
+      setSuggestions([]);
+    }
+  };
+
+  const determineRegionType = (types: string[]): Region['type'] => {
+    if (types.includes('country')) return 'country';
+    if (types.includes('administrative_area_level_1')) return 'region';
+    if (types.includes('administrative_area_level_2')) return 'province';
+    return 'region';
+  };
+
+  const handleAddRegion = (region: Region) => {
+    if (!regions.some((r) => r.id === region.id)) {
+      const newRegions = [...regions, region];
+      setRegions(newRegions);
+      onUpdate({
+        ...performanceArea,
+        regions: newRegions.map((r) => r.id),
+      });
+    }
+    setSearchQuery('');
+    setSuggestions([]);
+  };
+
+  const handleRemoveRegion = (regionId: string) => {
+    const newRegions = regions.filter((r) => r.id !== regionId);
+    setRegions(newRegions);
     onUpdate({
       ...performanceArea,
-      [field]: value,
+      regions: newRegions.map((r) => r.id),
     });
-  };
-
-  const handleAddRegion = () => {
-    if (newRegion.trim()) {
-      const currentRegions: string[] = Array.isArray(performanceArea.regions)
-        ? (performanceArea.regions.filter(
-            (region) => typeof region === 'string',
-          ) as string[])
-        : [];
-      handleChange('regions', [...currentRegions, newRegion.trim()]);
-      setNewRegion('');
-    }
-  };
-
-  const handleRemoveRegion = (index: number) => {
-    const currentRegions: string[] = Array.isArray(performanceArea.regions)
-      ? (performanceArea.regions.filter(
-          (region) => typeof region === 'string',
-        ) as string[])
-      : [];
-    handleChange(
-      'regions',
-      currentRegions.filter((_, i) => i !== index),
-    );
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddRegion();
-    }
   };
 
   const handleGasPriceChange = (
@@ -72,28 +196,31 @@ export function PerformanceAreaSection({
       useDynamicPricing: true,
     };
 
-    handleChange('gasPriceCalculation', {
-      ...currentGasPrice,
-      [field]: value === '' ? 0 : value,
+    onUpdate({
+      ...performanceArea,
+      gasPriceCalculation: {
+        ...currentGasPrice,
+        [field]: value === '' ? 0 : value,
+      },
     });
   };
 
   const handleToggleGasPrice = (enabled: boolean) => {
     if (enabled) {
-      handleChange('gasPriceCalculation', {
-        fuelConsumption: 0,
-        useDynamicPricing: true,
+      onUpdate({
+        ...performanceArea,
+        gasPriceCalculation: {
+          fuelConsumption: 0,
+          useDynamicPricing: true,
+        },
       });
     } else {
-      handleChange('gasPriceCalculation', undefined);
+      onUpdate({
+        ...performanceArea,
+        gasPriceCalculation: undefined,
+      });
     }
   };
-
-  const regions: string[] = Array.isArray(performanceArea.regions)
-    ? (performanceArea.regions.filter(
-        (region) => typeof region === 'string',
-      ) as string[])
-    : [];
 
   return (
     <CollapsibleSection title={t('form.performanceArea.title')}>
@@ -109,39 +236,61 @@ export function PerformanceAreaSection({
               animate={{ opacity: 1 }}
               className="space-y-2"
             >
-              <div className="flex gap-2">
-                <div className="relative flex-1">
+              <Select value={selectedType} onValueChange={handleTypeChange}>
+                <SelectTrigger className="bg-white">
+                  <SelectValue
+                    placeholder={t('form.performanceArea.regions.selectType')}
+                  />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  <SelectItem value="country">
+                    {t('form.performanceArea.regions.types.country')}
+                  </SelectItem>
+                  <SelectItem value="region">
+                    {t('form.performanceArea.regions.types.region')}
+                  </SelectItem>
+                  <SelectItem value="province">
+                    {t('form.performanceArea.regions.types.province')}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+
+              {selectedType && (
+                <div className="relative">
                   <Input
-                    value={newRegion}
-                    onChange={(e) => setNewRegion(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    value={searchQuery}
+                    onChange={(e) => handleSearch(e.target.value)}
                     placeholder={t(
                       'form.performanceArea.regions.searchPlaceholder',
                     )}
-                    className="pr-10"
                   />
-                  <button
-                    type="button"
-                    onClick={handleAddRegion}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                    aria-label={t('form.performanceArea.regions.add')}
-                  >
-                    <Plus className="h-5 w-5" />
-                  </button>
+                  {suggestions.length > 0 && (
+                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                      {suggestions.map((suggestion) => (
+                        <button
+                          key={suggestion.id}
+                          className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                          onClick={() => handleAddRegion(suggestion)}
+                        >
+                          {suggestion.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
+
               <div className="flex flex-wrap gap-2">
-                {regions.map((region, index) => (
+                {regions.map((region) => (
                   <div
-                    key={index}
+                    key={region.id}
                     className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm"
                   >
-                    <span>{region}</span>
+                    <span>{region.name}</span>
                     <button
                       type="button"
-                      onClick={() => handleRemoveRegion(index)}
+                      onClick={() => handleRemoveRegion(region.id)}
                       className="text-gray-500 hover:text-gray-700"
-                      aria-label={`Remove ${region}`}
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -152,12 +301,12 @@ export function PerformanceAreaSection({
           ) : (
             <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
               <div className="flex flex-wrap gap-2">
-                {regions.map((region, index) => (
+                {regions.map((region) => (
                   <div
-                    key={index}
+                    key={region.id}
                     className="rounded-full bg-gray-100 px-3 py-1 text-sm"
                   >
-                    {region}
+                    {region.name}
                   </div>
                 ))}
               </div>
@@ -377,7 +526,12 @@ export function PerformanceAreaSection({
             >
               <textarea
                 value={performanceArea.otherComments || ''}
-                onChange={(e) => handleChange('otherComments', e.target.value)}
+                onChange={(e) =>
+                  onUpdate({
+                    ...performanceArea,
+                    otherComments: e.target.value,
+                  })
+                }
                 className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20"
                 rows={3}
                 placeholder={t(

@@ -21,8 +21,6 @@ export default async function Page({ params: { lng, id } }: PageParams) {
       fetchEventTypes(),
     ]);
 
-    console.log(bandProfile);
-
     if (!bandProfile || 'message' in bandProfile) {
       return <BandErrorScreen language={lng} />;
     }

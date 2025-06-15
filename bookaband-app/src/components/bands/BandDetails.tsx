@@ -341,12 +341,22 @@ export default function BandDetails({
     }
 
     if (editedValues.performanceArea) {
-      if (
-        !editedValues.performanceArea.regions?.length ||
-        !editedValues.performanceArea.travelPreferences
-      ) {
+      if (!((editedValues.performanceArea?.regions?.length ?? 0) > 0)) {
         toast.error(t('validation.incomplete.performanceArea'));
         return;
+      }
+      if (editedValues.performanceArea?.gasPriceCalculation) {
+        if (!editedValues.performanceArea.gasPriceCalculation.fuelConsumption) {
+          toast.error(t('validation.incomplete.performanceArea'));
+          return;
+        }
+        if (
+          !editedValues.performanceArea.gasPriceCalculation.useDynamicPricing &&
+          !editedValues.performanceArea.gasPriceCalculation.pricePerLiter
+        ) {
+          toast.error(t('validation.incomplete.performanceArea'));
+          return;
+        }
       }
     }
 
@@ -451,16 +461,14 @@ export default function BandDetails({
             editedValues.performanceArea?.regions ||
             bandProfile.performanceArea?.regions ||
             [],
-          travelPreferences:
-            editedValues.performanceArea?.travelPreferences ||
-            bandProfile.performanceArea?.travelPreferences ||
+          gasPriceCalculation:
+            editedValues.performanceArea?.gasPriceCalculation ||
+            bandProfile.performanceArea?.gasPriceCalculation ||
+            undefined,
+          otherComments:
+            editedValues.performanceArea?.otherComments ||
+            bandProfile.performanceArea?.otherComments ||
             '',
-          restrictions:
-            editedValues.performanceArea?.restrictions === ''
-              ? ''
-              : editedValues.performanceArea?.restrictions ||
-                bandProfile.performanceArea?.restrictions ||
-                '',
         },
         hospitalityRider:
           editedValues.hospitalityRider ||

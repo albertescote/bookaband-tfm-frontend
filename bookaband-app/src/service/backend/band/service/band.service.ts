@@ -1,5 +1,4 @@
 'use server';
-import { Band } from '@/service/backend/band/domain/band';
 import { UserBand } from '@/service/backend/band/domain/userBand';
 import {
   BandProfile,
@@ -27,12 +26,6 @@ export interface UpsertBandRequest {
   bio?: string;
   imageUrl?: string;
   visible?: boolean;
-}
-
-export async function getBandById(id: string): Promise<Band | undefined> {
-  return withTokenRefreshRetry<Band>(() =>
-    authorizedAxiosInstance.get(`/bands/${id}`).then((res) => res.data),
-  );
 }
 
 export async function getBandProfileById(
