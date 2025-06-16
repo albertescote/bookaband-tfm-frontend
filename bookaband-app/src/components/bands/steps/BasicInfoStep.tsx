@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { SingleSelect } from '@/components/ui/single-select';
 import { FileUpload } from '@/components/ui/file-upload';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
@@ -40,11 +40,12 @@ export default function BasicInfoStep({
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(formData.location || '');
   const [suggestions, setSuggestions] = useState<
     Array<{ id: string; name: string }>
   >([]);
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const locationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.google && window.google.maps) {
@@ -52,11 +53,31 @@ export default function BasicInfoStep({
     }
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(event.target as Node)
+      ) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleSearch = useCallback(
     async (query: string) => {
       setSearchQuery(query);
       if (!query.trim() || !isGoogleMapsLoaded) {
         setSuggestions([]);
+        onFormDataChange({
+          ...formData,
+          location: '',
+        });
         return;
       }
 
@@ -82,7 +103,7 @@ export default function BasicInfoStep({
         setSuggestions([]);
       }
     },
-    [isGoogleMapsLoaded, language],
+    [isGoogleMapsLoaded, language, formData, onFormDataChange],
   );
 
   const handlePlaceSelect = (place: { id: string; name: string }) => {
@@ -227,12 +248,12 @@ export default function BasicInfoStep({
         <label htmlFor="location" className="text-sm font-medium text-gray-700">
           {t('form.basicInfo.location')} *
         </label>
-        <div className="relative mt-2">
+        <div className="relative mt-2" ref={locationRef}>
           <div className="relative">
             <Input
               id="location"
               name="location"
-              value={searchQuery || formData.location || ''}
+              value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder={t('form.basicInfo.locationPlaceholder')}
               className={`pl-10 ${hasError && !formData.location ? 'border-red-500' : ''}`}
