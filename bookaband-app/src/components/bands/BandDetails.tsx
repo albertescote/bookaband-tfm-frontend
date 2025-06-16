@@ -678,6 +678,7 @@ export default function BandDetails({
 
         <div className="space-y-6">
           <BasicInfoSection
+            initialLocation={bandProfile.location ?? ''}
             location={editedValues.location ?? bandProfile.location ?? ''}
             musicalStyles={musicalStyles}
             selectedMusicalStyleIds={

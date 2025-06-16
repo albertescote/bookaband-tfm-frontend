@@ -4,8 +4,10 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 import { CollapsibleSection } from './CollapsibleSection';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface BasicInfoSectionProps {
+  initialLocation: string;
   location: string;
   musicalStyles: MusicalStyle[];
   selectedMusicalStyleIds: string[];
@@ -33,6 +35,7 @@ interface BasicInfoSectionProps {
 }
 
 export function BasicInfoSection({
+  initialLocation,
   location,
   musicalStyles,
   selectedMusicalStyleIds,
@@ -52,6 +55,76 @@ export function BasicInfoSection({
   t,
   hasError,
 }: BasicInfoSectionProps) {
+  const [searchQuery, setSearchQuery] = useState(location || '');
+  const [suggestions, setSuggestions] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const locationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      setIsGoogleMapsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(event.target as Node)
+      ) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSearch = useCallback(
+    async (query: string) => {
+      onLocationChange(initialLocation);
+      setSearchQuery(query);
+      if (!query.trim() || !isGoogleMapsLoaded) {
+        setSuggestions([]);
+        onLocationChange('');
+        return;
+      }
+
+      try {
+        const autocompleteService =
+          new google.maps.places.AutocompleteService();
+        const request = {
+          input: query,
+          types: ['geocode'],
+          componentRestrictions: { country: [] },
+          language: language,
+        };
+
+        const response = await autocompleteService.getPlacePredictions(request);
+        const places = response.predictions.map((prediction) => ({
+          id: prediction.place_id,
+          name: prediction.description,
+        }));
+
+        setSuggestions(places);
+      } catch (error) {
+        console.error('Error fetching places:', error);
+        setSuggestions([]);
+      }
+    },
+    [isGoogleMapsLoaded, language, onLocationChange],
+  );
+
+  const handlePlaceSelect = (place: { id: string; name: string }) => {
+    onLocationChange(place.name);
+    setSearchQuery(place.name);
+    setSuggestions([]);
+  };
+
   return (
     <CollapsibleSection title={t('form.basicInfo.title')} defaultOpen={true}>
       <div className="space-y-6">
@@ -65,17 +138,31 @@ export function BasicInfoSection({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="relative"
+              ref={locationRef}
             >
               <input
                 type="text"
-                value={location}
-                onChange={(e) => onLocationChange(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
                 className={`w-full rounded-lg border ${
                   hasError?.location ? 'border-red-500' : 'border-gray-300'
-                } bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
+                } bg-white px-4 py-3 pl-10 text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-[#15b7b9] focus:outline-none focus:ring-2 focus:ring-[#15b7b9]/20`}
                 placeholder={t('form.basicInfo.location')}
               />
-              <MapPin className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <MapPin className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              {suggestions.length > 0 && (
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.id}
+                      className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                      onClick={() => handlePlaceSelect(suggestion)}
+                    >
+                      {suggestion.name}
+                    </button>
+                  ))}
+                </div>
+              )}
               {hasError?.location && (
                 <p className="mt-1 text-sm text-red-500">
                   {t('validation.required')}
