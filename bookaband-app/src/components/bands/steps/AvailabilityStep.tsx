@@ -39,7 +39,7 @@ export function AvailabilityStep({
     );
     onError(!hasSelectedDay);
 
-    onUpdate({ weeklyAvailability: newAvailability });
+    onUpdate({ ...formData, weeklyAvailability: newAvailability });
   };
 
   const days = [
