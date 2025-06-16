@@ -5,11 +5,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { SingleSelect } from '@/components/ui/single-select';
 import { FileUpload } from '@/components/ui/file-upload';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UpsertBandRequest } from '@/service/backend/band/service/band.service';
 import { BandSize } from '@/service/backend/band/domain/bandSize';
 import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle';
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
+import { MapPin } from 'lucide-react';
 
 interface FormDataWithFiles extends Partial<UpsertBandRequest> {
   imageFile?: File;
@@ -39,6 +40,59 @@ export default function BasicInfoStep({
   const language = params.lng as string;
   const { t } = useTranslation(language, 'bands');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      setIsGoogleMapsLoaded(true);
+    }
+  }, []);
+
+  const handleSearch = useCallback(
+    async (query: string) => {
+      setSearchQuery(query);
+      if (!query.trim() || !isGoogleMapsLoaded) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        const autocompleteService =
+          new google.maps.places.AutocompleteService();
+        const request = {
+          input: query,
+          types: ['geocode'],
+          componentRestrictions: { country: [] },
+          language: language,
+        };
+
+        const response = await autocompleteService.getPlacePredictions(request);
+        const places = response.predictions.map((prediction) => ({
+          id: prediction.place_id,
+          name: prediction.description,
+        }));
+
+        setSuggestions(places);
+      } catch (error) {
+        console.error('Error fetching places:', error);
+        setSuggestions([]);
+      }
+    },
+    [isGoogleMapsLoaded, language],
+  );
+
+  const handlePlaceSelect = (place: { id: string; name: string }) => {
+    onFormDataChange({
+      ...formData,
+      location: place.name,
+    });
+    setSearchQuery(place.name);
+    setSuggestions([]);
+  };
 
   const validateField = (name: string, value: any) => {
     switch (name) {
@@ -173,15 +227,31 @@ export default function BasicInfoStep({
         <label htmlFor="location" className="text-sm font-medium text-gray-700">
           {t('form.basicInfo.location')} *
         </label>
-        <div className="mt-2">
-          <Input
-            id="location"
-            name="location"
-            value={formData.location || ''}
-            onChange={handleInputChange}
-            placeholder={t('form.basicInfo.locationPlaceholder')}
-            className={hasError && !formData.location ? 'border-red-500' : ''}
-          />
+        <div className="relative mt-2">
+          <div className="relative">
+            <Input
+              id="location"
+              name="location"
+              value={searchQuery || formData.location || ''}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder={t('form.basicInfo.locationPlaceholder')}
+              className={`pl-10 ${hasError && !formData.location ? 'border-red-500' : ''}`}
+            />
+            <MapPin className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+          </div>
+          {suggestions.length > 0 && (
+            <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+              {suggestions.map((suggestion) => (
+                <button
+                  key={suggestion.id}
+                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                  onClick={() => handlePlaceSelect(suggestion)}
+                >
+                  {suggestion.name}
+                </button>
+              ))}
+            </div>
+          )}
           {hasError && !formData.location && (
             <p className="mt-1 text-sm text-red-500">
               {t('validation.required')}
