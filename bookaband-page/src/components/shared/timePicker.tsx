@@ -163,23 +163,57 @@ export function TimePicker({
       {isOpen && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-gray-200 bg-white p-4 shadow-2xl duration-300 animate-in slide-in-from-top-2">
           <div className="flex justify-center space-x-6">
-            <ScrollableColumn
-              items={hours}
-              selected={selectedHour}
-              onSelect={handleHourChange}
-              label={t('hour')}
-            />
+            <div className="flex flex-col items-center">
+              <div className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
+                {t('hour')}
+              </div>
+              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent h-40 overflow-y-auto">
+                <div className="flex flex-col">
+                  {hours.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => handleHourChange(item)}
+                      className={`mx-1 my-0.5 rounded-lg px-4 py-2 text-sm transition-all duration-200 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9] ${
+                        selectedHour === item
+                          ? 'scale-105 bg-[#15b7b9] text-white shadow-lg'
+                          : 'hover:scale-102 text-gray-700'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <div className="flex items-center">
               <div className="h-32 w-px bg-gray-200"></div>
             </div>
 
-            <ScrollableColumn
-              items={minutes}
-              selected={selectedMinute}
-              onSelect={handleMinuteChange}
-              label={t('minute')}
-            />
+            <div className="flex flex-col items-center">
+              <div className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
+                {t('minute')}
+              </div>
+              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent h-40 overflow-y-auto">
+                <div className="flex flex-col">
+                  {minutes.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => handleMinuteChange(item)}
+                      className={`mx-1 my-0.5 rounded-lg px-4 py-2 text-sm transition-all duration-200 hover:bg-[#15b7b9]/10 hover:text-[#15b7b9] ${
+                        selectedMinute === item
+                          ? 'scale-105 bg-[#15b7b9] text-white shadow-lg'
+                          : 'hover:scale-102 text-gray-700'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="mt-4 border-t border-gray-100 pt-4">

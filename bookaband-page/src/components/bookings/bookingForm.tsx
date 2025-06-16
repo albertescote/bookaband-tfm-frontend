@@ -441,10 +441,6 @@ export function BookingForm({
 
   const unavailableDates = getUnavailableDates();
 
-  const filterDate = (date: Date): boolean => {
-    return isDateAvailable(date);
-  };
-
   const handleStartDateChange = (date: Date | null) => {
     if (!date) return;
     const newDate = new Date(date);
@@ -473,7 +469,8 @@ export function BookingForm({
 
   const handleStartTimeChange = (date: Date) => {
     setFormData((prev) => {
-      const newInitDate = new Date(date);
+      const newInitDate = new Date(prev.initDate);
+      newInitDate.setHours(date.getHours(), date.getMinutes(), 0, 0);
       const newEndDate = new Date(prev.endDate);
       return { ...prev, initDate: newInitDate, endDate: newEndDate };
     });
@@ -481,7 +478,8 @@ export function BookingForm({
 
   const handleEndTimeChange = (date: Date) => {
     setFormData((prev) => {
-      const newEndDate = new Date(date);
+      const newEndDate = new Date(prev.endDate);
+      newEndDate.setHours(date.getHours(), date.getMinutes(), 0, 0);
       return { ...prev, endDate: newEndDate };
     });
   };
