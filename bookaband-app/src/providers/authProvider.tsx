@@ -9,6 +9,7 @@ import { User } from '@/service/backend/user/domain/user';
 import { AUTH_URL, PAGE_URL } from '@/publicConfig';
 import { getUserBands } from '@/service/backend/band/service/band.service';
 import { UserBand } from '@/service/backend/band/domain/userBand';
+import { clearFormData } from '@/utils/formStorage';
 
 type AuthContextType = {
   user: User | null;
@@ -93,6 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setUserBands([]);
     setSelectedBand(null);
+    clearFormData();
     window.location.href = PAGE_URL + `/${language}/`;
   };
 
