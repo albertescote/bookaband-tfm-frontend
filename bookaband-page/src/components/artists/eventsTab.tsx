@@ -44,6 +44,25 @@ export default function EventsTab({
     [artist.events],
   );
 
+  const allDates = useMemo(() => {
+    const dates: Record<string, { events: Event[]; isBooked: boolean }> = {};
+
+    artist.bookingDates.forEach((dateStr) => {
+      const key = new Date(dateStr).toDateString();
+      dates[key] = { events: [], isBooked: true };
+    });
+
+    events.forEach((event) => {
+      const key = new Date(event.date).toDateString();
+      dates[key] = {
+        events: [event],
+        isBooked: false,
+      };
+    });
+
+    return dates;
+  }, [events, artist.bookingDates]);
+
   const getLocalizedWeekdays = () => {
     const baseDate = new Date(2024, 0, 1);
     return Array.from({ length: 7 }, (_, i) => {
@@ -99,15 +118,6 @@ export default function EventsTab({
   const getEventTypeLabel = (id: string) =>
     eventTypes.find((e) => e.id === id)?.label[language] || '';
 
-  const eventDates = useMemo(() => {
-    return events.reduce((acc: Record<string, Event[]>, event) => {
-      const key = new Date(event.date).toDateString();
-      if (!acc[key]) acc[key] = [];
-      acc[key].push(event);
-      return acc;
-    }, {});
-  }, [events]);
-
   const calendarData = useMemo(() => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -127,12 +137,21 @@ export default function EventsTab({
         const isCurrentMonth = date.getMonth() === month;
         const today = new Date();
         const isToday = date.toDateString() === today.toDateString();
-        week.push({ date, isCurrentMonth, isToday });
+        const dateKey = date.toDateString();
+        const dateInfo = allDates[dateKey];
+        week.push({
+          date,
+          isCurrentMonth,
+          isToday,
+          hasEvents: dateInfo?.events.length > 0,
+          isBooked: dateInfo?.isBooked || false,
+          eventCount: dateInfo?.events.length || 0,
+        });
       }
       grid.push(week);
     }
     return grid;
-  }, [currentMonth]);
+  }, [currentMonth, allDates]);
 
   const upcomingEvents = useMemo(() => {
     const now = new Date();
@@ -142,10 +161,13 @@ export default function EventsTab({
       .slice(0, viewAll ? events.length : 3);
   }, [events, viewAll]);
 
-  const handleDayClick = (day: { date: Date }, e: React.MouseEvent) => {
+  const handleDayClick = (
+    day: { date: Date; hasEvents: boolean; events?: Event[] },
+    e: React.MouseEvent,
+  ) => {
     const dateStr = day.date.toDateString();
-    const dayEvents = eventDates[dateStr] || [];
-    if (!dayEvents.length) return;
+    const dateInfo = allDates[dateStr];
+    if (!dateInfo?.events.length) return;
 
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const container = (e.currentTarget as HTMLElement)
@@ -157,7 +179,7 @@ export default function EventsTab({
 
     setEventPopup({
       visible: true,
-      events: dayEvents,
+      events: dateInfo.events,
       position: { x, y },
       date: day.date,
     });
@@ -274,10 +296,6 @@ export default function EventsTab({
             {calendarData.map((week, weekIndex) => (
               <div key={weekIndex} className="mb-2 grid grid-cols-7">
                 {week.map((day, dayIndex) => {
-                  const dateKey = day.date.toDateString();
-                  const isEventDay = eventDates[dateKey]?.length > 0;
-                  const isHovered = hoveredDay === dateKey;
-                  const eventCount = eventDates[dateKey]?.length || 0;
                   const dayOfWeek = day.date.getDay();
                   const dayName = [
                     'sunday',
@@ -293,35 +311,45 @@ export default function EventsTab({
                   return (
                     <div
                       key={dayIndex}
-                      onClick={(e) => isAvailable && handleDayClick(day, e)}
-                      onMouseEnter={() => setHoveredDay(dateKey)}
+                      onClick={(e) =>
+                        isAvailable && !day.isBooked && handleDayClick(day, e)
+                      }
+                      onMouseEnter={() =>
+                        setHoveredDay(day.date.toDateString())
+                      }
                       onMouseLeave={() => setHoveredDay(null)}
                       className={`relative flex cursor-pointer items-center justify-center p-1 transition-all
     ${day.isCurrentMonth ? 'opacity-100' : 'opacity-30'}
-    ${isAvailable === false ? 'pointer-events-none opacity-30' : ''}`}
+    ${isAvailable === false || day.isBooked ? 'pointer-events-none opacity-30' : ''}`}
                     >
                       <div
                         className={`relative z-10 flex items-center justify-center rounded-full transition-all ${
-                          isEventDay ? 'h-12 w-12' : 'h-10 w-10'
-                        } ${isHovered ? '-translate-y-1 shadow-md' : ''} ${
+                          day.hasEvents ? 'h-12 w-12' : 'h-10 w-10'
+                        } ${hoveredDay === day.date.toDateString() ? '-translate-y-1 shadow-md' : ''} ${
                           day.isCurrentMonth ? 'text-gray-700' : 'text-gray-400'
                         }`}
                         style={{
-                          backgroundColor: isEventDay
+                          backgroundColor: day.hasEvents
                             ? '#e2f7f7'
-                            : isHovered
+                            : day.isBooked
                               ? '#f5f5f5'
-                              : 'transparent',
-                          border: isEventDay ? '2px solid #15b7b9' : 'none',
+                              : hoveredDay === day.date.toDateString()
+                                ? '#f5f5f5'
+                                : 'transparent',
+                          border: day.hasEvents
+                            ? '2px solid #15b7b9'
+                            : day.isBooked
+                              ? '2px solid #e5e5e5'
+                              : 'none',
                         }}
                       >
                         {day.date.getDate()}
-                        {isEventDay && (
+                        {day.hasEvents && (
                           <span
                             className="absolute -bottom-1 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full text-xs font-bold text-white"
                             style={{ backgroundColor: '#15b7b9' }}
                           >
-                            {eventCount}
+                            {day.eventCount}
                           </span>
                         )}
                       </div>
