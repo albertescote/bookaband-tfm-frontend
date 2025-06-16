@@ -16,6 +16,8 @@ import { ChatsList } from '@/components/chats/chatsList';
 import { useEffect, useState } from 'react';
 import { ChatView } from '@/service/backend/chat/domain/chatView';
 import { getBandChats } from '@/service/backend/chat/service/chat.service';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Sidebar() {
   const { user, logoutUser, selectedBand } = useAuth();
@@ -68,11 +70,19 @@ export default function Sidebar() {
         }`}
       >
         <div className="flex h-full w-64 flex-col">
-          <div className="p-6 text-2xl font-extrabold text-[#15b7b9]">
-            BookaBand
-          </div>
+          <Link
+            href={`/${language}/dashboard`}
+            className="p-6 hover:opacity-80"
+          >
+            <Image
+              src="/assets/logo.svg"
+              alt="BookaBand Logo"
+              width={200}
+              height={50}
+              priority
+            />
+          </Link>
           <nav className="flex-1 space-y-2 overflow-y-auto px-4">
-            <NavItem href="/dashboard" label={t('dashboard')} />
             <NavItem href="/calendar" label={t('calendar')} />
             <NavItem
               href="/chats"
