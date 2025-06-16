@@ -18,10 +18,16 @@ export default async function Page({
 }: PageParams) {
   const { t } = await getTranslation(lng, 'profile');
 
-  const location = searchParams?.location ?? '';
-  const date = searchParams?.date ?? '';
-  const timezone = searchParams?.timezone ?? '';
-  const artistName = searchParams?.q ?? '';
+  const location = searchParams?.location
+    ? decodeURIComponent(searchParams.location)
+    : '';
+  const date = searchParams?.date ? decodeURIComponent(searchParams.date) : '';
+  const timezone = searchParams?.timezone
+    ? decodeURIComponent(searchParams.timezone)
+    : '';
+  const artistName = searchParams?.artistName
+    ? decodeURIComponent(searchParams.artistName)
+    : '';
 
   const hasSearched = !!searchParams?.location && !!searchParams?.date;
   const [data, musicalStyles, eventTypes] = await Promise.all([

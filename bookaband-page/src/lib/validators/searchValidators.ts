@@ -25,14 +25,14 @@ export const validateDate = (date: string): boolean => {
 
 export const validateLocation = (location: string): boolean => {
   if (!location) return true;
-  const locationRegex = /^[a-zA-Z0-9\s\-.,()]+$/;
+  const locationRegex = /^[\p{L}\p{N}\s\-.,()]+$/u;
   return locationRegex.test(location);
 };
 
 export const validateArtistName = (query: string): boolean => {
   if (!query) return true;
-  const searchRegex = /^[a-zA-Z0-9\s\-.,()&!'+#@\/:"]+$/;
-  return searchRegex.test(query);
+  const artistNameRegex = /^[\p{L}\p{N}\s\-.,()&!'+#@\/:"]+$/u;
+  return artistNameRegex.test(query);
 };
 
 export const validateSearchParams = (

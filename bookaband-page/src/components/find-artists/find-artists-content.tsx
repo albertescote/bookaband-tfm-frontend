@@ -101,7 +101,7 @@ export default function FindArtistsContent({
       location,
       date,
       timezone,
-      q: artistName,
+      artistName: artistName,
       sort: sortOption,
     });
 
@@ -127,7 +127,13 @@ export default function FindArtistsContent({
     setArtistName('');
     setSortOption('most-popular');
     setHasSearched(false);
-    updateUrlParams({ location: '', date: '', timezone: '', q: '', sort: '' });
+    updateUrlParams({
+      location: '',
+      date: '',
+      timezone: '',
+      artistName: '',
+      sort: '',
+    });
 
     fetchFilteredArtists(1, pageSize).then(
       ({ bandCatalogItems, hasMore, total }) => {

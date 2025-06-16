@@ -27,6 +27,26 @@ interface SearchBarProps {
   setHasSearched: (val: boolean) => void;
 }
 
+interface Place {
+  id: string;
+  name: string;
+  type: 'city';
+}
+
+interface GooglePrediction {
+  place_id: string;
+  description: string;
+  types: string[];
+}
+
+interface GooglePlaceDetails {
+  address_components?: Array<{
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }>;
+}
+
 declare global {
   interface Window {
     google: any;
@@ -51,9 +71,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const { t } = useTranslation(language, 'find-artists');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
-  const locationInputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<any>(null);
-  const [displayLocation, setDisplayLocation] = useState(location);
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const [citySuggestions, setCitySuggestions] = useState<Place[]>([]);
+  const [citySearchQuery, setCitySearchQuery] = useState('');
+  const [isCitySearching, setIsCitySearching] = useState(false);
+  const locationInputRef = useRef<HTMLDivElement>(null);
 
   const getLocale = () => {
     switch (language) {
@@ -66,46 +88,91 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   };
 
-  const initializeAutocomplete = () => {
-    if (window.google && locationInputRef.current) {
-      const options = {
-        componentRestrictions: { country: ['es'] },
-        fields: ['address_components', 'formatted_address'],
-        types: ['(cities)'],
-      };
-
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(
-        locationInputRef.current,
-        options,
-      );
-
-      autocompleteRef.current.addListener('place_changed', () => {
-        const place = autocompleteRef.current.getPlace();
-        if (place.address_components) {
-          const cityComponent = place.address_components.find(
-            (component: any) => component.types.includes('locality'),
-          );
-
-          if (cityComponent) {
-            const cityName = cityComponent.long_name;
-            setLocation(cityName);
-            setDisplayLocation(cityName);
-          }
-          setShowValidation(false);
-        }
-      });
-    }
-  };
-
   useEffect(() => {
-    initializeAutocomplete();
+    if (window.google && window.google.maps) {
+      setIsGoogleMapsLoaded(true);
+    }
   }, []);
 
   useEffect(() => {
-    if (!hasSearched) {
-      initializeAutocomplete();
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        locationInputRef.current &&
+        !locationInputRef.current.contains(event.target as Node)
+      ) {
+        setCitySuggestions([]);
+        setIsCitySearching(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleCitySearch = async (query: string) => {
+    setCitySearchQuery(query);
+    setIsCitySearching(true);
+    if (!query.trim() || !isGoogleMapsLoaded) {
+      setCitySuggestions([]);
+      return;
     }
-  }, [hasSearched]);
+
+    try {
+      const autocompleteService =
+        new window.google.maps.places.AutocompleteService();
+      const request = {
+        input: query,
+        types: ['(cities)'],
+        componentRestrictions: { country: ['es'] },
+        language: language,
+      };
+
+      const response = await autocompleteService.getPlacePredictions(request);
+      const places = response.predictions.map(
+        (prediction: GooglePrediction): Place => {
+          const cityName = prediction.description.split(',')[0].trim();
+          return {
+            id: prediction.place_id,
+            name: cityName,
+            type: 'city',
+          };
+        },
+      );
+
+      setCitySuggestions(places);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      setCitySuggestions([]);
+    }
+  };
+
+  const handleCitySelect = async (place: Place) => {
+    try {
+      const placesService = new window.google.maps.places.PlacesService(
+        document.createElement('div'),
+      );
+
+      placesService.getDetails(
+        { placeId: place.id },
+        (placeDetails: GooglePlaceDetails | null, status: string) => {
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            placeDetails
+          ) {
+            setLocation(place.name);
+            setCitySearchQuery(place.name);
+          }
+        },
+      );
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+    }
+
+    setCitySuggestions([]);
+    setIsCitySearching(false);
+  };
 
   const handleSearchClick = () => {
     onSearch();
@@ -139,8 +206,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         >
           {location && (
             <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
-              <span className="font-medium">{t('where')}:</span>{' '}
-              {displayLocation}
+              <span className="font-medium">{t('where')}:</span> {location}
             </span>
           )}
           {date && (
@@ -150,9 +216,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           )}
           {artistName && (
             <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
-              <span className="font-medium">
-                {t('search-style-or-artist')}:
-              </span>{' '}
+              <span className="font-medium">{t('artist-name')}:</span>{' '}
               {artistName}
             </span>
           )}
@@ -162,10 +226,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
             className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 sm:h-8 sm:w-8"
             onClick={() => {
               setLocation('');
-              setDisplayLocation('');
               setDate('');
               setTimezone('');
               setArtistName('');
+              setCitySearchQuery('');
+              setCitySuggestions([]);
+              setIsCitySearching(false);
               onClearSearch();
             }}
             type="button"
@@ -186,26 +252,47 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
               {t('where')}
             </span>
-            <input
-              ref={locationInputRef}
-              type="text"
-              placeholder={t('enter-city-name')}
-              value={displayLocation}
-              onChange={(e) => {
-                setDisplayLocation(e.target.value);
-                setLocation(e.target.value);
-                setShowValidation(false);
-              }}
-              onKeyPress={handleKeyPress}
-              className={`w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0 ${
-                showValidation &&
-                !location.trim() &&
-                !date.trim() &&
-                !artistName.trim()
-                  ? 'placeholder-red-300'
-                  : ''
-              }`}
-            />
+            <div className="relative" ref={locationInputRef}>
+              <input
+                type="text"
+                value={isCitySearching ? citySearchQuery : location}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  handleCitySearch(value);
+                  setLocation(value);
+                }}
+                onFocus={() => setIsCitySearching(true)}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setIsCitySearching(false);
+                    setCitySuggestions([]);
+                  }, 200);
+                }}
+                placeholder={t('enter-city-name')}
+                className={`w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0 ${
+                  showValidation &&
+                  !location.trim() &&
+                  !date.trim() &&
+                  !artistName.trim()
+                    ? 'placeholder-red-300'
+                    : ''
+                }`}
+              />
+              {citySuggestions.length > 0 && (
+                <div className="absolute left-0 right-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white py-1 shadow-lg">
+                  {citySuggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.id}
+                      type="button"
+                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => handleCitySelect(suggestion)}
+                    >
+                      {suggestion.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="hidden h-8 w-px bg-gray-200 sm:block" />

@@ -178,19 +178,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
             </span>
             {artist.price} €
           </span>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              const url = searchParams
-                ? `/${language}/artists/${artist.id}?location=${searchParams.location}&date=${searchParams.date}`
-                : `/${language}/artists/${artist.id}`;
-              router.push(url);
-            }}
-            className="rounded-full bg-[#15b7b9]/10 px-4 py-1.5 text-sm font-medium text-[#15b7b9] transition-colors hover:bg-[#15b7b9]/20"
-          >
-            {t('view-profile')}
-          </button>
         </div>
       </div>
     </div>
