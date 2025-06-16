@@ -17,6 +17,7 @@ interface SearchBarProps {
   setLocation: (val: string) => void;
   date: string;
   setDate: (val: string) => void;
+  setTimezone: (val: string) => void;
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   onSearch: () => void;
@@ -38,6 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setLocation,
   date,
   setDate,
+  setTimezone,
   searchQuery,
   setSearchQuery,
   onSearch,
@@ -126,8 +128,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
       const month = String(newDate.getMonth() + 1).padStart(2, '0');
       const day = String(newDate.getDate()).padStart(2, '0');
       setDate(`${year}-${month}-${day}`);
+      setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone);
     } else {
       setDate('');
+      setTimezone('');
     }
   };
 
@@ -165,6 +169,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               setLocation('');
               setDisplayLocation('');
               setDate('');
+              setTimezone('');
               setSearchQuery('');
               onClearSearch();
             }}

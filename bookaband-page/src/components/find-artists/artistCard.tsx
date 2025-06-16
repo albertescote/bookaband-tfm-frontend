@@ -85,14 +85,14 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
   };
 
   return (
-    <div 
+    <div
       onClick={() => {
         const url = searchParams
           ? `/${language}/artists/${artist.id}?location=${searchParams.location}&date=${searchParams.date}`
           : `/${language}/artists/${artist.id}`;
         router.push(url);
       }}
-      className="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md hover:scale-[1.02]"
+      className="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:scale-[1.02] hover:shadow-md"
     >
       <div className="relative aspect-square overflow-hidden">
         <Image

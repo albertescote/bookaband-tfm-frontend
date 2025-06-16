@@ -23,7 +23,12 @@ export interface ArtistsFeaturedResponse {
 export async function fetchFilteredArtists(
   page: number = 1,
   pageSize: number = 10,
-  filters?: { location?: string; date?: string; searchQuery?: string },
+  filters?: {
+    location?: string;
+    date?: string;
+    timezone?: string;
+    searchQuery?: string;
+  },
 ): Promise<ArtistsDetailsFilteredResponse> {
   return withTokenRefreshRetry(() =>
     authorizedAxiosInstance

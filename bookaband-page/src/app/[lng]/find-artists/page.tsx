@@ -20,6 +20,7 @@ export default async function Page({
 
   const location = searchParams?.location ?? '';
   const date = searchParams?.date ?? '';
+  const timezone = searchParams?.timezone ?? '';
   const query = searchParams?.q ?? '';
 
   const hasSearched = !!searchParams?.location && !!searchParams?.date;
@@ -27,7 +28,7 @@ export default async function Page({
     fetchFilteredArtists(
       1,
       8,
-      hasSearched ? { location, date, searchQuery: query } : {},
+      hasSearched ? { location, date, timezone, searchQuery: query } : {},
     ),
     fetchMusicalStyles(),
     fetchEventTypes(),
@@ -58,7 +59,7 @@ export default async function Page({
         musicalStyles={musicalStyles}
         eventTypes={eventTypes}
         hasSearchedInitial={hasSearched}
-        initialFilters={{ location, date, query }}
+        initialFilters={{ location, date, timezone, query }}
       />
     </div>
   );

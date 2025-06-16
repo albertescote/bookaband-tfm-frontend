@@ -31,6 +31,7 @@ interface FindArtistsContentProps {
   initialFilters: {
     location: string;
     date: string;
+    timezone: string;
     query: string;
   };
 }
@@ -54,6 +55,7 @@ export default function FindArtistsContent({
   const [searchQuery, setSearchQuery] = useState(initialFilters.query);
   const [location, setLocation] = useState(initialFilters.location);
   const [date, setDate] = useState(initialFilters.date);
+  const [timezone, setTimezone] = useState(initialFilters.timezone);
   const [sortOption, setSortOption] = useState(
     sanitizeText(
       decodeURIComponent(searchParams.get('sort') || 'most-popular'),
@@ -95,27 +97,37 @@ export default function FindArtistsContent({
       return;
     }
 
-    updateUrlParams({ location, date, q: searchQuery, sort: sortOption });
+    updateUrlParams({
+      location,
+      date,
+      timezone,
+      q: searchQuery,
+      sort: sortOption,
+    });
 
-    fetchFilteredArtists(1, pageSize, { location, date, searchQuery }).then(
-      ({ bandCatalogItems: newArtists, hasMore, total }) => {
-        setArtists(newArtists);
-        setFilteredArtists(newArtists);
-        setHasMore(hasMore);
-        setCurrentPage(1);
-        setTotalArtists(total);
-        setHasSearched(true);
-      },
-    );
+    fetchFilteredArtists(1, pageSize, {
+      location,
+      date,
+      timezone,
+      searchQuery,
+    }).then(({ bandCatalogItems: newArtists, hasMore, total }) => {
+      setArtists(newArtists);
+      setFilteredArtists(newArtists);
+      setHasMore(hasMore);
+      setCurrentPage(1);
+      setTotalArtists(total);
+      setHasSearched(true);
+    });
   };
 
   const handleClearSearch = () => {
     setLocation('');
     setDate('');
+    setTimezone('');
     setSearchQuery('');
     setSortOption('most-popular');
     setHasSearched(false);
-    updateUrlParams({ location: '', date: '', q: '', sort: '' });
+    updateUrlParams({ location: '', date: '', timezone: '', q: '', sort: '' });
 
     fetchFilteredArtists(1, pageSize).then(
       ({ bandCatalogItems, hasMore, total }) => {
@@ -139,7 +151,7 @@ export default function FindArtistsContent({
     const nextPage = currentPage + 1;
 
     const filterOptions = hasSearched
-      ? { location, date, searchQuery }
+      ? { location, date, timezone, searchQuery }
       : undefined;
 
     fetchFilteredArtists(nextPage, pageSize, filterOptions).then(
@@ -276,6 +288,7 @@ export default function FindArtistsContent({
           setLocation={setLocation}
           date={date}
           setDate={setDate}
+          setTimezone={setTimezone}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onSearch={handleSearch}
