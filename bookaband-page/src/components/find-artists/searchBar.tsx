@@ -18,8 +18,8 @@ interface SearchBarProps {
   date: string;
   setDate: (val: string) => void;
   setTimezone: (val: string) => void;
-  searchQuery: string;
-  setSearchQuery: (val: string) => void;
+  artistName: string;
+  setArtistName: (val: string) => void;
   onSearch: () => void;
   isLoading: boolean;
   hasSearched: boolean;
@@ -40,8 +40,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
   date,
   setDate,
   setTimezone,
-  searchQuery,
-  setSearchQuery,
+  artistName,
+  setArtistName,
   onSearch,
   isLoading,
   hasSearched,
@@ -108,11 +108,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [hasSearched]);
 
   const handleSearchClick = () => {
-    if (!location.trim() || !date.trim()) {
-      setShowValidation(true);
-      return;
-    }
-    setShowValidation(false);
     onSearch();
   };
 
@@ -153,12 +148,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
               <span className="font-medium">{t('when')}:</span> {date}
             </span>
           )}
-          {searchQuery && (
+          {artistName && (
             <span className="flex items-center gap-1 text-xs text-gray-600 sm:text-sm">
               <span className="font-medium">
                 {t('search-style-or-artist')}:
               </span>{' '}
-              {searchQuery}
+              {artistName}
             </span>
           )}
         </div>
@@ -170,7 +165,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               setDisplayLocation('');
               setDate('');
               setTimezone('');
-              setSearchQuery('');
+              setArtistName('');
               onClearSearch();
             }}
             type="button"
@@ -194,7 +189,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <input
               ref={locationInputRef}
               type="text"
-              placeholder={t('enter-location')}
+              placeholder={t('enter-city-name')}
               value={displayLocation}
               onChange={(e) => {
                 setDisplayLocation(e.target.value);
@@ -203,14 +198,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
               }}
               onKeyPress={handleKeyPress}
               className={`w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0 ${
-                showValidation && !location.trim() ? 'placeholder-red-300' : ''
+                showValidation &&
+                !location.trim() &&
+                !date.trim() &&
+                !artistName.trim()
+                  ? 'placeholder-red-300'
+                  : ''
               }`}
             />
-            {showValidation && !location.trim() && (
-              <span className="mt-1 text-xs text-red-500">
-                {t('location-required')}
-              </span>
-            )}
           </div>
 
           <div className="hidden h-8 w-px bg-gray-200 sm:block" />
@@ -222,7 +217,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <div className="relative">
               <input
                 type="text"
-                placeholder={t('add-dates')}
+                placeholder={t('select-event-date')}
                 value={date}
                 onChange={(e) => {
                   setDate(e.target.value);
@@ -231,7 +226,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 onKeyPress={handleKeyPress}
                 onClick={() => setIsDatePickerOpen(true)}
                 className={`w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0 ${
-                  showValidation && !date.trim() ? 'placeholder-red-300' : ''
+                  showValidation &&
+                  !location.trim() &&
+                  !date.trim() &&
+                  !artistName.trim()
+                    ? 'placeholder-red-300'
+                    : ''
                 }`}
               />
               <button
@@ -258,26 +258,31 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 </div>
               )}
             </div>
-            {showValidation && !date.trim() && (
-              <span className="mt-1 text-xs text-red-500">
-                {t('date-required')}
-              </span>
-            )}
           </div>
 
           <div className="hidden h-8 w-px bg-gray-200 sm:block" />
 
           <div className="flex w-full min-w-0 flex-col px-2 py-2 sm:px-4 sm:py-4">
             <span className="text-sm font-semibold text-gray-800 sm:text-base">
-              {t('search-style-or-artist')}
+              {t('artist-name')}
             </span>
             <input
               type="text"
-              placeholder={t('type-style-or-artist')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t('enter-artist-name')}
+              value={artistName}
+              onChange={(e) => {
+                setArtistName(e.target.value);
+                setShowValidation(false);
+              }}
               onKeyPress={handleKeyPress}
-              className="w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0"
+              className={`w-full border-none bg-transparent p-0 text-sm text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-0 ${
+                showValidation &&
+                !location.trim() &&
+                !date.trim() &&
+                !artistName.trim()
+                  ? 'placeholder-red-300'
+                  : ''
+              }`}
             />
           </div>
 

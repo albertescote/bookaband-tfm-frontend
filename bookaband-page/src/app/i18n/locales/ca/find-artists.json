@@ -14,8 +14,8 @@
   "featured-artist": "Artista destacat",
   "load-more-artists": "Carregar més artistes",
   "search-style-or-artist": "Nom de l'artista",
-  "where": "On?",
-  "when": "Quan?",
+  "where": "On planejes fer l'esdeveniment?",
+  "when": "Quan planejes fer l'esdeveniment?",
   "add-dates": "Afegir data(s)",
   "type-style-or-artist": "Escriu el nom de l'artista",
   "loading": "Carregant...",
@@ -63,12 +63,17 @@
   "applied-filters": "Filtres aplicats",
   "reset-all": "Restablir tot",
   "no-filters": "No hi ha filtres aplicats",
-  "invalid-search-query": "Format de cerca invàlid",
+  "invalid-artist-name": "Format del nom de l'artista invàlid",
   "reviews": "resenyes",
   "from": "a partir de...",
   "errorScreen": {
     "title": "Alguna cosa ha anat malament",
     "description": "No hem pogut carregar el teu catàleg d'artistes. Si us plau, torna-ho a provar més tard.",
     "retry": "Tornar a intentar"
-  }
+  },
+  "enter-city-name": "Introdueix el nom de la ciutat",
+  "select-event-date": "Selecciona la data de l'esdeveniment",
+  "artist-name": "Nom de l'artista",
+  "enter-artist-name": "Si el coneixes, afegeix el nom de l'artista",
+  "at-least-one-field-required": "Es requereix almenys un camp"
 }

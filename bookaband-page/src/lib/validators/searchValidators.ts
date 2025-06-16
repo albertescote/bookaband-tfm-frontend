@@ -1,7 +1,8 @@
 export interface ValidationErrors {
   location?: string;
   date?: string;
-  searchQuery?: string;
+  artistName?: string;
+  general?: string;
 }
 
 export const sanitizeText = (input: string): string => {
@@ -14,6 +15,7 @@ export const sanitizeText = (input: string): string => {
 };
 
 export const validateDate = (date: string): boolean => {
+  if (!date) return true;
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(date)) return false;
 
@@ -22,35 +24,42 @@ export const validateDate = (date: string): boolean => {
 };
 
 export const validateLocation = (location: string): boolean => {
+  if (!location) return true;
   const locationRegex = /^[a-zA-Z0-9\s\-.,()]+$/;
   return locationRegex.test(location);
 };
 
-export const validateSearchQuery = (query: string): boolean => {
-  const searchRegex = /^[a-zA-Z0-9\s\-.,()&]+$/;
+export const validateArtistName = (query: string): boolean => {
+  if (!query) return true;
+  const searchRegex = /^[a-zA-Z0-9\s\-.,()&!'+#@\/:"]+$/;
   return searchRegex.test(query);
 };
 
 export const validateSearchParams = (
-  params: { location?: string; date?: string; searchQuery?: string },
+  params: { location?: string; date?: string; artistName?: string },
   t: (key: string) => string,
 ): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!params.location || !params.location.trim()) {
-    errors.location = t('location-required');
-  } else if (!validateLocation(params.location)) {
+  if (
+    !params.location?.trim() &&
+    !params.date?.trim() &&
+    !params.artistName?.trim()
+  ) {
+    errors.general = t('at-least-one-field-required');
+    return errors;
+  }
+
+  if (params.location?.trim() && !validateLocation(params.location)) {
     errors.location = t('invalid-location');
   }
 
-  if (!params.date || !params.date.trim()) {
-    errors.date = t('date-required');
-  } else if (!validateDate(params.date)) {
+  if (params.date?.trim() && !validateDate(params.date)) {
     errors.date = t('invalid-date');
   }
 
-  if (params.searchQuery && !validateSearchQuery(params.searchQuery)) {
-    errors.searchQuery = t('invalid-search-query');
+  if (params.artistName?.trim() && !validateArtistName(params.artistName)) {
+    errors.artistName = t('invalid-artist-name');
   }
 
   return errors;

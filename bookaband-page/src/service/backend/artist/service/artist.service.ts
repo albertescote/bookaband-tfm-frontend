@@ -27,7 +27,7 @@ export async function fetchFilteredArtists(
     location?: string;
     date?: string;
     timezone?: string;
-    searchQuery?: string;
+    artistName?: string;
   },
 ): Promise<ArtistsDetailsFilteredResponse> {
   return withTokenRefreshRetry(() =>

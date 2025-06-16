@@ -32,7 +32,7 @@ interface FindArtistsContentProps {
     location: string;
     date: string;
     timezone: string;
-    query: string;
+    artistName: string;
   };
 }
 
@@ -52,7 +52,7 @@ export default function FindArtistsContent({
 
   const pageSize = 8;
 
-  const [searchQuery, setSearchQuery] = useState(initialFilters.query);
+  const [artistName, setArtistName] = useState(initialFilters.artistName);
   const [location, setLocation] = useState(initialFilters.location);
   const [date, setDate] = useState(initialFilters.date);
   const [timezone, setTimezone] = useState(initialFilters.timezone);
@@ -91,7 +91,7 @@ export default function FindArtistsContent({
 
   const handleSearch = () => {
     setValidationErrors({});
-    const errors = validateSearchParams({ location, date, searchQuery }, t);
+    const errors = validateSearchParams({ location, date, artistName }, t);
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
       return;
@@ -101,7 +101,7 @@ export default function FindArtistsContent({
       location,
       date,
       timezone,
-      q: searchQuery,
+      q: artistName,
       sort: sortOption,
     });
 
@@ -109,7 +109,7 @@ export default function FindArtistsContent({
       location,
       date,
       timezone,
-      searchQuery,
+      artistName,
     }).then(({ bandCatalogItems: newArtists, hasMore, total }) => {
       setArtists(newArtists);
       setFilteredArtists(newArtists);
@@ -124,7 +124,7 @@ export default function FindArtistsContent({
     setLocation('');
     setDate('');
     setTimezone('');
-    setSearchQuery('');
+    setArtistName('');
     setSortOption('most-popular');
     setHasSearched(false);
     updateUrlParams({ location: '', date: '', timezone: '', q: '', sort: '' });
@@ -151,7 +151,7 @@ export default function FindArtistsContent({
     const nextPage = currentPage + 1;
 
     const filterOptions = hasSearched
-      ? { location, date, timezone, searchQuery }
+      ? { location, date, timezone, artistName }
       : undefined;
 
     fetchFilteredArtists(nextPage, pageSize, filterOptions).then(
@@ -289,8 +289,8 @@ export default function FindArtistsContent({
           date={date}
           setDate={setDate}
           setTimezone={setTimezone}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
+          artistName={artistName}
+          setArtistName={setArtistName}
           onSearch={handleSearch}
           isLoading={false}
           hasSearched={hasSearched}
@@ -298,22 +298,42 @@ export default function FindArtistsContent({
           setHasSearched={setHasSearched}
         />
 
+        {validationErrors.general && (
+          <div className="mt-4 flex justify-start">
+            <span className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
+              <X className="h-4 w-4 text-red-500" />
+              {validationErrors.general}
+            </span>
+          </div>
+        )}
+
         {(validationErrors.location ||
           validationErrors.date ||
-          validationErrors.searchQuery) && (
+          validationErrors.artistName) && (
           <div className="mt-4 space-y-2">
             {validationErrors.location && (
-              <p className="text-sm text-red-200">
-                {validationErrors.location}
-              </p>
+              <div className="mt-4 flex justify-start">
+                <span className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
+                  <X className="h-4 w-4 text-red-500" />
+                  {validationErrors.location}
+                </span>
+              </div>
             )}
             {validationErrors.date && (
-              <p className="text-sm text-red-200">{validationErrors.date}</p>
+              <div className="mt-4 flex justify-start">
+                <span className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
+                  <X className="h-4 w-4 text-red-500" />
+                  {validationErrors.date}
+                </span>
+              </div>
             )}
-            {validationErrors.searchQuery && (
-              <p className="text-sm text-red-200">
-                {validationErrors.searchQuery}
-              </p>
+            {validationErrors.artistName && (
+              <div className="mt-4 flex justify-start">
+                <span className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
+                  <X className="h-4 w-4 text-red-500" />
+                  {validationErrors.artistName}
+                </span>
+              </div>
             )}
           </div>
         )}

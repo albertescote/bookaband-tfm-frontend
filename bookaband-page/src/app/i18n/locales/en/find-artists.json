@@ -14,8 +14,8 @@
   "featured-artist": "Featured Artist",
   "load-more-artists": "Load More Artists",
   "search-style-or-artist": "Artist name",
-  "where": "Where?",
-  "when": "When?",
+  "where": "Where are you planning to do the event?",
+  "when": "When are you planning to do the event?",
   "add-dates": "Add Date(s)",
   "type-style-or-artist": "Type artist name",
   "loading": "Loading...",
@@ -63,12 +63,17 @@
   "applied-filters": "Applied Filters",
   "reset-all": "Reset All",
   "no-filters": "No filters applied",
-  "invalid-search-query": "Invalid search query format",
+  "invalid-artist-name": "Invalid artist name format",
   "reviews": "reviews",
   "from": "from...",
   "errorScreen": {
     "title": "Something went wrong",
     "description": "We couldn't load the artists catalog. Please try again later.",
     "retry": "Retry"
-  }
+  },
+  "enter-city-name": "Enter the city name",
+  "select-event-date": "Select the event date",
+  "artist-name": "Artist name",
+  "enter-artist-name": "If known, add the artist name",
+  "at-least-one-field-required": "At least one field is required"
 }

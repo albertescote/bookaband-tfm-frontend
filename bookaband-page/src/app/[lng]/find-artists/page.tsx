@@ -21,14 +21,14 @@ export default async function Page({
   const location = searchParams?.location ?? '';
   const date = searchParams?.date ?? '';
   const timezone = searchParams?.timezone ?? '';
-  const query = searchParams?.q ?? '';
+  const artistName = searchParams?.q ?? '';
 
   const hasSearched = !!searchParams?.location && !!searchParams?.date;
   const [data, musicalStyles, eventTypes] = await Promise.all([
     fetchFilteredArtists(
       1,
       8,
-      hasSearched ? { location, date, timezone, searchQuery: query } : {},
+      hasSearched ? { location, date, timezone, artistName } : {},
     ),
     fetchMusicalStyles(),
     fetchEventTypes(),
@@ -59,7 +59,7 @@ export default async function Page({
         musicalStyles={musicalStyles}
         eventTypes={eventTypes}
         hasSearchedInitial={hasSearched}
-        initialFilters={{ location, date, timezone, query }}
+        initialFilters={{ location, date, timezone, artistName }}
       />
     </div>
   );

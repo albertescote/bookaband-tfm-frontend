@@ -14,8 +14,8 @@
   "featured-artist": "Artista destacado",
   "load-more-artists": "Cargar más artistas",
   "search-style-or-artist": "Nombre del artista",
-  "where": "¿Dónde?",
-  "when": "¿Cuándo?",
+  "where": "¿Dónde planeas hacer el evento?",
+  "when": "¿Cuándo planeas hacer el evento?",
   "add-dates": "Añadir fecha(s)",
   "type-style-or-artist": "Escribe el nombre del artista",
   "loading": "Cargando...",
@@ -63,12 +63,17 @@
   "applied-filters": "Filtros aplicados",
   "reset-all": "Restablecer todo",
   "no-filters": "No hay filtros aplicados",
-  "invalid-search-query": "Formato de búsqueda inválido",
+  "invalid-artist-name": "Formato del nombre del artista inválido",
   "reviews": "reseñas",
   "from": "a partir de...",
   "errorScreen": {
     "title": "Algo salió mal",
     "description": "No pudimos cargar tu el catálogo de artistas. Por favor, inténtalo más tarde.",
     "retry": "Reintentar"
-  }
+  },
+  "enter-city-name": "Introduce el nombre de la ciudad",
+  "select-event-date": "Selecciona la fecha del evento",
+  "artist-name": "Nombre del artista",
+  "enter-artist-name": "Si lo conoces, añade el nombre del artista",
+  "at-least-one-field-required": "Se requiere al menos un campo"
 }
