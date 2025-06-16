@@ -23,6 +23,14 @@
     "rehearsal": "Rehearsal",
     "meeting": "Meeting"
   },
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "signed": "Signed",
+    "paid": "Paid",
+    "declined": "Declined",
+    "canceled": "Canceled"
+  },
   "errors": {
     "fetchEventTypes": "Failed to fetch event types",
     "fetchEvents": "Failed to fetch events"

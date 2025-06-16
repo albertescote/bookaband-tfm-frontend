@@ -318,7 +318,24 @@ export default function CalendarView({ language }: CalendarViewProps) {
                         <span>{getEventType(event.eventTypeId)?.icon}</span>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-medium">{event.name}</h3>
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-medium">{event.name}</h3>
+                          <span
+                            className={cn(
+                              'rounded-full px-2 py-0.5 text-xs font-medium',
+                              event.status === BookingStatus.PENDING &&
+                                'bg-yellow-100 text-yellow-600',
+                              event.status === BookingStatus.ACCEPTED &&
+                                'bg-[#15b7b9]/10 text-[#15b7b9]',
+                              event.status === BookingStatus.SIGNED &&
+                                'bg-blue-100 text-blue-600',
+                              event.status === BookingStatus.PAID &&
+                                'bg-purple-100 text-purple-600',
+                            )}
+                          >
+                            {t(`status.${event.status?.toLowerCase()}`)}
+                          </span>
+                        </div>
                         <p className="text-sm text-gray-500">
                           {getEventTypeLabel(event.eventTypeId)}
                         </p>

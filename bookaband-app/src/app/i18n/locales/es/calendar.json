@@ -23,6 +23,14 @@
     "rehearsal": "Ensayo",
     "meeting": "Reunión"
   },
+  "status": {
+    "pending": "Pendiente",
+    "accepted": "Aceptado",
+    "signed": "Firmado",
+    "paid": "Pagado",
+    "declined": "Rechazado",
+    "canceled": "Cancelado"
+  },
   "errors": {
     "fetchEventTypes": "Error al cargar los tipos de eventos",
     "fetchEvents": "Error al cargar los eventos"
