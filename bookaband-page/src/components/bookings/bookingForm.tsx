@@ -79,9 +79,60 @@ export function BookingForm({
   const [totalCost, setTotalCost] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const isDateAvailable = (date: Date): boolean => {
+    const normalizedDate = new Date(date);
+    normalizedDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (normalizedDate < today) {
+      return false;
+    }
+
+    const isBooked = artist.bookingDates.some((bookedDate) => {
+      const bookedDateObj = new Date(bookedDate);
+      bookedDateObj.setHours(0, 0, 0, 0);
+      return bookedDateObj.getTime() === normalizedDate.getTime();
+    });
+
+    if (isBooked) {
+      return false;
+    }
+
+    const dayOfWeek = normalizedDate.getDay();
+    const dayKey = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ][dayOfWeek] as keyof WeeklyAvailability;
+    return artist.weeklyAvailability[dayKey];
+  };
+
+  const findFirstAvailableDate = (): Date => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let firstAvailableDate = new Date(today);
+    while (!isDateAvailable(firstAvailableDate)) {
+      firstAvailableDate.setDate(firstAvailableDate.getDate() + 1);
+    }
+    return firstAvailableDate;
+  };
+
   const [formData, setFormData] = useState({
-    initDate: new Date(new Date().setHours(0, 0, 0, 0)),
-    endDate: new Date(new Date().setHours(1, 0, 0, 0)),
+    initDate: (() => {
+      const firstAvailable = findFirstAvailableDate();
+      return firstAvailable;
+    })(),
+    endDate: (() => {
+      const firstAvailable = findFirstAvailableDate();
+      firstAvailable.setHours(1, 0, 0, 0);
+      return firstAvailable;
+    })(),
     name: '',
     country: '',
     city: '',
@@ -360,29 +411,6 @@ export function BookingForm({
       setIsSubmitting(false);
       setIsLoading(false);
     }
-  };
-
-  const isDateAvailable = (date: Date): boolean => {
-    const normalizedDate = new Date(date);
-    normalizedDate.setHours(0, 0, 0, 0);
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (normalizedDate < today) {
-      return false;
-    }
-
-    const dayOfWeek = normalizedDate.getDay();
-    const dayKey = [
-      'sunday',
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday',
-    ][dayOfWeek] as keyof WeeklyAvailability;
-    return artist.weeklyAvailability[dayKey];
   };
 
   const getUnavailableDates = (): Date[] => {
