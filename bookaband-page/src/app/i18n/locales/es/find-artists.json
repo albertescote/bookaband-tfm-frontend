@@ -75,5 +75,6 @@
   "select-event-date": "Selecciona la fecha del evento",
   "artist-name": "Nombre del artista",
   "enter-artist-name": "Si lo conoces, añade el nombre del artista",
-  "at-least-one-field-required": "Se requiere al menos un campo"
+  "at-least-one-field-required": "Se requiere al menos un campo",
+  "performance-areas": "Áreas de actuación"
 }

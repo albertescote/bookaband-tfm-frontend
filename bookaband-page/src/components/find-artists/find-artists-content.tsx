@@ -147,6 +147,20 @@ export default function FindArtistsContent({
   };
 
   useEffect(() => {
+    const urlLocation = searchParams.get('location');
+    const urlDate = searchParams.get('date');
+    const urlArtistName = searchParams.get('artistName');
+    const urlSort = searchParams.get('sort');
+
+    if (urlLocation) setLocation(decodeURIComponent(urlLocation));
+    if (urlDate) setDate(decodeURIComponent(urlDate));
+    if (urlArtistName) setArtistName(decodeURIComponent(urlArtistName));
+    if (urlSort) setSortOption(decodeURIComponent(urlSort));
+
+    setHasSearched(!!(urlLocation || urlDate || urlArtistName));
+  }, [searchParams]);
+
+  useEffect(() => {
     if (hasSearched) {
       updateUrlParams({ sort: sortOption });
     }

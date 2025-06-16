@@ -75,5 +75,6 @@
   "select-event-date": "Selecciona la data de l'esdeveniment",
   "artist-name": "Nom de l'artista",
   "enter-artist-name": "Si el coneixes, afegeix el nom de l'artista",
-  "at-least-one-field-required": "Es requereix almenys un camp"
+  "at-least-one-field-required": "Es requereix almenys un camp",
+  "performance-areas": "Àrees d'actuació"
 }

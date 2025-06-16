@@ -125,7 +125,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
       const request = {
         input: query,
         types: ['(cities)'],
-        componentRestrictions: { country: ['es'] },
         language: language,
       };
 

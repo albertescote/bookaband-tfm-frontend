@@ -29,7 +29,11 @@ export default async function Page({
     ? decodeURIComponent(searchParams.artistName)
     : '';
 
-  const hasSearched = !!searchParams?.location && !!searchParams?.date;
+  const hasSearched = !!(
+    searchParams?.location ||
+    searchParams?.date ||
+    searchParams?.artistName
+  );
   const [data, musicalStyles, eventTypes] = await Promise.all([
     fetchFilteredArtists(
       1,

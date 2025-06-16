@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapPin, Music, Star, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Globe, MapPin, Music, Star, Users } from 'lucide-react';
 import { useTranslation } from '@/app/i18n/client';
 import { BandCatalogItem } from '@/service/backend/artist/domain/bandCatalogItem';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,11 @@ interface ArtistCardProps {
   searchParams?: { location?: string; date?: string };
 }
 
+interface GooglePlaceResult {
+  name?: string;
+  [key: string]: any;
+}
+
 const ArtistCard: React.FC<ArtistCardProps> = ({
   artist,
   musicalStyles,
@@ -25,6 +30,45 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
 }) => {
   const { t } = useTranslation(language, 'find-artists');
   const router = useRouter();
+  const [performanceAreas, setPerformanceAreas] = useState<string[]>([]);
+
+  useEffect(() => {
+    const convertPlaceIdsToNames = async () => {
+      if (!artist.performanceArea?.regions?.length) return;
+
+      const placesService = new window.google.maps.places.PlacesService(
+        document.createElement('div'),
+      );
+
+      const placeNames = await Promise.all(
+        artist.performanceArea.regions.map(
+          (placeId) =>
+            new Promise<string>((resolve) => {
+              placesService.getDetails(
+                { placeId },
+                (place: GooglePlaceResult | null, status: string) => {
+                  if (
+                    status ===
+                      window.google.maps.places.PlacesServiceStatus.OK &&
+                    place
+                  ) {
+                    resolve(place.name || placeId);
+                  } else {
+                    resolve(placeId);
+                  }
+                },
+              );
+            }),
+        ),
+      );
+
+      setPerformanceAreas(placeNames);
+    };
+
+    if (window.google?.maps?.places) {
+      convertPlaceIdsToNames();
+    }
+  }, [artist.performanceArea?.regions]);
 
   const getMusicalStyleLabel = (styleId: string) => {
     const style = musicalStyles.find((s) => s.id === styleId);
@@ -109,9 +153,15 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
         )}
       </div>
       <div className="p-5">
-        <h3 className="mb-2 text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
-          {artist.name}
-        </h3>
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-[#565d6d] group-hover:text-[#15b7b9]">
+            {artist.name}
+          </h3>
+          <div className="flex items-center gap-1 text-xs text-gray-600">
+            <MapPin className="h-3 w-3" />
+            {artist.location}
+          </div>
+        </div>
 
         <div className="mb-3 flex flex-wrap gap-2">
           {artist.musicalStyleIds.length > 0 ? (
@@ -155,10 +205,22 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
           )}
         </div>
 
-        <div className="mb-3 flex items-center gap-1 text-xs text-gray-600">
-          <MapPin className="h-3 w-3" />
-          {artist.location}
-        </div>
+        {performanceAreas.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            <div className="flex items-center gap-1 text-xs text-gray-600">
+              <Globe className="h-3 w-3" />
+              <span>{t('performance-areas')}:</span>
+            </div>
+            {performanceAreas.map((area, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center gap-1 rounded-full bg-[#15b7b9]/10 px-3 py-1 text-xs font-medium text-[#15b7b9]"
+              >
+                {area}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="mb-3 flex items-center gap-1 text-sm">
           <div className="flex">{renderStars(artist.rating ?? 0)}</div>
