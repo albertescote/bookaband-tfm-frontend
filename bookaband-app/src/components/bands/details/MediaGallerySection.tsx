@@ -60,57 +60,63 @@ export function MediaGallerySection({
             </FileUpload>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {media.map((mediaItem, index) => (
-            <motion.div
-              key={'id' in mediaItem ? mediaItem.id : `pending-${index}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative aspect-square overflow-hidden rounded-lg"
-            >
-              {mediaItem.type === 'image' ? (
-                <div className="relative h-full w-full">
-                  <Image
-                    src={mediaItem.url}
-                    alt=""
-                    fill
-                    className="cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
-                    onClick={() => handleMediaClick(mediaItem)}
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                  />
-                </div>
-              ) : (
-                <motion.div
-                  className="relative h-full w-full cursor-pointer"
-                  onClick={() => handleMediaClick(mediaItem)}
-                >
-                  <video
-                    src={mediaItem.url}
-                    className="h-full w-full object-cover"
-                    controls
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <Maximize2 className="h-8 w-8 text-white" />
+        {media.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {media.map((mediaItem, index) => (
+              <motion.div
+                key={'id' in mediaItem ? mediaItem.id : `pending-${index}`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                className="group relative aspect-square overflow-hidden rounded-lg"
+              >
+                {mediaItem.type === 'image' ? (
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={mediaItem.url}
+                      alt=""
+                      fill
+                      className="cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
+                      onClick={() => handleMediaClick(mediaItem)}
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    />
                   </div>
-                </motion.div>
-              )}
-              {isAdmin && isEditing && (
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() =>
-                    'id' in mediaItem && onMediaDelete(mediaItem.id)
-                  }
-                  className="absolute right-2 top-2 rounded-full bg-black/50 p-1 text-white transition-colors hover:bg-red-600"
-                >
-                  <X size={16} />
-                </motion.button>
-              )}
-            </motion.div>
-          ))}
-        </div>
+                ) : (
+                  <motion.div
+                    className="relative h-full w-full cursor-pointer"
+                    onClick={() => handleMediaClick(mediaItem)}
+                  >
+                    <video
+                      src={mediaItem.url}
+                      className="h-full w-full object-cover"
+                      controls
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <Maximize2 className="h-8 w-8 text-white" />
+                    </div>
+                  </motion.div>
+                )}
+                {isAdmin && isEditing && (
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() =>
+                      'id' in mediaItem && onMediaDelete(mediaItem.id)
+                    }
+                    className="absolute right-2 top-2 rounded-full bg-black/50 p-1 text-white transition-colors hover:bg-red-600"
+                  >
+                    <X size={16} />
+                  </motion.button>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+            <p className="text-gray-500">{t('form.multimedia.noMedia')}</p>
+          </div>
+        )}
       </CollapsibleSection>
 
       <AnimatePresence>
