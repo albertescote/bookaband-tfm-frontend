@@ -810,7 +810,7 @@ export default function BandDetails({
             onUpdate={(area) =>
               setEditedValues((prev) => ({ ...prev, performanceArea: area }))
             }
-            t={t}
+            lng={lng}
             hasError={validationErrors.performanceArea}
           />
 

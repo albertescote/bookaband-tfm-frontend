@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/app/i18n/client';
 
 interface Region {
   id: string;
@@ -25,7 +26,7 @@ interface PerformanceAreaSectionProps {
   performanceArea: PerformanceArea;
   isEditing: boolean;
   onUpdate: (area: PerformanceArea) => void;
-  t: (key: string) => string;
+  lng: string;
   hasError?: {
     regions?: boolean;
     fuelConsumption?: boolean;
@@ -37,9 +38,10 @@ export function PerformanceAreaSection({
   performanceArea,
   isEditing,
   onUpdate,
-  t,
+  lng,
   hasError,
 }: PerformanceAreaSectionProps) {
+  const { t } = useTranslation(lng, 'bands');
   const [selectedType, setSelectedType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Region[]>([]);
@@ -83,7 +85,7 @@ export function PerformanceAreaSection({
           if (region.name === region.id) {
             return new Promise<Region>((resolve) => {
               placesService.getDetails(
-                { placeId: region.id },
+                { placeId: region.id, language: lng },
                 (place, status) => {
                   if (
                     status === google.maps.places.PlacesServiceStatus.OK &&
