@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers';
 import { ParsedCookie } from '@/service/backend/auth/domain/parsedCookie';
 
-export function setTokenCookie(
+export async function setTokenCookie(
   parsedCookie: ParsedCookie,
   maxAge?: number,
-): void {
-  const cookieStore = cookies();
+): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.set(parsedCookie.name, parsedCookie.value, {
     httpOnly: parsedCookie.options.httponly as boolean,
     sameSite: parsedCookie.options.samesite as 'strict' | 'lax' | 'none',

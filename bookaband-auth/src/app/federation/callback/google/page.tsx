@@ -2,12 +2,13 @@ import { redirect } from 'next/navigation';
 import Callback from '@/components/federation/callback';
 
 interface PageParams {
-  searchParams?: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 export default async function Page({ searchParams }: PageParams) {
-  const code: string | undefined = searchParams?.code;
-  const role: string | undefined = searchParams?.role;
+  const resolvedSearchParams = await searchParams;
+  const code: string | undefined = resolvedSearchParams?.code;
+  const role: string | undefined = resolvedSearchParams?.role;
 
   if (!code) {
     redirect('/login?error=missing-code');

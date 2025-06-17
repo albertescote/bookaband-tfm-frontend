@@ -1,13 +1,15 @@
 import SignUpForm from '@/components/sign-up/signUpForm';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
-  searchParams?: { [key: string]: string | undefined };
+  }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-export default function Page({ params: { lng }, searchParams }: PageParams) {
-  const error: string | undefined = searchParams?.error;
+export default async function Page({ params, searchParams }: PageParams) {
+  const { lng } = await params;
+  const resolvedSearchParams = await searchParams;
+  const error: string | undefined = resolvedSearchParams?.error;
   return <SignUpForm language={lng} error={error} />;
 }

@@ -18,11 +18,12 @@ export async function generateStaticParams() {
 
 export default async function RootLayout({
   children,
-  params: { lng },
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lng: string };
+  params: Promise<{ lng: string }>;
 }>) {
+  const { lng } = await params;
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={`${inter.className}`}>

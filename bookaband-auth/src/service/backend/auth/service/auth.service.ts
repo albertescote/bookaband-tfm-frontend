@@ -31,8 +31,8 @@ export async function authenticate(
       (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
     );
     if (accessTokenCookie && refreshTokenCookie) {
-      setTokenCookie(accessTokenCookie, rememberMe ? 60 * 15 : undefined);
-      setTokenCookie(
+      await setTokenCookie(accessTokenCookie, rememberMe ? 60 * 15 : undefined);
+      await setTokenCookie(
         refreshTokenCookie,
         rememberMe ? 60 * 60 * 24 * 30 : undefined,
       );
@@ -77,8 +77,8 @@ export async function loginWithGoogle(
       (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
     );
     if (accessTokenCookie && refreshTokenCookie) {
-      setTokenCookie(accessTokenCookie);
-      setTokenCookie(refreshTokenCookie);
+      await setTokenCookie(accessTokenCookie);
+      await setTokenCookie(refreshTokenCookie);
       return {
         valid: true,
         role: response.data.role,
@@ -122,8 +122,8 @@ export async function signUpWithGoogle(
       (parsedCookie: ParsedCookie) => parsedCookie.name === 'refresh_token',
     );
     if (accessTokenCookie && refreshTokenCookie) {
-      setTokenCookie(accessTokenCookie);
-      setTokenCookie(refreshTokenCookie);
+      await setTokenCookie(accessTokenCookie);
+      await setTokenCookie(refreshTokenCookie);
       return {
         valid: true,
         role: response.data.role,
