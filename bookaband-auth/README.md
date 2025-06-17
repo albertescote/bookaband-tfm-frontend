@@ -18,22 +18,20 @@ This project contains the authentication system of **BookaBand**, handling user 
 
 ## Tech Stack
 
-- **Next.js 15** – App Router, SSR, and file-based routing
-- **React 18**
-- **TypeScript**
-- **TailwindCSS** – Utility-first CSS framework for styling
-- **tailwind-merge** & **tailwindcss-animate** – Enhanced Tailwind utility management and animations
-- **Radix UI** – Accessible UI primitives (`Dialog`, `Label`, `Slot`)
-- **Headless UI** – Unstyled accessible components
-- **Framer Motion** – Component and page animations
-- **Lucide & Heroicons** – Icon libraries
-- **i18next + react-i18next** – Internationalization and locale routing
-- **Axios** – API communication
-- **Zxcvbn** – Password strength estimation
-- **Cookies-next & React-cookie** – SSR-friendly session and cookie management
-- **Date-fns + React Datepicker + React Calendar** – Date handling for forms and validation
-- **Socket.IO Client** – Real-time support for future extensions (e.g., 2FA, auth logs)
-- **React Hot Toast** – Toast notifications for feedback and errors
+* **Next.js 15** – React framework with App Router and built-in SSR
+* **React 18** – Modern frontend library for declarative UI
+* **TypeScript** – Static typing for maintainable code
+* **TailwindCSS** – Utility-first CSS framework for design system and responsiveness
+* **tailwind-merge** + **tailwindcss-animate** – For class merging and animation support
+* **Radix UI** – Low-level, accessible primitives (`Dialog`, `Label`)
+* **Lucide React** + **React Icons** – Icon libraries used for branding and form cues
+* **Axios** – HTTP client for backend/auth API calls
+* **Zxcvbn** – Password strength estimation for secure UX
+* **React Cookie** – Utilities for handling cookies and session state
+* **i18next** + **react-i18next** + **i18next-browser-languagedetector** – Full-featured internationalization and locale detection
+* **Framer Motion** – Component animation and transitions
+* **React Hot Toast** – Simple toast system for feedback and notifications
+* **Sharp** – High-performance image processing library (used internally or by Next.js)
 
 ## Project Structure
 
