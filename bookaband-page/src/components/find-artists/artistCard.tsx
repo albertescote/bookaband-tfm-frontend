@@ -7,6 +7,7 @@ import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle
 import { EventType } from '@/service/backend/filters/domain/eventType';
 import { BandSize } from '@/service/backend/artist/domain/bandSize';
 import Image from 'next/image';
+import { getRandomColor } from '@/lib/utils';
 
 interface ArtistCardProps {
   artist: BandCatalogItem;
@@ -139,13 +140,28 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
       className="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:scale-[1.02] hover:shadow-md"
     >
       <div className="relative aspect-square overflow-hidden">
-        <Image
-          src={artist.imageUrl ?? ''}
-          alt={artist.name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        {artist.imageUrl ? (
+          <div className={`relative h-full w-full`}>
+            <Image
+              src={artist.imageUrl ?? ''}
+              alt={artist.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+        ) : (
+          <div
+            className={`flex h-full w-full items-center justify-center shadow-sm`}
+            style={{
+              backgroundColor: getRandomColor(artist.name ?? 'dummy'),
+            }}
+          >
+            <span className={`font-bold text-white`}>
+              {artist.name ? artist.name.charAt(0).toUpperCase() : '?'}
+            </span>
+          </div>
+        )}
         {artist.featured && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-[#15b7b9] px-3 py-1 text-xs font-semibold text-white shadow">
             {t('featured-artist')}
