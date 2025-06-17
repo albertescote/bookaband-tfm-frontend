@@ -6,33 +6,34 @@ import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/music
 import { fetchEventTypes } from '@/service/backend/filters/service/eventType.service';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
-  searchParams?: { [key: string]: string | undefined };
+  }>;
+  searchParams?: Promise<{ [key: string]: string | undefined }>;
 }
 
-export default async function Page({
-  params: { lng },
-  searchParams,
-}: PageParams) {
+export default async function Page({ params, searchParams }: PageParams) {
+  const { lng } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const { t } = await getTranslation(lng, 'profile');
 
-  const location = searchParams?.location
-    ? decodeURIComponent(searchParams.location)
+  const location = resolvedSearchParams?.location
+    ? decodeURIComponent(resolvedSearchParams.location)
     : '';
-  const date = searchParams?.date ? decodeURIComponent(searchParams.date) : '';
-  const timezone = searchParams?.timezone
-    ? decodeURIComponent(searchParams.timezone)
+  const date = resolvedSearchParams?.date
+    ? decodeURIComponent(resolvedSearchParams.date)
     : '';
-  const artistName = searchParams?.artistName
-    ? decodeURIComponent(searchParams.artistName)
+  const timezone = resolvedSearchParams?.timezone
+    ? decodeURIComponent(resolvedSearchParams.timezone)
+    : '';
+  const artistName = resolvedSearchParams?.artistName
+    ? decodeURIComponent(resolvedSearchParams.artistName)
     : '';
 
   const hasSearched = !!(
-    searchParams?.location ||
-    searchParams?.date ||
-    searchParams?.artistName
+    resolvedSearchParams?.location ||
+    resolvedSearchParams?.date ||
+    resolvedSearchParams?.artistName
   );
   const [data, musicalStyles, eventTypes] = await Promise.all([
     fetchFilteredArtists(

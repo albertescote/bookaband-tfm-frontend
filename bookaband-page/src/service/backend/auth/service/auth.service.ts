@@ -22,7 +22,7 @@ export async function withTokenRefreshRetry<T>(
       try {
         const accessToken = await refreshAccessToken();
         if (!accessToken) {
-          deleteAccessTokenCookie();
+          await deleteAccessTokenCookie();
           return undefined;
         }
         return withTokenRefreshRetry(apiCall, true);
@@ -37,7 +37,7 @@ export async function withTokenRefreshRetry<T>(
 
 export async function refreshAccessToken(): Promise<string | undefined> {
   try {
-    const refreshToken = getRefreshTokenCookie();
+    const refreshToken = await getRefreshTokenCookie();
     if (!refreshToken) {
       return undefined;
     }
@@ -57,11 +57,11 @@ export async function refreshAccessToken(): Promise<string | undefined> {
       (parsedCookie: ParsedCookie) => parsedCookie.name === 'access_token',
     );
     if (accessTokenCookie) {
-      setTokenCookie(accessTokenCookie);
+      await setTokenCookie(accessTokenCookie);
     }
     return accessTokenCookie?.value;
   } catch (error) {
-    deleteRefreshTokenCookie();
+    await deleteRefreshTokenCookie();
     console.log(
       `Error status: ${(error as AxiosError).code}. Error message: ${
         (error as AxiosError).message
@@ -73,14 +73,14 @@ export async function refreshAccessToken(): Promise<string | undefined> {
 
 export async function logout(): Promise<void> {
   try {
-    const refreshToken = getRefreshTokenCookie();
+    const refreshToken = await getRefreshTokenCookie();
     if (!refreshToken) {
       console.log('Logout failed: refresh token cookie not found');
       return undefined;
     }
     await axiosInstance.post('/auth/logout', { refreshToken });
-    deleteAccessTokenCookie();
-    deleteRefreshTokenCookie();
+    await deleteAccessTokenCookie();
+    await deleteRefreshTokenCookie();
     return;
   } catch (error) {
     console.log(

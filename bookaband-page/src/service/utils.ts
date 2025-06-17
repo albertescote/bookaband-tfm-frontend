@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers';
 import { ParsedCookie } from '@/service/backend/auth/domain/parsedCookie';
 
-export function setTokenCookie(
+export async function setTokenCookie(
   parsedCookie: ParsedCookie,
   maxAge?: number,
-): void {
-  const cookieStore = cookies();
+): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.set(parsedCookie.name, parsedCookie.value, {
     httpOnly: parsedCookie.options.httponly as boolean,
     sameSite: parsedCookie.options.samesite as 'strict' | 'lax' | 'none',
@@ -14,23 +14,23 @@ export function setTokenCookie(
   });
 }
 
-export function getAccessTokenCookie(): string | undefined {
-  const cookieStore = cookies();
+export async function getAccessTokenCookie(): Promise<string | undefined> {
+  const cookieStore = await cookies();
   return cookieStore.get('access_token')?.value;
 }
 
-export function getRefreshTokenCookie(): string | undefined {
-  const cookieStore = cookies();
+export async function getRefreshTokenCookie(): Promise<string | undefined> {
+  const cookieStore = await cookies();
   return cookieStore.get('refresh_token')?.value;
 }
 
-export function deleteAccessTokenCookie(): void {
-  const cookieStore = cookies();
+export async function deleteAccessTokenCookie(): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.delete('access_token');
 }
 
-export function deleteRefreshTokenCookie(): void {
-  const cookieStore = cookies();
+export async function deleteRefreshTokenCookie(): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.delete('refresh_token');
 }
 

@@ -3,10 +3,11 @@ import { getTranslation } from '@/app/i18n';
 import ContactForm from '@/components/contact/contactForm';
 
 export async function generateMetadata({
-  params: { lng },
+  params,
 }: {
-  params: { lng: string };
+  params: Promise<{ lng: string }>;
 }): Promise<Metadata> {
+  const { lng } = await params;
   const { t } = await getTranslation(lng, 'contact');
   return {
     title: t('metadata.title'),
@@ -15,10 +16,11 @@ export async function generateMetadata({
 }
 
 export default async function ContactPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: string };
+  params: Promise<{ lng: string }>;
 }) {
+  const { lng } = await params;
   const { t } = await getTranslation(lng, 'contact');
 
   return (

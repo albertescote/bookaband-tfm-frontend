@@ -2,14 +2,14 @@ import { getContractById } from '@/service/backend/documents/service/contract.se
 import ContractDetail from '../../../../../components/documents/contract/ContractDetail';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     lng: string;
     id: string;
-  };
+  }>;
 }
 
 export default async function ContractDetailPage({ params }: PageProps) {
-  const { lng: language, id: contractId } = params;
+  const { lng: language, id: contractId } = await params;
   const contract = await getContractById(contractId);
 
   if (!contract || 'error' in contract) {

@@ -2,10 +2,11 @@ import { Metadata } from 'next';
 import { getTranslation } from '@/app/i18n';
 
 export async function generateMetadata({
-  params: { lng },
+  params,
 }: {
-  params: { lng: string };
+  params: Promise<{ lng: string }>;
 }): Promise<Metadata> {
+  const { lng } = await params;
   const { t } = await getTranslation(lng, 'about');
 
   return {
@@ -15,10 +16,11 @@ export async function generateMetadata({
 }
 
 export default async function AboutPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: string };
+  params: Promise<{ lng: string }>;
 }) {
+  const { lng } = await params;
   const { t } = await getTranslation(lng, 'about');
 
   return (

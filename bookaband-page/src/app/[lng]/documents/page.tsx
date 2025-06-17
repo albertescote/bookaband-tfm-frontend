@@ -8,13 +8,15 @@ import Error from '@/components/shared/error';
 import DocumentsList from '@/components/documents/documentsList';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
-  searchParams?: { [key: string]: string | undefined };
+  }>;
+  searchParams?: Promise<{ [key: string]: string | undefined }>;
 }
 
-export default async function Page({ params: { lng } }: PageParams) {
+export default async function Page({ params, searchParams }: PageParams) {
+  const { lng } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const { t } = await getTranslation(lng, 'documents');
 
   const contracts: Contract[] | BackendError = await getUserContracts();

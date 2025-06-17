@@ -7,24 +7,26 @@ import { fetchEventTypes } from '@/service/backend/filters/service/eventType.ser
 import BookingsList from '@/components/bookings/bookingsList';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     band_id?: string;
-  };
+  }>;
 }
 
 export default async function BookingsPage({
-  params: { lng },
+  params,
   searchParams,
 }: PageParams) {
+  const { lng } = await params;
+  const resolvedSearchParams = await searchParams;
   const { t } = await getTranslation(lng, 'bookings');
-  const showCreateForm = searchParams.band_id !== undefined;
+  const showCreateForm = resolvedSearchParams.band_id !== undefined;
 
   if (showCreateForm) {
     const [artist, eventTypes] = await Promise.all([
-      fetchArtistDetailsById(searchParams.band_id!),
+      fetchArtistDetailsById(resolvedSearchParams.band_id!),
       fetchEventTypes(),
     ]);
 

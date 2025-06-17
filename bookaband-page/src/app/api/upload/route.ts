@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const accessToken = getAccessTokenCookie();
+    const accessToken = await getAccessTokenCookie();
     if (!accessToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

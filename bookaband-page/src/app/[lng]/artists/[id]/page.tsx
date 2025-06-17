@@ -13,13 +13,15 @@ export default async function ArtistProfilePage({
   params,
   searchParams,
 }: {
-  params: { lng: string; id: string };
-  searchParams?: { location: string; date: string };
+  params: Promise<{ lng: string; id: string }>;
+  searchParams?: Promise<{ location: string; date: string }>;
 }) {
-  const { t } = await getTranslation(params.lng, 'artists');
+  const { lng, id } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const { t } = await getTranslation(lng, 'artists');
 
   const [artist, musicalStyles, eventTypes] = await Promise.all([
-    fetchArtistDetailsById(params.id),
+    fetchArtistDetailsById(id),
     fetchMusicalStyles(),
     fetchEventTypes(),
   ]);
@@ -41,33 +43,34 @@ export default async function ArtistProfilePage({
     );
   }
 
-  const hasSearchParams = searchParams?.location || searchParams?.date;
+  const hasSearchParams =
+    resolvedSearchParams?.location || resolvedSearchParams?.date;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       {hasSearchParams && (
         <SearchSummary
-          location={searchParams.location}
-          date={searchParams.date}
-          language={params.lng}
+          location={resolvedSearchParams.location}
+          date={resolvedSearchParams.date}
+          language={lng}
         />
       )}
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="w-full md:w-1/4">
           <ArtistSidebar
             artist={artist}
-            language={params.lng}
+            language={lng}
             musicalStyles={musicalStyles}
             eventTypes={eventTypes}
-            searchParams={hasSearchParams ? searchParams : undefined}
+            searchParams={hasSearchParams ? resolvedSearchParams : undefined}
           />
         </div>
         <div className="flex-1">
-          <ArtistBio artist={artist} language={params.lng} />
+          <ArtistBio artist={artist} language={lng} />
           <ArtistSpotifySection artist={artist} />
           <ArtistContentsTab
             artist={artist}
-            language={params.lng}
+            language={lng}
             eventTypes={eventTypes}
           />
         </div>

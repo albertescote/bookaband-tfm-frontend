@@ -3,22 +3,24 @@ import InvoiceDetail from '../../../../../components/documents/invoice/InvoiceDe
 import { redirect } from 'next/navigation';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     lng: string;
     id: string;
-  };
+  }>;
 }
 
 export default async function InvoiceDetailPage({ params }: PageProps) {
   try {
-    const invoice = await getInvoiceById(params.id);
+    const { lng, id } = await params;
+    const invoice = await getInvoiceById(id);
 
     if ('error' in invoice) {
-      redirect(`/${params.lng}/documents`);
+      redirect(`/${lng}/documents`);
     }
 
-    return <InvoiceDetail invoice={invoice} language={params.lng} />;
+    return <InvoiceDetail invoice={invoice} language={lng} />;
   } catch (error) {
-    redirect(`/${params.lng}/documents`);
+    const { lng } = await params;
+    redirect(`/${lng}/documents`);
   }
 }

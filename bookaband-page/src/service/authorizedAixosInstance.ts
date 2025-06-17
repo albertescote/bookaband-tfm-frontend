@@ -14,8 +14,8 @@ const authorizedAxiosInstance = axios.create({
 });
 
 authorizedAxiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const accessToken = getAccessTokenCookie();
+  async (config: InternalAxiosRequestConfig) => {
+    const accessToken = await getAccessTokenCookie();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

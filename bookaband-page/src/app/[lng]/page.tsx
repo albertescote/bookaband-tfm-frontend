@@ -5,12 +5,13 @@ import CallToAction from '@/components/home/callToAction';
 import { fetchMusicalStyles } from '@/service/backend/musicalStyle/service/musicalStyle.service';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 
-export default async function Home({ params: { lng } }: PageParams) {
+export default async function Home({ params }: PageParams) {
+  const { lng } = await params;
   const musicalStyles = await fetchMusicalStyles();
 
   return (

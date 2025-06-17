@@ -4,15 +4,14 @@ import { fetchEventTypes } from '@/service/backend/filters/service/eventType.ser
 import { getBookingById } from '@/service/backend/booking/service/booking.service';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
     bookingId: string;
-  };
+  }>;
 }
 
-export default async function BookingPage({
-  params: { lng, bookingId },
-}: PageParams) {
+export default async function BookingPage({ params }: PageParams) {
+  const { lng, bookingId } = await params;
   const { t } = await getTranslation(lng, 'bookings');
   const [eventTypes, booking] = await Promise.all([
     fetchEventTypes(),
