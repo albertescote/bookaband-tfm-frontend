@@ -1,12 +1,13 @@
 import CalendarView from '@/components/calendar/calendar-view';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 
-export default function CalendarPage({ params: { lng } }: PageParams) {
+export default async function CalendarPage({ params }: PageParams) {
+  const { lng } = await params;
   return (
     <main className="flex-1 p-6">
       <CalendarView language={lng} />

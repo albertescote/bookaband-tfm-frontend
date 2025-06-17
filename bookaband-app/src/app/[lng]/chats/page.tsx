@@ -2,17 +2,16 @@ import Chat from '@/components/chats/chat';
 import { getChatById } from '@/service/backend/chat/service/chat.service';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
-  searchParams?: { [key: string]: string | undefined };
+  }>;
+  searchParams?: Promise<{ [key: string]: string | undefined }>;
 }
 
-export default async function Page({
-  params: { lng },
-  searchParams,
-}: PageParams) {
-  const chatId = searchParams?.chat_id;
+export default async function Page({ params, searchParams }: PageParams) {
+  const { lng } = await params;
+  const resolvedSearchParams = await searchParams;
+  const chatId = resolvedSearchParams?.chat_id;
   let initialChat: any = undefined;
 
   if (chatId) {

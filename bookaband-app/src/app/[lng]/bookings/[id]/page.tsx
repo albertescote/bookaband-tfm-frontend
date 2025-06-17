@@ -5,13 +5,14 @@ import { notFound } from 'next/navigation';
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
     id: string;
-  };
+  }>;
 }
 
-export default async function Page({ params: { lng, id } }: PageParams) {
+export default async function Page({ params }: PageParams) {
+  const { lng, id } = await params;
   const [booking, eventTypes] = await Promise.all([
     getBookingById(id),
     fetchEventTypes(),

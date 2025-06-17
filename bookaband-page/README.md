@@ -43,6 +43,7 @@ This project contains the public-facing frontend of **BookaBand**, a web platfor
       /[lng]             # Dynamic locale routing
         /about           # Public pages
         /profile         # Protected page
+        ...
     /api                 # API routes for server-side logic  
     /i8n                 # i18next configuration
     /components

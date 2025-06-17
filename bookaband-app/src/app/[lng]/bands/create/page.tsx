@@ -6,12 +6,13 @@ import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 import BandErrorScreen from '@/components/bands/BandErrorScreen';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 
-export default async function Page({ params: { lng } }: PageParams) {
+export default async function Page({ params }: PageParams) {
+  const { lng } = await params;
   try {
     const [musicalStyles, eventTypes] = await Promise.all([
       fetchMusicalStyles(),
@@ -31,6 +32,6 @@ export default async function Page({ params: { lng } }: PageParams) {
     );
   } catch (error) {
     console.error('Error fetching data:', error);
-    throw error;
+    return <BandErrorScreen language={lng} />;
   }
 }

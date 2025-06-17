@@ -7,13 +7,14 @@ import { MusicalStyle } from '@/service/backend/musicalStyle/domain/musicalStyle
 import { EventType } from '@/service/backend/eventTypes/domain/eventType';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
     id: string;
-  };
+  }>;
 }
 
-export default async function Page({ params: { lng, id } }: PageParams) {
+export default async function Page({ params }: PageParams) {
+  const { lng, id } = await params;
   try {
     const [bandProfile, musicalStyles, eventTypes] = await Promise.all([
       getBandProfileById(id),

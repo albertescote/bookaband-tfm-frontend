@@ -44,6 +44,7 @@ This project contains the authentication system of **BookaBand**, handling user 
         /[lng]
             /login         # Login page
             /sign-up       # Registration page
+            ...
         /federation        # Federation routes for google authentication
         /i8n               # i18next configuration
     /components

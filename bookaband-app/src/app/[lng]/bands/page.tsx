@@ -5,12 +5,13 @@ import { Invitation } from '@/service/backend/invitation/domain/invitation';
 import { UserBand } from '@/service/backend/band/domain/userBand';
 
 interface PageParams {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 
-export default async function Page({ params: { lng } }: PageParams) {
+export default async function Page({ params }: PageParams) {
+  const { lng } = await params;
   const [userBands, userInvitations] = await Promise.all([
     getUserBands(),
     getUserInvitations(),

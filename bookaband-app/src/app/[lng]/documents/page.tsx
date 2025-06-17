@@ -1,13 +1,12 @@
 import DocumentsList from '@/components/documents/DocumentsList';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 
-export default function DocumentsPage({ params }: PageProps) {
-  const { lng: language } = params;
-
+export default async function DocumentsPage({ params }: PageProps) {
+  const { lng: language } = await params;
   return <DocumentsList language={language} />;
 }
