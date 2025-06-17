@@ -20,21 +20,24 @@ This project contains the private dashboard frontend of **BookaBand**, designed 
 
 ## Tech Stack
 
-- **Next.js 15** – App Router, dynamic routing, SSR
-- **React 18**
-- **TypeScript**
-- **TailwindCSS** + `tailwind-merge`, `tailwindcss-animate`
-- **Radix UI** – UI primitives (`Dialog`, `Select`, `Checkbox`, `Progress`, `Switch`)
-- **Framer Motion** – Motion effects and page transitions
-- **Lucide & Heroicons** – Iconography
-- **i18next + react-i18next** – Internationalization framework
-- **Axios** – HTTP requests for backend APIs
-- **Recharts** – Charting library for dashboard analytics
-- **Cookies-next & React-cookie** – Session and auth cookie handling
-- **Zxcvbn** – Password strength validation
-- **Date-fns + React Datepicker + React Calendar** – Event and date utilities
-- **Socket.IO Client** – WebSocket communication support
-- **React Hot Toast / Sonner** – Notification and feedback system
+* **Next.js 15** – React framework with App Router, SSR, and static generation
+* **React 18** – Component-based UI library for modern frontend development
+* **TypeScript** – Static typing to improve code quality and maintainability
+* **TailwindCSS** – Utility-first CSS framework for consistent design system
+* **tailwind-merge** + **tailwindcss-animate** – For deduplicating class names and applying transitions
+* **Radix UI** – Accessible, unstyled primitives (`Dialog`, `Checkbox`, `Switch`, `Select`, `Progress`, `Label`)
+* **Headless UI** – Accessible component primitives used in modal/interactive elements
+* **Lucide React** + **React Icons** – Icon libraries for interface components
+* **Axios** – Promise-based HTTP client for backend API integration
+* **Socket.IO Client** – WebSocket client for real-time messaging and notifications
+* **Recharts** – Charting and data visualization for analytics and dashboards
+* **Date-fns** – Lightweight date utilities for formatting and logic
+* **Emoji Picker React** – Emoji selector for rich-text inputs and comments
+* **React Cookie** – Helpers for managing auth/session cookies
+* **i18next** + **react-i18next** + **i18next-browser-languagedetector** – Internationalization framework with language detection
+* **Framer Motion** – Animation library for smooth transitions
+* **React Hot Toast** + **Sonner** – Toast/notification libraries for UI feedback
+* **Sharp** – High-performance image processing (used by Next.js)
 
 ## Project Structure
 
