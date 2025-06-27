@@ -11,6 +11,7 @@ import {
   Home,
   MessageSquare,
   Receipt,
+  Star,
   Tag,
   Type,
 } from 'lucide-react';
@@ -31,6 +32,10 @@ import { format } from 'date-fns';
 import { ca, es } from 'date-fns/locale';
 import { BookingContract } from '@/service/backend/booking/domain/bookingContract';
 import { BookingInvoice } from '@/service/backend/booking/domain/bookingInvoice';
+import { getArtistReviewByBookingId } from '@/service/backend/artistReview/service/artistReview.service';
+import { ArtistReview } from '@/service/backend/artistReview/domain/artistReview';
+import { ReviewModal } from './reviewModal';
+import { BookingStatus } from '@/service/backend/booking/domain/booking';
 
 const getContractStatusConfig = (userSigned: boolean, bandSigned: boolean) => {
   if (userSigned && bandSigned) {
@@ -99,6 +104,11 @@ export default function BookingDetails({
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [contract, setContract] = useState<BookingContract | undefined>();
   const [invoice, setInvoice] = useState<BookingInvoice | undefined>();
+  const [existingReview, setExistingReview] = useState<ArtistReview | null>(
+    null,
+  );
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [isLoadingReview, setIsLoadingReview] = useState(false);
 
   useEffect(() => {
     const fetchContractAndInvoice = async () => {
@@ -114,6 +124,27 @@ export default function BookingDetails({
 
     fetchContractAndInvoice();
   }, [booking.id, booking.status]);
+
+  useEffect(() => {
+    const checkExistingReview = async () => {
+      if (
+        booking.status === BookingStatus.PAID &&
+        new Date(booking.endDate) < new Date()
+      ) {
+        setIsLoadingReview(true);
+        try {
+          const review = await getArtistReviewByBookingId(booking.id);
+          setExistingReview(review);
+        } catch (error) {
+          console.error('Error fetching review:', error);
+        } finally {
+          setIsLoadingReview(false);
+        }
+      }
+    };
+
+    checkExistingReview();
+  }, [booking.id, booking.status, booking.initDate]);
 
   const handleCancel = async () => {
     try {
@@ -136,12 +167,44 @@ export default function BookingDetails({
     router.push(`/${language}/chats?band_id=${booking.bandId}`);
   };
 
+  const handleReviewSubmitted = () => {
+    const checkExistingReview = async () => {
+      setIsLoadingReview(true);
+      try {
+        const review = await getArtistReviewByBookingId(booking.id);
+        setExistingReview(review);
+      } catch (error) {
+        console.error('Error fetching review:', error);
+      } finally {
+        setIsLoadingReview(false);
+      }
+    };
+    checkExistingReview();
+  };
+
   const eventType = booking.eventTypeId
     ? eventTypes.find((type) => type.id === booking.eventTypeId)
     : undefined;
 
   const canCancel =
     booking.status === 'PENDING' || booking.status === 'ACCEPTED';
+
+  const shouldShowReviewButton =
+    booking.status === BookingStatus.PAID &&
+    new Date(booking.endDate) < new Date() &&
+    !existingReview &&
+    !isLoadingReview;
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, index) => (
+      <Star
+        key={index}
+        className={`h-4 w-4 ${
+          index < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+        }`}
+      />
+    ));
+  };
 
   return (
     <div className="space-y-6">
@@ -336,6 +399,44 @@ export default function BookingDetails({
         )}
       </div>
 
+      {booking.status === BookingStatus.PAID &&
+        new Date(booking.endDate) < new Date() && (
+          <div className="rounded-lg border border-gray-200 bg-white p-6">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">
+              {t('review')}
+            </h2>
+            {isLoadingReview ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#15b7b9] border-t-transparent"></div>
+              </div>
+            ) : existingReview ? (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  {renderStars(existingReview.rating)}
+                  <span className="text-sm text-gray-600">
+                    {existingReview.rating}/5
+                  </span>
+                </div>
+                <p className="text-gray-700">{existingReview.comment}</p>
+                <p className="text-sm text-gray-500">
+                  {t('reviewedOn')}:{' '}
+                  {new Date(existingReview.date).toLocaleDateString(language)}
+                </p>
+              </div>
+            ) : shouldShowReviewButton ? (
+              <div className="py-8 text-center">
+                <p className="mb-4 text-gray-600">{t('reviewPrompt')}</p>
+                <Button
+                  onClick={() => setShowReviewModal(true)}
+                  className="px-6"
+                >
+                  {t('writeReview')}
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        )}
+
       {contract && (
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="mb-6 text-xl font-semibold text-gray-900">
@@ -492,6 +593,15 @@ export default function BookingDetails({
           </div>
         </div>
       )}
+
+      <ReviewModal
+        isOpen={showReviewModal}
+        onClose={() => setShowReviewModal(false)}
+        bookingId={booking.id}
+        bandName={booking.bandName}
+        language={language}
+        onReviewSubmitted={handleReviewSubmitted}
+      />
     </div>
   );
 }

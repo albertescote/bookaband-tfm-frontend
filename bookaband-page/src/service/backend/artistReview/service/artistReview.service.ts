@@ -1,3 +1,5 @@
+'use server';
+
 import { withTokenRefreshRetry } from '@/service/backend/auth/service/auth.service';
 import authorizedAxiosInstance from '@/service/authorizedAixosInstance';
 import { ArtistReview } from '@/service/backend/artistReview/domain/artistReview';

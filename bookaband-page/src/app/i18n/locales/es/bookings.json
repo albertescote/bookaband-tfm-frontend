@@ -136,5 +136,15 @@
   "oneWay": "(ida)",
   "roundTrip": "(ida y vuelta)",
   "totalDistance": "Distancia Total",
-  "totalCost": "Coste Total"
+  "totalCost": "Coste Total",
+  "review": "Reseña",
+  "writeReview": "Escribir Reseña",
+  "reviewFor": "Reseña para",
+  "rating": "Valoración",
+  "comment": "Comentario",
+  "commentPlaceholder": "Comparte tu experiencia con este artista...",
+  "submitReview": "Enviar Reseña",
+  "submitting": "Enviando...",
+  "reviewPrompt": "¿Cómo fue tu experiencia con este artista? Comparte tus opiniones y ayuda a otros a tomar decisiones informadas.",
+  "reviewedOn": "Valorado el"
 }

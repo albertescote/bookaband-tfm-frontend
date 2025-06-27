@@ -136,5 +136,15 @@
   "oneWay": "(anada)",
   "roundTrip": "(anada i tornada)",
   "totalDistance": "Distància Total",
-  "totalCost": "Cost Total"
+  "totalCost": "Cost Total",
+  "review": "Ressenya",
+  "writeReview": "Escriure Ressenya",
+  "reviewFor": "Ressenya per a",
+  "rating": "Valoració",
+  "comment": "Comentari",
+  "commentPlaceholder": "Comparteix la teva experiència amb aquest artista...",
+  "submitReview": "Enviar Ressenya",
+  "submitting": "Enviant...",
+  "reviewPrompt": "Com va ser la teva experiència amb aquest artista? Comparteix les teves opinions i ajuda a altres a prendre decisions informades.",
+  "reviewedOn": "Valorat el"
 }

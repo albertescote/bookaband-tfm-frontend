@@ -116,5 +116,15 @@
   "oneWay": "(one way)",
   "roundTrip": "(round trip)",
   "totalDistance": "Total Distance",
-  "totalCost": "Total Cost"
+  "totalCost": "Total Cost",
+  "review": "Review",
+  "writeReview": "Write Review",
+  "reviewFor": "Review for",
+  "rating": "Rating",
+  "comment": "Comment",
+  "commentPlaceholder": "Share your experience with this artist...",
+  "submitReview": "Submit Review",
+  "submitting": "Submitting...",
+  "reviewPrompt": "How was your experience with this artist? Share your thoughts and help others make informed decisions.",
+  "reviewedOn": "Reviewed on"
 }
